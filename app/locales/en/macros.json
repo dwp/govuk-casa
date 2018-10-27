@@ -1,0 +1,15 @@
+{
+  "dateInput": {
+    "day": "Day",
+    "month": "Month",
+    "year": "Year"
+  },
+
+  "postalAddressObject": {
+    "address1": "Building and street <span class=\"govuk-visually-hidden\">line 1 of 2</span>",
+    "address2": "<span class=\"govuk-visually-hidden\">Building and street line 2 of 2</span>",
+    "address3": "Town or city",
+    "address4": "County",
+    "postcode": "Postcode"
+  }
+}

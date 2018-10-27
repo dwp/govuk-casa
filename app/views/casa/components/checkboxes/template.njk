@@ -1,0 +1,25 @@
+{% from "components/checkboxes/macro.njk" import govukCheckboxes %}
+
+{% set fieldErrors = params.casaErrors[params.name] %}
+
+{# Build up attributes #}
+{% set mergedAttributes = params.attributes or {} %}
+{% if fieldErrors %}
+  {% set mergedAttributes = mergeObjects(mergedAttributes, {
+    'data-validation': {fn: params.name, va: fieldErrors[0].validator} | dump
+  }) %}
+{% endif %}
+{% set mergedAttributes = mergeObjects(mergedAttributes, {
+  id: params.id if params.id else 'f-' + params.name | safe
+}) %}
+{# Merge parameters #}
+{% set mergedParams = mergeObjects(params, {
+  idPrefix: params.idPrefix if params.idPrefix else 'f-' + params.name,
+  attributes: mergedAttributes,
+  errorMessage: {
+    text: t(params.casaErrors[params.name][0].inline)
+  } if params.casaErrors[params.name] else null
+}) %}
+
+
+{{ govukCheckboxes(mergedParams) }}

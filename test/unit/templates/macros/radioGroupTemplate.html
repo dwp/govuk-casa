@@ -1,0 +1,11 @@
+{% import "casa/macros/form.html" as form %}
+
+{% call form.radioGroup(
+  data=data,
+  name=name,
+  label=label,
+  options=options,
+  errors=errors
+) %}
+  {{ content }}
+{% endcall %}

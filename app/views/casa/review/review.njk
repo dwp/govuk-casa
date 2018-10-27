@@ -1,0 +1,34 @@
+{% extends "casa/layouts/main.njk" %}
+
+{% from "components/button/macro.njk" import govukButton %}
+
+{% block pageTitle %}
+  {{ t('review:pageTitle') }}
+{% endblock %}
+
+{% block content %}
+  <form action="" method="post">
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+    <input type="hidden" name="reviewed" value="true" />
+
+    <h1 class="govuk-heading-xl">{{ t('review:h1') }}</h1>
+
+    <div class="govuk-form-group">
+      <table class="govuk-table check-your-answers">
+
+        <!-- Include blocks for all pages in the user's journey -->
+        {% for block in reviewBlocks %}
+          {% include block.reviewBlockView ignore missing %}
+        {% endfor %}
+
+      </table>
+    </div>
+
+    <p class="govuk-body">
+      {{ govukButton({
+        text: t('common:form.buttons.next.label'),
+        type: 'submit'
+      }) }}
+    </p>
+  </form>
+{% endblock %}

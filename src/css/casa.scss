@@ -1,0 +1,21 @@
+// Sets the mount url
+// In the CASA middleware, this will be import the configured mount url
+// dynamically.
+@import 'casaMountUrl.scss';
+
+// Import GOV.UK elements, this will import from govuk-frontend.
+@import 'all.scss';
+
+// Some styles to convert old govuk-elements-sass to the equivalents in
+// govuk-frontend
+// THIS WILL BE REMOVED IN A FUTURE RELEASE SO MOVE ALL YOUR STYLES TO USE
+// THOSE SUPPLIED IN GOVUK-FRONTEND
+@import 'casaV1GovukMigration.scss';
+
+// Some polyfilled CSS taken from the govuk_template_jinja module, because
+// we don't want to inherit all its CSS
+@import 'casaGovukTemplateJinjaPolyfill.scss';
+
+// Some CASA-specific styles
+@import 'casaValidation.scss';
+@import 'casaElements.scss';

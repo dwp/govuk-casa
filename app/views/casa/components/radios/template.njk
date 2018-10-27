@@ -1,0 +1,34 @@
+{% from "components/radios/macro.njk" import govukRadios %}
+
+{% set fieldErrors = params.casaErrors[params.name] %}
+
+{# Generate validation data- attributes #}
+{% set mergedAttributes = params.attributes or {
+  'data-target': params.casaContentTargetId or null
+} %}
+{% if fieldErrors %}
+  {% set mergedAttributes = mergeObjects(mergedAttributes, {
+    'data-validation': {fn: params.name, va: fieldErrors[0].validator} | dump
+  }) %}
+{% endif %}
+
+{# Add checked flag to chosen input #}
+{% set mergedItems = [] %}
+{% for item in params.items %}
+  {% set item = mergeObjects(item, {
+    checked: true if item.value == params.casaValue else null
+  }) %}
+  {% set mergedItems = (mergedItems.push(item), mergedItems) %}
+{% endfor %}
+
+{# Merge parameters #}
+{% set mergedParams = mergeObjects(params, {
+  idPrefix: params.idPrefix if params.idPrefix else 'f-' + params.name,
+  attributes: mergedAttributes,
+  items: mergedItems,
+  errorMessage: {
+    text: t(params.casaErrors[params.name][0].inline)
+  } if params.casaErrors[params.name].length
+}) %}
+
+{{ govukRadios(mergedParams) }}

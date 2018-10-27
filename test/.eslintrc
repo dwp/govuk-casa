@@ -1,0 +1,14 @@
+{
+  "env": {
+    "mocha": true
+  },
+  "rules": {
+    "no-underscore-dangle": 0,
+    "sonarjs/no-duplicate-string": 0,
+    "sonarjs/no-identical-functions": 0,
+    "sonarjs/cognitive-complexity": 0,
+    "no-console": 0,
+    "no-inline-comments": 0,
+    "prefer-destructuring": 0
+  }
+}

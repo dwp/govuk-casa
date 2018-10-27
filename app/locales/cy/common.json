@@ -1,0 +1,23 @@
+{
+  "serviceName": "",
+  "layout": {
+    "crown_copyright_message_html": "&copy; Hawlfraint y Goron"
+  },
+  "back": "Yn ôl",
+  "form": {
+    "buttons": {
+      "continue": {
+        "label": "Parhau"
+      },
+      "saveChanges": {
+        "label": "Cadw Newidiadau"
+      },
+      "cancel": {
+        "label": "Diddymu"
+      },
+      "next": {
+        "label": "Nesaf"
+      }
+    }
+  }
+}

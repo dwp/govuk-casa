@@ -1,0 +1,50 @@
+{
+  "rule": {
+    "dateObject": {
+      "inline": "Rhowch ddyddiad dilys",
+      "summary": "Rhowch ddyddiad dilys"
+    },
+
+    "email": {
+      "inline": "Rhowch gyfeiriad e-bost dilys",
+      "summary": "Rhowch gyfeiriad e-bost dilys"
+    },
+
+    "nino": {
+      "inline": "Rhowch rif Yswiriant Gwladol dilys",
+      "summary": "Rhowch rif Yswiriant Gwladol dilys"
+    },
+
+    "postalAddressObject": {
+      "group": {
+        "inline": "Rhowch gyfeiriad",
+        "summary": "Rhowch gyfeiriad"
+      },
+      "address1": {
+        "inline": "Rhowch eich stryd/fflat/adeilad",
+        "summary": "Rhowch eich stryd/fflat/adeilad"
+      },
+      "address2": {
+        "inline": "Rhowch eich stryd/fflat/adeilad",
+        "summary": "Rhowch eich stryd/fflat/adeilad"
+      },
+      "address3": {
+        "inline": "Rhowch eich tref",
+        "summary": "Rhowch eich tref"
+      },
+      "address4": {
+        "inline": "Rhowch eich sir",
+        "summary": "Rhowch eich sir"
+      },
+      "postcode": {
+        "inline": "Rhowch god post dilys",
+        "summary": "Rhowch god post dilys"
+      }
+    },
+
+    "required": {
+      "inline": "Mae angen gwybodaeth",
+      "summary": "Mae angen gwybodaeth"
+    }
+  }
+}

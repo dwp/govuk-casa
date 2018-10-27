@@ -1,0 +1,84 @@
+{% extends "casa/layouts/journey.html" %}
+
+{% from "components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "casa/components/journey-form/macro.njk" import casaJourneyForm %}
+
+{# New CASA wrapper macros #}
+{% from "casa/components/checkboxes/macro.njk" import casaGovukCheckboxes %}
+{% from "casa/components/input/macro.njk" import casaGovukInput %}
+{% from "casa/components/date-input/macro.njk" import casaGovukDateInput %}
+{% from "casa/components/radios/macro.njk" import casaGovukRadios %}
+{% from "casa/components/textarea/macro.njk" import casaGovukTextarea %}
+
+{% block content %}
+  {% if formErrorsGovukArray %}
+    {{ govukErrorSummary({
+      titleText: "Errors",
+      errorList: formErrorsGovukArray
+    }) }}
+  {% endif %}
+
+  <p class="govuk-body">
+    This page contains an instance of each CASA macro.
+  </p>
+
+  {% call casaJourneyForm({
+    csrfToken: csrfToken,
+    inEditMode: inEditMode,
+    casaMountUrl: casaMountUrl
+  }) %}
+    {{ casaGovukInput({
+      name: 'field_input',
+      value: formData.field_input,
+      casaErrors: formErrors
+    }) }}
+
+    {{ casaGovukCheckboxes({
+      name: "field_boxes",
+      items: [{
+        value: "option0",
+        text: "Option 0",
+        checked: includes(formData.field_boxes, "option0")
+      },{
+        value: "option1",
+        text: "Option 1",
+        checked: includes(formData.field_boxes, "option1")
+      }],
+      casaErrors: formErrors
+    }) }}
+
+    {{ casaGovukDateInput({
+      namePrefix: 'field_date',
+      casaValue: formData.dob,
+      casaErrors: formErrors
+    }) }}
+
+    {{ casaGovukRadios({
+      name: 'field_radios',
+      items: [{
+        text: 'Option 0',
+        value: 'option0',
+        attributes: {
+          'data-target': 'radios-option0-target'
+        }
+      }, {
+        text: 'Option 1',
+        value: 'option1'
+      }],
+      casaValue: formData.field_radios,
+      casaErrors: formErrors
+    }) }}
+
+    <div class="panel panel-border-narrow js-hidden" id="radios-option0-target">
+      <p class=govuk-body>
+        Revealed Content
+      </p>
+    </div>
+
+    {{ casaGovukTextarea({
+      name: 'field_textarea',
+      value: formData.field_textarea,
+      casaErrors: formErrors
+    }) }}
+  {% endcall %}
+{% endblock %}

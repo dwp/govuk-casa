@@ -1,0 +1,26 @@
+{% set waypointId %}{% block journeyWaypointId %}{% endblock %}{% endset %}
+{% set waypointId %}{{ waypointId | trim }}{% endset %}
+
+<thead class="govuk-table__head">
+  <tr class="govuk-table__row">
+    <th colspan="2" class="govuk-table__header">
+      {% block pageBlockTitle %}{% endblock %}
+    </th>
+
+    <th class="govuk-table__header change-answer">
+      {% if reviewErrors[waypointId] %}
+        <span class="casa-review-page-error">{{ t('review:block.containsErrors') }}</span>
+      {% endif %}
+      <a href="{{ casaMountUrl }}{{ waypointId }}?edit">
+        {{ t('review:block.changeLink') }}
+      </a>
+    </th>
+  </tr>
+</thead>
+{% block reviewBlock %}
+  <tbody class="govuk-table__body">
+    <tr class="govuk-table__row">
+      <td colspan="3" class="govuk-table__cell">No content</td>
+    </tr>
+  </tbody>
+{% endblock %}

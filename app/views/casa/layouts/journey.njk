@@ -1,0 +1,34 @@
+{% extends "casa/layouts/main.njk" %}
+
+{% from "components/back-link/macro.njk" import govukBackLink %}
+
+{# When back link is not needed, add `main.govuk-main-wrapper--l` class to retain padding #}
+{% if inEditMode or not journeyPreviousUrl %}
+  {% set mainClasses %}{{ mainClasses }} govuk-main-wrapper--l{% endset %}
+{% endif %}
+
+
+{% block beforeContent %}
+  {# Phase banner #}
+  {# TODO: remove phase variable - just get template author to override a `casa/partials/phase_banner.njk` template #}
+  {% if phase == 'alpha' %}
+    {% include "casa/partials/phase_banner_alpha.njk" %}
+  {% elseif phase == 'beta' %}
+    {% include "casa/partials/phase_banner_beta.njk" %}
+  {% endif %}
+
+  {# Add back link, if appropriate #}
+  {% if not inEditMode and journeyPreviousUrl %}
+    {{ govukBackLink({
+      text: t('common:back'),
+      href: journeyPreviousUrl
+    }) }}
+  {% endif %}
+{% endblock %}
+
+
+{# Use `casaPageTitle` instead of `pageTitle` if you want CASA to automatically prefix with `Error` when appropriate #}
+{% block pageTitle -%}
+  {{- t("error:documentTtlePrefix") if formErrors -}}
+  {% block casaPageTitle %}{% endblock %}
+{%- endblock %}

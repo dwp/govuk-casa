@@ -1,0 +1,50 @@
+{
+  "rule": {
+    "dateObject": {
+      "inline": "Enter a valid date",
+      "summary": "Enter a valid date"
+    },
+
+    "email": {
+      "inline": "Enter a valid email address",
+      "summary": "Enter a valid email address"
+    },
+
+    "nino": {
+      "inline": "Enter a valid National Insurance number",
+      "summary": "Enter a valid National Insurance number"
+    },
+
+    "postalAddressObject": {
+      "group": {
+        "inline": "Enter an address",
+        "summary": "Enter an address"
+      },
+      "address1": {
+        "inline": "Enter your street/flat/building",
+        "summary": "Enter your street/flat/building"
+      },
+      "address2": {
+        "inline": "Enter your street/flat/building",
+        "summary": "Enter your street/flat/building"
+      },
+      "address3": {
+        "inline": "Enter your town",
+        "summary": "Enter your town"
+      },
+      "address4": {
+        "inline": "Enter your county",
+        "summary": "Enter your county"
+      },
+      "postcode": {
+        "inline": "Enter a valid postcode",
+        "summary": "Enter a valid postcode"
+      }
+    },
+
+    "required": {
+      "inline": "Information is required",
+      "summary": "Information is required"
+    }
+  }
+}

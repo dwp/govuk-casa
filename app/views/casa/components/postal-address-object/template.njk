@@ -1,0 +1,127 @@
+{% from "components/input/macro.njk" import govukInput %}
+{% from "components/fieldset/macro.njk" import govukFieldset %}
+
+{# Build up fieldset attributes #}
+{% set fieldsetAttributes = params.fieldset or {} %}
+{% if fieldErrors %}
+  {% set fieldsetAttributes = mergeObjects({
+    legend: {
+      text: label,
+      classes: "govuk-fieldset__legend--m",
+      isPageHeading: false
+    }
+  }, params.fieldset or {}) %}
+{% endif %}
+
+{% if params.casaErrors[params.name] %}
+<div class="govuk-form-group govuk-form-group--error" id="f-{{params.name}}-error">
+{% endif %}
+
+{% call govukFieldset(fieldsetAttributes) %}
+
+{% if params.casaErrors[params.name] %}
+<span class="govuk-error-message">{{ t(params.casaErrors[params.name][0].inline) }}</span>
+{% endif %}
+
+  {# Line 1 #}
+  {% set fieldErrors = params.casaErrors[params.name+"[address1]"] %}
+  {% set fieldAttributes = {} %}
+  {% if fieldErrors %}
+    {% set fieldAttributes = mergeObjects(fieldAttributes, {'data-validation': {fn: params.name + '[address1]', va: fieldErrors[0].validator} | dump}) %}
+  {% endif %}
+  {{ govukInput({
+    label: {
+      html: t('macros:postalAddressObject.address1')
+    },
+    id: 'f-' + params.name + '[address1]',
+    name: params.name + '[address1]',
+    value: params.value.address1,
+    attributes: fieldAttributes,
+    errorMessage: {
+      text: t(fieldErrors[0].inline)
+    } if fieldErrors else null
+  }) }}
+
+  {# Line 2 #}
+  {% set fieldErrors = params.casaErrors[params.name+"[address2]"] %}
+  {% set fieldAttributes = {} %}
+  {% if fieldErrors %}
+    {% set fieldAttributes = mergeObjects(fieldAttributes, {'data-validation': {fn: params.name + '[address2]', va: fieldErrors[0].validator} | dump}) %}
+  {% endif %}
+  {{ govukInput({
+    label: {
+      html: t('macros:postalAddressObject.address2')
+    },
+    id: 'f-' + params.name + '[address2]',
+    name: params.name + '[address2]',
+    value: params.value.address2,
+    attributes: fieldAttributes,
+    errorMessage: {
+      text: t(fieldErrors[0].inline)
+    } if fieldErrors else null
+  }) }}
+
+  {# Town #}
+  {% set fieldErrors = params.casaErrors[params.name+"[address3]"] %}
+  {% set fieldAttributes = {} %}
+  {% if fieldErrors %}
+    {% set fieldAttributes = mergeObjects(fieldAttributes, {'data-validation': {fn: params.name + '[address3]', va: fieldErrors[0].validator} | dump}) %}
+  {% endif %}
+  {{ govukInput({
+    label: {
+      html: t('macros:postalAddressObject.address3')
+    },
+    id: 'f-' + params.name + '[address3]',
+    name: params.name + '[address3]',
+    value: params.value.address3,
+    classes: "govuk-!-width-two-thirds",
+    attributes: fieldAttributes,
+    errorMessage: {
+      text: t(fieldErrors[0].inline)
+    } if fieldErrors else null
+  }) }}
+
+  {# County #}
+  {% set fieldErrors = params.casaErrors[params.name+"[address4]"] %}
+  {% set fieldAttributes = {} %}
+  {% if fieldErrors %}
+    {% set fieldAttributes = mergeObjects(fieldAttributes, {'data-validation': {fn: params.name + '[address4]', va: fieldErrors[0].validator} | dump}) %}
+  {% endif %}
+  {{ govukInput({
+    label: {
+      html: t('macros:postalAddressObject.address4')
+    },
+    id: 'f-' + params.name + '[address4]',
+    name: params.name + '[address4]',
+    value: params.value.address4,
+    classes: "govuk-!-width-two-thirds",
+    attributes: fieldAttributes,
+    errorMessage: {
+      text: t(fieldErrors[0].inline)
+    } if fieldErrors else null
+  }) }}
+
+  {# Postcode #}
+  {% set fieldErrors = params.casaErrors[params.name+"[postcode]"] %}
+  {% set fieldAttributes = {} %}
+  {% if fieldErrors %}
+    {% set fieldAttributes = mergeObjects(fieldAttributes, {'data-validation': {fn: params.name + '[postcode]', va: fieldErrors[0].validator} | dump}) %}
+  {% endif %}
+  {{ govukInput({
+    label: {
+      html: t('macros:postalAddressObject.postcode')
+    },
+    id: 'f-' + params.name + '[postcode]',
+    name: params.name + '[postcode]',
+    value: params.value.postcode,
+    classes: "govuk-input--width-10",
+    attributes: fieldAttributes,
+    errorMessage: {
+      text: t(fieldErrors[0].inline)
+    } if fieldErrors else null
+  }) }}
+{% endcall %}
+
+{% if params.casaErrors[params.name] %}
+</div>
+{% endif %}

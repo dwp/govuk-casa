@@ -1,0 +1,41 @@
+{% extends "template.njk" %}
+
+{% set assetPath = govuk.assetPath %}
+
+
+{% block head %}
+  {% include "casa/partials/styles.njk" %}
+{% endblock %}
+
+
+{% block bodyStart %}
+  <div id="global-cookie-message" class="js-hidden">
+    {% include "casa/partials/cookie_message.njk" %}
+  </div>
+{% endblock %}
+
+
+{% block header %}
+  {{ govukHeader(govuk.components.header) }}
+{% endblock %}
+
+
+{% block beforeContent %}
+  {% if phase == 'alpha' %}
+    {% include "casa/partials/phase_banner_alpha.njk" %}
+  {% elseif phase == 'beta' %}
+    {% include "casa/partials/phase_banner_beta.njk" %}
+  {% endif %}
+{% endblock %}
+
+
+{% block bodyEnd %}
+  {% include "casa/partials/scripts.njk" %}
+{% endblock %}
+
+
+{# CASA Wrappers #}
+
+{% block pageTitle %}
+  {% block casaPageTitle %}{% endblock %}
+{% endblock %}

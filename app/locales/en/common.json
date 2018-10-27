@@ -1,0 +1,23 @@
+{
+  "serviceName": "",
+  "layout": {
+    "crown_copyright_message_html": "&copy; Crown copyright"
+  },
+  "back": "Back",
+  "form": {
+    "buttons": {
+      "continue": {
+        "label": "Continue"
+      },
+      "saveChanges": {
+        "label": "Save Changes"
+      },
+      "cancel": {
+        "label": "Cancel"
+      },
+      "next": {
+        "label": "Next"
+      }
+    }
+  }
+}

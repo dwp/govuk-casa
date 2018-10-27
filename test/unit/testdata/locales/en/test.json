@@ -1,0 +1,12 @@
+{
+  "phrase1": "TR_PHASE1",
+  "nested": {
+    "object": {
+      "value": "NOV_FOUND"
+    }
+  },
+  "subphrase1": "SUBPHRASE1_%s",
+  "subphrase2": "SUBPHRASE2_%s_%s",
+  "subphrase3": "SUBPHRASE3_${var1}",
+  "subphrase4": "SUBPHRASE4_${var2}_${var1}"
+}

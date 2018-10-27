@@ -1,0 +1,48 @@
+{% from "components/date-input/macro.njk" import govukDateInput %}
+
+{% set fieldErrors = params.casaErrors[params.name] %}
+
+{%- set inputErrorClass %}
+  {{ 'govuk-input--error' if fieldErrors }}
+{% endset -%}
+
+{# Build up attributes #}
+{% set mergedAttributes = params.attributes or {} %}
+{% if fieldErrors %}
+  {% set mergedAttributes = mergeObjects(mergedAttributes, {
+    'data-validation': {fn: params.namePrefix, va: fieldErrors[0].validator} | dump
+  }) %}
+{% endif %}
+
+{# Merge parameters #}
+{% set mergedParams = mergeObjects(params, {
+  id: params.id if params.id else 'f-' + params.namePrefix,
+  namePrefix: '',
+  attributes: mergedAttributes,
+  items: [{
+    label: t('macros:dateInput.day'),
+    name: params.namePrefix + '[dd]',
+    id: 'f-' + params.namePrefix + '[dd]',
+    value: params.casaValue.dd,
+    classes: 'govuk-input--width-2 ' + inputErrorClass
+  }, {
+    label: t('macros:dateInput.month'),
+    name: params.namePrefix + '[mm]',
+    id: 'f-' + params.namePrefix + '[mm]',
+    value: params.casaValue.mm,
+    classes: 'govuk-input--width-2 ' + inputErrorClass,
+    attributes: attributes_mm
+  }, {
+    label: t('macros:dateInput.year'),
+    name: params.namePrefix + '[yyyy]',
+    id: 'f-' + params.namePrefix + '[yyyy]',
+    value: params.casaValue.yyyy,
+    classes: 'govuk-input--width-4 ' + inputErrorClass
+  }],
+  errorMessage: {
+    text: t(params.casaErrors[params.namePrefix][0].inline)
+  } if params.casaErrors[params.namePrefix] else null
+}) %}
+
+
+{{ govukDateInput(mergedParams) }}

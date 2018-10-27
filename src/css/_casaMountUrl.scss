@@ -1,0 +1,9 @@
+// URL prefix that will be used to serve up static assets from the
+// `govuk_frontend_toolkit` images directory.
+// Usage in your own sass source:
+//  $casaMountUrl: "/path/to/your/defined/mount/url";
+//  @import 'node_modules/govuk-casa/src/css/casaMountUrl';
+
+$casaMountUrl: "/" !default;
+//$path: $casaMountUrl + "govuk/kit/images/";
+$govuk-assets-path: $casaMountUrl + "govuk/frontend/assets/";

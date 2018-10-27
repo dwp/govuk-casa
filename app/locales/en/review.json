@@ -1,0 +1,8 @@
+{
+  "pageTitle": "Check your answers",
+  "h1": "Check your answers",
+  "block": {
+    "containsErrors": "This page contains errors",
+    "changeLink": "Change"
+  }
+}

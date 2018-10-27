@@ -1,0 +1,22 @@
+{% from "components/button/macro.njk" import govukButton %}
+
+<form action="#" method="post" autocomplete="off" novalidate>
+  <input type="hidden" name="_csrf" value="{{ params.csrfToken }}" />
+  {% if params.inEditMode %}<input type="hidden" name="edit" value="true" />{% endif %}
+
+  {# FORM CONTENT HERE #}
+  {{ caller() }}
+
+  <p class="govuk-body">
+    {{ govukButton({
+      attributes: {
+        id: 'continue-button'
+      },
+      text: t('common:form.buttons.saveChanges.label') if params.inEditMode else t('common:form.buttons.continue.label')
+    }) }}
+
+    {% if params.inEditMode %}
+      <a href="{{ params.casaMountUrl }}review" class="casa-cancel-review-link govuk-link--no-visited-state">{{ t('common:form.buttons.cancel.label') }}</a>
+    {% endif %}
+  </p>
+</form>

@@ -1,0 +1,21 @@
+{% from "components/textarea/macro.njk" import govukTextarea %}
+
+{% set fieldErrors = params.casaErrors[params.name] %}
+
+{# Generate validation data- attributes #}
+{% set mergedAttributes = params.attributes or {} %}
+{% if fieldErrors %}
+  {% set mergedAttributes = mergeObjects(mergedAttributes, {
+    'data-validation': {fn: params.name, va: fieldErrors[0].validator} | dump
+  }) %}
+{% endif %}
+
+{% set mergedParams = mergeObjects(params, {
+  id: params.id if params.id else 'f-' + params.name,
+  attributes: mergedAttributes,
+  errorMessage: {
+    text: t(params.casaErrors[params.name][0].inline)
+  } if params.casaErrors[params.name].length
+}) %}
+
+{{ govukTextarea(mergedParams) }}

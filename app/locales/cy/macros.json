@@ -1,0 +1,16 @@
+{
+  "dateObject": {
+    "day": "Diwrnod",
+    "month": "Mis",
+    "year": "Blwyddyn"
+  },
+
+  "postalAddressObject": {
+    "address1": "Adeilad neu stryd",
+    "address1Aid": "Adeilad neu stryd 1",
+    "address2Aid": "Adeilad neu stryd 2",
+    "address3": "Tref neu ddinas",
+    "address4": "Sir",
+    "postcode": "Cod post"
+  }
+}

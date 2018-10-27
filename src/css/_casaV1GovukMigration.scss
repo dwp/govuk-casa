@@ -1,0 +1,65 @@
+// Old style:
+//  <h1 class="heading-large"></h1>
+// new style:
+//  <h1 class="govuk-heading-l"></h1>
+.heading-large {
+  @extend .govuk-heading-xl;
+}
+
+// Input sizes
+.form-control-1-4 {
+  @extend .govuk-input--width-10;
+}
+
+// govuk-frontend uses its js-hidden class slightly differently to the older
+// CASA; it adds the class using JavaScript vs CASA's method of showing it and
+// only hiding if the `.js-enabled` root class is set.
+.js-hidden {
+  display:block;
+}
+
+.js-enabled .js-hidden {
+  display: none;
+}
+
+// If we have target panels within a radio group's fieldset, and the radios are
+// set to "inline", the layout breaks. We need to clear all nested panels to
+// fix this.
+.govuk-radios--inline {
+  > .panel {
+    clear: both;
+  }
+}
+
+// Form group blocks
+.form-group {
+  @extend .govuk-form-group;
+
+  > p {
+    @extend .govuk-body;
+  }
+}
+
+form {
+  > p {
+    @extend .govuk-body;
+  }
+}
+
+// Phase banner styling
+.phase-banner {
+  @extend .govuk-phase-banner;
+
+  > p {
+    @extend .govuk-phase-banner__content;
+
+    > strong.phase-tag {
+      @extend .govuk-tag;
+      @extend .govuk-phase-banner__content__tag;
+    }
+
+    > span {
+      @extend .govuk-phase-banner__text;
+    }
+  }
+}
