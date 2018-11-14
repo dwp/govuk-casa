@@ -96,9 +96,9 @@ zap:
   variables:
     HOSTNAME: pentest.service
     PENTEST_SERVICE_URL: http://$HOSTNAME:4000/
-  image: docker:18.06@sha256:f7211e1779c82e3a50d0d6f165e83f3e2be217a234b0181d5e8bee411d8fcc5f
+  image: docker:18.09@sha256:201c31cae6daa97001fe9c0cd2e2d3a157ca6447aaa74b070189790445627511
   services:
-    - docker:18.06-dind@sha256:fa076bb50825974e0bc8004d48944b0636072dc8d5ccd103b2d9c312acc0a090
+    - docker:18.09-dind@sha256:cda6ed53224efab2c1c461dbb019108b93d03ac741066b0958c60682e0aa4215
   script:
     - docker network create --internal test
     - docker run -d -v $(pwd):/package/:rw --name $HOSTNAME --net test --hostname $HOSTNAME -p 4000:4000 node:10.10.0-alpine /bin/sh -c "cd /package && npm run start-pen-test-service"
