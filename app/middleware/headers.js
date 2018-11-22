@@ -42,7 +42,7 @@ module.exports = function mwHeaders(app, cspConfig, disabledHeadersConfig) {
     if (req.url.match(/.*\.(js|jpe?g|css|png|svg|woff2?|eot|ttf|otf)/)) {
       headers['Cache-Control'] = 'public';
       headers.Pragma = 'cache';
-      headers.Expires = moment.utc().add(1, 'day').format();
+      headers.Expires = `${moment.utc().add(1, 'day').format('ddd, DD MMM YYYY HH:mm:ss')} GMT`
     } else {
       headers['Cache-Control'] = 'no-cache, no-store, must-revalidate, private';
       headers.Pragma = 'no-cache';
