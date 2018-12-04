@@ -17,7 +17,7 @@ describe('Validation', () => {
       expect(sf1.validators).to.be.an.instanceOf(Array);
       expect(sf1.validators.length).to.equal(0);
 
-      const sf2 = Validation.SimpleField([ () => (true) ]);
+      const sf2 = Validation.SimpleField([() => (true)]);
       expect(sf2).to.be.an('object');
       expect(sf2.condition).to.be.an.instanceOf(Function);
       expect(sf2.validators).to.be.an.instanceOf(Array);
@@ -37,7 +37,7 @@ describe('Validation', () => {
       expect(sf1.validators.length).to.equal(0);
 
       const sf2 = Validation.ObjectField({
-        f1: Validation.SimpleField()
+        f1: Validation.SimpleField(),
       });
       expect(sf2).to.be.an('object');
       expect(sf2.children).to.be.an('object');
@@ -48,7 +48,7 @@ describe('Validation', () => {
       expect(sf2.validators).to.be.an.instanceOf(Array);
       expect(sf2.validators.length).to.equal(0);
 
-      const sf3 = Validation.ObjectField({}, [ () => (true) ]);
+      const sf3 = Validation.ObjectField({}, [() => (true)]);
       expect(sf3).to.be.an('object');
       expect(sf3.condition).to.be.an.instanceOf(Function);
       expect(sf3.condition()).to.be.true;
@@ -69,7 +69,7 @@ describe('Validation', () => {
       expect(sf1.validators.length).to.equal(0);
 
       const sf2 = Validation.ArrayObjectField({
-        f1: new Validation.SimpleField()
+        f1: new Validation.SimpleField(),
       });
       expect(sf2).to.be.an('object');
       expect(sf2.children).to.be.an('object');
@@ -80,7 +80,7 @@ describe('Validation', () => {
       expect(sf2.validators).to.be.an.instanceOf(Array);
       expect(sf2.validators.length).to.equal(0);
 
-      const sf3 = Validation.ArrayObjectField({}, [ () => (true) ]);
+      const sf3 = Validation.ArrayObjectField({}, [() => (true)]);
       expect(sf3).to.be.an('object');
       expect(sf3.condition).to.be.an.instanceOf(Function);
       expect(sf3.condition()).to.be.true;
@@ -99,8 +99,8 @@ describe('Validation', () => {
       expect(() => {
         Validation.processor({
           f1: {
-            condition: () => (true)
-          }
+            condition: () => (true),
+          },
         }, {});
       }).to.throw(/Unknown or unspecified validator type/i);
     });
@@ -108,7 +108,7 @@ describe('Validation', () => {
     it('should throw an error if a non-function validator has been used', () => {
       expect(() => {
         Validation.processor({
-          f1: Validation.SimpleField([ '**not a function**' ])
+          f1: Validation.SimpleField(['**not a function**']),
         }, {});
       }).to.throw(Error);
     });
@@ -117,8 +117,8 @@ describe('Validation', () => {
       const fieldValidators = {
         f1: Validation.SimpleField([
           Validation.rules.required,
-          Validation.rules.email
-        ])
+          Validation.rules.email,
+        ]),
       };
       const context = {};
       const p = Validation.processor(fieldValidators, context);
@@ -132,12 +132,12 @@ describe('Validation', () => {
       const fieldValidators = {
         f1: Validation.SimpleField([
           Validation.rules.required,
-          Validation.rules.email
-        ])
+          Validation.rules.email,
+        ]),
       };
       const context = {};
       const p = Validation.processor(fieldValidators, context, {
-        reduceErrors: true
+        reduceErrors: true,
       });
       expect(p instanceof Promise).to.be.true;
       return p.catch((errors) => {
@@ -149,11 +149,11 @@ describe('Validation', () => {
       it('should resolve a Promise for valid data', () => {
         const fieldValidators = {
           f1: Validation.SimpleField([
-            Validation.rules.required
-          ])
+            Validation.rules.required,
+          ]),
         };
         const context = {
-          f1: 'hello'
+          f1: 'hello',
         };
         const p = Validation.processor(fieldValidators, context);
         expect(p instanceof Promise).to.be.true;
@@ -166,8 +166,8 @@ describe('Validation', () => {
         const fieldValidators = {
           f1: Validation.SimpleField([
             Validation.rules.optional,
-            Validation.rules.required
-          ])
+            Validation.rules.required,
+          ]),
         };
         const context = {};
         const p = Validation.processor(fieldValidators, context);
@@ -177,15 +177,15 @@ describe('Validation', () => {
         const fieldValidators2 = {
           f1: Validation.SimpleField([
             Validation.rules.optional,
-            Validation.rules.required
+            Validation.rules.required,
           ]),
           f2: Validation.SimpleField([
             Validation.rules.optional,
-            Validation.rules.required
-          ])
+            Validation.rules.required,
+          ]),
         };
         const context2 = {
-          f2: 'data'
+          f2: 'data',
         };
         const p2 = Validation.processor(fieldValidators2, context2);
         expect(p2 instanceof Promise).to.be.true;
@@ -197,11 +197,11 @@ describe('Validation', () => {
       it('should resolve a Promise for valid data containing hyphenated field names', () => {
         const fieldValidators = {
           'field-one-two': Validation.SimpleField([
-            Validation.rules.required
-          ])
+            Validation.rules.required,
+          ]),
         };
         const context = {
-          'field-one-two': 'hello'
+          'field-one-two': 'hello',
         };
         const p = Validation.processor(fieldValidators, context);
         expect(p instanceof Promise).to.be.true;
@@ -211,8 +211,8 @@ describe('Validation', () => {
       it('should skip validation if the field condition is not met', () => {
         const fieldValidators = {
           f1: Validation.SimpleField([
-            Validation.rules.required
-          ], () => (false))
+            Validation.rules.required,
+          ], () => (false)),
         };
         const context = {};
         const p = Validation.processor(fieldValidators, context);
@@ -225,8 +225,8 @@ describe('Validation', () => {
 
         const fieldValidators = {
           f1: Validation.SimpleField([
-            Validation.rules.required
-          ])
+            Validation.rules.required,
+          ]),
         };
         const context = {};
         const p = Validation.processor(fieldValidators, context);
@@ -243,9 +243,9 @@ describe('Validation', () => {
         const fieldValidators = {
           f1: Validation.SimpleField([
             Validation.rules.required.bind({
-              errorMsg: 'TEST_REQUIRED'
-            })
-          ])
+              errorMsg: 'TEST_REQUIRED',
+            }),
+          ]),
         };
         const context = {};
         const p = Validation.processor(fieldValidators, context);
@@ -262,9 +262,9 @@ describe('Validation', () => {
         const fieldValidators = {
           f1: Validation.SimpleField([
             Validation.rules.required.bind({
-              errorMsg: [ 'TEST_REQUIRED', 'ANOTHER_ERROR', [ 'SUB1', 'SUB2', { inline: 'E1', summary: 'E1' } ] ]
-            })
-          ])
+              errorMsg: ['TEST_REQUIRED', 'ANOTHER_ERROR', ['SUB1', 'SUB2', { inline: 'E1', summary: 'E1' }]],
+            }),
+          ]),
         };
         const context = {};
         const p = Validation.processor(fieldValidators, context);
@@ -281,26 +281,26 @@ describe('Validation', () => {
         const fieldValidators = {
           f1: Validation.ObjectField({
             subf1: Validation.SimpleField([
-              Validation.rules.required
+              Validation.rules.required,
             ]),
             subf2: Validation.SimpleField([
-              Validation.rules.required
+              Validation.rules.required,
             ]),
             subf3: Validation.ObjectField({
               subsubf1: Validation.SimpleField([
-                Validation.rules.required
-              ])
-            })
-          })
+                Validation.rules.required,
+              ]),
+            }),
+          }),
         };
         const context = {
           f1: {
             subf1: 'hello',
             subf2: 'world',
             subf3: {
-              subsubf1: 'deep'
-            }
-          }
+              subsubf1: 'deep',
+            },
+          },
         };
         const p = Validation.processor(fieldValidators, context);
         expect(p instanceof Promise).to.be.true;
@@ -313,26 +313,26 @@ describe('Validation', () => {
         const fieldValidators = {
           f1: Validation.ArrayObjectField({
             subf1: Validation.SimpleField([
-              Validation.rules.required
+              Validation.rules.required,
             ]),
             subf2: Validation.SimpleField([
-              Validation.rules.required
+              Validation.rules.required,
             ]),
             subf3: Validation.ObjectField({
               subsubf1: Validation.SimpleField([
-                Validation.rules.required
-              ])
-            })
-          })
+                Validation.rules.required,
+              ]),
+            }),
+          }),
         };
         const context = {
-          f1: [ {
+          f1: [{
             subf1: 'hello',
             subf2: 'world',
             subf3: {
-              subsubf1: 'deep'
-            }
-          } ]
+              subsubf1: 'deep',
+            },
+          }],
         };
         const p = Validation.processor(fieldValidators, context);
         expect(p instanceof Promise).to.be.true;
@@ -343,20 +343,20 @@ describe('Validation', () => {
         const fieldValidators = {
           f1: Validation.ArrayObjectField({
             subf1: Validation.SimpleField([
-              Validation.rules.required
+              Validation.rules.required,
             ]),
             subf2: Validation.SimpleField([
-              Validation.rules.required
+              Validation.rules.required,
             ]),
             subf3: Validation.ObjectField({
               subsubf1: Validation.SimpleField([
-                Validation.rules.required
-              ])
-            })
-          })
+                Validation.rules.required,
+              ]),
+            }),
+          }),
         };
         const context = {
-          f1: {}
+          f1: {},
         };
         const p = Validation.processor(fieldValidators, context);
         expect(p instanceof Promise).to.be.true;
@@ -367,26 +367,26 @@ describe('Validation', () => {
         const fieldValidators = {
           f1: Validation.ArrayObjectField({
             subf1: Validation.SimpleField([
-              Validation.rules.required
+              Validation.rules.required,
             ]),
             subf2: Validation.SimpleField([
-              Validation.rules.required
+              Validation.rules.required,
             ]),
             subf3: Validation.ObjectField({
               subsubf1: Validation.SimpleField([
-                Validation.rules.required
-              ])
-            })
-          })
+                Validation.rules.required,
+              ]),
+            }),
+          }),
         };
         const context = {
-          f1: [ {
+          f1: [{
             /* subf1: 'hello',
             subf2: 'world',
             subf3: {
               subsubf1: 'deep',
             } */
-          } ]
+          }],
         };
         const p = Validation.processor(fieldValidators, context);
         expect(p instanceof Promise).to.be.true;

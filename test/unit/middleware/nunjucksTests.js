@@ -10,10 +10,10 @@ describe('Middleware: nunjucks', () => {
   const mockExpressApp = {
     use: () => {},
     get: k => (k === 'view engine' ? 'html' : undefined),
-    set: () => {}
+    set: () => {},
   };
   const viewDirs = [
-    npath.resolve(__dirname, '../testdata/views')
+    npath.resolve(__dirname, '../testdata/views'),
   ];
   const govukTemplatePath = '../testdata/views/layouts/template.njk';
 
@@ -58,7 +58,7 @@ describe('Middleware: nunjucks', () => {
     const req = httpMocks.createRequest();
 
     const res = httpMocks.createResponse({
-      eventEmitter: EventEmitter
+      eventEmitter: EventEmitter,
     });
     res.on('end', () => {
       expect(res._getData()).to.have.string('Hello, World');

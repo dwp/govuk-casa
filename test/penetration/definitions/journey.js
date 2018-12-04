@@ -5,7 +5,7 @@ module.exports = (function MyAppUserJourney() {
 
   road.addWaypoints([
     'gather',
-    'display'
+    'display',
   ]);
   road.end();
 

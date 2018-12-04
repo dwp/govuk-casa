@@ -9,7 +9,7 @@ const middleware = require('../../../app/middleware/journey.js');
 describe('Middleware: session', () => {
   const mockApp = {
     use: () => {},
-    set: () => {}
+    set: () => {},
   };
 
   const mountUrl = '/';
@@ -19,7 +19,7 @@ describe('Middleware: session', () => {
   r0.addWaypoints([
     'page0',
     'page1',
-    'page2'
+    'page2',
   ]);
 
   userJourney.startAt(r0);
@@ -56,11 +56,11 @@ describe('Middleware: session', () => {
 
       const req = httpMocks.createRequest();
       req.journeyData = new JourneyData({
-        page0: { visited: 1 }
+        page0: { visited: 1 },
       });
       req.url = '/page2';
       const res = httpMocks.createResponse({
-        eventEmitter: EventEmitter
+        eventEmitter: EventEmitter,
       });
       res.on('end', () => {
         expect(res._getStatusCode()).to.equal(302);
@@ -80,13 +80,13 @@ describe('Middleware: session', () => {
       req.journeyData = new JourneyData({
         page0: { visited: 1 },
         page1: { visited: 1 },
-        page2: { visited: 1 }
+        page2: { visited: 1 },
       }, {
-        page1: { fieldName0: [] }
+        page1: { fieldName0: [] },
       });
       req.url = '/page2';
       const res = httpMocks.createResponse({
-        eventEmitter: EventEmitter
+        eventEmitter: EventEmitter,
       });
       res.on('end', () => {
         expect(res._getStatusCode()).to.equal(302);
@@ -105,7 +105,7 @@ describe('Middleware: session', () => {
       const req = httpMocks.createRequest();
       req.journeyData = new JourneyData({
         page0: { visited: 1 },
-        page1: { visited: 1 }
+        page1: { visited: 1 },
       });
       req.url = '/page2';
       const res = httpMocks.createResponse();

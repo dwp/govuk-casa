@@ -20,12 +20,12 @@
  */
 
 const npath = require('path');
-const logger = require('../../lib/Logger')();
 const uglifyJs = require('uglify-js');
 const fs = require('fs');
 const mkdirp = require('mkdirp');
 const recursiveReaddir = require('recursive-readdir-sync');
 const sass = require('node-sass');
+const logger = require('../../lib/Logger')();
 
 /**
  * Compile the Sass source files, and store output into the `compiledAssetsDir`.
@@ -45,7 +45,7 @@ function compileSassSources(
   compiledAssetsDir,
   npmGovukFrontend,
   npmGovukCasa,
-  mountUrl
+  mountUrl,
 ) {
   // We need to compile the Sass sources statically, and cache because the
   // `node-sass-middleware` will not cache CSS if `importer` doesn't return
@@ -61,9 +61,9 @@ function compileSassSources(
       data: `$casaMountUrl: "${mountUrl}";${fSrc}`,
       includePaths: [
         casaSassSrcDir,
-        `${npmGovukFrontend}`
+        `${npmGovukFrontend}`,
       ],
-      outputStyle: 'compressed'
+      outputStyle: 'compressed',
     }).css.toString('utf8');
 
     const dstPath = npath.resolve(
@@ -71,11 +71,11 @@ function compileSassSources(
       file
         .replace(new RegExp(casaSassSrcDir), '')
         .replace(/^\/+/, '')
-        .replace(/\.scss$/, '.css')
+        .replace(/\.scss$/, '.css'),
     );
     mkdirp.sync(npath.dirname(dstPath));
     fs.writeFileSync(dstPath, cssContent, {
-      encoding: 'utf8'
+      encoding: 'utf8',
     });
   });
 }
@@ -95,16 +95,16 @@ function addGovukFrontendStaticAssets(
   expStatic,
   govukFrontendVirtualUrl,
   npmGovukFrontend,
-  npmGovukTemplateJinja
+  npmGovukTemplateJinja,
 ) {
   // JavaScript
   app.use(`${govukFrontendVirtualUrl}/js/all.js`, expStatic(`${npmGovukFrontend}/all.js`, {
-    etag: false
+    etag: false,
   }));
 
   // Images and Font assets
   app.use(`${govukFrontendVirtualUrl}/assets`, expStatic(`${npmGovukFrontend}/assets`, {
-    etag: false
+    etag: false,
   }));
 
   // `govuk_template_jinja` JS assets
@@ -114,7 +114,7 @@ function addGovukFrontendStaticAssets(
   //  * cookie bar handling
   //  * show/hide element stuff
   app.use(`${govukFrontendVirtualUrl}/js/govuk-template.js`, expStatic(`${npmGovukTemplateJinja}/assets/javascripts/govuk-template.js`, {
-    etag: false
+    etag: false,
   }));
 }
 
@@ -132,11 +132,11 @@ function addCasaStaticAssets(
   app,
   expStatic,
   compiledAssetsDir,
-  prefixCasa
+  prefixCasa,
 ) {
   const casaAssetsDir = npath.resolve(compiledAssetsDir, 'casa');
   const uglifyCasa = uglifyJs.minify({
-    'casa.js': fs.readFileSync(npath.resolve(__dirname, '../../src/js/casa.js'), 'utf8')
+    'casa.js': fs.readFileSync(npath.resolve(__dirname, '../../src/js/casa.js'), 'utf8'),
   });
   if (uglifyCasa.error) {
     throw new Error(`Got error whilst uglifying casa.js: ${uglifyCasa.error.message}`);
@@ -145,12 +145,12 @@ function addCasaStaticAssets(
   fs.writeFileSync(
     npath.resolve(casaAssetsDir, 'js/casa.js'),
     uglifyCasa.code, {
-      encoding: 'utf8'
-    }
+      encoding: 'utf8',
+    },
   );
 
   app.use(prefixCasa, expStatic(casaAssetsDir, {
-    etag: false
+    etag: false,
   }));
 }
 
@@ -167,12 +167,12 @@ function addPackageVersions(
   app,
   compiledAssetsDir,
   npmGovukFrontend,
-  npmGovukTemplateJinja
+  npmGovukTemplateJinja,
 ) {
   const srcs = {
     govukFrontend: npath.resolve(npmGovukFrontend, 'package.json'),
     govukTemplateJinja: npath.resolve(npmGovukTemplateJinja, 'package.json'),
-    casaMain: npath.resolve(__dirname, '../../package.json')
+    casaMain: npath.resolve(__dirname, '../../package.json'),
   };
   const casaPackageVersions = {};
 
@@ -217,7 +217,7 @@ module.exports = function mwStatic(
   expressStatic,
   mountUrl,
   cAssetsDir,
-  npmPackages
+  npmPackages,
 ) {
   // Unpack packages information
   const npmGovukFrontend = npmPackages.govukFrontend;
@@ -240,7 +240,7 @@ module.exports = function mwStatic(
     compiledAssetsDir,
     npmGovukFrontend,
     npmGovukCasa,
-    mountUrl
+    mountUrl,
   );
 
   // Serve GOVUK template assets
@@ -249,22 +249,22 @@ module.exports = function mwStatic(
     expressStatic,
     govukFrontendVirtualUrl,
     npmGovukFrontend,
-    npmGovukTemplateJinja
+    npmGovukTemplateJinja,
   );
   addCasaStaticAssets(
     app,
     expressStatic,
     compiledAssetsDir,
-    prefixCasa
+    prefixCasa,
   );
   const handlePackageVersionInit = addPackageVersions(
     app,
     compiledAssetsDir,
     npmGovukFrontend,
-    npmGovukTemplateJinja
+    npmGovukTemplateJinja,
   );
 
   return {
-    handlePackageVersionInit
+    handlePackageVersionInit,
   };
 };

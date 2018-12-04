@@ -10,15 +10,15 @@ const inArray = require('../../../lib/validation-rules/inArray');
 describe('Validation rule: inArray', () => {
   it('should resolve if value is contained within array', () => {
     const rule = inArray.bind({
-      source: [ 'a', 'b', 'c' ]
+      source: ['a', 'b', 'c'],
     })
     const queue = [];
 
     const result = rule('b');
     queue.push(expect(result).to.be.a('Promise'));
     queue.push(expect(result).to.be.fulfilled);
-    queue.push(expect(rule([ 'a' ])).to.be.fulfilled);
-    queue.push(expect(rule([ 'a', 'b' ])).to.be.fulfilled);
+    queue.push(expect(rule(['a'])).to.be.fulfilled);
+    queue.push(expect(rule(['a', 'b'])).to.be.fulfilled);
 
     return Promise.all(queue);
   });
@@ -29,20 +29,20 @@ describe('Validation rule: inArray', () => {
 
   it('should reject if value is not contained within array', () => {
     const rule = inArray.bind({
-      source: [ 'a', 'b', 'c' ]
+      source: ['a', 'b', 'c'],
     })
     const queue = [];
 
     let result = rule('not present').catch(() => (false));
     queue.push(expect(result).to.be.a('Promise'));
 
-    result = rule([ 'a', 'b', 'not present' ]);
+    result = rule(['a', 'b', 'not present']);
     queue.push(expect(result).to.be.rejected);
 
     queue.push(expect(rule([])).to.be.rejected);
 
     queue.push(expect(inArray.bind({
-      source: [ undefined ]
+      source: [undefined],
     })()).to.be.rejected);
 
     queue.push(expect(inArray()).to.be.rejected);
@@ -52,11 +52,11 @@ describe('Validation rule: inArray', () => {
 
   it('should use a specific error message if defined', () => {
     const rule = inArray.bind({
-      source: [ 'a', 'b', 'c' ],
+      source: ['a', 'b', 'c'],
       errorMsg: {
         inline: 'TEST INLINE',
-        summary: 'TEST SUMMARY'
-      }
+        summary: 'TEST SUMMARY',
+      },
     });
     const queue = [];
 

@@ -20,7 +20,7 @@ function makeDom(test) {
   return new JSDOM(`<!DOCTYPE html><html><body>${srcHtml}<script>var GOVUKFrontend = {initAll:()=>{}}; ${srcJs}; Object.defineProperty(document, "readyState", {get() { return "complete"; }}); document.onreadystatechange();</script></body></html>`, {
     url: 'http://test.test/',
     runScripts: 'dangerously',
-    virtualConsole
+    virtualConsole,
   });
 }
 

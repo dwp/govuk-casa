@@ -24,8 +24,8 @@ describe('JourneyData', () => {
     it('should retrieve data exactly how I pass into its constructor', () => {
       const dataset = {
         pageA: {
-          attr1: 'value'
-        }
+          attr1: 'value',
+        },
       };
       const data = new JourneyData(dataset);
       expect(JSON.stringify(data.getData())).to.equal(JSON.stringify(dataset));
@@ -34,8 +34,8 @@ describe('JourneyData', () => {
     it('should retrieve data exactly how I pass into its setData() method', () => {
       const dataset = {
         pageA: {
-          attr1: 'value'
-        }
+          attr1: 'value',
+        },
       };
       const data = new JourneyData();
       data.setData(dataset);
@@ -45,8 +45,8 @@ describe('JourneyData', () => {
     it('should retrieve data for a specific page that I pass into it', () => {
       const dataset2 = {
         pageA: {
-          attr1: 'value'
-        }
+          attr1: 'value',
+        },
       };
       const data2 = new JourneyData(dataset2);
       expect(JSON.stringify(data2.getDataForPage('pageA'))).to.equal(JSON.stringify(dataset2.pageA));
@@ -55,11 +55,11 @@ describe('JourneyData', () => {
     it('should retrieve data correctly for a page when that data is swapped out', () => {
       const dataset = {
         pageA: {
-          attr1: 'value'
-        }
+          attr1: 'value',
+        },
       };
       const swapset = {
-        attr2: 'newvalue'
+        attr2: 'newvalue',
       };
       const data3 = new JourneyData();
       data3.setDataForPage('pageA', dataset.pageA);
@@ -92,7 +92,7 @@ describe('JourneyData', () => {
 
       expect(() => {
         data1.setValidationErrorsForPage('p0', {
-          fieldName: {}
+          fieldName: {},
         });
       }).to.throw(SyntaxError);
     });
@@ -100,11 +100,11 @@ describe('JourneyData', () => {
     it('should clear validation errors', () => {
       const data1 = new JourneyData({}, {
         p0: { f0: [] },
-        p1: { f0: [] }
+        p1: { f0: [] },
       });
       data1.clearValidationErrorsForPage('p0');
       expect(data1.getValidationErrors()).to.eql({
-        p1: { f0: [] }
+        p1: { f0: [] },
       });
     });
   });

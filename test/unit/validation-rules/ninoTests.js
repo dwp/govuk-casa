@@ -41,7 +41,7 @@ describe('Validation rule: nino', () => {
 
   it('should accept valid NI numbers with spaces when allowWhitespace is true', () => {
     const rule = nino.bind({
-      allowWhitespace: true
+      allowWhitespace: true,
     });
     const queue = [];
 
@@ -55,14 +55,14 @@ describe('Validation rule: nino', () => {
 
   it('should reject valid NI numbers with non standard spaces when allowWhitespace is true', () => {
     const rule = nino.bind({
-      allowWhitespace: true
+      allowWhitespace: true,
     });
     return expect(rule('AA\u200200\u200200\u200200\u2002A')).to.be.rejected;
   });
 
   it('should throw TypeError when allowWhitespace isnt a boolean', () => {
     const rule = nino.bind({
-      allowWhitespace: 'true'
+      allowWhitespace: 'true',
     });
     return expect(() => rule('AA 00 00 00 A')).to.throw(TypeError, 'NINO validation rule option "allowWhitespace" must been a boolean. received string');
   });

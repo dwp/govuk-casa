@@ -7,7 +7,7 @@ const middleware = require('../../../app/middleware/headers.js');
 describe('Middleware: headers', () => {
   const stdMiddleware = middleware({
     use: () => {},
-    set: () => {}
+    set: () => {},
   });
 
   /**
@@ -22,7 +22,7 @@ describe('Middleware: headers', () => {
       Object.defineProperty(
         lowercase,
         k.toLowerCase(),
-        Object.getOwnPropertyDescriptor(headers, k)
+        Object.getOwnPropertyDescriptor(headers, k),
       );
     });
     return lowercase;
@@ -35,7 +35,7 @@ describe('Middleware: headers', () => {
         expect(v).to.be.false; /* eslint-disable-line no-unused-expressions */
         done();
       },
-      use: () => {}
+      use: () => {},
     });
   });
 
@@ -66,7 +66,7 @@ describe('Middleware: headers', () => {
 
   it('should set correct cache headers for non-graphic assets', (done) => {
     const req = httpMocks.createRequest({
-      url: '/page.html'
+      url: '/page.html',
     });
 
     const res = httpMocks.createResponse();
@@ -85,7 +85,7 @@ describe('Middleware: headers', () => {
 
   it('should set correct cache headers for graphic assets', (done) => {
     const req = httpMocks.createRequest({
-      url: '/graphic.jpg'
+      url: '/graphic.jpg',
     });
 
     const res = httpMocks.createResponse();
@@ -107,11 +107,11 @@ describe('Middleware: headers', () => {
   it('should convert CSP scriptSources to \'script-src\'', () => {
     const mi = middleware({
       set: () => {},
-      use: () => {}
+      use: () => {},
     }, {
       scriptSources: [
-        'custom-script-source'
-      ]
+        'custom-script-source',
+      ],
     });
 
     const req = httpMocks.createRequest();
@@ -130,13 +130,13 @@ describe('Middleware: headers', () => {
     const mi = middleware(
       {
         set: () => {},
-        use: () => {}
+        use: () => {},
       },
       {
         'script-src': [
-          'custom-script-src'
-        ]
-      }
+          'custom-script-src',
+        ],
+      },
     );
 
     const req = httpMocks.createRequest();
@@ -157,7 +157,7 @@ describe('Middleware: headers', () => {
   it('should have standard CSP if not defined', () => {
     const mi = middleware({
       set: () => {},
-      use: () => {}
+      use: () => {},
     }, null);
 
     const req = httpMocks.createRequest();
@@ -177,11 +177,11 @@ describe('Middleware: headers', () => {
   it('should add standard script-src to CSP if no script-src defined', () => {
     const mi = middleware({
       set: () => {},
-      use: () => {}
+      use: () => {},
     }, {
       'img-src': [
-        'image-src'
-      ]
+        'image-src',
+      ],
     });
 
     const req = httpMocks.createRequest();
@@ -202,17 +202,17 @@ describe('Middleware: headers', () => {
   it('should set specified Content-Security-Policy if defined', (done) => {
     const mi = middleware({
       set: () => {},
-      use: () => {}
+      use: () => {},
     }, {
       'img-src': [
-        'custom-img-src'
+        'custom-img-src',
       ],
       'script-src': [
-        'custom-script-src'
+        'custom-script-src',
       ],
       'style-src': [
-        'custom-style-src'
-      ]
+        'custom-style-src',
+      ],
     });
 
     const req = httpMocks.createRequest();
@@ -238,12 +238,12 @@ describe('Middleware: headers', () => {
     const mi = middleware(
       {
         set: () => {},
-        use: () => {}
+        use: () => {},
       },
       null, [
         'Cache-Control',
-        'X-Frame-Options'
-      ]
+        'X-Frame-Options',
+      ],
     );
 
     const req = httpMocks.createRequest();

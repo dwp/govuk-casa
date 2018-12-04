@@ -24,7 +24,7 @@ module.exports = function renderAsAttributes(attrsObject) {
         '>': '&gt;',
         '"': '&quot;',
         '\'': '&#039;',
-        '&': '&amp;'
+        '&': '&amp;',
       }[m]));
       attrsList.push(`${key}="${value}"`);
     });

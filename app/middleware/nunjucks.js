@@ -28,21 +28,21 @@ const npath = require('path');
  */
 module.exports = function mwNunjucks(app, viewDirs, govukFrontendTemplate) {
   if (
-    typeof govukFrontendTemplate !== 'string' ||
-    !govukFrontendTemplate.match(/template.njk$/)
+    typeof govukFrontendTemplate !== 'string'
+    || !govukFrontendTemplate.match(/template.njk$/)
   ) {
     throw new TypeError('Expected GOVUK template on path template.njk');
   }
   // Resolve all application template search paths, and add CASA-specific dirs
   const dirViews = (viewDirs || []).map(dir => npath.resolve(dir)).concat([
     npath.resolve(__dirname, '..', 'views'),
-    npath.resolve(govukFrontendTemplate, '..')
+    npath.resolve(govukFrontendTemplate, '..'),
   ]);
 
   // Prepare a file loader for use with all Nunjucks environments
   const loader = new nunjucks.FileSystemLoader(dirViews, {
     watch: false,
-    noCache: false
+    noCache: false,
   });
 
   /**
@@ -63,7 +63,7 @@ module.exports = function mwNunjucks(app, viewDirs, govukFrontendTemplate) {
       autoescape: true,
       throwOnUndefined: false,
       trimBlocks: false,
-      lstripBlocks: false
+      lstripBlocks: false,
     });
     res.nunjucksEnvironment = env;
 
@@ -89,6 +89,6 @@ module.exports = function mwNunjucks(app, viewDirs, govukFrontendTemplate) {
   app.use(handleEnvironmentInit);
 
   return {
-    handleEnvironmentInit
+    handleEnvironmentInit,
   };
 };

@@ -52,6 +52,6 @@ module.exports = function meErrors(app) {
 
   return {
     handle404,
-    handleExceptions
+    handleExceptions,
   };
 };

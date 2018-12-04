@@ -44,7 +44,7 @@ module.exports = function routePages(
   csrfMiddleware,
   pages,
   journey,
-  allowPageEdit
+  allowPageEdit,
 ) {
   const getHandler = require('./pages/get.js')(pages, allowPageEdit);
   const postHandler = require('./pages/post.js')(mountUrl, pages, journey, allowPageEdit);

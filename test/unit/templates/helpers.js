@@ -7,16 +7,16 @@ const nunjucks = require('nunjucks');
 // see `middleware/nunjucks.js`
 const nunjucksLoader = new nunjucks.FileSystemLoader([
   npath.resolve(__dirname, '../../../app/views/'),
-  npath.resolve(require.resolve('govuk-frontend'), '../')
+  npath.resolve(require.resolve('govuk-frontend'), '../'),
 ], {
   watch: false,
-  noCache: false
+  noCache: false,
 });
 const nunjucksEnv = new nunjucks.Environment(nunjucksLoader, {
   autoescape: true,
   throwOnUndefined: false,
   trimBlocks: false,
-  lstripBlocks: false
+  lstripBlocks: false,
 });
 
 // Add view filters/functions to environment
@@ -37,10 +37,10 @@ function renderTemplateFile(tpl, context) {
   const fileSrc = fs.readFileSync(tpl).toString('utf8');
   const renderedTemplate = nunjucksEnv.renderString(fileSrc, context || {});
   return cheerio.load(renderedTemplate, {
-    normalizeWhitespace: true
+    normalizeWhitespace: true,
   });
 }
 
 module.exports = {
-  renderTemplateFile
+  renderTemplateFile,
 };

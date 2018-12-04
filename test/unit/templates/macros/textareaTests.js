@@ -1,6 +1,6 @@
-const helpers = require('../helpers');
 const npath = require('path');
 const { expect } = require('chai');
+const helpers = require('../helpers');
 
 describe('textarea macro', () => {
   const dirMacros = npath.resolve(__dirname);
@@ -17,7 +17,7 @@ describe('textarea macro', () => {
       name: 'TEST',
       label: null,
       options: null,
-      errors: null
+      errors: null,
     }, params || {});
     return helpers.renderTemplateFile(`${dirMacros}/textareaTemplate.html`, p);
   }
@@ -29,7 +29,7 @@ describe('textarea macro', () => {
 
     before(() => {
       $ = buildDom({
-        label: 'TEST_LABEL'
+        label: 'TEST_LABEL',
       });
     });
 
@@ -58,7 +58,7 @@ describe('textarea macro', () => {
 
     before(() => {
       $ = buildDom({
-        label: 'TEST_LABEL'
+        label: 'TEST_LABEL',
       });
     });
 
@@ -76,8 +76,8 @@ describe('textarea macro', () => {
       $ = buildDom({
         name: 'TEST_ERR',
         errors: {
-          TEST_ERR: [ {} ]
-        }
+          TEST_ERR: [{}],
+        },
       });
       return expect($('div').first().hasClass('govuk-form-group--error')).to.be.true;
     });
@@ -86,8 +86,8 @@ describe('textarea macro', () => {
       $ = buildDom({
         name: 'TEST_ERR',
         errors: {
-          TEST_ERR: [ {} ]
-        }
+          TEST_ERR: [{}],
+        },
       });
       return expect($('textarea').first().hasClass('govuk-textarea--error')).to.be.true;
     });
@@ -96,8 +96,8 @@ describe('textarea macro', () => {
       $ = buildDom({
         name: 'TEST_ERR',
         errors: {
-          TEST_ERR: [ {} ]
-        }
+          TEST_ERR: [{}],
+        },
       });
       expect($('#f-TEST_ERR-error').length).to.equal(1);
     });
@@ -106,14 +106,14 @@ describe('textarea macro', () => {
       $ = buildDom({
         name: 'TEST_ERR',
         errors: {
-          TEST_ERR: [ {
+          TEST_ERR: [{
             inline: 'inline_error_message_1',
-            validator: 'dummy_error_validator_1'
+            validator: 'dummy_error_validator_1',
           }, {
             inline: 'inline_error_message_2',
-            validator: 'dummy_error_validator_2'
-          } ]
-        }
+            validator: 'dummy_error_validator_2',
+          }],
+        },
       });
       expect($('span.govuk-error-message').length).to.equal(1);
       expect($('span.govuk-error-message').eq(0).text()).to.match(/inline_error_message_1/);
@@ -123,11 +123,11 @@ describe('textarea macro', () => {
       $ = buildDom({
         name: 'TEST_ERR',
         errors: {
-          TEST_ERR: [ {
+          TEST_ERR: [{
             inline: 'inline_error_message_1',
-            validator: 'dummy_error_validator_1'
-          } ]
-        }
+            validator: 'dummy_error_validator_1',
+          }],
+        },
       });
 
       const j = JSON.parse($('textarea').attr('data-validation'));
@@ -143,8 +143,8 @@ describe('textarea macro', () => {
       const $ = buildDom({
         label: 'TEST_LABEL',
         options: {
-          unbolden: true
-        }
+          unbolden: true,
+        },
       });
       expect($('label.govuk-label--m').length).to.equal(0);
       expect($('label.govuk-label').length).to.equal(1);
@@ -157,8 +157,8 @@ describe('textarea macro', () => {
     it("should add 'visually-hidden' class to label container", () => {
       const $ = buildDom({
         options: {
-          hiddenLabel: true
-        }
+          hiddenLabel: true,
+        },
       });
       return expect($('label>span').hasClass('govuk-visually-hidden')).to.be.true;
     });
@@ -170,8 +170,8 @@ describe('textarea macro', () => {
     it("should add a 'form-hint' object, with escaped content", () => {
       const $ = buildDom({
         options: {
-          hint: '<b>TEST_HINT</b>'
-        }
+          hint: '<b>TEST_HINT</b>',
+        },
       });
       expect($('.govuk-hint').length).to.equal(1);
       expect($('.govuk-hint').html()).to.contain('&lt;b&gt;TEST_HINT&lt;/b&gt;');
@@ -180,8 +180,8 @@ describe('textarea macro', () => {
     it("should add a non-empty 'hint-test' object, with unescaped content", () => {
       const $ = buildDom({
         options: {
-          hintHtml: '<b>TEST_HINT_HTML</b>'
-        }
+          hintHtml: '<b>TEST_HINT_HTML</b>',
+        },
       });
       expect($('.govuk-hint').length).to.equal(1);
       expect($('.govuk-hint').html()).to.contain('<b>TEST_HINT_HTML</b>');
@@ -194,8 +194,8 @@ describe('textarea macro', () => {
     it('should add CSS size class to input', () => {
       const $ = buildDom({
         options: {
-          size: 'SIZE_TEST'
-        }
+          size: 'SIZE_TEST',
+        },
       });
       return expect($('textarea').hasClass('SIZE_TEST')).to.be.true;
     });
@@ -207,8 +207,8 @@ describe('textarea macro', () => {
     it("should add 'maxlength' attribute to input", () => {
       const $ = buildDom({
         options: {
-          maxlength: '100'
-        }
+          maxlength: '100',
+        },
       });
       expect($('textarea').attr('maxlength')).to.equal('100')
     });
@@ -222,8 +222,8 @@ describe('textarea macro', () => {
     before(() => {
       $ = buildDom({
         options: {
-          labelledBy: 'TEST_ARIA_ID'
-        }
+          labelledBy: 'TEST_ARIA_ID',
+        },
       });
     });
 
@@ -245,9 +245,9 @@ describe('textarea macro', () => {
         data: 'IA_VAL',
         options: {
           inputAttributes: {
-            id: 'CUSTOM'
-          }
-        }
+            id: 'CUSTOM',
+          },
+        },
       });
       expect($('textarea').attr('id')).to.equal('CUSTOM');
     });
@@ -256,9 +256,9 @@ describe('textarea macro', () => {
       const $ = buildDom({
         options: {
           inputAttributes: {
-            'data-test': 'CUSTOM'
-          }
-        }
+            'data-test': 'CUSTOM',
+          },
+        },
       });
       expect($('textarea').attr('data-test')).to.equal('CUSTOM');
     });

@@ -6,7 +6,7 @@ const renderAsAttributes = require('../../../app/view-filters/renderAsAttributes
 describe('View filter: renderAsAttributes', () => {
   it('should generate a SafeString instance', () => {
     const attrsString = renderAsAttributes({
-      attr1: 1
+      attr1: 1,
     });
     return expect(attrsString instanceof nunjucks.runtime.SafeString).to.be.true;
   });
@@ -20,14 +20,14 @@ describe('View filter: renderAsAttributes', () => {
     const attrsString = renderAsAttributes({
       attr1: 1,
       attr2: 'two',
-      attr3: 3
+      attr3: 3,
     }).toString();
     expect(attrsString).to.equal('attr1="1" attr2="two" attr3="3"');
   });
 
   it('should escape attribute values', () => {
     const attrsString = renderAsAttributes({
-      attr1: '<>"\'&'
+      attr1: '<>"\'&',
     }).toString();
     expect(attrsString).to.equal('attr1="&lt;&gt;&quot;&#039;&amp;"');
   });

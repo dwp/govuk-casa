@@ -1,8 +1,8 @@
 const chai = require('chai');
 const httpMocks = require('node-mocks-http');
-const I18n = require('../../../lib/I18n');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
+const I18n = require('../../../lib/I18n');
 
 const { expect } = chai;
 chai.use(sinonChai);
@@ -12,7 +12,7 @@ const middleware = require('../../../app/middleware/i18n.js');
 describe('Middleware: i18n', () => {
   const mockExpressApp = {
     use: () => {},
-    set: () => {}
+    set: () => {},
   };
 
   it('should throw an exception if no locales are provided', () => {
@@ -21,27 +21,27 @@ describe('Middleware: i18n', () => {
   });
 
   it('should throw an exception if no I18n utility is provided', () => {
-    expect(() => middleware(mockExpressApp, [ 'en' ])).to.throw(TypeError, 'I18n utility');
-    expect(() => middleware(mockExpressApp, [ 'en' ], {})).to.throw(TypeError, 'invalid type');
+    expect(() => middleware(mockExpressApp, ['en'])).to.throw(TypeError, 'I18n utility');
+    expect(() => middleware(mockExpressApp, ['en'], {})).to.throw(TypeError, 'invalid type');
   });
 
   it('should initialise correctly with valid parameters', () => {
-    const I18nUtility = I18n([], [ 'en' ]);
-    expect(() => middleware(mockExpressApp, [ 'en' ], I18nUtility)).to.not.throw();
+    const I18nUtility = I18n([], ['en']);
+    expect(() => middleware(mockExpressApp, ['en'], I18nUtility)).to.not.throw();
   });
 
   describe('store the language specified in the query parameter when it is a supported language', () => {
     it('should store on the request object when there is no session', (done) => {
       const req = httpMocks.createRequest({
         query: {
-          lang: 'en'
-        }
+          lang: 'en',
+        },
       });
 
       const res = httpMocks.createResponse();
 
-      const I18nUtility = I18n([ '../tesdata/locales' ], [ 'en' ]);
-      const mi = middleware(mockExpressApp, [ 'en', 'es' ], I18nUtility);
+      const I18nUtility = I18n(['../tesdata/locales'], ['en']);
+      const mi = middleware(mockExpressApp, ['en', 'es'], I18nUtility);
 
       mi.handleRequestInit(req, res, () => {
         expect(req.language).to.equal('en');
@@ -53,17 +53,17 @@ describe('Middleware: i18n', () => {
     it('should store on the request and session objects when a session is present', (done) => {
       const req = httpMocks.createRequest({
         query: {
-          lang: 'en'
+          lang: 'en',
         },
         session: {
-          save: cb => cb()
-        }
+          save: cb => cb(),
+        },
       });
 
       const res = httpMocks.createResponse();
 
-      const I18nUtility = I18n([ '../tesdata/locales' ], [ 'en' ]);
-      const mi = middleware(mockExpressApp, [ 'en', 'es' ], I18nUtility);
+      const I18nUtility = I18n(['../tesdata/locales'], ['en']);
+      const mi = middleware(mockExpressApp, ['en', 'es'], I18nUtility);
 
       mi.handleRequestInit(req, res, () => {
         expect(req.language).to.equal('en');
@@ -77,14 +77,14 @@ describe('Middleware: i18n', () => {
     it('should store on the request object when there is no session', (done) => {
       const req = httpMocks.createRequest({
         query: {
-          lang: 'UNSUPPORTED'
-        }
+          lang: 'UNSUPPORTED',
+        },
       });
 
       const res = httpMocks.createResponse();
 
-      const I18nUtility = I18n([ '../tesdata/locales' ], [ 'en' ]);
-      const mi = middleware(mockExpressApp, [ 'xx', 'yy' ], I18nUtility);
+      const I18nUtility = I18n(['../tesdata/locales'], ['en']);
+      const mi = middleware(mockExpressApp, ['xx', 'yy'], I18nUtility);
 
       mi.handleRequestInit(req, res, () => {
         expect(req.language).to.equal('xx');
@@ -96,17 +96,17 @@ describe('Middleware: i18n', () => {
     it('should store on the request and session objects when a session is present', (done) => {
       const req = httpMocks.createRequest({
         query: {
-          lang: 'UNSUPPORTED'
+          lang: 'UNSUPPORTED',
         },
         session: {
-          save: cb => cb()
-        }
+          save: cb => cb(),
+        },
       });
 
       const res = httpMocks.createResponse();
 
-      const I18nUtility = I18n([ '../tesdata/locales' ], [ 'en' ]);
-      const mi = middleware(mockExpressApp, [ 'xx', 'yy' ], I18nUtility);
+      const I18nUtility = I18n(['../tesdata/locales'], ['en']);
+      const mi = middleware(mockExpressApp, ['xx', 'yy'], I18nUtility);
 
       mi.handleRequestInit(req, res, () => {
         expect(req.language).to.equal('xx');
@@ -121,14 +121,14 @@ describe('Middleware: i18n', () => {
       const req = httpMocks.createRequest({
         session: {
           language: 'stored-lang',
-          save: cb => cb()
-        }
+          save: cb => cb(),
+        },
       });
 
       const res = httpMocks.createResponse();
 
-      const I18nUtility = I18n([ '../tesdata/locales' ], [ 'en' ]);
-      const mi = middleware(mockExpressApp, [ 'stored-lang' ], I18nUtility);
+      const I18nUtility = I18n(['../tesdata/locales'], ['en']);
+      const mi = middleware(mockExpressApp, ['stored-lang'], I18nUtility);
 
       mi.handleRequestInit(req, res, () => {
         expect(req.language).to.equal('stored-lang');
@@ -141,14 +141,14 @@ describe('Middleware: i18n', () => {
       const req = httpMocks.createRequest({
         session: {
           language: undefined,
-          save: cb => cb()
-        }
+          save: cb => cb(),
+        },
       });
 
       const res = httpMocks.createResponse();
 
-      const I18nUtility = I18n([ '../tesdata/locales' ], [ 'en' ]);
-      const mi = middleware(mockExpressApp, [ 'default0', 'es' ], I18nUtility);
+      const I18nUtility = I18n(['../tesdata/locales'], ['en']);
+      const mi = middleware(mockExpressApp, ['default0', 'es'], I18nUtility);
 
       mi.handleRequestInit(req, res, () => {
         expect(req.language).to.equal('default0');
@@ -161,14 +161,14 @@ describe('Middleware: i18n', () => {
   it('should continue the request lifecycle even if session save fails', (done) => {
     const req = httpMocks.createRequest({
       session: {
-        save: cb => cb(new Error('FAKE ERROR'))
-      }
+        save: cb => cb(new Error('FAKE ERROR')),
+      },
     });
 
     const res = httpMocks.createResponse();
 
-    const I18nUtility = I18n([ '../tesdata/locales' ], [ 'en' ]);
-    const mi = middleware(mockExpressApp, [ 'default0', 'es' ], I18nUtility);
+    const I18nUtility = I18n(['../tesdata/locales'], ['en']);
+    const mi = middleware(mockExpressApp, ['default0', 'es'], I18nUtility);
 
     mi.handleRequestInit(req, res, () => {
       done();
@@ -179,18 +179,18 @@ describe('Middleware: i18n', () => {
     const spySave = sinon.spy();
     const req = httpMocks.createRequest({
       query: {
-        lang: 'en'
+        lang: 'en',
       },
       session: {
         language: 'en',
-        save: spySave
-      }
+        save: spySave,
+      },
     });
 
     const res = httpMocks.createResponse();
 
-    const I18nUtility = I18n([ '../tesdata/locales' ], [ 'en' ]);
-    const mi = middleware(mockExpressApp, [ 'en' ], I18nUtility);
+    const I18nUtility = I18n(['../tesdata/locales'], ['en']);
+    const mi = middleware(mockExpressApp, ['en'], I18nUtility);
 
     mi.handleRequestInit(req, res, () => {});
     expect(spySave).to.not.have.been.called; /* eslint-disable-line no-unused-expressions */
@@ -200,18 +200,18 @@ describe('Middleware: i18n', () => {
     const spySave = sinon.spy();
     const req = httpMocks.createRequest({
       query: {
-        lang: 'de'
+        lang: 'de',
       },
       session: {
         language: 'en',
-        save: spySave
-      }
+        save: spySave,
+      },
     });
 
     const res = httpMocks.createResponse();
 
-    const I18nUtility = I18n([ '../tesdata/locales' ], [ 'en', 'de' ]);
-    const mi = middleware(mockExpressApp, [ 'en', 'de' ], I18nUtility);
+    const I18nUtility = I18n(['../tesdata/locales'], ['en', 'de']);
+    const mi = middleware(mockExpressApp, ['en', 'de'], I18nUtility);
 
     mi.handleRequestInit(req, res, () => {});
     expect(spySave).to.have.been.called; /* eslint-disable-line no-unused-expressions */
@@ -220,7 +220,7 @@ describe('Middleware: i18n', () => {
   it('should add the t() function to the Nunjucks environment', (done) => {
     const req = httpMocks.createRequest();
     req.i18nTranslator = {
-      t: () => {}
+      t: () => {},
     };
 
     const res = httpMocks.createResponse();
@@ -228,13 +228,13 @@ describe('Middleware: i18n', () => {
       addGlobal: (fname, func) => {
         res.__testOutput = {
           fname,
-          func
+          func,
         };
-      }
+      },
     };
 
-    const I18nUtility = I18n([ '../tesdata/locales' ], [ 'en' ]);
-    const mi = middleware(mockExpressApp, [ 'en' ], I18nUtility);
+    const I18nUtility = I18n(['../tesdata/locales'], ['en']);
+    const mi = middleware(mockExpressApp, ['en'], I18nUtility);
 
     mi.handleNunjucksSeeding(req, res, () => {
       expect(res.__testOutput).to.have.property('fname');

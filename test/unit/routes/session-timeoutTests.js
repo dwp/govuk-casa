@@ -6,7 +6,7 @@ const routes = require('../../../app/routes/session-timeout');
 
 describe('Routes: session-timeout', () => {
   const mockApp = {
-    get: () => {}
+    get: () => {},
   };
 
   it('should render the timeout page, with a sessionTtl variable', (done) => {
@@ -15,7 +15,7 @@ describe('Routes: session-timeout', () => {
     const req = httpMocks.createRequest();
 
     const res = httpMocks.createResponse({
-      eventEmitter: EventEmitter
+      eventEmitter: EventEmitter,
     });
     res.on('end', () => {
       expect(res._getStatusCode()).to.equal(200);

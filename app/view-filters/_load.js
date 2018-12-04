@@ -17,18 +17,18 @@ const viewFiltersDir = npath.resolve(__dirname);
 module.exports = function loadFilters(env) {
   env.addFilter(
     'formatDateObject',
-    require(npath.resolve(viewFiltersDir, 'formatDateObject'))
+    require(npath.resolve(viewFiltersDir, 'formatDateObject')),
   );
   env.addFilter(
     'renderAsAttributes',
-    require(npath.resolve(viewFiltersDir, 'renderAsAttributes'))
+    require(npath.resolve(viewFiltersDir, 'renderAsAttributes')),
   );
   env.addGlobal(
     'mergeObjects',
-    require(npath.resolve(viewFiltersDir, 'mergeObjects'))
+    require(npath.resolve(viewFiltersDir, 'mergeObjects')),
   );
   env.addGlobal(
     'includes',
-    require(npath.resolve(viewFiltersDir, 'includes'))
+    require(npath.resolve(viewFiltersDir, 'includes')),
   );
 };

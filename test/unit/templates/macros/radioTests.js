@@ -1,6 +1,6 @@
-const helpers = require('../helpers');
 const npath = require('path');
 const { expect } = require('chai');
+const helpers = require('../helpers');
 
 describe('radio macro', () => {
   const dirMacros = npath.resolve(__dirname);
@@ -17,7 +17,7 @@ describe('radio macro', () => {
       name: 'TEST',
       label: null,
       value: null,
-      options: null
+      options: null,
     }, params || {});
     return helpers.renderTemplateFile(`${dirMacros}/radioTemplate.html`, p);
   }
@@ -31,7 +31,7 @@ describe('radio macro', () => {
       $ = buildDom({
         label: 'TEST_LABEL',
         name: 'basic',
-        value: 'basic1'
+        value: 'basic1',
       });
     });
 
@@ -61,7 +61,7 @@ describe('radio macro', () => {
 
     before(() => {
       $ = buildDom({
-        label: 'TEST_LABEL'
+        label: 'TEST_LABEL',
       });
     });
 
@@ -79,9 +79,9 @@ describe('radio macro', () => {
         value: 'IA_VAL',
         options: {
           inputAttributes: {
-            id: 'CUSTOM'
-          }
-        }
+            id: 'CUSTOM',
+          },
+        },
       });
       expect($('input').attr('id')).to.equal('CUSTOM');
     });
@@ -93,9 +93,9 @@ describe('radio macro', () => {
         options: {
           idSuffix: '_SUF',
           inputAttributes: {
-            id: 'CUSTOM'
-          }
-        }
+            id: 'CUSTOM',
+          },
+        },
       });
       expect($('input').attr('id')).to.equal('CUSTOM');
     });
@@ -104,9 +104,9 @@ describe('radio macro', () => {
       const $ = buildDom({
         options: {
           inputAttributes: {
-            'data-test': 'CUSTOM'
-          }
-        }
+            'data-test': 'CUSTOM',
+          },
+        },
       });
       expect($('input').attr('data-test')).to.equal('CUSTOM');
     });
@@ -120,8 +120,8 @@ describe('radio macro', () => {
         name: 'IA',
         value: 'IA_VAL',
         options: {
-          idSuffix: '_SUF'
-        }
+          idSuffix: '_SUF',
+        },
       });
       expect($('input').attr('id')).to.equal('f-radio-IA-IA_VAL_SUF');
     });
@@ -133,8 +133,8 @@ describe('radio macro', () => {
     it('should set target panel attribute on label', () => {
       const $ = buildDom({
         options: {
-          targetPanel: 'TGT_PANEL'
-        }
+          targetPanel: 'TGT_PANEL',
+        },
       });
       expect($('.govuk-radios__input').attr('data-target')).to.equal('TGT_PANEL');
     });
@@ -148,8 +148,8 @@ describe('radio macro', () => {
         name: 'OC',
         value: 'OC_VAL',
         options: {
-          checked: true
-        }
+          checked: true,
+        },
       });
       return expect($('input').prop('checked')).to.be.true;
     });
@@ -159,8 +159,8 @@ describe('radio macro', () => {
         name: 'OC',
         value: 'OC_VAL',
         options: {
-          checked: false
-        }
+          checked: false,
+        },
       });
       return expect($('input').prop('checked')).to.be.false;
     });
@@ -171,8 +171,8 @@ describe('radio macro', () => {
         name: 'OC',
         value: 'OC_VAL',
         options: {
-          checked: false
-        }
+          checked: false,
+        },
       });
       return expect($('input').prop('checked')).to.be.true;
     });

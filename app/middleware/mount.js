@@ -11,6 +11,6 @@ module.exports = function mwMount(app, mountUrl) {
     app.all('/', redirectToMountUrl);
   }
   return {
-    redirectToMountUrl
+    redirectToMountUrl,
   };
 };

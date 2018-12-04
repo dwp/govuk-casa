@@ -9,7 +9,7 @@ const middleware = require('../../../app/middleware/session.js');
 describe('Middleware: session', () => {
   const mockApp = {
     use: () => {},
-    set: () => {}
+    set: () => {},
   };
 
   /**
@@ -28,7 +28,7 @@ describe('Middleware: session', () => {
     name: 'SESS_NAME',
     secret: 'SESS_SECRET',
     cookiePath: '/',
-    ttl: 60
+    ttl: 60,
   };
 
   describe('Initialising session', () => {
@@ -37,7 +37,7 @@ describe('Middleware: session', () => {
         mockApp,
         mockExpressSession,
         mountUrl,
-        sessionConfig
+        sessionConfig,
       );
 
       const req = httpMocks.createRequest();
@@ -57,7 +57,7 @@ describe('Middleware: session', () => {
           expect(config.cookie).to.have.property('httpOnly', true);
         },
         mountUrl,
-        sessionConfig
+        sessionConfig,
       );
     });
 
@@ -72,7 +72,7 @@ describe('Middleware: session', () => {
           expect(id.length).to.be.at.least(24);
         },
         mountUrl,
-        sessionConfig
+        sessionConfig,
       );
     });
 
@@ -82,13 +82,13 @@ describe('Middleware: session', () => {
         (config) => {
           const req = {
             sessionID: 'validId',
-            session: undefined
+            session: undefined,
           };
           config.genid(req);
           expect(req).to.have.property('casaSessionExpired', 'validId');
         },
         mountUrl,
-        sessionConfig
+        sessionConfig,
       );
     });
   });
@@ -101,7 +101,7 @@ describe('Middleware: session', () => {
         mockApp,
         mockExpressSession,
         mountUrl,
-        sessionConfig
+        sessionConfig,
       );
     });
 
@@ -128,10 +128,10 @@ describe('Middleware: session', () => {
       req.session = {
         destroy: (cb) => {
           cb();
-        }
+        },
       }
       const res = httpMocks.createResponse({
-        eventEmitter: EventEmitter
+        eventEmitter: EventEmitter,
       });
       res.on('end', () => {
         expect(res._getStatusCode()).to.equal(302);
@@ -151,10 +151,10 @@ describe('Middleware: session', () => {
         destroy: (cb) => {
           cb();
         },
-        dateExpire: moment().subtract(10, 's').toISOString()
+        dateExpire: moment().subtract(10, 's').toISOString(),
       }
       const res = httpMocks.createResponse({
-        eventEmitter: EventEmitter
+        eventEmitter: EventEmitter,
       });
       res.on('end', () => {
         expect(res._getStatusCode()).to.equal(302);
@@ -184,10 +184,10 @@ describe('Middleware: session', () => {
       req.session = {
         destroy: (cb) => {
           cb(new Error('Mock failed save'));
-        }
+        },
       }
       const res = httpMocks.createResponse({
-        eventEmitter: EventEmitter
+        eventEmitter: EventEmitter,
       });
       res.clearCookie = (name, options) => {
         expect(name).to.equal(sessionConfig.name);
@@ -215,7 +215,7 @@ describe('Middleware: session', () => {
         mockApp,
         mockExpressSession,
         mountUrl,
-        sessionConfig
+        sessionConfig,
       );
     });
 
@@ -235,8 +235,8 @@ describe('Middleware: session', () => {
       const req = httpMocks.createRequest();
       req.session = {
         journeyData: {
-          x: 1
-        }
+          x: 1,
+        },
       };
       const res = httpMocks.createResponse();
 

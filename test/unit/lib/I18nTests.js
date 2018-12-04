@@ -9,32 +9,32 @@ describe('I18n', () => {
   describe('Initialise module', () => {
     it('should throw an Error when a language file contains invalid JSON data', () => {
       expect(() => {
-        I18n([ testLocalesDir ], [ 'badjson' ]);
+        I18n([testLocalesDir], ['badjson']);
       }).to.throw(Error);
     });
 
     it('should throw an Error when no supported locales are specified', () => {
       expect(() => {
-        I18n([ testLocalesDir ]);
+        I18n([testLocalesDir]);
       }).to.throw(Error);
     });
 
     it('should throw an Error when an empty array of locales is provided', () => {
       expect(() => {
-        I18n([ testLocalesDir ], []);
+        I18n([testLocalesDir], []);
       }).to.throw(Error);
     });
 
     it('should not complain if language folders do not exist', () => {
       expect(() => {
-        I18n([ testLocalesDir ], [ 'missing-lang' ]);
+        I18n([testLocalesDir], ['missing-lang']);
       }).to.not.throw();
     });
   });
 
   describe('Translator()', () => {
     it('should throw a TypeError when given a bad language', () => {
-      const instance = I18n([ testLocalesDir ], [ 'en' ]);
+      const instance = I18n([testLocalesDir], ['en']);
 
       expect(() => new instance.Translator(123)).to.throw(Error);
     });
@@ -46,7 +46,7 @@ describe('I18n', () => {
     let cy;
 
     before(() => {
-      instance = I18n([ testCasaLocaleDir, testLocalesDir ], [ 'en', 'cy' ]);
+      instance = I18n([testCasaLocaleDir, testLocalesDir], ['en', 'cy']);
       en = new instance.Translator('en');
       cy = new instance.Translator('cy');
     });
@@ -105,13 +105,13 @@ describe('I18n', () => {
 
   describe('getLanguage()', () => {
     it('should return "en" if I set "en" at construction', () => {
-      const instance = I18n([ testCasaLocaleDir, testLocalesDir ], [ 'en', 'cy' ]);
+      const instance = I18n([testCasaLocaleDir, testLocalesDir], ['en', 'cy']);
       const en = new instance.Translator('en');
       expect(en.getLanguage()).to.equal('en');
     });
 
     it('should return "cy" if I set "cy" at construction', () => {
-      const instance = I18n([ testCasaLocaleDir, testLocalesDir ], [ 'en', 'cy' ]);
+      const instance = I18n([testCasaLocaleDir, testLocalesDir], ['en', 'cy']);
       const cy = new instance.Translator('cy');
       expect(cy.getLanguage()).to.equal('cy');
     });
