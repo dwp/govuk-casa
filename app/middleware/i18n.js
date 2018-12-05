@@ -40,8 +40,8 @@ module.exports = function mwI18n(app, supportedLocales, I18nUtility) {
     const currentSessionLanguage = (req.session || {}).language;
 
     if (
-      typeof req.query.lang !== 'undefined' &&
-      supportedLocales.indexOf(req.query.lang) > -1
+      typeof req.query.lang !== 'undefined'
+      && supportedLocales.indexOf(req.query.lang) > -1
     ) {
       req.language = req.query.lang;
       if (req.session) {
@@ -53,7 +53,7 @@ module.exports = function mwI18n(app, supportedLocales, I18nUtility) {
       req.language = req.session.language || supportedLocales[0];
       req.session.language = req.language;
     } else {
-      [ req.language ] = supportedLocales;
+      [req.language] = supportedLocales;
     }
 
     req.i18nTranslator = new I18nUtility.Translator(req.language);
@@ -82,7 +82,7 @@ module.exports = function mwI18n(app, supportedLocales, I18nUtility) {
   const handleNunjucksSeeding = (req, res, next) => {
     res.nunjucksEnvironment.addGlobal(
       't',
-      req.i18nTranslator.t.bind(req.i18nTranslator)
+      req.i18nTranslator.t.bind(req.i18nTranslator),
     );
 
     next();
@@ -91,6 +91,6 @@ module.exports = function mwI18n(app, supportedLocales, I18nUtility) {
 
   return {
     handleRequestInit,
-    handleNunjucksSeeding
+    handleNunjucksSeeding,
   };
 };

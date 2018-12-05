@@ -16,20 +16,20 @@ describe('Routes: pages GET', () => {
   it('should render an inferred view where a specific view is not provided', (done) => {
     const handler = createHandler(new PageDirectory({
       page0: {
-        view: 'page0'
-      }
+        view: 'page0',
+      },
     }), false);
 
     const req = httpMocks.createRequest({
       url: '/page0',
       session: {
-        id: 'sessionId'
+        id: 'sessionId',
       },
-      journeyData: new JourneyData({})
+      journeyData: new JourneyData({}),
     });
 
     const res = httpMocks.createResponse({
-      eventEmitter: EventEmitter
+      eventEmitter: EventEmitter,
     });
     res.on('end', () => {
       expect(res._getStatusCode()).to.equal(200);
@@ -43,23 +43,23 @@ describe('Routes: pages GET', () => {
   it('should render an explicit view when specified', (done) => {
     const handler = createHandler(new PageDirectory({
       page0: {
-        view: 'page0-custom-view'
+        view: 'page0-custom-view',
       },
       page1: {
-        view: 'page1'
-      }
+        view: 'page1',
+      },
     }), false);
 
     const req = httpMocks.createRequest({
       url: '/page0',
       session: {
-        id: 'sessionId'
+        id: 'sessionId',
       },
-      journeyData: new JourneyData({})
+      journeyData: new JourneyData({}),
     });
 
     const res = httpMocks.createResponse({
-      eventEmitter: EventEmitter
+      eventEmitter: EventEmitter,
     });
     res.on('end', () => {
       expect(res._getStatusCode()).to.equal(200);
@@ -73,24 +73,24 @@ describe('Routes: pages GET', () => {
   it('should include journey data in the view template', (done) => {
     const handler = createHandler(new PageDirectory({
       page0: {
-        view: 'page0'
-      }
+        view: 'page0',
+      },
     }), false);
 
     const req = httpMocks.createRequest({
       url: '/page0',
       session: {
-        id: 'sessionId'
+        id: 'sessionId',
       },
       journeyData: new JourneyData({
         page0: {
-          x: 1
-        }
-      })
+          x: 1,
+        },
+      }),
     });
 
     const res = httpMocks.createResponse({
-      eventEmitter: EventEmitter
+      eventEmitter: EventEmitter,
     });
     res.on('end', () => {
       expect(res._getStatusCode()).to.equal(200);
@@ -110,24 +110,24 @@ describe('Routes: pages GET', () => {
     beforeEach(() => {
       handler = createHandler(new PageDirectory({
         page0: {
-          view: 'page0'
-        }
+          view: 'page0',
+        },
       }), false);
 
       req = httpMocks.createRequest({
         url: '/page0',
         session: {
-          id: 'sessionId'
+          id: 'sessionId',
         },
         journeyData: new JourneyData({
           page0: {
-            x: 1
-          }
-        })
+            x: 1,
+          },
+        }),
       });
 
       res = httpMocks.createResponse({
-        eventEmitter: EventEmitter
+        eventEmitter: EventEmitter,
       });
     });
 
@@ -154,8 +154,8 @@ describe('Routes: pages GET', () => {
     it('should be true when in query, and global setting is enabled', (done) => {
       handler = createHandler(new PageDirectory({
         page0: {
-          view: 'page0'
-        }
+          view: 'page0',
+        },
       }), true);
 
       req.query.edit = true;
@@ -177,25 +177,25 @@ describe('Routes: pages GET', () => {
           prerender: (req, res, cb) => {
             req.HOOK_CALLED = true;
             cb();
-          }
-        }
-      }
+          },
+        },
+      },
     }), false);
 
     const req = httpMocks.createRequest({
       url: '/page0',
       session: {
-        id: 'sessionId'
+        id: 'sessionId',
       },
       journeyData: new JourneyData({
         page0: {
-          x: 1
-        }
-      })
+          x: 1,
+        },
+      }),
     });
 
     const res = httpMocks.createResponse({
-      eventEmitter: EventEmitter
+      eventEmitter: EventEmitter,
     });
     res.on('end', () => {
       expect(req).to.have.property('HOOK_CALLED');

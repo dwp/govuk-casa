@@ -34,7 +34,7 @@ module.exports = function mwHeaders(app, cspConfig, disabledHeadersConfig) {
     const headers = {
       'X-Content-Type-Options': 'nosniff',
       'X-XSS-Protection': 1,
-      'X-Frame-Options': 'DENY'
+      'X-Frame-Options': 'DENY',
     };
 
     // Caching policy
@@ -52,7 +52,7 @@ module.exports = function mwHeaders(app, cspConfig, disabledHeadersConfig) {
     // Content-Security-Policy directives
     const cspKeyScriptSrc = 'script-src';
     let cspDirectives = Object.getOwnPropertyNames(csp).length > 0 ? csp : {
-      [cspKeyScriptSrc]: []
+      [cspKeyScriptSrc]: [],
     };
 
     // CASA requires these script-src entries to be included in the CSP
@@ -60,7 +60,7 @@ module.exports = function mwHeaders(app, cspConfig, disabledHeadersConfig) {
     const requiredScriptSources = [
       '\'self\'',
       '\'unsafe-inline\'',
-      'https://www.google-analytics.com/'
+      'https://www.google-analytics.com/',
     ];
 
     if (!Object.prototype.hasOwnProperty.call(cspDirectives, cspKeyScriptSrc)) {
@@ -89,6 +89,6 @@ module.exports = function mwHeaders(app, cspConfig, disabledHeadersConfig) {
   app.use(handleHeaders);
 
   return {
-    handleHeaders
+    handleHeaders,
   };
 };

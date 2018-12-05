@@ -1,6 +1,6 @@
-const helpers = require('../helpers');
 const npath = require('path');
 const { expect } = require('chai');
+const helpers = require('../helpers');
 
 describe('text macro', () => {
   const dirMacros = npath.resolve(__dirname);
@@ -17,7 +17,7 @@ describe('text macro', () => {
       name: 'TEST',
       label: null,
       options: null,
-      errors: null
+      errors: null,
     }, params || {});
     return helpers.renderTemplateFile(`${dirMacros}/textTemplate.html`, p);
   }
@@ -54,7 +54,7 @@ describe('text macro', () => {
 
     before(() => {
       $ = buildDom({
-        label: 'TEST_LABEL'
+        label: 'TEST_LABEL',
       });
     });
 
@@ -72,8 +72,8 @@ describe('text macro', () => {
       $ = buildDom({
         name: 'TEST_ERR',
         errors: {
-          TEST_ERR: [ {} ]
-        }
+          TEST_ERR: [{}],
+        },
       });
       return expect($('div').first().hasClass('govuk-form-group--error')).to.be.true;
     });
@@ -82,8 +82,8 @@ describe('text macro', () => {
       $ = buildDom({
         name: 'TEST_ERR',
         errors: {
-          TEST_ERR: [ {} ]
-        }
+          TEST_ERR: [{}],
+        },
       });
       return expect($('input').first().hasClass('govuk-input--error')).to.be.true;
     });
@@ -92,8 +92,8 @@ describe('text macro', () => {
       $ = buildDom({
         name: 'TEST_ERR',
         errors: {
-          TEST_ERR: [ {} ]
-        }
+          TEST_ERR: [{}],
+        },
       });
       expect($('#f-TEST_ERR-error').length).to.equal(1);
     });
@@ -102,14 +102,14 @@ describe('text macro', () => {
       $ = buildDom({
         name: 'TEST_ERR',
         errors: {
-          TEST_ERR: [ {
+          TEST_ERR: [{
             inline: 'inline_error_message_1',
-            validator: 'dummy_error_validator_1'
+            validator: 'dummy_error_validator_1',
           }, {
             inline: 'inline_error_message_2',
-            validator: 'dummy_error_validator_2'
-          } ]
-        }
+            validator: 'dummy_error_validator_2',
+          }],
+        },
       });
       expect($('span.govuk-error-message').length).to.equal(1);
       expect($('span.govuk-error-message').eq(0).text()).to.match(/inline_error_message_1/);
@@ -119,11 +119,11 @@ describe('text macro', () => {
       $ = buildDom({
         name: 'TEST_ERR',
         errors: {
-          TEST_ERR: [ {
+          TEST_ERR: [{
             inline: 'inline_error_message_1',
-            validator: 'dummy_error_validator_1'
-          } ]
-        }
+            validator: 'dummy_error_validator_1',
+          }],
+        },
       });
 
       const j = JSON.parse($('input').attr('data-validation'));
@@ -139,8 +139,8 @@ describe('text macro', () => {
       const $ = buildDom({
         label: 'TEST_LABEL',
         options: {
-          unbolden: true
-        }
+          unbolden: true,
+        },
       });
       expect($('label.govuk-label--m').length).to.equal(0);
       expect($('label.govuk-label').length).to.equal(1);
@@ -154,8 +154,8 @@ describe('text macro', () => {
       const $ = buildDom({
         label: 'TEST_LABEL',
         options: {
-          hiddenLabel: true
-        }
+          hiddenLabel: true,
+        },
       });
       return expect($('label>span').hasClass('govuk-visually-hidden')).to.be.true;
     });
@@ -168,8 +168,8 @@ describe('text macro', () => {
       const $ = buildDom({
         label: 'TEST_LABEL',
         options: {
-          hint: '<b>TEST_HINT</b>'
-        }
+          hint: '<b>TEST_HINT</b>',
+        },
       });
       expect($('.govuk-hint').length).to.equal(1);
       expect($('.govuk-hint').html()).to.match(/&lt;b&gt;TEST_HINT&lt;\/b&gt;/);
@@ -179,8 +179,8 @@ describe('text macro', () => {
       const $ = buildDom({
         label: 'TEST_LABEL',
         options: {
-          hintHtml: '<b>TEST_HINT_HTML</b>'
-        }
+          hintHtml: '<b>TEST_HINT_HTML</b>',
+        },
       });
       expect($('.govuk-hint').length).to.equal(1);
       expect($('.govuk-hint').html()).to.match(/<b>TEST_HINT_HTML<\/b>/);
@@ -193,8 +193,8 @@ describe('text macro', () => {
     it('should add CSS size class to input', () => {
       const $ = buildDom({
         options: {
-          size: 'SIZE_TEST'
-        }
+          size: 'SIZE_TEST',
+        },
       });
       return expect($('input').hasClass('SIZE_TEST')).to.be.true;
     });
@@ -206,8 +206,8 @@ describe('text macro', () => {
     it("should add 'maxlength' attribute to input", () => {
       const $ = buildDom({
         options: {
-          maxlength: '100'
-        }
+          maxlength: '100',
+        },
       });
       expect($('input').attr('maxlength')).to.equal('100')
     });
@@ -222,8 +222,8 @@ describe('text macro', () => {
       $ = buildDom({
         label: 'TEST_LABEL',
         options: {
-          labelledBy: 'TEST_ARIA_ID'
-        }
+          labelledBy: 'TEST_ARIA_ID',
+        },
       });
     });
 
@@ -244,8 +244,8 @@ describe('text macro', () => {
     before(() => {
       $ = buildDom({
         options: {
-          inputPrefixHtml: '<b>TEST_MARKUP</b>'
-        }
+          inputPrefixHtml: '<b>TEST_MARKUP</b>',
+        },
       });
     });
 
@@ -262,8 +262,8 @@ describe('text macro', () => {
     before(() => {
       $ = buildDom({
         options: {
-          inputPostfixHtml: '<b>TEST_MARKUP</b>'
-        }
+          inputPostfixHtml: '<b>TEST_MARKUP</b>',
+        },
       });
     });
 
@@ -280,8 +280,8 @@ describe('text macro', () => {
     before(() => {
       $ = buildDom({
         options: {
-          lineBreak: true
-        }
+          lineBreak: true,
+        },
       });
     });
 
@@ -299,9 +299,9 @@ describe('text macro', () => {
         data: 'IA_VAL',
         options: {
           inputAttributes: {
-            id: 'CUSTOM'
-          }
-        }
+            id: 'CUSTOM',
+          },
+        },
       });
       expect($('input').attr('id')).to.equal('CUSTOM');
     });
@@ -310,9 +310,9 @@ describe('text macro', () => {
       const $ = buildDom({
         options: {
           inputAttributes: {
-            'data-test': 'CUSTOM'
-          }
-        }
+            'data-test': 'CUSTOM',
+          },
+        },
       });
       expect($('input').attr('data-test')).to.equal('CUSTOM');
     });

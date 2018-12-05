@@ -20,7 +20,7 @@ describe('View filter: mergeObjects', () => {
     expect(merged).to.eql({
       x: 3,
       y: 2,
-      z: 4
+      z: 4,
     });
   });
 
@@ -28,10 +28,10 @@ describe('View filter: mergeObjects', () => {
     const first = { x: 1 };
     const merged = mergeObjects(first, { x: 2 });
     expect(merged).to.eql({
-      x: 2
+      x: 2,
     });
     expect(first).to.eql({
-      x: 1
+      x: 1,
     });
   });
 });

@@ -19,10 +19,10 @@ global.GOVUK_CASA_DIR = __dirname;
 const expressJs = require('express');
 const expressSession = require('express-session');
 const npath = require('path');
-const logger = require('./lib/Logger')();
-const PageDirectory = require('./lib/PageDirectory');
 const csrf = require('csurf');
 const expressBodyParser = require('body-parser');
+const logger = require('./lib/Logger')();
+const PageDirectory = require('./lib/PageDirectory');
 const I18n = require('./lib/I18n');
 const Casa = require('./lib/Casa');
 
@@ -52,7 +52,7 @@ function CasaBootstrap(expressApp, config) {
   // middleware functions
   const localeDirs = [
     npath.resolve(__dirname, './app/locales'),
-    ...config.i18n.dirs
+    ...config.i18n.dirs,
   ];
   const I18nUtility = I18n(localeDirs, config.i18n.locales);
 
@@ -72,7 +72,7 @@ function CasaBootstrap(expressApp, config) {
    */
   const bodyParser = expressBodyParser.urlencoded({
     // Adds support for array[style][params] -> objects
-    extended: true
+    extended: true,
   });
   const csrfProtection = csrf({
     cookie: false,
@@ -85,7 +85,7 @@ function CasaBootstrap(expressApp, config) {
       delete req.body._csrf;
       return token;
       /* eslint-enable no-underscore-dangle */
-    }
+    },
   });
 
   /**
@@ -101,7 +101,7 @@ function CasaBootstrap(expressApp, config) {
   const csrfMiddleware = [
     bodyParser,
     csrfProtection,
-    csrfSupplyToken
+    csrfSupplyToken,
   ];
 
   /**
@@ -132,7 +132,7 @@ function CasaBootstrap(expressApp, config) {
     router: expressRouter,
     loadDefinitions,
     csrfMiddleware,
-    endSession
+    endSession,
   };
 }
 

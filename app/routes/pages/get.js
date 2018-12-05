@@ -40,7 +40,7 @@ module.exports = function routePageGet(pages, allowPageEdit) {
     function render() {
       res.render(pageMeta.view, {
         formData: req.journeyData.getDataForPage(pageId),
-        inEditMode: 'edit' in req.query && allowPageEdit
+        inEditMode: 'edit' in req.query && allowPageEdit,
       });
     }
 

@@ -15,7 +15,7 @@ describe('Validation rule: optional', () => {
     expect(optional(null)).to.be.true;
     expect(optional({ dd: '', mm: '', yyyy: '' })).to.be.true;
     expect(optional({
-      attr1: '', attr2: null, attr3: undefined, attr4: []
+      attr1: '', attr2: null, attr3: undefined, attr4: [],
     })).to.be.true;
     /* eslint-enable no-unused-expressions */
   });
@@ -29,7 +29,7 @@ describe('Validation rule: optional', () => {
     expect(optional(' v')).to.be.false;
     expect(optional({ dd: '01', mm: '02', yyyy: '2121' })).to.be.false;
     expect(optional({
-      attr1: 'x', attr2: null, attr3: undefined, attr4: ' '
+      attr1: 'x', attr2: null, attr3: undefined, attr4: ' ',
     })).to.be.false;
     /* eslint-enable no-unused-expressions */
   });

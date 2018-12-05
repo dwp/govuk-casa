@@ -1,5 +1,5 @@
 module.exports = {
   gather: {
-    view: 'pages/gather.njk'
-  }
+    view: 'pages/gather.njk',
+  },
 };

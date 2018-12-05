@@ -15,12 +15,12 @@ const moment = require('moment');
  */
 module.exports = function formatDateObject(date) {
   if (
-    typeof date === 'object' &&
-    'yyyy' in date &&
-    'mm' in date &&
-    'dd' in date
+    typeof date === 'object'
+    && 'yyyy' in date
+    && 'mm' in date
+    && 'dd' in date
   ) {
-    const m = moment([ date.yyyy, date.mm - 1, date.dd ]);
+    const m = moment([date.yyyy, date.mm - 1, date.dd]);
     return m.format('D MMMM YYYY');
   }
   return 'INVALID DATE OBJECT';

@@ -14,7 +14,7 @@ describe('Validation rule: regex', () => {
     queue.push(expect(regex('CAN BE ANYTHING BY DEFAULT')).to.be.fulfilled);
 
     const re1 = regex.bind({
-      pattern: /^[0-9]{3}$/
+      pattern: /^[0-9]{3}$/,
     })
     queue.push(expect(re1('123')).to.be.fulfilled);
     queue.push(expect(re1('098')).to.be.fulfilled);
@@ -26,7 +26,7 @@ describe('Validation rule: regex', () => {
     const queue = [];
 
     const re1 = regex.bind({
-      pattern: /^[0-9]{3}$/
+      pattern: /^[0-9]{3}$/,
     })
     queue.push(expect(re1('1234')).to.be.rejected);
     queue.push(expect(re1('12')).to.be.rejected);
@@ -40,7 +40,7 @@ describe('Validation rule: regex', () => {
 
     const re1 = regex.bind({
       pattern: /^[0-9]{3}$/,
-      errorMsg: 'REGEX_ERR'
+      errorMsg: 'REGEX_ERR',
     })
     queue.push(expect(re1('1234').catch(err => Promise.reject(JSON.stringify(err)))).to.be.rejectedWith(/REGEX_ERR/));
 

@@ -15,9 +15,9 @@ module.exports = function mwVariables(app, mountUrl, phase, serviceName) {
           assetsPath: `${prefixTpl}/assets/images`,
           serviceName: req.i18nTranslator.t(serviceName),
           serviceUrl: mountUrl,
-          homepageUrl: 'https://www.gov.uk/'
-        }
-      }
+          homepageUrl: 'https://www.gov.uk/',
+        },
+      },
     };
 
     // CASA-specific vars
@@ -28,6 +28,6 @@ module.exports = function mwVariables(app, mountUrl, phase, serviceName) {
   app.use(handleVariablesSet);
 
   return {
-    handleVariablesSet
+    handleVariablesSet,
   };
 };

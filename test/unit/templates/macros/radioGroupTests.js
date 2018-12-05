@@ -1,6 +1,6 @@
-const helpers = require('../helpers');
 const npath = require('path');
 const { expect } = require('chai');
+const helpers = require('../helpers');
 
 describe('radioGroup macro', () => {
   const dirMacros = npath.resolve(__dirname);
@@ -18,7 +18,7 @@ describe('radioGroup macro', () => {
       label: null,
       options: null,
       errors: null,
-      content: 'TEST_CONTENT'
+      content: 'TEST_CONTENT',
     }, params || {});
     return helpers.renderTemplateFile(`${dirMacros}/radioGroupTemplate.html`, p);
   }
@@ -30,7 +30,7 @@ describe('radioGroup macro', () => {
 
     before(() => {
       $ = buildDom({
-        content: 'TEST_BASIC_CONTENT'
+        content: 'TEST_BASIC_CONTENT',
       });
     });
 
@@ -68,7 +68,7 @@ describe('radioGroup macro', () => {
 
     before(() => {
       $ = buildDom({
-        label: 'TEST_LABEL'
+        label: 'TEST_LABEL',
       });
     });
 
@@ -86,8 +86,8 @@ describe('radioGroup macro', () => {
       $ = buildDom({
         name: 'TEST_ERR',
         errors: {
-          TEST_ERR: [ {} ]
-        }
+          TEST_ERR: [{}],
+        },
       });
       return expect($('div').first().hasClass('govuk-form-group--error')).to.be.true;
     });
@@ -96,8 +96,8 @@ describe('radioGroup macro', () => {
       $ = buildDom({
         name: 'TEST_ERR',
         errors: {
-          TEST_ERR: [ {} ]
-        }
+          TEST_ERR: [{}],
+        },
       });
       expect($('#f-TEST_ERR-error').length).to.equal(1);
     });
@@ -106,14 +106,14 @@ describe('radioGroup macro', () => {
       $ = buildDom({
         name: 'TEST_ERR',
         errors: {
-          TEST_ERR: [ {
+          TEST_ERR: [{
             inline: 'inline_error_message_1',
-            validator: 'dummy_error_validator_1'
+            validator: 'dummy_error_validator_1',
           }, {
             inline: 'inline_error_message_2',
-            validator: 'dummy_error_validator_2'
-          } ]
-        }
+            validator: 'dummy_error_validator_2',
+          }],
+        },
       });
       expect($('span.govuk-error-message').length).to.equal(1);
       expect($('span.govuk-error-message').eq(0).text()).to.match(/inline_error_message_1/);
@@ -123,11 +123,11 @@ describe('radioGroup macro', () => {
       $ = buildDom({
         name: 'TEST_ERR',
         errors: {
-          TEST_ERR: [ {
+          TEST_ERR: [{
             inline: 'inline_error_message_1',
-            validator: 'dummy_error_validator_1'
-          } ]
-        }
+            validator: 'dummy_error_validator_1',
+          }],
+        },
       });
 
       const j = JSON.parse($('.govuk-error-message').attr('data-validation'));
@@ -142,8 +142,8 @@ describe('radioGroup macro', () => {
     it("should add 'inline' class to fieldset", () => {
       const $ = buildDom({
         options: {
-          inline: true
-        }
+          inline: true,
+        },
       });
       return expect($('.govuk-radios--inline').length).to.equal(1);
     });
@@ -155,8 +155,8 @@ describe('radioGroup macro', () => {
     it("should replace 'form-label-bold' class with 'form-label'", () => {
       const $ = buildDom({
         options: {
-          unbolden: true
-        }
+          unbolden: true,
+        },
       });
       expect($('fieldset legend span.govuk-label--m').length).to.equal(0);
       expect($('fieldset legend span.govuk-label').length).to.equal(1);
@@ -169,8 +169,8 @@ describe('radioGroup macro', () => {
     it("should add 'visually-hidden' class to label container", () => {
       const $ = buildDom({
         options: {
-          hiddenLabel: true
-        }
+          hiddenLabel: true,
+        },
       });
       return expect($('fieldset legend span.govuk-label').hasClass('govuk-visually-hidden')).to.be.true;
     });
@@ -182,8 +182,8 @@ describe('radioGroup macro', () => {
     it("should add a 'govuk-hint' object, with escaped content", () => {
       const $ = buildDom({
         options: {
-          hint: '<b>TEST_HINT</b>'
-        }
+          hint: '<b>TEST_HINT</b>',
+        },
       });
       expect($('span.govuk-hint').length).to.equal(1);
       expect($('span.govuk-hint').html()).to.contain('&lt;b&gt;TEST_HINT&lt;/b&gt;');
@@ -192,8 +192,8 @@ describe('radioGroup macro', () => {
     it("should add a non-empty 'govuk-hint' object, with unescaped content", () => {
       const $ = buildDom({
         options: {
-          hintHtml: '<b>TEST_HINT_HTML</b>'
-        }
+          hintHtml: '<b>TEST_HINT_HTML</b>',
+        },
       });
       expect($('span.govuk-hint').length).to.equal(1);
       expect($('span.govuk-hint').html()).to.contain('<b>TEST_HINT_HTML</b>');
@@ -206,8 +206,8 @@ describe('radioGroup macro', () => {
     it('should inject unescaped content into markup', () => {
       const $ = buildDom({
         options: {
-          prefixHtml: '<b>TEST_PREFIX</b>'
-        }
+          prefixHtml: '<b>TEST_PREFIX</b>',
+        },
       });
       expect($.html()).to.contain('<b>TEST_PREFIX</b>');
     });
@@ -221,8 +221,8 @@ describe('radioGroup macro', () => {
     before(() => {
       $ = buildDom({
         options: {
-          labelledBy: 'TEST_ARIA_ID'
-        }
+          labelledBy: 'TEST_ARIA_ID',
+        },
       });
     });
 
@@ -239,8 +239,8 @@ describe('radioGroup macro', () => {
         options: {
           labelledBy: 'TEST_ARIA_ID',
           hint: 'TEST_HINT',
-          hintHtml: 'TEST_HINT_HTML'
-        }
+          hintHtml: 'TEST_HINT_HTML',
+        },
       });
       expect($('span.govuk-hint').length).to.equal(2);
     });
@@ -254,9 +254,9 @@ describe('radioGroup macro', () => {
         name: 'GA',
         options: {
           groupAttributes: {
-            id: 'CUSTOM'
-          }
-        }
+            id: 'CUSTOM',
+          },
+        },
       });
       expect($('.govuk-form-group').attr('id')).to.equal('CUSTOM');
     });
@@ -265,9 +265,9 @@ describe('radioGroup macro', () => {
       const $ = buildDom({
         options: {
           groupAttributes: {
-            'data-test': 'CUSTOM'
-          }
-        }
+            'data-test': 'CUSTOM',
+          },
+        },
       });
       expect($('.govuk-form-group').attr('data-test')).to.equal('CUSTOM');
     });

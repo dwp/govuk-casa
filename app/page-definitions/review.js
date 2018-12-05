@@ -14,7 +14,7 @@ module.exports = function reviewPageDefinition(app, pageDirectory, userJourney) 
         if (req.journeyData) {
           waypointsTraversed = userJourney.traverse(
             req.journeyData.getData(),
-            req.journeyData.getValidationErrors()
+            req.journeyData.getValidationErrors(),
           );
         } else {
           waypointsTraversed = userJourney.traverse();
@@ -23,7 +23,7 @@ module.exports = function reviewPageDefinition(app, pageDirectory, userJourney) 
           const meta = pageDirectory.getPageMeta(waypointId) || {};
           return meta.reviewBlockView ? {
             waypointId,
-            reviewBlockView: meta.reviewBlockView
+            reviewBlockView: meta.reviewBlockView,
           } : null;
         }).filter(o => o !== null);
 
@@ -39,8 +39,8 @@ module.exports = function reviewPageDefinition(app, pageDirectory, userJourney) 
         waypointsTraversed.forEach((waypointId) => {
           const pageMeta = pageDirectory.getPageMeta(waypointId);
           if (
-            typeof pageMeta !== 'undefined' &&
-            typeof pageMeta.validator === 'function'
+            typeof pageMeta !== 'undefined'
+            && typeof pageMeta.validator === 'function'
           ) {
             queue.push(pageMeta.validator(req.journeyData).catch((err) => {
               errors[waypointId] = err;
@@ -58,7 +58,7 @@ module.exports = function reviewPageDefinition(app, pageDirectory, userJourney) 
           res.locals.reviewErrors = validationErrors;
           next();
         });
-      }
-    }
+      },
+    },
   };
 };

@@ -21,7 +21,7 @@ describe('Validation rule: postalAddressObject', () => {
     queue.push(expect(postalAddressObject({
       address1: 'street',
       address3: 'town',
-      postcode: 'AA0 0BB'
+      postcode: 'AA0 0BB',
     })).to.be.fulfilled);
 
     return Promise.all(queue);
@@ -33,7 +33,7 @@ describe('Validation rule: postalAddressObject', () => {
     queue.push(expect(postalAddressObject({
       address1: 'Street',
       address3: 'Town',
-      postcode: 'AA0 0BB'
+      postcode: 'AA0 0BB',
     })).to.be.fulfilled);
 
     return Promise.all(queue);
@@ -42,13 +42,13 @@ describe('Validation rule: postalAddressObject', () => {
   it('should reject if an address[1-4] input breaches strlenmax attribute', () => {
     const queue = [];
     const rule = postalAddressObject.bind({
-      strlenmax: 10
+      strlenmax: 10,
     });
 
     queue.push(expect(rule({
       address1: 'LONGER THAN STRLENMAX',
       address3: 'Town',
-      postcode: 'AA0 0BB'
+      postcode: 'AA0 0BB',
     })).to.be.rejected.eventually.satisfy(v => JSON.stringify(v).match(errorInlineAddress1)));
 
     return Promise.all(queue);
@@ -56,20 +56,20 @@ describe('Validation rule: postalAddressObject', () => {
 
   it('should resolve for valid address with postcode flagged as optional', () => {
     const rule = postalAddressObject.bind({
-      requiredFields: [ 'address1', 'address2', 'address3', 'address4' ]
+      requiredFields: ['address1', 'address2', 'address3', 'address4'],
     });
 
     return expect(rule({
       address1: 'House',
       address2: 'Street',
       address3: 'Town',
-      address4: 'County'
+      address4: 'County',
     })).to.be.fulfilled;
   });
 
   it('should resolve for empty address with all fields flagged as optional', () => {
     const rule = postalAddressObject.bind({
-      requiredFields: []
+      requiredFields: [],
     });
 
     return expect(rule({
@@ -86,23 +86,23 @@ describe('Validation rule: postalAddressObject', () => {
 
     queue.push(expect(postalAddressObject({
       address2: '$INVALID$',
-      address4: '$INVALID$'
+      address4: '$INVALID$',
     })).to.be.rejected.eventually.satisfy((v) => {
       const s = JSON.stringify(v);
-      return s.match(errorInlineAddress1) &&
-        s.match(errorInlineAddress2) &&
-        s.match(errorInlineAddress4) &&
-        s.match(errorInlinePostcode);
+      return s.match(errorInlineAddress1)
+        && s.match(errorInlineAddress2)
+        && s.match(errorInlineAddress4)
+        && s.match(errorInlinePostcode);
     }));
 
     queue.push(expect(postalAddressObject({
       address3: 'town',
-      postcode: 'AA0 0BB'
+      postcode: 'AA0 0BB',
     })).to.be.rejected.eventually.satisfy(v => JSON.stringify(v).match(errorInlineAddress1)));
 
     queue.push(expect(postalAddressObject({
       address1: 'street',
-      postcode: 'AA0 0BB'
+      postcode: 'AA0 0BB',
     })).to.be.rejected.eventually.satisfy((v) => {
       const s = JSON.stringify(v);
       return s.match(errorInlineAddress3);
@@ -110,7 +110,7 @@ describe('Validation rule: postalAddressObject', () => {
 
     queue.push(expect(postalAddressObject({
       address1: 'street',
-      address3: 'town'
+      address3: 'town',
     })).to.be.rejected.eventually.satisfy((v) => {
       const s = JSON.stringify(v);
       return s.match(errorInlinePostcode);
@@ -119,7 +119,7 @@ describe('Validation rule: postalAddressObject', () => {
     queue.push(expect(postalAddressObject({
       address1: 'street',
       address3: 'town',
-      postcode: '!@£$%^&*()<>,.~`/?\\:;"\'{[}]_-+='
+      postcode: '!@£$%^&*()<>,.~`/?\\:;"\'{[}]_-+=',
     })).to.be.rejected.eventually.satisfy((v) => {
       const s = JSON.stringify(v);
       return s.match(errorInlinePostcode);
@@ -128,7 +128,7 @@ describe('Validation rule: postalAddressObject', () => {
     queue.push(expect(postalAddressObject({
       address1: 'street',
       address3: 'town',
-      postcode: '-'
+      postcode: '-',
     })).to.be.rejected.eventually.satisfy((v) => {
       const s = JSON.stringify(v);
       return s.match(errorInlinePostcode);
@@ -144,7 +144,7 @@ describe('Validation rule: postalAddressObject', () => {
       errorMsgAddress2: 'err2',
       errorMsgAddress3: 'err3',
       errorMsgAddress4: 'err4',
-      errorMsgPostcode: 'err5'
+      errorMsgPostcode: 'err5',
     });
     const queue = [];
 
@@ -153,7 +153,7 @@ describe('Validation rule: postalAddressObject', () => {
       address2: '$INVALID$',
       address3: '$INVALID$',
       address4: '$INVALID$',
-      postcode: '$INVALID$'
+      postcode: '$INVALID$',
     }).catch(err => Promise.reject(JSON.stringify(err)))).to.be.rejectedWith(/err1.+err2.+err3.+err4.+err5/));
 
     queue.push(expect(rule().catch(err => Promise.reject(JSON.stringify(err)))).to.be.rejectedWith(/errdefault/));
@@ -163,20 +163,20 @@ describe('Validation rule: postalAddressObject', () => {
 
   it('should reject for address components only containing spaces', () => {
     const rule = postalAddressObject.bind({
-      requiredFields: [ 'address1', 'address2', 'address3', 'address4' ]
+      requiredFields: ['address1', 'address2', 'address3', 'address4'],
     });
 
     return expect(rule({
       address1: ' ',
       address2: ' ',
       address3: ' ',
-      address4: ' '
+      address4: ' ',
     })).to.be.rejected.eventually.satisfy((v) => {
       const s = JSON.stringify(v);
-      return s.match(errorInlineAddress1) &&
-        s.match(errorInlineAddress2) &&
-        s.match(errorInlineAddress3) &&
-        s.match(errorInlineAddress4);
+      return s.match(errorInlineAddress1)
+        && s.match(errorInlineAddress2)
+        && s.match(errorInlineAddress3)
+        && s.match(errorInlineAddress4);
     });
   });
 
@@ -186,7 +186,7 @@ describe('Validation rule: postalAddressObject', () => {
     queue.push(expect(postalAddressObject({
       address1: 'street',
       address3: 'town',
-      postcode: ''
+      postcode: '',
     })).to.be.rejected.eventually.satisfy((v) => {
       const s = JSON.stringify(v);
       return s.match(errorInlinePostcode);
@@ -195,7 +195,7 @@ describe('Validation rule: postalAddressObject', () => {
     queue.push(expect(postalAddressObject({
       address1: 'street',
       address3: 'town',
-      postcode: '0A 8AA'
+      postcode: '0A 8AA',
     })).to.be.rejected.eventually.satisfy((v) => {
       const s = JSON.stringify(v);
       return s.match(errorInlinePostcode);
@@ -204,7 +204,7 @@ describe('Validation rule: postalAddressObject', () => {
     queue.push(expect(postalAddressObject({
       address1: 'street',
       address3: 'town',
-      postcode: 'A9 HH'
+      postcode: 'A9 HH',
     })).to.be.rejected.eventually.satisfy((v) => {
       const s = JSON.stringify(v);
       return s.match(errorInlinePostcode);

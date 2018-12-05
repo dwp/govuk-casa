@@ -9,7 +9,7 @@ const middleware = require('../../../app/middleware/static.js');
 describe('Middleware: static', () => {
   const mockExpressApp = {
     use: () => {},
-    set: () => {}
+    set: () => {},
   };
   /**
    * Mock static NOOP function.
@@ -31,7 +31,7 @@ describe('Middleware: static', () => {
     govukFrontendToolkit: npmGovukFrontendToolkit,
     govukElementsSass: npmGovukElementsSass,
     govukFrontend: npmGovukFrontend,
-    govukCasa: npmGovukCasa
+    govukCasa: npmGovukCasa,
   };
 
   beforeEach((done) => {
@@ -51,8 +51,8 @@ describe('Middleware: static', () => {
         mountUrl,
         compiledAssetsDir,
         Object.assign({}, npmPackages, {
-          govukCasa: npath.join(os.tmpdir(), `non-existent-path-${Math.round(Math.random() * 9999999)}`)
-        })
+          govukCasa: npath.join(os.tmpdir(), `non-existent-path-${Math.round(Math.random() * 9999999)}`),
+        }),
       );
     }).to.throw(Error, 'ENOENT');
   });
@@ -65,12 +65,12 @@ describe('Middleware: static', () => {
           expect(k).to.equal('casaGovukFrontendVirtualUrl');
           expect(v).to.equal(`${mountUrl}govuk/frontend`);
           done();
-        }
+        },
       },
       mockExpressStatic,
       mountUrl,
       compiledAssetsDir,
-      npmPackages
+      npmPackages,
     );
   });
 
@@ -83,18 +83,18 @@ describe('Middleware: static', () => {
             `${mountUrl}govuk/frontend/js/all.js`,
             `${mountUrl}govuk/frontend/assets`,
             `${mountUrl}govuk/frontend/js/govuk-template.js`,
-            `${mountUrl}govuk/casa`
+            `${mountUrl}govuk/casa`,
           ].indexOf(mount) > -1) {
             counter += 1;
             expect(handler).to.equal('STATIC-ADDED');
           }
         },
-        set: () => {}
+        set: () => {},
       },
       () => 'STATIC-ADDED',
       mountUrl,
       compiledAssetsDir,
-      npmPackages
+      npmPackages,
     );
 
     expect(counter).to.equal(4);
@@ -106,7 +106,7 @@ describe('Middleware: static', () => {
       mockExpressStatic,
       mountUrl,
       compiledAssetsDir,
-      npmPackages
+      npmPackages,
     );
 
     expect(() => {
@@ -123,7 +123,7 @@ describe('Middleware: static', () => {
       mockExpressStatic,
       mountUrl,
       compiledAssetsDir,
-      npmPackages
+      npmPackages,
     );
 
     const req = httpMocks.createRequest();

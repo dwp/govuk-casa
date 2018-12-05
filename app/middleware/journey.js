@@ -28,7 +28,7 @@ module.exports = function mwJourney(router, mountUrl, userJourney) {
     if (req.journeyData) {
       traversed = userJourney.traverse(
         req.journeyData.getData(),
-        req.journeyData.getValidationErrors()
+        req.journeyData.getValidationErrors(),
       );
     } else {
       traversed = userJourney.traverse();
@@ -69,6 +69,6 @@ module.exports = function mwJourney(router, mountUrl, userJourney) {
   router.use(mwJourneyTraverse);
 
   return {
-    mwJourneyTraverse
+    mwJourneyTraverse,
   };
 };

@@ -19,7 +19,7 @@ describe('Casa', () => {
   const validConfig = {
     mountUrl: '/',
     views: {
-      dirs: []
+      dirs: [],
     },
     compiledAssetsDir: npath.resolve(__dirname, '../testdata'),
     phase: 'alpha',
@@ -30,19 +30,19 @@ describe('Casa', () => {
       name: 'session',
       store: null,
       secure: false,
-      cookiePath: '/'
+      cookiePath: '/',
     },
     i18n: {
       dirs: [],
-      locales: [ 'en' ]
+      locales: ['en'],
     },
     csp: {
-      scriptSources: []
+      scriptSources: [],
     },
     headers: {
-      disabled: false
+      disabled: false,
     },
-    allowPageEdit: false
+    allowPageEdit: false,
   };
 
   describe('constructor()', () => {
@@ -112,9 +112,9 @@ describe('Casa', () => {
         });
 
         it('should store a valid value', () => {
-          config.views.dirs = [ 'my/view-directory' ];
+          config.views.dirs = ['my/view-directory'];
           casa.loadConfig(config);
-          expect(casa.getConfig().views.dirs).to.eql([ 'my/view-directory' ])
+          expect(casa.getConfig().views.dirs).to.eql(['my/view-directory'])
         });
       });
     });
@@ -267,7 +267,7 @@ describe('Casa', () => {
       it('should default to en language if no value is specified', () => {
         delete config.i18n;
         casa.loadConfig(config);
-        expect(casa.getConfig().i18n.locales).to.eql([ 'en' ]);
+        expect(casa.getConfig().i18n.locales).to.eql(['en']);
       });
     });
 
@@ -293,7 +293,7 @@ describe('Casa', () => {
           'frame-ancestors': [],
           'block-all-mixed-content': [],
           'require-sri-for': [],
-          'upgrade-insecure-requests': []
+          'upgrade-insecure-requests': [],
         };
         config.csp = csp;
         casa.loadConfig(config);
@@ -303,7 +303,7 @@ describe('Casa', () => {
       it('should throw an error if an invalid content secure policy is provided', () => {
         expect(() => {
           config.csp = {
-            'invalid-csp-directive': []
+            'invalid-csp-directive': [],
           }
           casa.loadConfig(config)
         }).to.throw(Error);
@@ -311,7 +311,7 @@ describe('Casa', () => {
 
       it('should allow scriptSources as a valid CSP directive', () => {
         const csp = {
-          scriptSources: []
+          scriptSources: [],
         };
         config.csp = csp;
         casa.loadConfig(config);
@@ -322,7 +322,7 @@ describe('Casa', () => {
         expect(() => {
           config.csp = {
             scriptSources: [],
-            'script-src': []
+            'script-src': [],
           }
           casa.loadConfig(config);
         }).to.throw(Error);
@@ -359,7 +359,7 @@ describe('Casa', () => {
 
       const dirMiddleware = npath.resolve(__dirname, '../../../app/middleware');
       const proxies = {};
-      [ 'headers', 'mount', 'static', 'session', 'nunjucks', 'i18n', 'variables' ].forEach((m) => {
+      ['headers', 'mount', 'static', 'session', 'nunjucks', 'i18n', 'variables'].forEach((m) => {
         proxies[`${dirMiddleware}/${m}.js`] = emitter.bind({ moduleName: m });
       });
       const CasaProxy = proxyquire('../../../lib/Casa', proxies);
@@ -372,8 +372,10 @@ describe('Casa', () => {
     it('should import middleware in the correct order', () => {
       const sequence = [];
       /* eslint-disable-next-line require-jsdoc */
-      const sequencer = (m) => { sequence.push(m) };
-      const moduleOrder = [ 'headers', 'mount', 'static', 'session', 'nunjucks', 'i18n', 'variables' ];
+      const sequencer = (m) => {
+        sequence.push(m)
+      };
+      const moduleOrder = ['headers', 'mount', 'static', 'session', 'nunjucks', 'i18n', 'variables'];
       moduleOrder.forEach((m) => {
         requireWatcher.on(m, sequencer);
       });
@@ -396,10 +398,10 @@ describe('Casa', () => {
       const dirMiddleware = npath.resolve(__dirname, '../../../app/middleware');
       const dirRoutes = npath.resolve(__dirname, '../../../app/routes');
       const proxies = {};
-      [ 'session-timeout', 'pages' ].forEach((m) => {
+      ['session-timeout', 'pages'].forEach((m) => {
         proxies[`${dirRoutes}/${m}.js`] = emitter.bind({ moduleName: m });
       });
-      [ 'journey', 'errors' ].forEach((m) => {
+      ['journey', 'errors'].forEach((m) => {
         proxies[`${dirMiddleware}/${m}.js`] = emitter.bind({ moduleName: m });
       });
       const CasaProxy = proxyquire('../../../lib/Casa', proxies);
@@ -412,8 +414,10 @@ describe('Casa', () => {
     it('should import middleware in the correct order', () => {
       const sequence = [];
       /* eslint-disable-next-line require-jsdoc */
-      const sequencer = (m) => { sequence.push(m) };
-      const moduleOrder = [ 'session-timeout', 'journey', 'pages', 'errors' ];
+      const sequencer = (m) => {
+        sequence.push(m)
+      };
+      const moduleOrder = ['session-timeout', 'journey', 'pages', 'errors'];
       moduleOrder.forEach((m) => {
         requireWatcher.on(m, sequencer);
       });
@@ -427,17 +431,17 @@ describe('Casa', () => {
       const path0 = npath.resolve(__dirname, '../testdata/fake-node_modules');
       let modAPath;
 
-      modAPath = Casa.resolveModulePath('govuk_template_jinja', [ path0 ]);
+      modAPath = Casa.resolveModulePath('govuk_template_jinja', [path0]);
       expect(modAPath).to.equal(npath.normalize(`${path0}/govuk_template_jinja`));
 
-      modAPath = Casa.resolveModulePath('govuk_template_jinja', [ '/non-existent-path', path0 ]);
+      modAPath = Casa.resolveModulePath('govuk_template_jinja', ['/non-existent-path', path0]);
       expect(modAPath).to.equal(npath.normalize(`${path0}/govuk_template_jinja`));
     });
 
     it('should throw an Error if the module is not found on any of the paths', () => {
       const path0 = npath.resolve(__dirname, '../testdata/fake-node_modules');
       expect(() => {
-        Casa.resolveModulePath('non-existent-module', [ path0 ]);
+        Casa.resolveModulePath('non-existent-module', [path0]);
       }).to.throw(Error, "Cannot resolve module 'non-existent-module'");
     });
 

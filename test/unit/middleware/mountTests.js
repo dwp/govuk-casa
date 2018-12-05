@@ -6,14 +6,14 @@ const middleware = require('../../../app/middleware/mount.js');
 
 describe('Middleware: mount', () => {
   const mockExpressApp = {
-    all: () => {}
+    all: () => {},
   };
 
   it('should not mount the redirector function if mountUrl is /', () => {
     const mi = middleware({
       all: () => {
         throw new Error('Mounting should not be called');
-      }
+      },
     }, '/');
     return expect(mi.redirectToMountUrl).to.be.undefined;
   });
@@ -27,11 +27,11 @@ describe('Middleware: mount', () => {
     const mi = middleware(mockExpressApp, '/mount-url');
 
     const req = httpMocks.createRequest({
-      url: '/'
+      url: '/',
     });
 
     const res = httpMocks.createResponse({
-      eventEmitter: EventEmitter
+      eventEmitter: EventEmitter,
     });
     res.on('end', () => {
       expect(res._getStatusCode()).to.equal(302);

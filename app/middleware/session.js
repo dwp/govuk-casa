@@ -6,10 +6,11 @@
  *  model/claim claim = Current Claim state
  */
 
-const logger = require('../../lib/Logger')();
-const JourneyData = require('../../lib/JourneyData');
+
 const uid = require('uid-safe');
 const moment = require('moment');
+const logger = require('../../lib/Logger')();
+const JourneyData = require('../../lib/JourneyData');
 
 module.exports = function mwSession(app, expressSession, mountUrl, sessionCfg) {
   /**
@@ -27,7 +28,7 @@ module.exports = function mwSession(app, expressSession, mountUrl, sessionCfg) {
       secure: sessionCfg.secure,
       httpOnly: true,
       path: sessionCfg.cookiePath,
-      maxAge: null
+      maxAge: null,
     },
     name: sessionCfg.name,
     unset: 'destroy',
@@ -42,14 +43,14 @@ module.exports = function mwSession(app, expressSession, mountUrl, sessionCfg) {
       if (req.sessionID && typeof req.session === 'undefined') {
         logger.info(
           'Server session %s has expired. Flagging for destruction.',
-          req.sessionID
+          req.sessionID,
         );
         req.casaSessionExpired = req.sessionID;
       }
 
       // Unique session ID
       return uid.sync(18);
-    }
+    },
   });
   app.use(mwSessionInit);
 
@@ -65,13 +66,13 @@ module.exports = function mwSession(app, expressSession, mountUrl, sessionCfg) {
   const mwSessionExpiry = (req, res, next) => {
     const dateExpire = req.session ? req.session.dateExpire : undefined;
     if (
-      req.casaSessionExpired ||
-      (dateExpire && moment().isSameOrAfter(dateExpire))
+      req.casaSessionExpired
+      || (dateExpire && moment().isSameOrAfter(dateExpire))
     ) {
       logger.info(
         'Destroying expired session %s (tmp new ID %s)',
         req.casaSessionExpired || req.sessionID,
-        req.sessionID
+        req.sessionID,
       );
       delete req.casaSessionExpired;
       req.session.destroy((err) => {
@@ -81,7 +82,7 @@ module.exports = function mwSession(app, expressSession, mountUrl, sessionCfg) {
         res.clearCookie(sessionCfg.name, {
           path: sessionCfg.cookiePath,
           httpOnly: true,
-          secure: sessionCfg.secure
+          secure: sessionCfg.secure,
         });
         res.status(302).redirect(`${mountUrl}session-timeout#`);
       });
@@ -107,7 +108,7 @@ module.exports = function mwSession(app, expressSession, mountUrl, sessionCfg) {
     const hasValidationErrors = req.session && req.session.journeyValidationErrors;
     req.journeyData = new JourneyData(
       hasJourneyData ? req.session.journeyData : {},
-      hasValidationErrors ? req.session.journeyValidationErrors : {}
+      hasValidationErrors ? req.session.journeyValidationErrors : {},
     );
     next();
   };
@@ -116,6 +117,6 @@ module.exports = function mwSession(app, expressSession, mountUrl, sessionCfg) {
   return {
     mwSessionInit,
     mwSessionExpiry,
-    mwSessionSeed
+    mwSessionSeed,
   };
 };

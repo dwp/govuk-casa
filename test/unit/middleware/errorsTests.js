@@ -6,7 +6,7 @@ const middleware = require('../../../app/middleware/errors.js');
 
 describe('Middleware: errors', () => {
   const errMiddleware = middleware({
-    use: () => {}
+    use: () => {},
   });
 
   describe('No other route can handle a valid request', () => {
@@ -14,7 +14,7 @@ describe('Middleware: errors', () => {
       const req = httpMocks.createRequest();
 
       const res = httpMocks.createResponse({
-        eventEmitter: EventEmitter
+        eventEmitter: EventEmitter,
       });
       res.on('end', () => {
         expect(res._getStatusCode()).to.equal(404);
@@ -31,7 +31,7 @@ describe('Middleware: errors', () => {
       const req = httpMocks.createRequest();
 
       const res = httpMocks.createResponse({
-        eventEmitter: EventEmitter
+        eventEmitter: EventEmitter,
       });
       res.on('end', () => {
         expect(res._getStatusCode()).to.equal(403);
@@ -41,10 +41,10 @@ describe('Middleware: errors', () => {
 
       errMiddleware.handleExceptions(
         {
-          code: 'EBADCSRFTOKEN'
+          code: 'EBADCSRFTOKEN',
         },
         req,
-        res
+        res,
       );
     });
   });
@@ -54,7 +54,7 @@ describe('Middleware: errors', () => {
       const req = httpMocks.createRequest();
 
       const res = httpMocks.createResponse({
-        eventEmitter: EventEmitter
+        eventEmitter: EventEmitter,
       });
       res.on('end', () => {
         expect(res._getStatusCode()).to.equal(500);

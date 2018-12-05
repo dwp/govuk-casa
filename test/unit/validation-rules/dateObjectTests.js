@@ -19,25 +19,25 @@ describe('Validation rule: dateObject', () => {
     queue.push(expect(dateObject({ dd: '01', mm: '01', yyyy: '0000' })).to.be.fulfilled);
 
     const rule0 = dateObject.bind({
-      allowMonthNames: true
+      allowMonthNames: true,
     });
     queue.push(expect(rule0({ dd: '01', mm: 'january', yyyy: '2000' })).to.be.fulfilled);
     queue.push(expect(rule0({ dd: '01', mm: 'feb', yyyy: '2000' })).to.be.fulfilled);
 
     const rule1 = dateObject.bind({
-      allowSingleDigitDay: true
+      allowSingleDigitDay: true,
     });
     queue.push(expect(rule1({ dd: '1', mm: '01', yyyy: '2000' })).to.be.fulfilled);
 
     const rule2 = dateObject.bind({
-      allowSingleDigitMonth: true
+      allowSingleDigitMonth: true,
     });
     queue.push(expect(rule2({ dd: '01', mm: '1', yyyy: '2000' })).to.be.fulfilled);
 
     const rule3 = dateObject.bind({
       allowMonthNames: true,
       allowSingleDigitDay: true,
-      allowSingleDigitMonth: true
+      allowSingleDigitMonth: true,
     });
     queue.push(expect(rule3({ dd: '01', mm: '01', yyyy: '2000' })).to.be.fulfilled);
     queue.push(expect(rule3({ dd: '1', mm: '01', yyyy: '2000' })).to.be.fulfilled);
@@ -59,18 +59,18 @@ describe('Validation rule: dateObject', () => {
     queue.push(expect(dateObject({ dd: '31', mm: '02', yyyy: '2000' })).to.be.rejected.eventually.have.property('inline', errorInlineDefault));
 
     const rule0 = dateObject.bind({
-      allowMonthNames: true
+      allowMonthNames: true,
     });
     queue.push(expect(rule0({ dd: '01', mm: 'badname', yyyy: '2000' })).to.be.rejected.eventually.have.property('inline', errorInlineDefault));
 
     const rule1 = dateObject.bind({
-      allowSingleDigitDay: true
+      allowSingleDigitDay: true,
     });
     queue.push(expect(rule1({ dd: '1', mm: '1', yyyy: '2000' })).to.be.rejected.eventually.have.property('inline', errorInlineDefault));
     queue.push(expect(rule1({ dd: '1', mm: 'jan', yyyy: '2000' })).to.be.rejected.eventually.have.property('inline', errorInlineDefault));
 
     const rule2 = dateObject.bind({
-      allowSingleDigitMonth: true
+      allowSingleDigitMonth: true,
     });
     queue.push(expect(rule2({ dd: '1', mm: '1', yyyy: '2000' })).to.be.rejected.eventually.have.property('inline', errorInlineDefault));
     queue.push(expect(rule2({ dd: '01', mm: 'jan', yyyy: '2000' })).to.be.rejected.eventually.have.property('inline', errorInlineDefault));
@@ -85,13 +85,13 @@ describe('Validation rule: dateObject', () => {
         const now = moment();
 
         const rule = dateObject.bind({
-          afterOffsetFromNow: moment.duration(-1, 'week')
+          afterOffsetFromNow: moment.duration(-1, 'week'),
         });
 
         const value = {
           dd: now.format('DD'),
           mm: now.format('MM'),
-          yyyy: now.format('YYYY')
+          yyyy: now.format('YYYY'),
         };
         queue.push(expect(rule(value)).to.be.fulfilled);
 
@@ -104,14 +104,14 @@ describe('Validation rule: dateObject', () => {
 
         const rule = dateObject.bind({
           afterOffsetFromNow: moment.duration(-1, 'week'),
-          now
+          now,
         });
 
         const testDate = moment(now).subtract(6, 'days');
         const value = {
           dd: testDate.format('DD'),
           mm: testDate.format('MM'),
-          yyyy: testDate.format('YYYY')
+          yyyy: testDate.format('YYYY'),
         };
 
         queue.push(expect(rule(value)).to.be.fulfilled);
@@ -125,14 +125,14 @@ describe('Validation rule: dateObject', () => {
 
         const rule = dateObject.bind({
           afterOffsetFromNow: moment.duration(-1, 'week'),
-          now
+          now,
         });
 
         const testDate = moment(now).subtract(6, 'days');
         const value = {
           dd: testDate.format('DD'),
           mm: testDate.format('MM'),
-          yyyy: testDate.format('YYYY')
+          yyyy: testDate.format('YYYY'),
         };
 
         queue.push(expect(rule(value)).to.be.fulfilled);
@@ -147,14 +147,14 @@ describe('Validation rule: dateObject', () => {
 
         const rule = dateObject.bind({
           afterOffsetFromNow: moment.duration(-1, 'week'),
-          now
+          now,
         });
 
         const testDate = moment(now).subtract(6, 'days');
         const value = {
           dd: testDate.format('DD'),
           mm: testDate.format('MM'),
-          yyyy: testDate.format('YYYY')
+          yyyy: testDate.format('YYYY'),
         };
 
         queue.push(expect(rule(value)).to.be.fulfilled);
@@ -169,14 +169,14 @@ describe('Validation rule: dateObject', () => {
 
         const rule = dateObject.bind({
           afterOffsetFromNow: moment.duration(-1, 'week'),
-          now
+          now,
         });
 
         const testDate = moment(now).subtract(6, 'days');
         const value = {
           dd: testDate.format('DD'),
           mm: testDate.format('MM'),
-          yyyy: testDate.format('YYYY')
+          yyyy: testDate.format('YYYY'),
         };
 
         queue.push(expect(rule(value)).to.be.fulfilled);
@@ -189,14 +189,14 @@ describe('Validation rule: dateObject', () => {
         const now = moment();
 
         const rule = dateObject.bind({
-          afterOffsetFromNow: moment.duration(-1, 'week')
+          afterOffsetFromNow: moment.duration(-1, 'week'),
         });
 
         const testDate = now.subtract(7, 'days');
         const value = {
           dd: testDate.format('DD'),
           mm: testDate.format('MM'),
-          yyyy: testDate.format('YYYY')
+          yyyy: testDate.format('YYYY'),
         };
 
         queue.push(expect(rule(value)).to.be.rejected.eventually.have.property('inline', errorInlineAfterOffset));
@@ -212,14 +212,14 @@ describe('Validation rule: dateObject', () => {
 
         const rule = dateObject.bind({
           beforeOffsetFromNow: moment.duration(-1, 'week'),
-          now
+          now,
         });
 
         const testDate = moment(now).subtract(7, 'days');
         const value = {
           dd: testDate.format('DD'),
           mm: testDate.format('MM'),
-          yyyy: testDate.format('YYYY')
+          yyyy: testDate.format('YYYY'),
         };
 
         queue.push(expect(rule(value)).to.be.rejected.eventually.have.property('inline', errorInlineBeforeOffset));
@@ -236,15 +236,15 @@ describe('Validation rule: dateObject', () => {
           now,
           errorMsgBeforeOffset: {
             inline: 'CUSTOM_INLINE_MSG',
-            summary: 'CUSTOM_SUMMARY_MSG'
-          }
+            summary: 'CUSTOM_SUMMARY_MSG',
+          },
         });
 
         const testDate = moment(now).subtract(7, 'days');
         const value = {
           dd: testDate.format('DD'),
           mm: testDate.format('MM'),
-          yyyy: testDate.format('YYYY')
+          yyyy: testDate.format('YYYY'),
         };
 
         queue.push(expect(rule(value)).to.be.rejected.eventually.have.property('inline', 'CUSTOM_INLINE_MSG'));
@@ -259,14 +259,14 @@ describe('Validation rule: dateObject', () => {
 
         const rule = dateObject.bind({
           beforeOffsetFromNow: moment.duration(-1, 'week'),
-          now
+          now,
         });
 
         const testDate = moment(now).subtract(7, 'days');
         const value = {
           dd: testDate.format('DD'),
           mm: testDate.format('MM'),
-          yyyy: testDate.format('YYYY')
+          yyyy: testDate.format('YYYY'),
         };
 
         queue.push(expect(rule(value)).to.be.rejected.eventually.have.property('inline', errorInlineBeforeOffset));
@@ -281,14 +281,14 @@ describe('Validation rule: dateObject', () => {
 
         const rule = dateObject.bind({
           beforeOffsetFromNow: moment.duration(-1, 'week'),
-          now
+          now,
         });
 
         const testDate = moment(now).subtract(7, 'days');
         const value = {
           dd: testDate.format('DD'),
           mm: testDate.format('MM'),
-          yyyy: testDate.format('YYYY')
+          yyyy: testDate.format('YYYY'),
         };
 
         queue.push(expect(rule(value)).to.be.rejected.eventually.have.property('inline', errorInlineBeforeOffset));
@@ -301,14 +301,14 @@ describe('Validation rule: dateObject', () => {
         const now = moment();
 
         const rule = dateObject.bind({
-          beforeOffsetFromNow: moment.duration(-1, 'week')
+          beforeOffsetFromNow: moment.duration(-1, 'week'),
         });
 
         const testDate = now.subtract(8, 'days');
         const value = {
           dd: testDate.format('DD'),
           mm: testDate.format('MM'),
-          yyyy: testDate.format('YYYY')
+          yyyy: testDate.format('YYYY'),
         };
 
         queue.push(expect(rule(value)).to.be.fulfilled);
@@ -321,13 +321,13 @@ describe('Validation rule: dateObject', () => {
         const now = moment();
 
         const rule = dateObject.bind({
-          beforeOffsetFromNow: moment.duration(1, 'week')
+          beforeOffsetFromNow: moment.duration(1, 'week'),
         });
 
         const value = {
           dd: now.format('DD'),
           mm: now.format('MM'),
-          yyyy: now.format('YYYY')
+          yyyy: now.format('YYYY'),
         };
 
         queue.push(expect(rule(value)).to.be.fulfilled);

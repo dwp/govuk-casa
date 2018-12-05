@@ -23,8 +23,8 @@ describe('lib/bootstrap/end-session', () => {
       session: {
         regenerate: sinon.stub().callsFake((cb) => {
           cb()
-        })
-      }
+        }),
+      },
     };
     return endSession(reqStub)
       .then(() => expect(reqStub.session.regenerate).to.have.been.calledOnce);
@@ -35,8 +35,8 @@ describe('lib/bootstrap/end-session', () => {
       session: {
         regenerate: sinon.stub().callsFake((cb) => {
           cb()
-        })
-      }
+        }),
+      },
     };
     return expect(endSession(reqStub)).to.be.fulfilled;
   });
@@ -46,8 +46,8 @@ describe('lib/bootstrap/end-session', () => {
       session: {
         regenerate: sinon.stub().callsFake((cb) => {
           cb(new Error('Failed'))
-        })
-      }
+        }),
+      },
     };
     return expect(endSession(reqStub)).to.be.rejectedWith(Error);
   });
@@ -58,8 +58,8 @@ describe('lib/bootstrap/end-session', () => {
         language: 'TEST_LANG',
         regenerate: sinon.stub().callsFake((cb) => {
           cb()
-        })
-      }
+        }),
+      },
     };
     return endSession(reqStub)
       .then(() => expect(reqStub.session.language).to.equal('TEST_LANG'));

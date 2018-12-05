@@ -96,8 +96,8 @@ function doValidation(logger, req, res, pageId, pageMeta) {
       result = Validation.processor(
         pageMeta.fieldValidators,
         req.journeyData.getDataForPage(pageId), {
-          reduceErrors: true
-        }
+          reduceErrors: true,
+        },
       );
     } else {
       result = Promise.resolve();
@@ -154,11 +154,11 @@ function doRedirect(logger, req, res, mountUrl, pageMeta, journey, prePostWaypoi
     } else if (journey.containsWaypoint(req.journeyWaypointId)) {
       const waypoints = journey.traverse(
         req.journeyData.getData(),
-        req.journeyData.getValidationErrors()
+        req.journeyData.getValidationErrors(),
       );
       const positionInJourney = Math.min(
         waypoints.indexOf(req.journeyWaypointId),
-        waypoints.length - 2
+        waypoints.length - 2,
       );
       if (positionInJourney > -1) {
         nextWaypoint = waypoints[positionInJourney + 1];
@@ -226,14 +226,14 @@ function doRender(logger, req, res, pageMeta, errors) {
       // the `id` attribute of each input field.
       const govukErrors = Object.keys(errors || {}).map(k => ({
         text: req.i18nTranslator.t(errors[k][0].summary),
-        href: `#f-${k}-error`
+        href: `#f-${k}-error`,
       }));
 
       res.render(pageMeta.view, {
         formData: req.body,
         formErrors: errors,
         formErrorsGovukArray: govukErrors,
-        inEditMode: req.inEditMode
+        inEditMode: req.inEditMode,
       });
     }
   });
@@ -269,8 +269,8 @@ module.exports = function routePagePost(mountUrl, pages, journey, allowPageEdit)
     // Load meta
     const logger = loggerFunction('routes');
     logger.setSessionId(req.session.id);
-    req.journeyWaypointId = req.journeyWaypointId ||
-      util.getPageIdFromUrl(req.url);
+    req.journeyWaypointId = req.journeyWaypointId
+      || util.getPageIdFromUrl(req.url);
     const pageMeta = pages.getPageMeta(req.journeyWaypointId);
 
     // Are we in edit mode?
@@ -294,7 +294,7 @@ module.exports = function routePagePost(mountUrl, pages, journey, allowPageEdit)
     // the URL), but this case will be handled by normal traversal.
     const preGatherWaypoints = journey.traverse(
       req.journeyData.getData(),
-      req.inEditMode ? {} : req.journeyData.getValidationErrors()
+      req.inEditMode ? {} : req.journeyData.getValidationErrors(),
     );
     doGather(logger, req, res, pageMeta)
       .then(doValidation.bind(null, logger, req, res, req.journeyWaypointId, pageMeta))
@@ -305,7 +305,7 @@ module.exports = function routePagePost(mountUrl, pages, journey, allowPageEdit)
         req.session.journeyValidationErrors = req.journeyData.getValidationErrors();
         return doRedirect(logger, req, res, mountUrl, pageMeta, journey, {
           pre: preGatherWaypoints,
-          post: journey.traverse(req.journeyData.getData(), req.journeyData.getValidationErrors())
+          post: journey.traverse(req.journeyData.getData(), req.journeyData.getValidationErrors()),
         });
       })
       .catch((errors) => {

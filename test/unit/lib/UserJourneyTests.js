@@ -15,7 +15,7 @@ describe('UserJourney.Map', () => {
     it('should throw a TypeError if any waypoints are not string, array or object', () => {
       const r1 = new UserJourney.Road();
       expect(() => {
-        r1.addWaypoints([ 1, true, 'valid' ]);
+        r1.addWaypoints([1, true, 'valid']);
       }).to.throw(TypeError);
     });
 
@@ -24,7 +24,7 @@ describe('UserJourney.Map', () => {
         const r1 = new UserJourney.Road();
         expect(() => {
           r1.addWaypoints([
-            []
+            [],
           ]);
         }).to.throw(SyntaxError);
       });
@@ -33,7 +33,7 @@ describe('UserJourney.Map', () => {
         const r1 = new UserJourney.Road();
         expect(() => {
           r1.addWaypoints([
-            [ 1, () => {} ]
+            [1, () => {}],
           ]);
         }).to.throw(TypeError);
       });
@@ -42,7 +42,7 @@ describe('UserJourney.Map', () => {
         const r1 = new UserJourney.Road();
         expect(() => {
           r1.addWaypoints([
-            [ '', true ]
+            ['', true],
           ]);
         }).to.throw(TypeError);
       });
@@ -53,7 +53,7 @@ describe('UserJourney.Map', () => {
         const r1 = new UserJourney.Road();
         expect(() => {
           r1.addWaypoints([
-            {}
+            {},
           ]);
         }).to.throw(SyntaxError);
       });
@@ -62,7 +62,7 @@ describe('UserJourney.Map', () => {
         const r1 = new UserJourney.Road();
         expect(() => {
           r1.addWaypoints([
-            { id: true }
+            { id: true },
           ]);
         }).to.throw(TypeError);
       });
@@ -71,7 +71,7 @@ describe('UserJourney.Map', () => {
         const r1 = new UserJourney.Road();
         expect(() => {
           r1.addWaypoints([
-            { id: '', condition: true }
+            { id: '', condition: true },
           ]);
         }).to.throw(TypeError);
       });
@@ -80,7 +80,7 @@ describe('UserJourney.Map', () => {
     it('should push an object onto the stack containing the correct id and a noop function for an object waypoint', () => {
       const r1 = new UserJourney.Road();
       r1.addWaypoints([
-        { id: 'test0' }
+        { id: 'test0' },
       ]);
       const wp = r1.getPOIs().pop();
       expect(wp).to.have.property('id').and.equals('test0');
@@ -93,7 +93,7 @@ describe('UserJourney.Map', () => {
       const testFunction = () => {};
       const r1 = new UserJourney.Road();
       r1.addWaypoints([
-        { id: 'test0', condition: testFunction }
+        { id: 'test0', condition: testFunction },
       ]);
       const wp = r1.getPOIs().pop();
       expect(wp).to.have.property('id').and.equals('test0');
@@ -104,7 +104,7 @@ describe('UserJourney.Map', () => {
       const r1 = new UserJourney.Road();
       const r2 = new UserJourney.Road();
       r1.addWaypoints('point0');
-      r1.fork([ r2 ], () => r2);
+      r1.fork([r2], () => r2);
       expect(() => {
         r1.addWaypoints('point1');
       }).to.throw(Error);
@@ -129,7 +129,7 @@ describe('UserJourney.Map', () => {
       const r1 = new UserJourney.Road();
       const r2 = new UserJourney.Road();
       r1.addWaypoints('point0');
-      r1.fork([ r2 ], () => r2);
+      r1.fork([r2], () => r2);
       expect(() => {
         r1.end();
       }).to.throw(Error);
@@ -154,7 +154,7 @@ describe('UserJourney.Map', () => {
       const r1 = new UserJourney.Road();
       const r2 = new UserJourney.Road();
       r1.addWaypoints('point0');
-      r1.fork([ r2 ], () => r2);
+      r1.fork([r2], () => r2);
       expect(() => {
         r1.mergeWith(r2);
       }).to.throw(Error);
@@ -185,8 +185,8 @@ describe('UserJourney.Map', () => {
       r1.mergeWith(r2);
 
       r2.addWaypoints([
-        [ 'p1', () => (false) ],
-        'p2'
+        ['p1', () => (false)],
+        'p2',
       ]);
       r2.mergeWith(r3);
 
@@ -196,7 +196,7 @@ describe('UserJourney.Map', () => {
       const t = map.traverse({
         p0: { data: true },
         p1: { data: true },
-        p2: { data: true }
+        p2: { data: true },
       });
       expect(t).to.contain('p0');
       expect(t).to.not.contain('p1');
@@ -209,7 +209,7 @@ describe('UserJourney.Map', () => {
       const r1 = new UserJourney.Road();
       const r2 = new UserJourney.Road();
       r1.addWaypoints('point0');
-      r1.fork([ r2 ], () => r2);
+      r1.fork([r2], () => r2);
       expect(() => {
         r1.mergeWith(r2);
       }).to.throw(Error);
@@ -219,14 +219,14 @@ describe('UserJourney.Map', () => {
       const r5 = new UserJourney.Road();
       r3.mergeWith(r4);
       expect(() => {
-        r3.fork([ r5 ], () => r5);
+        r3.fork([r5], () => r5);
       }).to.throw(Error);
 
       const r6 = new UserJourney.Road();
       const r7 = new UserJourney.Road();
       r6.end();
       expect(() => {
-        r6.fork([ r7 ], () => r7);
+        r6.fork([r7], () => r7);
       }).to.throw(Error);
     });
   });
@@ -245,7 +245,7 @@ describe('UserJourney.Map', () => {
         id: 'my-waypoint',
         type: '$INVALID_TYPE$',
         show: () => (true),
-        nextWaypoint: () => (true)
+        nextWaypoint: () => (true),
       });
       const map = new UserJourney.Map();
       map.startAt(road);
@@ -259,10 +259,10 @@ describe('UserJourney.Map', () => {
       const roadB = new UserJourney.Road();
       const roadC = new UserJourney.Road();
 
-      roadA.addWaypoints([ 'a', 'b', 'c' ]);
-      roadA.fork([ roadB, roadC ], () => (true));
-      roadB.addWaypoints([ 'd', 'e', 'f' ]);
-      roadC.addWaypoints([ 'g', 'h', 'i' ]);
+      roadA.addWaypoints(['a', 'b', 'c']);
+      roadA.fork([roadB, roadC], () => (true));
+      roadB.addWaypoints(['d', 'e', 'f']);
+      roadC.addWaypoints(['g', 'h', 'i']);
       roadC.end();
 
       const map = new UserJourney.Map();
@@ -271,7 +271,7 @@ describe('UserJourney.Map', () => {
       const waypoints = map.allWaypoints();
       waypoints.sort();
 
-      expect(waypoints).to.eql([ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i' ]);
+      expect(waypoints).to.eql(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']);
     });
 
     it('should return all waypoints once in a looping journey', () => {
@@ -279,11 +279,11 @@ describe('UserJourney.Map', () => {
       const roadB = new UserJourney.Road();
       const roadC = new UserJourney.Road();
 
-      roadA.addWaypoints([ 'a', 'b', 'c' ]);
-      roadA.fork([ roadA, roadB ], () => (true));
-      roadB.addWaypoints([ 'd', 'e', 'f' ]);
+      roadA.addWaypoints(['a', 'b', 'c']);
+      roadA.fork([roadA, roadB], () => (true));
+      roadB.addWaypoints(['d', 'e', 'f']);
       roadB.mergeWith(roadC);
-      roadC.addWaypoints([ 'g', 'h', 'i' ]);
+      roadC.addWaypoints(['g', 'h', 'i']);
       roadC.end();
 
       const map = new UserJourney.Map();
@@ -292,7 +292,7 @@ describe('UserJourney.Map', () => {
       const waypoints = map.allWaypoints();
       waypoints.sort();
 
-      expect(waypoints).to.eql([ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i' ]);
+      expect(waypoints).to.eql(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']);
     });
   });
 
@@ -315,12 +315,12 @@ describe('UserJourney.Map', () => {
       const road4 = new UserJourney.Road();
       const road5 = new UserJourney.Road();
 
-      road1.addWaypoints([ 'point0', 'point1' ]);
-      road1.fork([ road2, road3 ], roads => roads[0]);
-      road2.addWaypoints([ 'point2', 'point3' ]);
-      road3.addWaypoints([ 'point4', 'point5' ]);
-      road4.addWaypoints([ 'point6', 'point7' ]);
-      road5.addWaypoints([ 'point8', 'point9' ]);
+      road1.addWaypoints(['point0', 'point1']);
+      road1.fork([road2, road3], roads => roads[0]);
+      road2.addWaypoints(['point2', 'point3']);
+      road3.addWaypoints(['point4', 'point5']);
+      road4.addWaypoints(['point6', 'point7']);
+      road5.addWaypoints(['point8', 'point9']);
       road2.mergeWith(road4);
       road3.mergeWith(road4);
       road4.mergeWith(road5);
@@ -348,7 +348,7 @@ describe('UserJourney.Map', () => {
       const map = new UserJourney.Map();
 
       const road1 = new UserJourney.Road();
-      road1.addWaypoints([ 'p0', 'p1', 'p2', 'p3' ]);
+      road1.addWaypoints(['p0', 'p1', 'p2', 'p3']);
 
       map.startAt(road1);
 
@@ -360,13 +360,13 @@ describe('UserJourney.Map', () => {
       const map = new UserJourney.Map();
       const r = new UserJourney.Road();
 
-      r.addWaypoints([ 'p0', 'p1' ]);
+      r.addWaypoints(['p0', 'p1']);
       r.end();
 
       map.startAt(r);
       const t = map.traverse({
         p0: { data: true },
-        p1: { data: true }
+        p1: { data: true },
       });
 
       expect(t).to.contain('p1');
@@ -376,14 +376,14 @@ describe('UserJourney.Map', () => {
       const map = new UserJourney.Map();
 
       const road1 = new UserJourney.Road();
-      road1.addWaypoints([ 'p0', 'p1', 'p2', 'p3', 'p4', 'p5' ]);
+      road1.addWaypoints(['p0', 'p1', 'p2', 'p3', 'p4', 'p5']);
 
       map.startAt(road1);
 
       const context = {
         p0: { data: true },
         p1: { data: true },
-        p2: { data: true }
+        p2: { data: true },
       };
 
       expect(map.traverse(context)).to.contain('p0');
@@ -398,7 +398,7 @@ describe('UserJourney.Map', () => {
       const map = new UserJourney.Map();
 
       const road1 = new UserJourney.Road();
-      road1.addWaypoints([ 'p0', 'p1', [ 'p2', c => c.p1.data === true ], [ 'p3', c => c.p2.data === true ], 'p4', 'p5' ]);
+      road1.addWaypoints(['p0', 'p1', ['p2', c => c.p1.data === true], ['p3', c => c.p2.data === true], 'p4', 'p5']);
 
       map.startAt(road1);
 
@@ -406,7 +406,7 @@ describe('UserJourney.Map', () => {
         p0: { data: true },
         p1: { data: true },
         p2: { data: false },
-        p3: { data: true }
+        p3: { data: true },
       };
 
       expect(map.traverse(context)).to.contain('p0');
@@ -421,28 +421,25 @@ describe('UserJourney.Map', () => {
       const map = new UserJourney.Map();
 
       const road1 = new UserJourney.Road();
-      road1.addWaypoints([ 'p0', 'p1', 'p2' ]);
+      road1.addWaypoints(['p0', 'p1', 'p2']);
 
       const road2 = new UserJourney.Road();
-      road2.addWaypoints([ 'p3', 'p4', 'p5' ]);
+      road2.addWaypoints(['p3', 'p4', 'p5']);
 
       const road3 = new UserJourney.Road();
       /* eslint-disable-next-line require-jsdoc */
       const skip = () => (false);
       road3.addWaypoints([
-        [ 'p6', skip ],
-        [ 'p7', skip ],
-        [ 'p8', skip ]
+        ['p6', skip],
+        ['p7', skip],
+        ['p8', skip],
       ]);
 
       const road4 = new UserJourney.Road();
-      road4.addWaypoints([ 'p9', 'p10', 'p11' ]);
+      road4.addWaypoints(['p9', 'p10', 'p11']);
 
       map.startAt(road1);
-      road1.fork([ road2, road3 ], roads =>
-        // always fork to road3, but should then skip all waypoints to road 4
-        // because all waypoints in road 3 are conditional, and all return false
-        roads[1]);
+      road1.fork([road2, road3], roads => roads[1]);
       road3.mergeWith(road4);
 
       const context = {
@@ -451,7 +448,7 @@ describe('UserJourney.Map', () => {
         p2: { data: true },
         p6: { data: true },
         p7: { data: true },
-        p8: { data: true }
+        p8: { data: true },
       };
 
       expect(map.traverse(context)).to.contain('p0');
@@ -472,21 +469,19 @@ describe('UserJourney.Map', () => {
       const map = new UserJourney.Map();
 
       const road1 = new UserJourney.Road();
-      road1.addWaypoints([ 'p0', 'p1', 'p2' ]);
+      road1.addWaypoints(['p0', 'p1', 'p2']);
 
       const road2 = new UserJourney.Road();
-      road2.addWaypoints([ 'p3', 'p4', 'p5' ]);
+      road2.addWaypoints(['p3', 'p4', 'p5']);
 
       const road3 = new UserJourney.Road();
-      road3.addWaypoints([ 'p6', 'p7', 'p8' ]);
+      road3.addWaypoints(['p6', 'p7', 'p8']);
 
       const road4 = new UserJourney.Road();
-      road4.addWaypoints([ 'p9', 'p10', 'p11' ]);
+      road4.addWaypoints(['p9', 'p10', 'p11']);
 
       map.startAt(road1);
-      road1.fork([ road2, road3 ], roads =>
-        // always fork to road3
-        roads[1]);
+      road1.fork([road2, road3], roads => roads[1]);
       road3.mergeWith(road4);
 
       const context = {
@@ -495,7 +490,7 @@ describe('UserJourney.Map', () => {
         p2: { data: true },
         p6: { data: true },
         p7: { data: true },
-        p8: { data: true }
+        p8: { data: true },
       };
 
       expect(map.traverse(context)).to.contain('p0');
@@ -516,9 +511,9 @@ describe('UserJourney.Map', () => {
       const roadA = new UserJourney.Road();
       const roadB = new UserJourney.Road();
 
-      roadA.addWaypoints([ 'a', 'b', 'c' ]);
-      roadA.fork([ roadA, roadB ], (roads, context) => (context.c.doLoop ? roads[0] : roads[1]));
-      roadB.addWaypoints([ 'd', 'e', 'f' ]);
+      roadA.addWaypoints(['a', 'b', 'c']);
+      roadA.fork([roadA, roadB], (roads, context) => (context.c.doLoop ? roads[0] : roads[1]));
+      roadB.addWaypoints(['d', 'e', 'f']);
       roadB.end();
 
       const map = new UserJourney.Map();
@@ -530,35 +525,35 @@ describe('UserJourney.Map', () => {
         c: { doLoop: true },
         d: { data: true },
         e: { data: true },
-        f: { data: true }
+        f: { data: true },
       };
 
-      expect(map.traverse(context)).to.eql([ 'a', 'b', 'c' ]);
+      expect(map.traverse(context)).to.eql(['a', 'b', 'c']);
 
       const context2 = {
         a: { data: true },
         b: { data: true },
-        c: { doLoop: false }
+        c: { doLoop: false },
       };
 
-      expect(map.traverse(context2)).to.eql([ 'a', 'b', 'c', 'd' ]);
+      expect(map.traverse(context2)).to.eql(['a', 'b', 'c', 'd']);
     });
 
     it('should return the first waypoint that contains validation errors', () => {
       const map = new UserJourney.Map();
 
       const road1 = new UserJourney.Road();
-      road1.addWaypoints([ 'p0', 'p1', 'p2', 'p3', 'p4', 'p5' ]);
+      road1.addWaypoints(['p0', 'p1', 'p2', 'p3', 'p4', 'p5']);
 
       map.startAt(road1);
 
       const dataContext = {
         p0: { data: true },
         p1: { data: true },
-        p2: { data: true }
+        p2: { data: true },
       };
       const validationContext = {
-        p1: { fieldName0: [] }
+        p1: { fieldName0: [] },
       };
 
       expect(map.traverse(dataContext, validationContext)).to.contain('p0');
@@ -580,27 +575,27 @@ describe('UserJourney.Map', () => {
       const map = new UserJourney.Map();
 
       const road1 = new UserJourney.Road();
-      road1.addWaypoints([ 'p0', 'p1', 'p2', 'p3' ]);
+      road1.addWaypoints(['p0', 'p1', 'p2', 'p3']);
 
       map.startAt(road1);
 
-      expect(map.traverseAhead()).to.eql([ 'p0', 'p1', 'p2', 'p3' ]);
+      expect(map.traverseAhead()).to.eql(['p0', 'p1', 'p2', 'p3']);
     });
 
     it('should return all waypoints in a simple, unconditional journey when given partial context', () => {
       const map = new UserJourney.Map();
 
       const road1 = new UserJourney.Road();
-      road1.addWaypoints([ 'p0', 'p1', 'p2', 'p3' ]);
+      road1.addWaypoints(['p0', 'p1', 'p2', 'p3']);
 
       map.startAt(road1);
 
       const context = {
         p0: 'data',
-        p1: 'data'
+        p1: 'data',
       };
 
-      expect(map.traverseAhead(context)).to.eql([ 'p0', 'p1', 'p2', 'p3' ]);
+      expect(map.traverseAhead(context)).to.eql(['p0', 'p1', 'p2', 'p3']);
     });
 
     it('should return correct waypoints in a forked journey', () => {
@@ -609,35 +604,35 @@ describe('UserJourney.Map', () => {
       const road2 = new UserJourney.Road();
       const road3 = new UserJourney.Road();
 
-      road1.addWaypoints([ 'p0', 'p1', 'p2', 'p3' ]).fork([ road2, road3 ], (choices, context) => (context.p3.arg1 ? choices[0] : choices[1]));
+      road1.addWaypoints(['p0', 'p1', 'p2', 'p3']).fork([road2, road3], (choices, context) => (context.p3.arg1 ? choices[0] : choices[1]));
 
-      road2.addWaypoints([ 'p4', 'p5' ]);
-      road3.addWaypoints([ 'p6', 'p7' ]);
+      road2.addWaypoints(['p4', 'p5']);
+      road3.addWaypoints(['p6', 'p7']);
 
       map.startAt(road1);
 
       const context = {
         p3: {
-          arg1: false
-        }
+          arg1: false,
+        },
       };
 
-      expect(map.traverseAhead(context)).to.eql([ 'p0', 'p1', 'p2', 'p3', 'p6', 'p7' ]);
+      expect(map.traverseAhead(context)).to.eql(['p0', 'p1', 'p2', 'p3', 'p6', 'p7']);
     });
 
     it('should return all waypoints safely when encountering a looping journey', () => {
       const roadA = new UserJourney.Road();
       const roadB = new UserJourney.Road();
 
-      roadA.addWaypoints([ 'a', 'b', 'c' ]);
-      roadA.fork([ roadA, roadB ], roads => (roads[1]));
-      roadB.addWaypoints([ 'd', 'e', 'f' ]);
+      roadA.addWaypoints(['a', 'b', 'c']);
+      roadA.fork([roadA, roadB], roads => (roads[1]));
+      roadB.addWaypoints(['d', 'e', 'f']);
       roadB.mergeWith(roadA);
 
       const map = new UserJourney.Map();
       map.startAt(roadA);
 
-      expect(map.traverseAhead()).to.eql([ 'a', 'b', 'c', 'd', 'e', 'f' ]);
+      expect(map.traverseAhead()).to.eql(['a', 'b', 'c', 'd', 'e', 'f']);
     });
   });
 });

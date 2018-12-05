@@ -14,5 +14,5 @@ module.exports = function mergeObject(...objects) {
       throw new TypeError('Cannot merge objects of type %s', Object.prototype.toString.call(o));
     }
   });
-  return Object.assign.apply(null, [ {}, ...objects ]);
+  return Object.assign.apply(null, [{}, ...objects]);
 };

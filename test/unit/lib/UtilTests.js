@@ -83,11 +83,11 @@ describe('Util', () => {
     it('should return a value for a nested path using mixed array and dot notation', () => {
       expect(Util.objectPathValue({ a: { b: { c: 'hi' } } }, 'a["b"].c')).to.equal('hi');
       expect(Util.objectPathValue({ a: { b: { c: 'hi' } } }, 'a.b["c"]')).to.equal('hi');
-      expect(Util.objectPathValue({ a: { b: [ { c: 'hi', d: 'bye' } ] } }, 'a.b')).to.be.an('array');
-      expect(Util.objectPathValue({ a: { b: [ { c: 'hi', d: 'bye' } ] } }, 'a.b[0]["c"]')).to.equal('hi');
-      expect(Util.objectPathValue({ a: { b: [ { c: 'hi', d: 'bye' } ] } }, 'a.b[0]["d"]')).to.equal('bye');
-      expect(Util.objectPathValue({ a: { b: [ [] ] } }, 'a.b[0]')).to.be.an('array');
-      expect(Util.objectPathValue({ a: { b: [ [ 'a', 'b' ] ] } }, 'a.b[0][1]')).to.equal('b');
+      expect(Util.objectPathValue({ a: { b: [{ c: 'hi', d: 'bye' }] } }, 'a.b')).to.be.an('array');
+      expect(Util.objectPathValue({ a: { b: [{ c: 'hi', d: 'bye' }] } }, 'a.b[0]["c"]')).to.equal('hi');
+      expect(Util.objectPathValue({ a: { b: [{ c: 'hi', d: 'bye' }] } }, 'a.b[0]["d"]')).to.equal('bye');
+      expect(Util.objectPathValue({ a: { b: [[]] } }, 'a.b[0]')).to.be.an('array');
+      expect(Util.objectPathValue({ a: { b: [['a', 'b']] } }, 'a.b[0][1]')).to.equal('b');
     });
   });
 
@@ -125,34 +125,34 @@ describe('Util', () => {
 
     it('should be true when given an empty array', () => expect(Util.isEmpty([])).to.be.true);
 
-    it('should be true when given an array containing only empty values', () => expect(Util.isEmpty([ null, undefined, '', { a: null, b: undefined, c: '' } ])).to.be.true);
+    it('should be true when given an array containing only empty values', () => expect(Util.isEmpty([null, undefined, '', { a: null, b: undefined, c: '' }])).to.be.true);
 
     it('should be true when given an object containing only empty values', () => expect(Util.isEmpty({
-      a: null, b: undefined, c: '', e: [], f: {}
+      a: null, b: undefined, c: '', e: [], f: {},
     })).to.be.true);
 
-    it('should be false when given an array containing non-empty values', () => expect(Util.isEmpty([ ' ', null, undefined, '', {
-      a: null, b: undefined, c: '', d: ' '
-    } ])).to.be.false);
+    it('should be false when given an array containing non-empty values', () => expect(Util.isEmpty([' ', null, undefined, '', {
+      a: null, b: undefined, c: '', d: ' ',
+    }])).to.be.false);
 
     it('should be false when given a non-zero number', () => expect(Util.isEmpty(1)).to.be.false);
 
     it('should be false when given a 0', () => expect(Util.isEmpty(0)).to.be.false);
 
-    it('should be false when given a non empty array', () => expect(Util.isEmpty([ 1 ])).to.be.false);
+    it('should be false when given a non empty array', () => expect(Util.isEmpty([1])).to.be.false);
 
     it('should be false when given a non empty object', () => expect(Util.isEmpty({ a: 1 })).to.be.false);
 
     it('should be true when custom character regexes are removed on a string', () => expect(Util.isEmpty(' ', {
-      regexRemove: /\s/g
+      regexRemove: /\s/g,
     })).to.be.true);
 
-    it('should be true when custom character regexes are removed on an object', () => expect(Util.isEmpty({ a: ' ', b: { c: ' ' }, d: [ '\t' ] }, {
-      regexRemove: /\s/g
+    it('should be true when custom character regexes are removed on an object', () => expect(Util.isEmpty({ a: ' ', b: { c: ' ' }, d: ['\t'] }, {
+      regexRemove: /\s/g,
     })).to.be.true);
 
-    it('should be true when custom character regexes are removed on an array', () => expect(Util.isEmpty([ ' ', '\t' ], {
-      regexRemove: /\s/g
+    it('should be true when custom character regexes are removed on an array', () => expect(Util.isEmpty([' ', '\t'], {
+      regexRemove: /\s/g,
     })).to.be.true);
   });
 });
