@@ -21,8 +21,7 @@
 
 const npath = require('path');
 const uglifyJs = require('uglify-js');
-const fs = require('fs');
-const mkdirp = require('mkdirp');
+const fs = require('fs-extra');
 const recursiveReaddir = require('recursive-readdir-sync');
 const sass = require('node-sass');
 const logger = require('../../lib/Logger')();
@@ -73,7 +72,7 @@ function compileSassSources(
         .replace(/^\/+/, '')
         .replace(/\.scss$/, '.css'),
     );
-    mkdirp.sync(npath.dirname(dstPath));
+    fs.ensureDirSync(npath.dirname(dstPath));
     fs.writeFileSync(dstPath, cssContent, {
       encoding: 'utf8',
     });
@@ -141,7 +140,7 @@ function addCasaStaticAssets(
   if (uglifyCasa.error) {
     throw new Error(`Got error whilst uglifying casa.js: ${uglifyCasa.error.message}`);
   }
-  mkdirp.sync(npath.resolve(casaAssetsDir, 'js'));
+  fs.ensureDirSync(npath.resolve(casaAssetsDir, 'js'));
   fs.writeFileSync(
     npath.resolve(casaAssetsDir, 'js/casa.js'),
     uglifyCasa.code, {
