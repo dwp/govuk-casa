@@ -4,6 +4,8 @@ Each form input you include in your page form can be validated against some pres
 
 If using [CASA's GOVUK Frontend macro wrappers](casa-template-macros.md), each input that fails validation will also be marked with some information about the failure. This is useful for capturing analytics.
 
+Before input is validated it can be manipulated by [Gather Modifier](gather-modifiers.md) functions.
+
 ## Built-in rules
 
 Validation rules are simple functions that return a `Promise` that is either resolved if the data is valid, or rejected if invalid.

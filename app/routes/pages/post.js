@@ -37,17 +37,84 @@ function executeHook(logger, req, res, pageMeta, hookName) {
 }
 
 /**
-* Gather data into the request session.
-*
-* Hooks:
-*   pregather
-*
-* @param {Logger} logger Request-specific logger instance
-* @param {request} req Express request obejct
-* @param {response} res Express response object
-* @param {object} pageMeta Metadata of page being evalutated
-* @return {Promise} Promise (always resolves, unless hook intercepts)
-*/
+ * This does the opposite of objectPathValue
+ * it set the value of the propeerty field in the pageData object to value.
+ *
+ * objectPathValue uses the module object-resolve-path to do a sort of home made hacky xpath
+ * to get a value given a path. Problem is that it only gets the value and does not export a
+ * way of getting the path or setting the value at the path.
+ * So this is a hacky fix for that
+ *
+ * For the basic gatherModifiers the field will be the same as the path so it should be ok
+ * need more work on this.
+ *
+ * @param {object} obj Object to traverse
+ * @param {string} paths Path component(s) to use
+ * @return {mixed} The value of the object, or `undefined` if not found
+ */
+/* eslint-disable-next-line consistent-return,require-jsdoc */
+function replaceObjectPathValue(pageData, field, value) {
+  try {
+    const pageData2 = pageData;
+    pageData2[field] = value;
+  } catch (err) {
+    const logger = loggerFunction('routes');
+    logger.debug('exception in replaceObjectPathValue');
+  }
+}
+
+/**
+ * Add a validator object to the processing queue.
+ *
+ * @param  {object} pageData Full page data from which data is extracted
+ * @param  {string} field Field to validate (in square-brace notation)
+ * @param  {array or function} gatherModifiers, either an array of functions or a single function
+ * @return {void}
+ */
+/* eslint-disable-next-line consistent-return,require-jsdoc */
+function runGatherModifiers(pageData, field, gatherModifiers) {
+  const modifiers = typeof gatherModifiers === 'function' ? [gatherModifiers] : gatherModifiers;
+  if (Array.isArray(modifiers)) {
+    let fieldValue = util.objectPathValue(pageData, field);
+    modifiers.forEach((m) => {
+      fieldValue = m({ fieldValue });
+    });
+    replaceObjectPathValue(pageData, field, fieldValue);
+  }
+}
+
+/**
+ * GatherModifier the data using the page's defined field gatherModifiers.
+ *
+ *
+ * @param {Logger} logger Request-specific logger instance
+ * @param {request} req Express request obejct
+ * @param {object} pageMeta Metadata of page being evalutated
+ * @return {Promise} Promise (always resolves, unless hook intercepts)
+ */
+function doGatherDataModification(logger, req, pageMeta) {
+  if (pageMeta && pageMeta.fieldGatherModifiers) {
+    logger.debug(`Run munging for ${req.journeyWaypointId}`);
+
+    Object.keys(pageMeta.fieldGatherModifiers).forEach((field) => {
+      runGatherModifiers(req.body, field, pageMeta.fieldGatherModifiers[field]);
+    });
+  }
+  return Promise.resolve();
+}
+
+/**
+ * Gather data into the request session.
+ *
+ * Hooks:
+ *   pregather
+ *
+ * @param {Logger} logger Request-specific logger instance
+ * @param {request} req Express request obejct
+ * @param {response} res Express response object
+ * @param {object} pageMeta Metadata of page being evalutated
+ * @return {Promise} Promise (always resolves, unless hook intercepts)
+ */
 function doGather(logger, req, res, pageMeta) {
   /**
    * Store data before finally resolving the Promise.
@@ -66,6 +133,7 @@ function doGather(logger, req, res, pageMeta) {
 
   // Promise
   return executeHook(logger, req, res, pageMeta, 'pregather')
+    .then(doGatherDataModification(logger, req, pageMeta))
     .then(storeSessionData);
 }
 
@@ -265,7 +333,8 @@ module.exports = function routePagePost(mountUrl, pages, journey, allowPageEdit)
    * @returns {void}
    */
   /* eslint-disable-next-line no-unused-vars,no-inline-comments */
-  return function routePagePostHandler(req, res, next) { // NOSONAR
+  return function routePagePostHandler(req, res, next) {
+    // NOSONAR
     // Load meta
     const logger = loggerFunction('routes');
     logger.setSessionId(req.session.id);
