@@ -41,11 +41,7 @@ describe('Routes: pages POST', () => {
       directory = new PageDirectory();
 
       const road0 = new UserJourney.Road();
-      road0.addWaypoints([
-        'page0',
-        'page1',
-        'page2',
-      ]);
+      road0.addWaypoints(['page0', 'page1', 'page2']);
 
       map = new UserJourney.Map();
       map.startAt(road0);
@@ -123,15 +119,18 @@ describe('Routes: pages POST', () => {
           edit: true,
           dummyContent: true,
         },
-        journeyData: new JourneyData({
-          page0: { data: true },
-          page1: { data: true },
-          page2: { data: true },
-        }, {
-          page1: {
-            fieldName0: [],
+        journeyData: new JourneyData(
+          {
+            page0: { data: true },
+            page1: { data: true },
+            page2: { data: true },
           },
-        }),
+          {
+            page1: {
+              fieldName0: [],
+            },
+          },
+        ),
       });
 
       res.on('end', () => {
@@ -156,9 +155,7 @@ describe('Routes: pages POST', () => {
       });
 
       const road0 = new UserJourney.Road();
-      road0.addWaypoints([
-        'page0',
-      ]);
+      road0.addWaypoints(['page0']);
 
       const map = new UserJourney.Map();
       map.startAt(road0);
@@ -210,9 +207,7 @@ describe('Routes: pages POST', () => {
       });
 
       const road0 = new UserJourney.Road();
-      road0.addWaypoints([
-        'page0',
-      ]);
+      road0.addWaypoints(['page0']);
 
       const map = new UserJourney.Map();
       map.startAt(road0);
@@ -239,6 +234,68 @@ describe('Routes: pages POST', () => {
       res.on('end', () => {
         try {
           expect(req).to.have.property('HOOK_CALLED', true);
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
+
+      handler(req, res);
+    });
+
+    it('should modify data after passing through defined modifiers', (done) => {
+      const directory = new PageDirectory({
+        page0: {
+          view: 'page0',
+          fieldGatherModifiers: {
+            name: v => (v.fieldValue === 'Joe' ? 'Jim' : v.fieldValue),
+          },
+          hooks: {
+            pregather: (req, res, cb) => {
+              if (req.body.name === 'Joe') {
+                req.PREGATHER_HOOK_CALLED = true;
+              }
+              cb();
+            },
+            prevalidate: (req, res, cb) => {
+              if (req.body.name === 'Jim') {
+                req.PREVALIDATE_HOOK_CALLED = true;
+              }
+              cb();
+            },
+          },
+        },
+      });
+
+      const road0 = new UserJourney.Road();
+      road0.addWaypoints(['page0']);
+
+      const map = new UserJourney.Map();
+      map.startAt(road0);
+
+      const handler = createHandler('/', directory, map, false);
+
+      const req = httpMocks.createRequest({
+        url: '/page0',
+        body: {
+          name: 'Joe',
+        },
+        session: {
+          id: 'sessionId',
+          save: (cb) => {
+            cb();
+          },
+        },
+        journeyData: new JourneyData(),
+      });
+
+      const res = httpMocks.createResponse({
+        eventEmitter: EventEmitter,
+      });
+      res.on('end', () => {
+        try {
+          expect(req).to.have.property('PREGATHER_HOOK_CALLED', true);
+          expect(req).to.have.property('PREVALIDATE_HOOK_CALLED', true);
           done();
         } catch (e) {
           done(e);
@@ -300,17 +357,42 @@ describe('Routes: pages POST', () => {
             },
           },
         },
+        page6: {
+          view: 'page6',
+          fieldGatherModifiers: {
+            x: v => (v.fieldValue === 1 ? 100 : v.fieldValue),
+          },
+          fieldValidators: {
+            x: sf([
+              v => (v === 100 ? Promise.resolve() : Promise.reject(new Error('VALIDATION FAIL'))),
+            ]),
+          },
+          hooks: {
+            prerender: () => {
+              throw new Error('TEST RENDER ERROR');
+            },
+          },
+        },
+        page7: {
+          view: 'page7',
+          fieldGatherModifiers: {
+            x: v => (v.fieldValue === 1 ? 100 : v.fieldValue),
+          },
+          fieldValidators: {
+            x: sf([
+              v => (v === 100 ? Promise.resolve() : Promise.reject(new Error('VALIDATION FAIL'))),
+            ]),
+          },
+          hooks: {
+            prerender: () => {
+              throw new Error('TEST RENDER ERROR');
+            },
+          },
+        },
       });
 
       const road0 = new UserJourney.Road();
-      road0.addWaypoints([
-        'page0',
-        'page1',
-        'page2',
-        'page3',
-        'page4',
-        'page5',
-      ]);
+      road0.addWaypoints(['page0', 'page1', 'page2', 'page3', 'page4', 'page5', 'page6', 'page7']);
 
       map = new UserJourney.Map();
       map.startAt(road0);
@@ -331,7 +413,7 @@ describe('Routes: pages POST', () => {
         }),
       });
       reqMock.i18nTranslator = {
-        t: s => (s),
+        t: s => s,
       };
 
       resMock = httpMocks.createResponse({
@@ -351,7 +433,9 @@ describe('Routes: pages POST', () => {
         try {
           expect(reqMock.journeyData.getDataForPage('page2')).to.not.eql({});
           expect(reqMock.session.journeyData.page2).to.not.eql({});
-          expect(reqMock.journeyData.getValidationErrorsForPage('page2')).to.have.property('x').that.is.an('Array');
+          expect(reqMock.journeyData.getValidationErrorsForPage('page2'))
+            .to.have.property('x')
+            .that.is.an('Array');
           done();
         } catch (e) {
           done(e);
@@ -424,6 +508,35 @@ describe('Routes: pages POST', () => {
       handler(reqMock, resMock);
     });
 
+    it('should change the data and then validate, then redirect to the next waypoint when given valid data and defined data gatherers', (done) => {
+      Object.assign(reqMock, {
+        url: '/page6',
+        body: {
+          x: 1,
+        },
+      });
+
+      reqMock.journeyData = new JourneyData({
+        page0: { data: true },
+        page1: { data: true },
+        page2: { data: true },
+        page3: { data: true },
+        page4: { data: true },
+        page5: { data: true },
+      });
+
+      resMock.on('end', () => {
+        try {
+          expect(resMock._getRedirectUrl()).to.equal('/page7#');
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
+
+      handler(reqMock, resMock);
+    });
+
     it('should respond with 500 status when rendering exceptions occur', (done) => {
       Object.assign(reqMock, {
         url: '/page5',
@@ -472,20 +585,11 @@ describe('Routes: pages POST', () => {
       const road0 = new UserJourney.Road();
       const road1 = new UserJourney.Road();
       const road2 = new UserJourney.Road();
-      road0.addWaypoints([
-        'page0',
-        'page1',
-        'page2',
-      ]).fork([road1, road2], (roads, context) => (context.page2.x === 1 ? roads[1] : roads[0]));
-      road1.addWaypoints([
-        'page3a',
-        'page4a',
-        'review',
-      ]).end();
-      road2.addWaypoints([
-        'page3b',
-        'page4b',
-      ]).end();
+      road0
+        .addWaypoints(['page0', 'page1', 'page2'])
+        .fork([road1, road2], (roads, context) => (context.page2.x === 1 ? roads[1] : roads[0]));
+      road1.addWaypoints(['page3a', 'page4a', 'review']).end();
+      road2.addWaypoints(['page3b', 'page4b']).end();
 
       map = new UserJourney.Map();
       map.startAt(road0);
