@@ -46,7 +46,7 @@
     "chai-as-promised": "7.1.1",
     "cheerio": "1.0.0-rc.2",
     "conventional-changelog-cli": "2.0.11",
-    "eslint": "5.11.1",
+    "eslint": "5.12.0",
     "eslint-plugin-sonarjs": "0.2.0",
     "express": "4.16.4",
     "express-session": "1.15.6",
