@@ -47,6 +47,19 @@ describe('Validation rule: postalAddressObject', () => {
     return Promise.all(queue);
   });
 
+  it('should resolve for valid address with a single digit first line', () => {
+    const queue = [];
+
+    queue.push(expect(postalAddressObject({
+      address1: '3',
+      address2: 'street',
+      address3: 'town',
+      postcode: 'AA0 0BB',
+    })).to.be.fulfilled);
+
+    return Promise.all(queue);
+  });
+
   it('should reject if an address[1-4] input breaches strlenmax attribute', () => {
     const queue = [];
     const rule = postalAddressObject.bind({
@@ -173,6 +186,17 @@ describe('Validation rule: postalAddressObject', () => {
         return s.match(errorInlinePostcode);
       }),
     );
+
+    queue.push(expect(postalAddressObject({
+      address1: 'house',
+      address2: '8',
+      address3: 'town',
+      postcode: 'SW1 3SW',
+    })).to.be.rejected.eventually.satisfy((v) => {
+      const s = JSON.stringify(v);
+      return s.match(errorInlineAddress2);
+    }));
+
 
     return Promise.all(queue);
   });
