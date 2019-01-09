@@ -26,7 +26,6 @@
     "fs-extra": "7.0.1",
     "govuk-frontend": "2.4.1",
     "govuk_template_jinja": "0.24.1",
-    "mkdirp": "0.5.1",
     "moment": "2.23.0",
     "node-sass": "4.11.0",
     "nunjucks": "3.1.6",
