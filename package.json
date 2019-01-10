@@ -70,6 +70,7 @@
     "pipeline": "npm test && npm run compliance && npm run quality && npm run security:vulnerable-packages && (npm outdated || true)",
     "compliance": "npm run compliance:lint",
     "compliance:lint": "eslint .",
+    "compliancefix": "eslint .",
     "test": "npm run test:unit --silent",
     "test:unit": "mocha -R spec \"./test/unit/**/*Tests.js\"",
     "quality": "npm run quality:coverage",
