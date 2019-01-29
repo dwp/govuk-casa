@@ -227,6 +227,11 @@ module.exports = function mwStatic(
   const compiledAssetsDir = npath.resolve(cAssetsDir);
   const govukFrontendVirtualUrl = `${mountUrl}/govuk/frontend`.replace(/\/+/g, '/');
   const prefixCasa = `${mountUrl}/govuk/casa`.replace(/\/+/g, '/');
+  try {
+    fs.accessSync(compiledAssetsDir, fs.F_OK);
+  } catch (e) {
+    throw new ReferenceError('Compiled static assets directory does not exist');
+  }
   logger.info(`Compiled static assets dir: ${compiledAssetsDir}`);
 
   // Store GOVUK template virtual URL prefix for other places to use it. This

@@ -100,6 +100,18 @@ describe('Middleware: static', () => {
     expect(counter).to.equal(4);
   });
 
+  it('should throw an Exception if the compiled static dir does not exist', () => {
+    expect(() => {
+      middleware(
+        mockExpressApp,
+        mockExpressStatic,
+        mountUrl,
+        '/path/to/a/non/existent/directory',
+        npmPackages,
+      );
+    }).to.throw(ReferenceError, 'Compiled static assets directory does not exist');
+  });
+
   it('should generate compiled static assets in the static directory', () => {
     middleware(
       mockExpressApp,
