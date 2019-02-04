@@ -280,6 +280,7 @@ describe('Validation rule: postalAddressObject', () => {
     queue.push(testInvalidPostcodeChecker(''));
     queue.push(testInvalidPostcodeChecker('0A 8AA'));
     queue.push(testInvalidPostcodeChecker('A9 HH'));
+    queue.push(testInvalidPostcodeChecker('e107aee'));
     return Promise.all(queue);
   });
 
