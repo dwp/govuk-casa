@@ -49,10 +49,11 @@ function compileSassSources(
   // We need to compile the Sass sources statically, and cache because the
   // `node-sass-middleware` will not cache CSS if `importer` doesn't return
   // null.
-  const casaSassSrcDir = npath.resolve(npmGovukCasa, 'src/css');
-  const dstDir = npath.resolve(compiledAssetsDir, 'casa/css');
+  const casaSassSrcDir = npath.resolve(npmGovukCasa, 'src', 'css');
+  const dstDir = npath.resolve(compiledAssetsDir, 'casa', 'css');
 
-  const files = recursiveReaddir(casaSassSrcDir).filter(f => !f.match(/\/_[^/]+$/));
+  const partialRegex = new RegExp(`\\${npath.sep}_[^\\${npath.sep}]+$`);
+  const files = recursiveReaddir(casaSassSrcDir).filter(f => !f.match(partialRegex));
 
   files.forEach((file) => {
     const fSrc = fs.readFileSync(file, { encoding: 'utf8' });
@@ -65,13 +66,8 @@ function compileSassSources(
       outputStyle: 'compressed',
     }).css.toString('utf8');
 
-    const dstPath = npath.resolve(
-      dstDir,
-      file
-        .replace(new RegExp(casaSassSrcDir), '')
-        .replace(/^\/+/, '')
-        .replace(/\.scss$/, '.css'),
-    );
+    const dstPath = npath.resolve(dstDir, npath.relative(casaSassSrcDir, file))
+      .replace(/\.scss$/, '.css');
     fs.ensureDirSync(npath.dirname(dstPath));
     fs.writeFileSync(dstPath, cssContent, {
       encoding: 'utf8',
