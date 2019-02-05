@@ -2,6 +2,31 @@
 
 ## `dateObject`
 
+```javascript
+// Minimal
+rules.dateObject
+
+// Error config
+rules.dateObject.bind({
+  errorMsg: {
+    inline: 'validation:rule.dateObject.inline',
+    summary: 'validation:rule.dateObject.summary',
+    focusSuffix: '[dd]',
+  },
+  errorMsgAfterOffset: {
+    inline: 'validation:rule.dateObject.afterOffset.inline',
+    summary: 'validation:rule.dateObject.afterOffset.summary',
+    focusSuffix: '[dd]',
+  },
+  errorMsgBeforeOffset: {
+    inline: 'validation:rule.dateObject.beforeOffset.inline',
+    summary: 'validation:rule.dateObject.beforeOffset.summary',
+    focusSuffix: '[dd]',
+  },
+})
+```
+
+
 ## `email`
 
 ## `inArray`
@@ -28,7 +53,7 @@ Strips all space characters from the field value before checking the format. e.g
 
 ```javascript
 rules.nino.bind({
-    allowWhitespace: true
+  allowWhitespace: true
 })
 ```
 
@@ -42,10 +67,10 @@ Overrides the default error messages when the field value fails validation.
 
 ```javascript
 rules.nino.bind({
-    errMsg: {
-        summary: 'Custom message to appear in the error summary',
-        inline: 'Custom message to appear next to the nino field'
-    }
+  errorMsg: {
+    summary: 'Custom message to appear in the error summary',
+    inline: 'Custom message to appear next to the nino field'
+  }
 })
 ```
 

@@ -12,6 +12,77 @@ Validation rules are simple functions that return a `Promise` that is either res
 
 CASA comes bundled with [a few built-in rules](field-validation-rules.md), some of which can be configured to behave differently depending on your requirements. These rules are available in a `rules` object provided by the `@dwp/govuk-casa/lib/Validation` module.
 
+### Error message conventions
+
+Most validation rule functions will accept some configuration related to the error messages they generate in the following format:
+
+```javascript
+// Simple string (will be passed through i18n translate function)
+rules.myRule.bind({
+  errorMsg: 'validation:myRule.errorMessage',
+});
+
+// Simple string in object format. Only `summary` is required
+rules.myRule.bind({
+  errorMsg: {
+    summary: 'validation:myRule.errorMessage',
+  },
+});
+
+// Object (to allow for different message in error summary and inline positions)
+rules.myRule.bind({
+  errorMsg: {
+    inline: 'validation:myRule.errorMessage.inline',
+    summary: 'validation:myRule.errorMessage.summary',
+  },
+});
+
+// Specifying the suffix of the input id that will be linked to from the
+// error summary links. This is most commonly used to enhance the `required`
+// rule when dealing with a multi-input field.
+// For example, this will cause the error summary to link
+// to the input that has an id of `f-theThing-boom`
+theThing: SimpleField([
+  rules.myRule.bind({
+    errorMsg: {
+      summary: 'validation:myRule.errorMessage.summary',
+      focusSuffix: '-boom',
+    },
+  }),
+]);
+
+// If you want to highlight more than one input when in an error state, use an
+// array for the suffix (only the first will be used in the error summary link,
+// but the others will all be highlighted with an error state).
+// Some validators will override or set this dynamically according to the state
+// (for example, date-input)
+// For example, this will cause the error summary to link to the input that has
+// an id of `f-theThing-boom`, but will also highlight both `f-theThing-boom`
+// and `f-theThing-wallop`
+theThing: SimpleField([
+  rules.myRule.bind({
+    errorMsg: {
+      summary: 'validation:myRule.errorMessage.summary',
+      focusSuffix: ['-boom', '-wallop'],
+    },
+  }),
+]);
+
+// If you want to alter the fieldname against which the error is recorded,
+// use the `fieldKeySuffix` option. `focusSuffix` is ignored if this is set.
+// This is used by macros/validators such as `postalAddressObject`.
+// For example, this will make the error appear in `formErrors["theThing-alt"]`
+// rather than `formErrors["theThing"]`:
+theThing: SimpleField([
+  rules.myRule.bind({
+    errorMsg: {
+      summary: 'validation:myRule.errorMessage.summary',
+      fieldKeySuffix: '-alt',
+    },
+  }),
+])
+```
+
 ## Defining basic validation
 
 The object key should reference the `name` of the field you wish to validate and should not include any special characters.

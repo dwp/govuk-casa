@@ -389,10 +389,22 @@ describe('Routes: pages POST', () => {
             },
           },
         },
+        page8: {
+          view: 'page8-view.html',
+          fieldValidators: {
+            x: sf([
+              (v) => {
+                const err = new Error();
+                err.focusSuffix = ['-suffix1', '-suffix2'];
+                return v === 1 ? Promise.resolve() : Promise.reject(err)
+              },
+            ]),
+          },
+        },
       });
 
       const road0 = new UserJourney.Road();
-      road0.addWaypoints(['page0', 'page1', 'page2', 'page3', 'page4', 'page5', 'page6', 'page7']);
+      road0.addWaypoints(['page0', 'page1', 'page2', 'page3', 'page4', 'page5', 'page6', 'page7', 'page8']);
 
       map = new UserJourney.Map();
       map.startAt(road0);
@@ -458,6 +470,50 @@ describe('Routes: pages POST', () => {
           const viewData = resMock._getRenderData();
           expect(viewData).to.have.property('formErrors');
           expect(JSON.stringify(viewData.formErrors)).to.contain.string('VALIDATION FAIL');
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
+
+      handler(reqMock, resMock);
+    });
+
+    it('should generate errors that include a fieldHref attribute', (done) => {
+      Object.assign(reqMock, {
+        url: '/page3',
+        body: {
+          y: 'this should trigger validation rejection',
+        },
+      });
+
+      resMock.on('end', () => {
+        try {
+          const viewData = resMock._getRenderData();
+          expect(viewData).to.have.property('formErrors').and.have.property('y').and.is.an('array');
+          expect(viewData.formErrors.y[0]).to.have.property('fieldHref').that.equals('#f-y');
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
+
+      handler(reqMock, resMock);
+    });
+
+    it('should set fieldHref that includes the first of any specified focusSuffix', (done) => {
+      Object.assign(reqMock, {
+        url: '/page8',
+        body: {
+          x: 'this should trigger validation rejection',
+        },
+      });
+
+      resMock.on('end', () => {
+        try {
+          const viewData = resMock._getRenderData();
+          expect(viewData).to.have.property('formErrors').and.have.property('x').and.is.an('array');
+          expect(viewData.formErrors.x[0]).to.have.property('fieldHref').that.equals('#f-x-suffix1');
           done();
         } catch (e) {
           done(e);

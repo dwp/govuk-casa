@@ -292,9 +292,11 @@ function doRender(logger, req, res, pageMeta, errors) {
       // the field name.
       // The `f-` prefix on the error href reflects the use of an `f-` prefix on
       // the `id` attribute of each input field.
+      // The first `focusSuffix` entry (if present) is appended to the
+      // error link in order to highlight the specific input that is in error.
       const govukErrors = Object.keys(errors || {}).map(k => ({
         text: req.i18nTranslator.t(errors[k][0].summary),
-        href: `#f-${k}-error`,
+        href: errors[k][0].fieldHref,
       }));
 
       res.render(pageMeta.view, {

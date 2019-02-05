@@ -1,3 +1,11 @@
+{#
+**** DEPRECATION NOTICE ****
+
+Here lies a legacy. These macros should no longer be used on new projects, and
+instead you should use the GOVUK Frontend macros directly. This gives you more
+control over the styling and onfiguration of your form elements.
+#}
+
 {% from "components/error-summary/macro.njk" import govukErrorSummary %}
 
 {% macro summary(formErrors) %}

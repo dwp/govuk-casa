@@ -10,8 +10,9 @@
   }) %}
 {% endif %}
 {% set mergedAttributes = mergeObjects(mergedAttributes, {
-  id: params.id if params.id else 'f-' + params.name | safe
+  id: params.id if params.id else 'f-' + params.name + '-wrapper' | safe
 }) %}
+
 {# Merge parameters #}
 {% set mergedParams = mergeObjects(params, {
   idPrefix: params.idPrefix if params.idPrefix else 'f-' + params.name,
@@ -21,5 +22,13 @@
   } if params.casaErrors[params.name] else null
 }) %}
 
+{# Ensure that the first item has the id matching `f-<name>` in order for error summary linkage to work #}
+{% if not mergedParams.items[0].id %}
+  {% set mergedParams = mergeObjectsDeep(mergedParams, {
+    items: [{
+      id: 'f-' + params.name
+    }]
+  }) %}
+{% endif %}
 
 {{ govukCheckboxes(mergedParams) }}

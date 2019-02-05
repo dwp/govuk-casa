@@ -1,6 +1,7 @@
 {% from "components/date-input/macro.njk" import govukDateInput %}
 
-{% set fieldErrors = params.casaErrors[params.name] %}
+{% set fieldErrors = params.casaErrors[params.namePrefix] %}
+{% set hasSuffixHighlights = true if fieldErrors[0].focusSuffix.length else false %}
 
 {%- set inputErrorClass %}
   {{ 'govuk-input--error' if fieldErrors }}
@@ -24,20 +25,20 @@
     name: params.namePrefix + '[dd]',
     id: 'f-' + params.namePrefix + '[dd]',
     value: params.casaValue.dd,
-    classes: 'govuk-input--width-2 ' + inputErrorClass
+    classes: 'govuk-input--width-2 ' + (inputErrorClass if includes(fieldErrors[0].focusSuffix, '[dd]') or not hasSuffixHighlights)
   }, {
     label: t('macros:dateInput.month'),
     name: params.namePrefix + '[mm]',
     id: 'f-' + params.namePrefix + '[mm]',
     value: params.casaValue.mm,
-    classes: 'govuk-input--width-2 ' + inputErrorClass,
+    classes: 'govuk-input--width-2 ' + (inputErrorClass if includes(fieldErrors[0].focusSuffix, '[mm]') or not hasSuffixHighlights),
     attributes: attributes_mm
   }, {
     label: t('macros:dateInput.year'),
     name: params.namePrefix + '[yyyy]',
     id: 'f-' + params.namePrefix + '[yyyy]',
     value: params.casaValue.yyyy,
-    classes: 'govuk-input--width-4 ' + inputErrorClass
+    classes: 'govuk-input--width-4 ' + (inputErrorClass if includes(fieldErrors[0].focusSuffix, '[yyyy]') or not hasSuffixHighlights)
   }],
   errorMessage: {
     text: t(params.casaErrors[params.namePrefix][0].inline)

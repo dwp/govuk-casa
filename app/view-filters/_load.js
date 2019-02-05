@@ -28,6 +28,10 @@ module.exports = function loadFilters(env) {
     require(npath.resolve(viewFiltersDir, 'mergeObjects')),
   );
   env.addGlobal(
+    'mergeObjectsDeep',
+    require(npath.resolve(viewFiltersDir, 'mergeObjectsDeep')),
+  );
+  env.addGlobal(
     'includes',
     require(npath.resolve(viewFiltersDir, 'includes')),
   );

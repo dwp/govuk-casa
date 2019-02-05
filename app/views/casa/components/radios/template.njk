@@ -31,4 +31,13 @@
   } if params.casaErrors[params.name].length
 }) %}
 
+{# Ensure that the first item has the id matching `f-<name>` in order for error summary linkage to work #}
+{% if not mergedParams.items[0].id %}
+  {% set mergedParams = mergeObjectsDeep(mergedParams, {
+    items: [{
+      id: 'f-' + params.name
+    }]
+  }) %}
+{% endif %}
+
 {{ govukRadios(mergedParams) }}

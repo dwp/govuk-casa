@@ -3,25 +3,8 @@
 
 {# Build up fieldset attributes #}
 {% set fieldsetAttributes = params.fieldset or {} %}
-{% if fieldErrors %}
-  {% set fieldsetAttributes = mergeObjects({
-    legend: {
-      text: label,
-      classes: "govuk-fieldset__legend--m",
-      isPageHeading: false
-    }
-  }, params.fieldset or {}) %}
-{% endif %}
-
-{% if params.casaErrors[params.name] %}
-<div class="govuk-form-group govuk-form-group--error" id="f-{{params.name}}-error">
-{% endif %}
 
 {% call govukFieldset(fieldsetAttributes) %}
-
-{% if params.casaErrors[params.name] %}
-<span class="govuk-error-message">{{ t(params.casaErrors[params.name][0].inline) }}</span>
-{% endif %}
 
   {# Line 1 #}
   {% set fieldErrors = params.casaErrors[params.name+"[address1]"] %}
@@ -121,7 +104,3 @@
     } if fieldErrors else null
   }) }}
 {% endcall %}
-
-{% if params.casaErrors[params.name] %}
-</div>
-{% endif %}
