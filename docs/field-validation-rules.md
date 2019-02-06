@@ -81,7 +81,32 @@ When supplied as a string, the same message is used for both the `inline` and `s
 ## `postalAddressObject`
 
 ## `regex`
+Can bind a `pattern` and the rule will return an error if the value does not match. 
+If you add a bound `invert` boolean with a value of `true` it will return an error if the value *does* match the pattern.
+Not including `invert: true` will result in a default of false . In either case, you can also bind a custom error message `errorMsg`
 
+The following will return a resolved Promise if the value passed is 3 numeric characters
+```javascript
+rules.regex.bind({
+  pattern: /^[0-9]{3}$/,
+  errorMsg: {
+    inline: 'validation:rule.regex.inline',
+    summary: 'validation:rule.regex.summary',
+  }
+})
+```
+
+The following will return a resolved Promise if the value passed *is not* 3 numeric characters
+```javascript
+rules.regex.bind({
+  pattern: /^[0-9]{3}$/,
+  errorMsg: {
+    inline: 'validation:rule.regex.inline',
+    summary: 'validation:rule.regex.summary',
+  },
+  invert: true,
+})
+```
 ## `required`
 
 ## `strlen`
