@@ -46,4 +46,33 @@ describe('Validation rule: regex', () => {
 
     return Promise.all(queue);
   });
+
+  it('should allow inverse matches - i.e. reject for matching expressions', () => {
+    const queue = [];
+
+    const re1 = regex.bind({
+      pattern: /^[0-9]{3}$/,
+      errorMsg: 'REGEX_ERR',
+      invert: true,
+    })
+
+    queue.push(expect(re1('123')).to.be.rejectedWith(/REGEX_ERR/));
+    queue.push(expect(re1('098')).to.be.rejectedWith(/REGEX_ERR/));
+
+    return Promise.all(queue);
+  });
+
+  it('should resolve for mismatching regular expressions if inverse match is specified', () => {
+    const queue = [];
+
+    const re1 = regex.bind({
+      pattern: /^[0-9]{3}$/,
+      invert: true,
+    })
+    queue.push(expect(re1('1234')).to.be.fulfilled);
+    queue.push(expect(re1('12')).to.be.fulfilled);
+    queue.push(expect(re1('abc')).to.be.fulfilled);
+
+    return Promise.all(queue);
+  });
 });
