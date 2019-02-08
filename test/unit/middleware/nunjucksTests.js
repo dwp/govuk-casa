@@ -2,7 +2,6 @@ const npath = require('path');
 const { expect } = require('chai');
 const httpMocks = require('node-mocks-http');
 const { EventEmitter } = require('events');
-const domain = require('domain');
 
 const middleware = require('../../../app/middleware/nunjucks.js');
 
@@ -70,34 +69,21 @@ describe('Middleware: nunjucks', () => {
     });
   });
 
-  it('should throw an exception if view template does not exist', (done) => {
-    // As the thrown exception is nestled deep within the async call stack, we
-    // wrap its execution in a Domain in order to capture exceptions at any
-    // point within this domain's lifetime. Once complete, it's important to
-    // exit the Domain otherwise subsequent exceptions in this test suite will
-    // be caught within this Domain's error handler.
-    const d = domain.create(); /* eslint-disable-line node/no-deprecated-api */
-    d.on('error', (err) => {
-      try {
-        expect(err.message).to.have.string('template not found');
-        d.exit();
-        done();
-      } catch (e) {
-        d.exit();
-        done(e);
-      }
+  it('should display a message if template filas to render', (done) => {
+    const mi = middleware(mockExpressApp, viewDirs, govukTemplatePath);
+
+    const req = httpMocks.createRequest();
+
+    const res = httpMocks.createResponse({
+      eventEmitter: EventEmitter,
+    });
+    res.on('end', () => {
+      expect(res._getData()).to.have.string('Something went wrong with displaying this page. Please go back and try again.');
+      done();
     });
 
-    d.run(() => {
-      const mi = middleware(mockExpressApp, viewDirs, govukTemplatePath);
-
-      const req = httpMocks.createRequest();
-
-      const res = httpMocks.createResponse();
-
-      mi.handleEnvironmentInit(req, res, () => {
-        res.render('invalid-template');
-      });
+    mi.handleEnvironmentInit(req, res, () => {
+      res.render('invalid-markup.njk');
     });
   });
 });

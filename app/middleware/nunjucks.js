@@ -14,6 +14,7 @@
 
 const nunjucks = require('nunjucks');
 const npath = require('path');
+const logger = require('../../lib/Logger')('nunjucks');
 
 /**
  * `govukFrontendTemplate` must be the path to the layout template file
@@ -77,7 +78,8 @@ module.exports = function mwNunjucks(app, viewDirs, govukFrontendTemplate) {
       const mergedOpts = Object.assign({}, opts || {}, res.locals || {});
       env.render(name, mergedOpts, callback || ((err, data) => {
         if (err) {
-          throw new Error(err.message);
+          logger.error(`Nunjucks error during render of "${name}". ${err.message}`);
+          res.send('Something went wrong with displaying this page. Please go back and try again.');
         } else {
           res.send(data);
         }
