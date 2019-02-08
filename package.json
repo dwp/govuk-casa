@@ -24,7 +24,7 @@
     "debug": "4.1.1",
     "dotenv": "6.2.0",
     "fs-extra": "7.0.1",
-    "govuk-frontend": "2.6.0",
+    "govuk-frontend": "2.7.0",
     "govuk_template_jinja": "0.24.1",
     "lodash.merge": "4.6.1",
     "moment": "2.24.0",
