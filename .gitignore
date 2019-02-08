@@ -1,3 +1,4 @@
+.checkmarx/
 .coverage/
 .DS_Store
 .sonar/
