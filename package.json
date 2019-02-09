@@ -38,9 +38,9 @@
     "uid-safe": "2.1.5"
   },
   "devDependencies": {
-    "@commitlint/cli": "7.5.0",
+    "@commitlint/cli": "7.5.1",
     "@commitlint/config-conventional": "7.5.0",
-    "@commitlint/travis-cli": "7.5.0",
+    "@commitlint/travis-cli": "7.5.1",
     "@dwp/eslint-config-base": "2.1.0",
     "chai": "4.2.0",
     "chai-as-promised": "7.1.1",
