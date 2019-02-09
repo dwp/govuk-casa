@@ -1,0 +1,52 @@
+{% extends "casa/review/page-block.njk" %}
+
+{% block pageBlockTitle %}
+  {{ t('contact-details:h1') }}
+{% endblock %}
+
+{% block journeyWaypointId %}
+  contact/details
+{% endblock %}
+
+{% block reviewBlock %}
+  {% set pData = journeyData['contact/details'] %}
+
+  <tbody>
+    <tr>
+      <td>
+        {{ t('contact-details:field.tel.label') }}
+      </td>
+      <td colspan="2">
+        {{ pData.tel }}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ t('contact-details:field.telOther.label') }}
+      </td>
+      <td colspan="2">
+        {{ pData.telOther }}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ t('contact-details:field.email.label') }}
+      </td>
+      <td colspan="2">
+        {{ pData.email }}
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        {{ t('contact-details:field.address.label') }}
+      </td>
+      <td colspan="2">
+        {{ pData.address.address1 }}<br/>
+        {{ pData.address.address2 }}<br/>
+        {{ pData.address.address3 }}<br/>
+        {{ pData.address.address4 }}<br/>
+        {{ pData.address.postcode }}<br/>
+      </td>
+    </tr>
+  </tbody>
+{% endblock %}

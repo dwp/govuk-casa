@@ -1,0 +1,107 @@
+{% extends "layouts/journey.njk" %}
+
+{# New GOVUK Frontend macros #}
+{% from "components/input/macro.njk" import govukInput %}
+
+{# New CASA wrapper macros #}
+{% from "casa/components/input/macro.njk" import casaGovukInput %}
+{% from "casa/components/date-input/macro.njk" import casaGovukDateInput %}
+{% from "casa/components/postal-address-object/macro.njk" import casaPostalAddressObject %}
+
+
+{% block casaPageTitle %}
+  {{ t('personal-details:pageTitle') }}
+{% endblock %}
+
+
+{% block journey_form %}
+  <h1 class="govuk-heading-xl">
+    {{ t('personal-details:h1') }}
+  </h1>
+
+  <p class="govuk-body">
+    This page demonstrates a few commonly used fields, along with some basic validation.
+  </p>
+  <p class="govuk-body">
+    When you have multiple questions on a page like this, you should use markup that follows the <a rel="external"  href="https://design-system.service.gov.uk/patterns/question-pages/passport/index.html" class="govuk-link">multiple-question pattern</a>.
+  </p>
+
+  {{ casaGovukInput({
+    name: 'title',
+    value: formData['title'],
+    label: {
+      text: t('personal-details:field.title.label'),
+      classes: 'govuk-label--m'
+    },
+    classes: "form-control-1-4",
+    casaErrors: formErrors,
+    hint: {
+      html: 'This is an example of using one of the <code>casaGovuk*()</code> wrapper macros in its simplest form'
+    }
+  }) }}
+
+  {{ casaGovukInput({
+    name: 'first-name',
+    value: formData['first-name'],
+    label: {
+      text: t('personal-details:field.firstName.label'),
+      classes: 'govuk-label--m'
+    },
+    classes: 'govuk-!-width-one-half',
+    casaErrors: formErrors
+  }) }}
+
+  {{ casaGovukInput({
+    name: 'middle-name',
+    value: formData['middle-name'],
+    label: {
+      text: t('personal-details:field.middleNames.label')
+    },
+    casaErrors: formErrors
+  }) }}
+
+  {{ casaGovukInput({
+    name: 'lastName',
+    value: formData.lastName,
+    label: {
+      text: t('personal-details:field.lastName.label'),
+      classes: 'govuk-label--m'
+    },
+    classes: 'govuk-!-width-one-half',
+    casaErrors: formErrors
+  }) }}
+
+  {{ casaGovukDateInput({
+    namePrefix: 'dob',
+    casaValue: formData.dob,
+    fieldset: {
+      legend: {
+        text: t('personal-details:field.dob.label'),
+        isPageHeading: false,
+        classes: 'govuk-fieldset__legend--m'
+      }
+    },
+    casaErrors: formErrors,
+    hint: {
+      html: 'This is an example of the <code>casaGovukDateInput()</code> macro'
+    }
+  }) }}
+
+  {# This is an example of the new govuk-frontend macros which you should begin using in place of the form.* CASA macros #}
+  {{ govukInput({
+    id: 'f-nino',
+    name: 'nino',
+    value: formData.nino,
+    label: {
+      text: t('personal-details:field.nino.label'),
+      classes: 'govuk-label--m'
+    },
+    classes: 'govuk-input--width-10',
+    errorMessage: {
+      text: t(formErrors.nino[0].inline)
+    } if formErrors.nino,
+    hint: {
+      html: 'This is an example of the new GOVUK Frontend macros which you can use instead of the <code>casaGovuk*()</code> macros if you wish'
+    }
+  }) }}
+{% endblock %}

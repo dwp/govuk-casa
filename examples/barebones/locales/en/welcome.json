@@ -1,0 +1,8 @@
+{
+  "pageTitle": "Welcome",
+  "h1": "Welcome",
+  "html": {
+    "body": "<p class=\"govuk-body\">This small application provides a demonstration of the CASA (Collect And Send Application) framework.</p>"
+  },
+  "btn": "Get Started"
+}

@@ -1,0 +1,70 @@
+{% extends "casa/review/page-block.njk" %}
+
+{% block pageBlockTitle %}
+  {{ t('work-impact:h1') }}
+{% endblock %}
+
+{% block journeyWaypointId %}
+  work-impact
+{% endblock %}
+
+{% block reviewBlock %}
+  {% set pData = journeyData['work-impact'] %}
+
+  <tbody>
+    <tr>
+      <td>
+        {{ t('work-impact:moreDifficult.label') }}
+      </td>
+      <td colspan="2">
+        {{ pData.moreDifficult }}
+      </td>
+    </tr>
+    {% if pData.moreDifficult == 'yes' %}
+      <tr>
+        <td>
+          {{ t('work-impact:harderHow.label') }}
+        </td>
+        <td colspan="2">
+          {{ pData.harderHow }}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {{ t('work-impact:getAroundProblems.label') }}
+        </td>
+        <td colspan="2">
+          {{ pData.getAroundProblems }}
+        </td>
+      </tr>
+      {% if pData.getAroundProblems == 'yes' %}
+        <tr>
+          <td>
+            {{ t('work-impact:problemSolutions.label') }}
+          </td>
+          <td colspan="2">
+            {{ pData.problemSolutions }}
+          </td>
+        </tr>
+      {% endif %}
+      <tr>
+        <td>
+          {{ t('work-impact:knowWhatWouldHelp.label') }}
+        </td>
+        <td colspan="2">
+          {{ pData.knowWhatWouldHelp }}
+        </td>
+      </tr>
+      {% if pData.knowWhatWouldHelp == 'yes' %}
+        <tr>
+          <td>
+            {{ t('work-impact:whatWouldHelp.label') }}
+          </td>
+          <td colspan="2">
+            {{ pData.whatWouldHelp }}
+          </td>
+        </tr>
+      {% endif %}
+    {% endif %}
+  </tbody>
+{% endblock %}

@@ -1,0 +1,123 @@
+{% extends "layouts/journey.njk" %}
+
+{% from "casa/components/radios/macro.njk" import casaGovukRadios %}
+{% from "casa/components/textarea/macro.njk" import casaGovukTextarea %}
+
+{% block casaPageTitle %}
+  {{ t('work-impact:pageTitle') }}
+{% endblock %}
+
+{% block journey_form %}
+  <h1 class="govuk-heading-xl">
+    {{ t('work-impact:h1') }}
+  </h1>
+
+  <p class="govuk-body">
+    This form demonstrates the use of conditional inputs to reveal extra fields. Note that the review template (shown at the end of the user journey) will also alter what it displays based on what you select here.
+  </p>
+
+  <p class="govuk-body">
+    The <code>govukRadios()</code> macro allows you to define conditional HTML/text content based on the selection you make, but this is always shown immediately after the radio buttons. This example shows CASA's alternative method, which allows you to place the conditional content anywhere else in the page, by specifying a <code>items.{}.attibutes['data-target']</code> attribute on the <code>item</code> that toggles it.
+  </p>
+
+  {{ casaGovukRadios({
+    classes: "govuk-radios--inline",
+    name: 'moreDifficult',
+    items: [{
+      text: t('common:yes'),
+      value: 'yes',
+      attributes: {
+        'data-target': 'harder-how'
+      }
+    }, {
+      text: t('common:no'),
+      value: 'no'
+    }],
+    casaValue: formData.moreDifficult,
+    casaErrors: formErrors
+  }) }}
+
+  <div class="panel panel-border-narrow js-hidden" id="harder-how">
+    {{ casaGovukTextarea({
+      name: 'harderHow',
+      value: formData.harderHow,
+      label: {
+        text: t('work-impact:harderHow.label'),
+        classes: 'govuk-label--m'
+      },
+      casaErrors: formErrors
+    }) }}
+
+    {{ casaGovukRadios({
+      classes: "govuk-radios--inline",
+      name: 'getAroundProblems',
+      casaValue: formData.getAroundProblems,
+      fieldset: {
+        legend: {
+          text: t('work-impact:getAroundProblems.label'),
+          isPageHeading: false,
+          classes: "govuk-fieldset__legend--m"
+        }
+      },
+      items: [{
+        text: t('common:yes'),
+        value: 'yes',
+        attributes: {
+          'data-target': 'problems'
+        }
+      }, {
+        text: t('common:no'),
+        value: 'no'
+      }],
+      casaErrors: formErrors
+    }) }}
+
+    <div class="panel panel-border-narrow js-hidden" id="problems">
+      {{ casaGovukTextarea({
+        name: 'problemSolutions',
+        value: formData.problemSolutions,
+        label: {
+          text: t('work-impact:problemSolutions.label'),
+          classes: 'govuk-label--m'
+        },
+        casaErrors: formErrors
+      }) }}
+    </div>
+
+    {{ casaGovukRadios({
+      classes: "govuk-radios--inline",
+      name: 'knowWhatWouldHelp',
+      casaValue: formData.knowWhatWouldHelp,
+      fieldset: {
+        legend: {
+          text: t('work-impact:knowWhatWouldHelp.label'),
+          isPageHeading: false,
+          classes: "govuk-fieldset__legend--m"
+        }
+      },
+      items: [{
+        text: t('common:yes'),
+        value: 'yes',
+        attributes: {
+          'data-target': 'help'
+        }
+      }, {
+        text: t('common:no'),
+        value: 'no'
+      }],
+      casaErrors: formErrors
+    }) }}
+
+    <div class="panel panel-border-narrow js-hidden" id="help">
+      {{ casaGovukTextarea({
+        name: 'whatWouldHelp',
+        value: formData.whatWouldHelp,
+        label: {
+          text: t('work-impact:whatWouldHelp.label'),
+          classes: 'govuk-label--m'
+        },
+        casaErrors: formErrors
+      }) }}
+    </div>
+  </div>
+{% endblock %}

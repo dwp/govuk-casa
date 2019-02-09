@@ -10,6 +10,11 @@
       "summary": "Enter a valid email address"
     },
 
+    "inArray": {
+      "inline": "Enter a valid value",
+      "summary": "Enter a valid value"
+    },
+
     "nino": {
       "inline": "Enter a valid National Insurance number",
       "summary": "Enter a valid National Insurance number"
@@ -42,9 +47,25 @@
       }
     },
 
+    "regex": {
+      "inline": "Information is not correctly formatted",
+      "summary": "Information is not correctly formatted"
+    },
+
     "required": {
       "inline": "Information is required",
       "summary": "Information is required"
+    },
+
+    "strlen": {
+      "min": {
+        "inline": "Value is too short",
+        "summary": "Value is too short"
+      },
+      "max": {
+        "inline": "Value is too long",
+        "summary": "Value is too long"
+      }
     }
   }
 }

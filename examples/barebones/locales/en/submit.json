@@ -1,0 +1,14 @@
+{
+  "pageTitle": "Submit your application",
+  "h1": "Submit your application",
+  "form": {
+    "buttons": {
+      "submit": {
+        "label": "Submit"
+      },
+      "backToReview": {
+        "label": "Cancel, and review your application"
+      }
+    }
+  }
+}

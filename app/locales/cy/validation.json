@@ -10,6 +10,11 @@
       "summary": "Rhowch gyfeiriad e-bost dilys"
     },
 
+    "inArray": {
+      "inline": "Rhowch werth dilys",
+      "summary": "Rhowch werth dilys"
+    },
+
     "nino": {
       "inline": "Rhowch rif Yswiriant Gwladol dilys",
       "summary": "Rhowch rif Yswiriant Gwladol dilys"
@@ -42,9 +47,25 @@
       }
     },
 
+    "regex": {
+      "inline": "Nid yw'r wybodaeth wedi'i fformatio'n gywir",
+      "summary": "Nid yw'r wybodaeth wedi'i fformatio'n gywir"
+    },
+
     "required": {
       "inline": "Mae angen gwybodaeth",
       "summary": "Mae angen gwybodaeth"
+    },
+
+    "strlen": {
+      "min": {
+        "inline": "Mae gwerth yn rhy fyr",
+        "summary": "Mae gwerth yn rhy fyr"
+      },
+      "max": {
+        "inline": "Mae gwerth yn rhy hir",
+        "summary": "Mae gwerth yn rhy hir"
+      }
     }
   }
 }

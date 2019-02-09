@@ -1,0 +1,74 @@
+{% extends "casa/review/page-block.njk" %}
+
+{% block pageBlockTitle %}
+  {{ t('personal-details:h1') }}
+{% endblock %}
+
+{% block journeyWaypointId %}
+  personal-details
+{% endblock %}
+
+{% block reviewBlock %}
+  {% set pData = journeyData['personal-details'] %}
+
+  <tbody>
+    <tr>
+      <td>
+        {{ t('personal-details:field.title.label') }}
+      </td>
+      <td colspan="2">
+        {{ pData.title }}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ t('personal-details:field.firstName.label') }}
+      </td>
+      <td colspan="2">
+        {{ pData.firstName }}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ t('personal-details:field.middleNames.label') }}
+      </td>
+      <td colspan="2">
+        {{ pData.middleNames }}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ t('personal-details:field.lastName.label') }}
+      </td>
+      <td colspan="2">
+        {{ pData.lastName }}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ t('personal-details:field.dob.label') }}
+      </td>
+      <td colspan="2">
+        {{ pData.dob | formatDateObject }}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ t('personal-details:field.nino.label') }}
+      </td>
+      <td colspan="2">
+        {{ pData.nino | replace(r/^([a-z]+).*$/i, "$1*******") }}
+      </td>
+    </tr>
+    {% if pData.gender %}
+      <tr>
+        <td>
+          {{ t('personal-details:field.gender.label') }}
+        </td>
+        <td colspan="2">
+          {{ t('personal-details:field.gender.options.' + pData.gender + '.label') }}
+        </td>
+      </tr>
+    {% endif %}
+  </tbody>
+{% endblock %}

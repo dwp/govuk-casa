@@ -1,0 +1,24 @@
+{% extends "casa/review/page-block.njk" %}
+
+{% block pageBlockTitle %}
+  {{ t('checkboxes:h1') }}
+{% endblock %}
+
+{% block journeyWaypointId %}
+  checkboxes
+{% endblock %}
+
+{% block reviewBlock %}
+  {% set pData = journeyData['checkboxes'] %}
+
+  <tbody>
+    <tr>
+      <td>
+        {{ t('checkboxes:boxes.label') }}
+      </td>
+      <td colspan="2">
+        {{ pData.boxes }}
+      </td>
+    </tr>
+  </tbody>
+{% endblock %}

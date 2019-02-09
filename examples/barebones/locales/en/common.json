@@ -1,0 +1,12 @@
+{
+  "serviceName": "CASA Example: Barebones",
+  "yes": "Yes",
+  "no": "No",
+  "form": {
+    "buttons": {
+      "submit": {
+        "label": "Submit"
+      }
+    }
+  }
+}

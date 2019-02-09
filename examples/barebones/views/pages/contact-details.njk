@@ -1,0 +1,63 @@
+{% extends "layouts/journey.njk" %}
+
+{% from "casa/components/input/macro.njk" import casaGovukInput %}
+{% from "casa/components/postal-address-object/macro.njk" import casaPostalAddressObject %}
+
+{% block casaPageTitle %}
+  {{ t('contact-details:pageTitle') }}
+{% endblock %}
+
+{% block journey_form %}
+  <h1 class="govuk-heading-xl">
+    {{ t('contact-details:h1')}}
+  </h1>
+
+  {{ t('contact-details:html.intro') | safe }}
+
+  {{ casaGovukInput({
+    name: 'tel',
+    value: formData.tel,
+    label: {
+      text: t('contact-details:field.tel.label'),
+      classes: 'govuk-label--m'
+    },
+    classes: 'govuk-!-width-one-half',
+    casaErrors: formErrors
+  }) }}
+
+  {{ casaGovukInput({
+    name: 'telOther',
+    value: formData.telOther,
+    label: {
+      text: t('contact-details:field.telOther.label'),
+      classes: 'govuk-label--m'
+    },
+    classes: 'govuk-!-width-one-half',
+    casaErrors: formErrors
+  }) }}
+
+  {{ casaGovukInput({
+    name: 'email',
+    value: formData.email,
+    label: {
+      text: t('contact-details:field.email.label'),
+      classes: 'govuk-label--m'
+    },
+    classes: 'govuk-!-width-one-half',
+    casaErrors: formErrors
+  }) }}
+
+  {{ casaPostalAddressObject({
+    name: 'address',
+    value: formData.address,
+    casaErrors: formErrors,
+    fieldset: {
+      legend: {
+        text: t('contact-details:field.address.label'),
+        classes: "govuk-fieldset__legend--m",
+        isPageHeading: false
+      }
+    }
+  }) }}
+
+{% endblock %}

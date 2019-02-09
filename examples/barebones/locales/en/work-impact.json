@@ -1,0 +1,29 @@
+{
+  "pageTitle": "Work impact",
+  "h1": "Does your situation require assistance?",
+  "maxLength": "Give a shorter description (maximum 10,000 characters)",
+  "moreDifficult": {
+    "label": "Does your situation make things more difficult?",
+    "empty": "Please make a selection"
+  },
+  "harderHow": {
+    "label": "How is it harder?",
+    "empty": "Please provide details"
+  },
+  "getAroundProblems": {
+    "label": "Do you do anything to get around these problems at the moment?",
+    "empty": "Please make a selection"
+  },
+  "problemSolutions": {
+    "label": "What do you do?",
+    "empty": "Please provide details"
+  },
+  "knowWhatWouldHelp": {
+    "label": "Do you know what you need to help you with this?",
+    "empty": "Please make a selection"
+  },
+  "whatWouldHelp": {
+    "label": "What would help you?",
+    "empty": "Please provide details"
+  }
+}

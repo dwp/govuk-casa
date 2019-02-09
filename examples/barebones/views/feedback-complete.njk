@@ -1,0 +1,21 @@
+{% extends "layouts/custom-main.njk" %}
+
+{% block casaPageTitle %}
+  {{ t('feedback:complete.pageTitle') }}
+{% endblock %}
+
+{% block content %}
+  <h1 class="heading-large">{{ t('feedback:complete.h1') }}</h1>
+
+  <div class="form-group">
+    <p>
+      Your feedback has been sent, thank you.
+    </p>
+  </div>
+
+  <div class="govuk-form-group">
+    <p class="govuk-body">
+      <a href="/">Back to service</a>
+    </p>
+  </div>
+{% endblock %}

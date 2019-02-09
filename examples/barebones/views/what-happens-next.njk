@@ -1,0 +1,24 @@
+{% extends "layouts/custom-main.njk" %}
+
+{% block page_title %}
+  {{ t('what-happens-next:pageTitle') }}
+{% endblock %}
+
+{% block content %}
+  <h1 class="heading-large">{{ t('what-happens-next:h1') }}</h1>
+
+  <div class="form-group">
+    <p>
+      Your application has been submitted successfully. Here's what will happen next ...
+    </p>
+    <p>
+      See your console output for a list of all the data that has been generated during this session.
+    </p>
+  </div>
+
+  <div class="form-group">
+    <p>
+      <a href="https://gov.uk/">{{ t('what-happens-next:backToGovLink') }}</a>
+    </p>
+  </div>
+{% endblock %}
