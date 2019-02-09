@@ -4,10 +4,28 @@ Extends the `govukRadios()` macro.
 
 Custom parameters:
 
-* `casaValue` - the value of the chosen radio button (this is a convenience for toggling the `checked` flag on the appropriate `item`)
+* `casaValue` - the value of the chosen radio button. This is a convenience for toggling the `checked` flag on the appropriate `item`, but you can also manually set `checked` on each item if you need to use more specific logic for determining checked state.
 * `casaErrors` - form errors (just pass `formErrors`)
 
+Basic example:
+
+```nunjucks
+{{ casaGovukRadios({
+  name: 'myInput',
+  casaValue: formData.myInput,
+  casaErrors: formErrors
+  items: [{
+    text: 'Yes',
+    value: 'yes'
+  }, {
+    text: 'No',
+    value: 'no'
+  }]
+}) }}
+```
+
 If you want one of the radio items to toggle the display of an element:
+
 ```nunjucks
 {{ casaGovukRadios({
   name: 'myInput',

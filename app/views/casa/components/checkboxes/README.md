@@ -1,10 +1,19 @@
 # `casaGovukCheckboxes()`
 
-Example:
+Extends the `govukCheckboxes()` macro.
+
+Custom parameters:
+
+* `casaValue` (`array`) - the value of the chosen checkbox(es). This is a convenience for toggling the `checked` flag on the appropriate `item`, but you can also manually set `checked` on each item if you need to use more specific logic for determining checked state.
+* `casaErrors` - form errors (just pass `formErrors`)
+
+Basic example:
 
 ```nunjucks
 casaGovukCheckboxes({
   name: "preferences",
+  casaValue: formData.preferences,
+  casaErrors: formErrors,
   fieldset: {
     legend: {
       text: "Choose your preferences",
@@ -17,23 +26,42 @@ casaGovukCheckboxes({
   },
   items: [{
     value: "twistedflax",
-    text: "Twisted Flax",
-    checked: includes(formData.preferences, "twistedflax")
-  },{
+    text: "Twisted Flax"
+  }, {
     value: "tworeeds",
-    text: "Two Reeds",
-    checked: includes(formData.preferences, "tworeeds")
+    text: "Two Reeds"
   }, {
     value: "water",
-    text: "Water",
-    checked: includes(formData.preferences, "water")
+    text: "Water"
   }, {
     value: "horus",
-    text: "Horus",
-    checked: includes(formData.preferences, "horus")
-  }],
-  casaErrors: formErrors
+    text: "Horus"
+  }]
 })
+```
+
+To associate a checkbox item with a toggleable DOM element:
+
+```nunjucks
+casaGovukCheckboxes({
+  name: "preferences",
+  casaValue: formData.preferences,
+  casaErrors: formErrors,
+  items: [{
+    value: "firt-choice",
+    text: "First Choice",
+    attributes: {
+      'data-target': 'target-panel'
+    }
+  }, {
+    value: "second-choice",
+    text: "Second Choice"
+  }]
+})
+
+<div id="target-panel" class="js-hidden">
+  This panel will remain hidden until the "First Choice" option is chosen in the che set above.
+</div>
 ```
 
 ## Displaying errors
