@@ -199,3 +199,22 @@ module.exports = (function () {
 ```
 
 It is up to the page handler functions how that data is captured and stored. For example, you could use a `prerender` hook on the `hobbies` page to prepare an array in the session to hold the captured data, and a `preredirect` hook in the `pictures` page to store the captured data in that array before then clearing any session data captured on `description` and `pictures`.
+
+## Handling faults
+
+Should any of your journey's conditional functions (either [waypoint conditionals](#conditional-waypoints), or [fork functions](#forks-in-the-road)) throw an exception, then the user's journey will stop and they will be directed to a **`journey-fault`** waypoint. There is no way for the user to go beyond this point until the issue causing the exception is resolved.
+
+By default this will just fall through to a `404` page, but you can add your own Express route handler to intercept this waypoint and handle the failure however you wish. For example:
+
+```javascript
+// app.js
+const UserJourney = require('@dwp/govuk-casa/lib/UserJourney.js');
+
+// Add router handler just before the page definitions and journey are loaded.
+// For better forwards-compatibility, use the
+// `UserJourney.Road.WAYPOINT_FAULT_ID` constant rather than the `journey-fault`
+// literal string.
+casaApp.router.get(UserJourney.Road.WAYPOINT_FAULT_ID, (req, res) => {
+  res.status(500).render('my-custom-journey-fault-page.njk');
+});
+```

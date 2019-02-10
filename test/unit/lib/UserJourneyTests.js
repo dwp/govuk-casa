@@ -563,6 +563,69 @@ describe('UserJourney.Map', () => {
       expect(map.traverse(dataContext, validationContext)).to.not.contain('p4');
       expect(map.traverse(dataContext, validationContext)).to.not.contain('p5');
     });
+
+    it('should end with the fault waypoint if a waypoint conditional throws an Exception', () => {
+      const map = new UserJourney.Map();
+
+      const road1 = new UserJourney.Road();
+      road1.addWaypoints([
+        'p0',
+        'p1',
+        ['p2', () => {
+          throw new Error('TEST_FAULT');
+        }],
+        'p3',
+      ]);
+
+      map.startAt(road1);
+
+      const dataContext = {
+        p0: { data: true },
+        p1: { data: true },
+        p2: { data: true },
+        p3: { data: true },
+      };
+
+      // The waypoint fault id may change, but we use the literal here to catch
+      // that change
+      expect(map.traverse(dataContext)).to.contain('journey-fault');
+      expect(map.traverse(dataContext)).to.contain('p1');
+      expect(map.traverse(dataContext)).to.not.contain('p3');
+    });
+
+    it('should end with the fault waypoint if a fork function throws an Exception', () => {
+      const map = new UserJourney.Map();
+      const road1 = new UserJourney.Road();
+      const road2 = new UserJourney.Road();
+      const road3 = new UserJourney.Road();
+
+      road1.addWaypoints([
+        'p0',
+        'p1',
+      ]).fork([road2, road3], () => {
+        throw new Error('TEST_FAULT');
+      });
+
+      road2.addWaypoints(['p2', 'p3']);
+      road3.addWaypoints(['p4', 'p5']);
+
+      map.startAt(road1);
+
+      const dataContext = {
+        p0: { data: true },
+        p1: { data: true },
+        p2: { data: true },
+        p3: { data: true },
+        p4: { data: true },
+        p5: { data: true },
+      };
+
+      // The waypoint fault id may change, but we use the literal here to catch
+      // that change
+      expect(map.traverse(dataContext)).to.contain('journey-fault');
+      expect(map.traverse(dataContext)).to.contain('p1');
+      expect(map.traverse(dataContext)).to.not.contain('p2');
+    });
   });
 
   describe('traverseAhead()', () => {
