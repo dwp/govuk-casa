@@ -16,7 +16,7 @@
 {% set mergedItems = [] %}
 {% for item in params.items %}
   {% set item = mergeObjects(item, {
-    checked: true if item.value == params.casaValue else null
+    checked: true if item.checked or item.value == params.casaValue else false
   }) %}
   {% set mergedItems = (mergedItems.push(item), mergedItems) %}
 {% endfor %}

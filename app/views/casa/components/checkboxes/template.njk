@@ -13,10 +13,21 @@
   id: params.id if params.id else 'f-' + params.name + '-wrapper' | safe
 }) %}
 
+{# Add checked flag to chosen inputs #}
+{% set mergedItems = [] %}
+{% for item in params.items %}
+  {% set item = mergeObjects(item, {
+    checked: true if item.checked or includes(params.casaValue, item.value) else null
+  }) %}
+  {% set mergedItems = (mergedItems.push(item), mergedItems) %}
+{% endfor %}
+<pre>{{ mergedItems | dump }}</pre>
+
 {# Merge parameters #}
 {% set mergedParams = mergeObjects(params, {
   idPrefix: params.idPrefix if params.idPrefix else 'f-' + params.name,
   attributes: mergedAttributes,
+  items: mergedItems,
   errorMessage: {
     text: t(params.casaErrors[params.name][0].inline)
   } if params.casaErrors[params.name] else null
