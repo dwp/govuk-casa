@@ -1,13 +1,13 @@
 {% from "components/button/macro.njk" import govukButton %}
 
-<form action="#" method="post" autocomplete="off" novalidate class="casa-form">
+<form action="#" method="post" autocomplete="off" novalidate class="casa-journey-form">
   <input type="hidden" name="_csrf" value="{{ params.csrfToken }}" />
   {% if params.inEditMode %}<input type="hidden" name="edit" value="true" />{% endif %}
 
   {# FORM CONTENT HERE #}
   {{ caller() }}
 
-  {% if params.buttonBarHidden != true %}
+  {% if not params.buttonBarHidden %}
     <footer class="casa-form-control-block govuk-body">
       {{ govukButton({
         attributes: {
