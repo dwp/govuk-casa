@@ -4,9 +4,6 @@
  */
 
 (function casaJs() {
-  // Vars
-  var errorSummary = document.getElementById('error-summary-title');
-
   /**
    * Polyfill for attaching event listeners to elements.
    *
@@ -36,6 +33,7 @@
 
   // Focus on error summary, if present. This will allow screen readers to
   // immediately focus on the errors in the form.
+  var errorSummary = document.getElementById('error-summary-title');
   if (errorSummary) {
     errorSummary.focus();
   }
@@ -56,6 +54,19 @@
 
   // Initialise all js-controlled GOVUK Frontend UI components
   GOVUKFrontend.initAll();
+
+  // Prevent accidental double-submission of journey form.
+  // This will disable the button for 5 seconds whilst the form is submitted.
+  var journeyForm = document.getElementsByClassName('casa-journey-form');
+  var journeyButton = document.getElementById('continue-button');
+  if (journeyForm.length && journeyButton) {
+    attachEventPolyfill(journeyForm[0], 'submit', function hFormSubmit() {
+      journeyButton.setAttribute('disabled', true);
+      setTimeout(function hJourneySubmissionTimeout() {
+        journeyButton.removeAttribute('disabled');
+      }, 5000);
+    });
+  }
 
   /* ------------------------------------------------ Show/Hide functionality */
 
