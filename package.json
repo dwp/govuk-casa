@@ -38,9 +38,9 @@
     "uid-safe": "2.1.5"
   },
   "devDependencies": {
-    "@commitlint/cli": "7.5.1",
+    "@commitlint/cli": "7.5.2",
     "@commitlint/config-conventional": "7.5.0",
-    "@commitlint/travis-cli": "7.5.1",
+    "@commitlint/travis-cli": "7.5.2",
     "@dwp/eslint-config-base": "2.1.0",
     "chai": "4.2.0",
     "chai-as-promised": "7.1.1",
@@ -60,7 +60,7 @@
     "sinon": "7.2.3",
     "sinon-chai": "3.3.0",
     "uuid": "3.3.2",
-    "yargs": "12.0.5"
+    "yargs": "13.1.0"
   },
   "peerDependencies": {
     "express": "4.x",
