@@ -1,3 +1,26 @@
+<a name="2.3.0"></a>
+# [2.3.0](https://github.com/dwp/govuk-casa/compare/2.2.2...2.3.0) (2019-02-13)
+
+
+### Bug Fixes
+
+* check compiled assets dir exists ([6e34562](https://github.com/dwp/govuk-casa/commit/6e34562))
+* **accessibility:** apply correct error highlighting and linking ([08cb9a8](https://github.com/dwp/govuk-casa/commit/08cb9a8))
+* **validation:** fix to the postcode regex ([8f4f2c0](https://github.com/dwp/govuk-casa/commit/8f4f2c0))
+* handle userland journey errors ([fcb7842](https://github.com/dwp/govuk-casa/commit/fcb7842))
+* sass compilation on Windows ([3af3794](https://github.com/dwp/govuk-casa/commit/3af3794))
+* update class name in form helper to be more explicit ([70a0433](https://github.com/dwp/govuk-casa/commit/70a0433))
+
+
+### Features
+
+* **negative regex:** add negative regex ([ddad066](https://github.com/dwp/govuk-casa/commit/ddad066))
+* **postal address:** visually group address lines 1 & 2 together ([dcea90f](https://github.com/dwp/govuk-casa/commit/dcea90f))
+* protect against double-submission of journey form ([a366777](https://github.com/dwp/govuk-casa/commit/a366777))
+* update journey-form to allow removing footer ([dd9801e](https://github.com/dwp/govuk-casa/commit/dd9801e))
+
+
+
 <a name="2.2.2"></a>
 ## [2.2.2](https://github.com/dwp/govuk-casa/compare/2.2.1...2.2.2) (2019-01-18)
 
