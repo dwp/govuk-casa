@@ -459,11 +459,31 @@ Now you should be able to start the application with `DEBUG=casa* node app.js` (
 
 Session handling is managed through the `express-session` interface, so you are free to choose any available implementation of that interface (see the [full list of supported implementations](https://www.npmjs.com/package/express-session#compatible-session-stores)). Or, if you need something more bespoke, you can write your own implementation.
 
-## Adding a "review your answers" page
+## Adding a "Check your answers" page
 
 CASA provides a simple implementation of the ["Check your answers"](https://design-system.service.gov.uk/patterns/check-answers/) pattern. You can of course roll your own implementation, but if you'd like to take advantage of the CASA variant (which will eventually aim to keep up to date with the pattern), here's how ...
 
-First, add a `review` waypoint to your journey. This should come before your final `submit` page.
+First, add a `review` waypoint to your journey. This is just like any other waypoint, but CASA just happens to provide an Express handler for this particular waypoint ID. This should come before your final `submit` page. For example, taking the example journey further above, we just add `review` to the list of waypoints, just before `submit`:
+
+```javascript
+// definitions/journey.js
+const UserJourney = require('@dwp/govuk-casa/lib/UserJourney');
+
+module.exports = (function () {
+  const linear = new UserJourney.Road();
+  linear.addWaypoints([
+    'personal-info',
+    'hobbies',
+    'review',
+    'submit'
+  ]);
+  linear.end();
+
+  const journey = new UserJourney.Map();
+  journey.startAt(linear);
+  return journey;
+})();
+```
 
 Next, you'll need to design some _review block_ markup for each of your data-gathering pages. Here's some review blocks for each of our pages:
 
@@ -512,7 +532,7 @@ Next, you'll need to design some _review block_ markup for each of your data-gat
 ```
 
 ```nunjucks
-{# views/pages-review/personal-info.njk #}
+{# views/pages-review/hobbies.njk #}
 {% extends "casa/review/page-block.njk" %}
 
 {% block pageBlockTitle %}
@@ -537,4 +557,21 @@ Next, you'll need to design some _review block_ markup for each of your data-gat
     </tr>
   </tbody>
 {% endblock %}
+```
+
+And in order to tell CASA where to find those templates, specify a `reviewBlockView` on each in your page definition file:
+
+```javascript
+// definitions/pages.js
+module.exports = {
+  'personal-info': {
+    view: 'pages/personal-info.njk',
+    fieldValidators: require('./field-validators/personal-info.js'),
+    reviewBlockView: 'pages-review/personal-info.njk'
+  },
+  hobbies: {
+    view: 'pages/hobbies.njk',
+    reviewBlockView: 'pages-review/hobbies.njk'
+  }
+};
 ```
