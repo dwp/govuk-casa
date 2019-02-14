@@ -21,7 +21,6 @@
   }) %}
   {% set mergedItems = (mergedItems.push(item), mergedItems) %}
 {% endfor %}
-<pre>{{ mergedItems | dump }}</pre>
 
 {# Merge parameters #}
 {% set mergedParams = mergeObjects(params, {
