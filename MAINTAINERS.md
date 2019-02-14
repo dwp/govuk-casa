@@ -46,3 +46,42 @@ git rebase -i master
 6. Review the code locally using the guidelines above, ensuring it builds, passes linting and tests. Use the `npm run pipeline` script to cover these checks (check for changes to that script beforehand)
 
 7. If successful, merge into master, ensure CI build passes before finally pushing back up to Github.
+
+## Preparing for release
+
+When you're ready to release `master`, begin by carrying out the common version-bumping steps:
+
+```bash
+# Bump version number in all files as needed
+# Currently you will need to bump `sonar-project.properties` manually
+git checkout master
+git pull --rebase
+npm version --no-git-tag-version <major | minor | patch>
+
+# Generate a CHANGELOG
+npm run package:changelog
+
+# Commit, tag and push to origin
+git add -u
+git commit -sm 'chore: package <version>'
+git tag <version>
+git push --tags
+git push
+
+# Push to Github
+git push --tags git@github.com:dwp/govuk-casa.git master
+git push git@github.com:dwp/govuk-casa.git master
+```
+
+Now publish to [npmjs.com](https://npmjs.com/):
+
+```bash
+# Login to npm
+npm adduser --scope=@dwp
+
+# Dry-run the publication to check all looks ok
+npm publish --dry-run
+
+# Publish the npm package
+npm publish
+```
