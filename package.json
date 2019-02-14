@@ -1,6 +1,6 @@
 {
   "name": "@dwp/govuk-casa",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Framework for creating basic GOVUK Collect-And-Submit-Applications",
   "main": "casa.js",
   "files": [
@@ -77,7 +77,7 @@
     "quality:coverage": "nyc npm test",
     "security": "npm run security:vulnerable-packages",
     "security:vulnerable-packages": "npm audit",
-    "package:changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
+    "package:changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "start-pen-test-service": "PORT=4000 node ./test/penetration/server.js"
   },
   "author": "DWP <open-source@engineering.digital.dwp.gov.uk>",
