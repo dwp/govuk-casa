@@ -33,7 +33,7 @@
     "object-resolve-path": "1.1.1",
     "recursive-readdir-sync": "1.0.6",
     "request": "2.88.0",
-    "request-promise": "4.2.2",
+    "request-promise": "4.2.4",
     "uglify-js": "3.4.9",
     "uid-safe": "2.1.5"
   },
@@ -45,7 +45,7 @@
     "chai": "4.2.0",
     "chai-as-promised": "7.1.1",
     "cheerio": "1.0.0-rc.2",
-    "conventional-changelog-cli": "2.0.11",
+    "conventional-changelog-cli": "2.0.12",
     "eslint": "5.13.0",
     "eslint-plugin-sonarjs": "0.2.0",
     "express": "4.16.4",
@@ -60,7 +60,7 @@
     "sinon": "7.2.3",
     "sinon-chai": "3.3.0",
     "uuid": "3.3.2",
-    "yargs": "13.1.0"
+    "yargs": "13.2.0"
   },
   "peerDependencies": {
     "express": "4.x",
