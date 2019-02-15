@@ -27,12 +27,12 @@ git checkout master
 3. Checkout the Github PR with:
 
 ```bash
-# Assuming the PR is on the remote's `master` branch; change if not
-git fetch git@github.com:example-user/example-repo.git master
+# Create a new local branch based on the contributor's name and branch, e.g.
+# if "sue" wants to merge her "feature/thing" branch ...
+git checkout -b sue-feature/thing master
 
-# Create a new local branch from that fetched content. Name it appropriately to
-# reflect the origin of the material
-git checkout -b my-branch-name FETCH_HEAD
+# Pull the contributor's changes into that branch
+git pull git://github.com/sue/sues-forked-repo.git feature/thing
 ```
 
 4. Rebase the MR onto `master` to ensure it plays nicely with the latest integrated codebase:
@@ -42,6 +42,10 @@ git rebase -i master
 ```
 
 5. Push this branch up to the canonical internal repository, and create a new internal PR. At this point we review the code in the same manner as any other internal project.
+
+```bash
+git push -u origin sue-feature/thing
+```
 
 6. Review the code locally using the guidelines above, ensuring it builds, passes linting and tests. Use the `npm run pipeline` script to cover these checks (check for changes to that script beforehand)
 
