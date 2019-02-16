@@ -43,11 +43,11 @@ To help make this a little simpler, we've provided a suite of "wrapper macros" t
 
 As of this writing the following macros are available (and the macro location):
 
-* `casaGovukCheckboxes()` (`casa/components/checkboxes/macro.njk`)
-* `casaGovukDateInput()` (`casa/components/date-input/macro.njk`)
+* `casaGovukCheckboxes()` (`casa/components/checkboxes/macro.njk`, [`README.md`](../app/views/casa/components/checkboxes/README.md))
+* `casaGovukDateInput()` (`casa/components/date-input/macro.njk`, [`README.md`](../app/views/casa/components/date-input/README.md))
 * `casaGovukInput()` (`casa/components/input/macro.njk`)
 * `casaGovukTextarea()` (`casa/components/textarea/macro.njk`)
-* `casaGovukRadios()` (`casa/components/radios/macro.njk`, [`README.md`](../app/views/components/radios/README.md))
+* `casaGovukRadios()` (`casa/components/radios/macro.njk`, [`README.md`](../app/views/casa/components/radios/README.md))
 
 ## CASA components
 

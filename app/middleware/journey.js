@@ -9,7 +9,7 @@
  */
 
 const util = require('../../lib/Util');
-const logger = require('../../lib/Logger')();
+const logger = require('../../lib/Logger')('journey');
 
 module.exports = function mwJourney(router, mountUrl, userJourney) {
   /**

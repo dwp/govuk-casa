@@ -58,4 +58,4 @@ Now you've got some pages ready to collect data from the user, you'll most likel
 
 Finally, we need to bring all of this together, by creating a bootstrap script for our service. Visit **[Deploying a CASA app](docs/deploying.md)** to get started.
 
-That's it! The basics have been covered here, but there's plenty more reading below to help get the most out of CASA.
+That's it! The basics have been covered here, but if you want to delve deeper under the hood then take a read through the **[developer API documentation](docs/api.md)** too.

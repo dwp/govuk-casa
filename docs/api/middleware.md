@@ -1,0 +1,38 @@
+# CASA Middleware
+
+Here we describe the various middleware that is being employed by CASA, and the order it is applied.
+
+In summary, this is the order of execution:
+
+1. **APPLICATION CODE**<br/>
+   Because you create the ExpressJS instance, you can add whatever middleware you need prior to getting CASA involved at all.
+2. **CASA "common" middleware**<br/>
+   If you have specified a `mountController` function in the CASA config, then it gets executed prior to mounting anything else. This controller gives you the opportunity to inject your own routes/middleware before and/or after the following list of middleware. See [the bootstrap process](bootstrap.md) for more details on this function. If not specified, mounting continues as follows ...
+   1. **HTTP headers** - [`app/middleware/headers.js`](../../app/middleware/headers.js)<br/>
+      Set on the main ExpressJS router (i.e. `app.use(...)`). This will add various common headers on _all_ requests (including images, CSS, etc).
+   2. **Mount URL redirection** - [`app/middleware/mount.js`](../../app/middleware/mount.js)<br/>
+      Set on the main ExpressJS router (i.e. `app.use(...)`). This simply redirects all requests on `/` to the real mount URL, if not `/`.
+   3. **Static asset delivery** - [`app/middleware/static.js`](../../app/middleware/static.js)<br/>
+      Set on the main ExpressJS router (i.e. `app.use(...)`). This is responsible for pre-compiling all of the SASS stylesheets provided by CASA and the `govuk-frontend` module, and caching them in the directory you configured via the `compiledStaticAssets` option. It also sets up the routes that will deliver static  `.js`, `.css` and images, fonts, etcs. Cache-bustinfg is achieved by simply suffixing the version of each assets to its request URL.
+   4. **Session management** - [`app/middleware/session.js`](../../app/middleware/session.js)<br/>
+      Set on the main ExpressJS router (i.e. `app.use(...)`). Sets up the `express-session` middleware, using you provided config. Handles expiry of sessions on the server side, and clearing session cookie on the client side. Copies any raw data gathered during a user journey from the session into the convenient `req.journeyData` object (an instance of [`JourneyData`](../../lib/JourneyData.js)).
+   5. **Template preparation** - [`app/middleware/nunjucks.js`](../../app/middleware/nunjucks.js)<br/>
+      Set on the main ExpressJS router (i.e. `app.use(...)`). Configures the Nunjucks template loader, and prepares a new Nunjucks environment for each response. We have a separate environment per response in order to tailor certain aspects per user, such as the chosen language. See **I18n** further below.
+   6. **I18n** - [`app/middleware/i18n.js`](../../app/middleware/i18n.js)<br/>
+      Set on the main ExpressJS router (i.e. `app.use(...)`). Detects and stores language choices (from the query string, or from the session), and sets up the `t()` template function for use in translating strings.
+   7. **Template variables** - [`app/middleware/variables.js`](../../app/middleware/variables.js)<br/>
+      Set on the main ExpressJS router (i.e. `app.use(...)`). Makes some global variables available to all templates. See [Page Markup](../page-markup.md#variables-and-functions) for more details.
+3. **CASA journey router mounted**<br/>
+   At this point, a new empty `Router` instance is mounted, currently without any routes defined. This is later returned by the CASA bootstrapping process so that you may mount your own custom middleware/routes on this router prior to mounting the CASA journey handlers.
+4.  **APPLICATION CODE**<br/>
+   Now the initial boostrapping process is finished, control passees back to your application code. You can mount things on the main ExpressJS router, or on the `router` passed back by the [bootstrap process](bootstrap.md). Your code should then call the `loadDefinitions()` function returned by the bootstrapping process in order to continue applying the final CASA middleware mounting.
+5. **CASA "journey" middleware**<br/>
+   Once you call `loadDefinitions()`, the following are mounted:
+   1. **Session timeout page** - [`app/routes/session-timeout.js`](../../app/routes/session-timeout.js)<br/>
+      Set on the CASA journey router (i.e. `router.use(...)`). Simply renders the `session-timeout` page when `/session-timeout` route is requested.
+   2. **Journey routing logic** - [`app/middleware/journey.js`](../../app/middleware/journey.js)<br/>
+      Set on the CASA journey router (i.e. `router.use(...)`). This controls how the user moves along the map of waypoints, ensuring that the user cannot "jump ahead" in the journey, or move to waypoints that are not reachable based on the current data gathered.
+   3. **Default page `GET` and `POST` route handlers** - [`app/routes/pages.js`](../../app/routes/pages.js)<br/>
+      Set on the CASA journey router (i.e. `router.use(...)`). Core logic to handle the gathering and validating of data, and the rendering of all pages that feature on the user journey.
+   4. **Error handlers**  - [`app/middleware/errors.js`](../../app/middleware/errors.js)<br/>
+      Set on the main ExpressJS router (i.e. `app.use(...)`). Catches unhandled routes (returns a `404` response), and CSRF exceptions (returns a `403` response) and other unhandled server-side exceptions (returns a `500` response).

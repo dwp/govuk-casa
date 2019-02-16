@@ -1,4 +1,4 @@
-const logger = require('../../lib/Logger')();
+const logger = require('../../lib/Logger')('journey');
 
 module.exports = function mwMount(app, mountUrl) {
   // Simple redirection to ensure requests come via the `mountUrl`

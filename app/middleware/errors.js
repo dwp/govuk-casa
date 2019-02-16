@@ -3,7 +3,7 @@
  * by any of the upstream handlers.
  */
 
-const logger = require('../../lib/Logger')();
+const logger = require('../../lib/Logger')('routeerror');
 
 /**
  * Setup middleware.
