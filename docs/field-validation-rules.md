@@ -107,7 +107,7 @@ rules.nino
 
 ```javascript
 // All configuration options
-rules.nino.bund({
+rules.nino.bind({
   // Strip all whitespace (\u0020 spaces) from the value before validating it
   allowWhitespace: true,
 
