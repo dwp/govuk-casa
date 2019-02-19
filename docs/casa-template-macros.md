@@ -4,6 +4,7 @@
 
 You can use the [GOVUK Frontend component macros](https://design-system.service.gov.uk/components/) directly in your templates, but in order to work seamlessly with CASA you will need to follow a few standards:
 
+* When importing, bear in mind that the GOVUK components will be housed in the `components/` directory, e.g. `components/input/macro.njk`. This differs slightly to the documentation in the GOVUK Design System, so beware!
 * The `id` attribute of any elements must be in the format `f-<name>`, i.e `<... name="my-element" id="f-my-element" ... />`. Because:
   - This allows the Error Summary component to link to error messages correctly
   - It goes some way to avoiding possible id conflict in the page, e.g. if your input is named `main` then there's a good chance there might already be a layout element with the id of `main`, which would clash
@@ -13,6 +14,9 @@ You can use the [GOVUK Frontend component macros](https://design-system.service.
 For example:
 
 ```nunjucks
+{# Use the GOVUK Design System component directly #}
+{% from "components/input/macro.njk" import govukInput %}
+
 {{ govukInput({
   name: 'dob',
   id: 'f-dob',
@@ -28,6 +32,9 @@ For example:
 To help make this a little simpler, we've provided a suite of "wrapper macros" that simply wrap the GOVUK macros (so you can pass the same parameters), but will handle the above standards for you. For example, this is the equivalent to the above:
 
 ```nunjucks
+{# Use the equivalent CASA wrapper macro #}
+{% from "casa/components/input/macro.njk" import casaGovukInput %}
+
 {{ casaGovukInput({
   name: 'dob',
   casaErrors: formErrors
