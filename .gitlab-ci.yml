@@ -60,6 +60,13 @@ sonar-scanner:
   script:
     - sonar-scanner -Dsonar.projectBaseDir=$CI_PROJECT_DIR
 
+sensitives:
+  stage: security-tests
+  <<: *executor-docker
+  script:
+    - apk add git
+    - eval "git log -p | grep ${LOG_SCAN_QUERY}" && exit 1 || exit 0
+
 dep-vuln:
   stage: security-tests
   <<: *executor-docker
