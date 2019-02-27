@@ -17,6 +17,7 @@ const Casa = require('../../../lib/Casa');
 
 describe('Casa', () => {
   const validConfig = {
+    mountController: function mountController() {},
     mountUrl: '/',
     views: {
       dirs: [],
@@ -71,6 +72,53 @@ describe('Casa', () => {
       it('should return the loaded config', () => {
         casa.loadConfig(config);
         expect(casa.getConfig()).to.eql(config);
+      });
+    });
+
+    describe('mountController', () => {
+      it('should be optional if undefined', () => {
+        config.mountController = undefined;
+        casa.loadConfig(config);
+        expect(casa.getConfig().mountController).to.equal(undefined);
+      });
+
+      it('should store a valid value (optional)', () => {
+        config.mountController = undefined;
+        casa.loadConfig(config);
+        expect(casa.getConfig().mountController).to.equal(undefined);
+      });
+
+      it('should store a valid value (function)', () => {
+        config.mountController = function mountController() {
+          return 'Hello world';
+        };
+
+        casa.loadConfig(config);
+        expect(casa.getConfig().mountController).to.be.instanceOf(Function);
+      });
+
+      it('should throw an Error if not a function nor undefined', () => {
+        expect(() => {
+          config.mountController = false;
+          casa.loadConfig(config);
+        }).to.throw(Error);
+      });
+
+      it('should throw an error if mountController is already bound', () => {
+        expect(() => {
+          config.mountController = (function mountController() {
+            return 'Hello world';
+          }).bind('something', 'else');
+
+          casa.loadConfig(config);
+        }).to.throw(Error);
+      });
+
+      it('should throw an error if mountController is an arrow function', () => {
+        expect(() => {
+          config.mountController = () => 'Hello world';
+          casa.loadConfig(config);
+        }).to.throw(Error);
       });
     });
 
