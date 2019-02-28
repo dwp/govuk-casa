@@ -45,7 +45,7 @@ function CasaBootstrap(expressApp, config) {
     casa.loadConfig(config);
   } catch (ex) {
     logger.fatal(`[CONFIG ERROR] ${ex.message}`);
-    process.exit(1);
+    return process.exit(1);
   }
 
   // Prepare an instance of the I18n utility that's required by the various
@@ -56,8 +56,17 @@ function CasaBootstrap(expressApp, config) {
   ];
   const I18nUtility = I18n(localeDirs, config.i18n.locales);
 
-  // Mount all pre-journey middleware
-  casa.mountCommonExpressMiddleware(expressSession, expressJs.static, I18nUtility);
+  // Pre-journey middleware
+  const commonMiddlewareArgs = [casa, expressSession, expressJs.static, I18nUtility];
+  const mountCommonMiddleware = casa.mountCommonExpressMiddleware.bind(...commonMiddlewareArgs);
+
+  // Mount custom middleware with callback
+  if (typeof config.mountController === 'function') {
+    config.mountController.call({ expressApp, expressRouter }, mountCommonMiddleware);
+  } else {
+    // Mount all pre-journey middleware
+    mountCommonMiddleware();
+  }
 
   // Mount the router onto the path defined in `mountUrl`.
   // This must be done after all CASA middleware has been mounted.
