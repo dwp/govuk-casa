@@ -47,7 +47,7 @@
     "chai-http": "4.2.1",
     "cheerio": "1.0.0-rc.2",
     "conventional-changelog-cli": "2.0.12",
-    "eslint": "5.14.1",
+    "eslint": "5.15.0",
     "eslint-plugin-sonarjs": "0.3.0",
     "express": "4.16.4",
     "express-session": "1.15.6",
