@@ -58,7 +58,7 @@ function replaceObjectPathValue(pageData, field, value) {
     const pageData2 = pageData;
     pageData2[field] = value;
   } catch (err) {
-    const logger = loggerFunction('routes');
+    const logger = loggerFunction('routes:post');
     logger.debug('exception in replaceObjectPathValue');
   }
 }
@@ -338,7 +338,7 @@ module.exports = function routePagePost(mountUrl, pages, journey, allowPageEdit)
   return function routePagePostHandler(req, res, next) {
     // NOSONAR
     // Load meta
-    const logger = loggerFunction('routes');
+    const logger = loggerFunction('routes:post');
     logger.setSessionId(req.session.id);
     req.journeyWaypointId = req.journeyWaypointId
       || util.getPageIdFromUrl(req.url);

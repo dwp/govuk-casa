@@ -35,7 +35,7 @@ The following global functions are available to your templates:
 * `mergeObjects(object obj...)` - merges any number of objects into one final object
 * `mergeObjectsDeep(object obj...)` - recursively deep-merges any number of objects into one final object
 * `renderAsAttributes(object attrs)` - generates a string of `key=value` HTML element attributes from the given object
-* `t(string key, mixed substitutions...)` - translate the lookup `key` to the currently chosen language. See **[Internationalisation](18n.md)** for more information.
+* `t(string key, mixed substitutions...)` - translate the lookup `key` to the currently chosen language. See **[Internationalisation](i18n.md)** for more information.
 
 ## Creating a basic page
 

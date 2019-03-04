@@ -26,7 +26,7 @@ module.exports = function routePageGet(pages, allowPageEdit) {
    */
   return function routePageGetHandler(req, res) {
     // Load meta
-    const logger = loggerFunction('routes');
+    const logger = loggerFunction('routes:get');
     logger.setSessionId(req.session.id);
     const pageId = util.getPageIdFromUrl(req.url);
     const pageMeta = pages.getPageMeta(pageId);

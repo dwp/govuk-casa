@@ -24,7 +24,7 @@ const uglifyJs = require('uglify-js');
 const fs = require('fs-extra');
 const recursiveReaddir = require('recursive-readdir-sync');
 const sass = require('node-sass');
-const logger = require('../../lib/Logger')();
+const logger = require('../../lib/Logger')('static');
 
 /**
  * Compile the Sass source files, and store output into the `compiledAssetsDir`.

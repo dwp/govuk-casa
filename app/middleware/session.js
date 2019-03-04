@@ -9,7 +9,7 @@
 
 const uid = require('uid-safe');
 const moment = require('moment');
-const logger = require('../../lib/Logger')();
+const logger = require('../../lib/Logger')('session');
 const JourneyData = require('../../lib/JourneyData');
 
 module.exports = function mwSession(app, expressSession, mountUrl, sessionCfg) {
