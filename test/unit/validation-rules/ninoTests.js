@@ -11,8 +11,7 @@ describe('Validation rule: nino', () => {
   it('should resolve for valid NI numbers', () => {
     const queue = [];
 
-    queue.push(expect(nino('AA000000A')).to.be.fulfilled);
-    queue.push(expect(nino('JJ123456D')).to.be.fulfilled);
+    queue.push(expect(nino('AA370773A')).to.be.fulfilled);
 
     return Promise.all(queue);
   });
@@ -32,9 +31,9 @@ describe('Validation rule: nino', () => {
   it('should reject valid NI numbers with spaces by default', () => {
     const queue = [];
 
-    queue.push(expect(nino('AA 00 00 00 A')).to.be.rejected);
-    queue.push(expect(nino('AA\u002000\u002000\u002000\u0020A')).to.be.rejected);
-    queue.push(expect(nino('JJ 123456D ')).to.be.rejected);
+    queue.push(expect(nino('AA 37 07 73 A')).to.be.rejected);
+    queue.push(expect(nino('AA\u002037\u002007\u002073\u0020A')).to.be.rejected);
+    queue.push(expect(nino('AA 370773A ')).to.be.rejected);
 
     return Promise.all(queue);
   });
@@ -45,10 +44,9 @@ describe('Validation rule: nino', () => {
     });
     const queue = [];
 
-    queue.push(expect(rule('AA 00 00 00 A')).to.be.fulfilled);
-    queue.push(expect(rule('JJ 123456D ')).to.be.fulfilled);
-    queue.push(expect(rule('JJ 123  456D')).to.be.fulfilled);
-    queue.push(expect(rule('AA\u002000\u002000\u002000\u0020A')).to.be.fulfilled);
+    queue.push(expect(rule('AA 370773A ')).to.be.fulfilled);
+    queue.push(expect(rule('AA 370  773A')).to.be.fulfilled);
+    queue.push(expect(rule('AA\u002037\u002007\u002073\u0020A')).to.be.fulfilled);
 
     return Promise.all(queue);
   });
@@ -57,13 +55,13 @@ describe('Validation rule: nino', () => {
     const rule = nino.bind({
       allowWhitespace: true,
     });
-    return expect(rule('AA\u200200\u200200\u200200\u2002A')).to.be.rejected;
+    return expect(rule('AA\u200237\u200207\u200273\u2002A')).to.be.rejected;
   });
 
   it('should throw TypeError when allowWhitespace isnt a boolean', () => {
     const rule = nino.bind({
       allowWhitespace: 'true',
     });
-    return expect(() => rule('AA 00 00 00 A')).to.throw(TypeError, 'NINO validation rule option "allowWhitespace" must been a boolean. received string');
+    return expect(() => rule('AA 37 07 73 A')).to.throw(TypeError, 'NINO validation rule option "allowWhitespace" must been a boolean. received string');
   });
 });
