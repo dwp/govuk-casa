@@ -61,6 +61,7 @@ module.exports = function mwHeaders(app, cspConfig, disabledHeadersConfig) {
       '\'self\'',
       '\'unsafe-inline\'',
       'https://www.google-analytics.com/',
+      'https://www.googletagmanager.com/',
     ];
 
     if (!Object.prototype.hasOwnProperty.call(cspDirectives, cspKeyScriptSrc)) {
