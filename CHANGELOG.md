@@ -1,3 +1,18 @@
+<a name="2.4.0"></a>
+# [2.4.0](https://github.com/dwp/govuk-casa/compare/2.3.1...2.4.0) (2019-03-05)
+
+
+### Bug Fixes
+
+* Update typo on documentation for NINO ([9e73565](https://github.com/dwp/govuk-casa/commit/9e73565))
+
+
+### Features
+
+* **middleware:** allow extra middleware from config ([61db293](https://github.com/dwp/govuk-casa/commit/61db293))
+
+
+
 <a name="2.3.1"></a>
 ## [2.3.1](https://github.com/dwp/govuk-casa/compare/2.3.0...2.3.1) (2019-02-14)
 
