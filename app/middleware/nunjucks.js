@@ -40,12 +40,6 @@ module.exports = function mwNunjucks(app, viewDirs, govukFrontendTemplate) {
     npath.resolve(govukFrontendTemplate, '..'),
   ]);
 
-  // Prepare a file loader for use with all Nunjucks environments
-  const loader = new nunjucks.FileSystemLoader(dirViews, {
-    watch: false,
-    noCache: false,
-  });
-
   /**
    * Setup a nunjucks environment, per request, so we can tailor the environment
    * to the needs of the request (e.g. using a specific language for rendering).
@@ -60,6 +54,16 @@ module.exports = function mwNunjucks(app, viewDirs, govukFrontendTemplate) {
    * @returns {void}
    */
   const handleEnvironmentInit = (req, res, next) => {
+    // Prepare a file loader for use with our Nunjucks environments.
+    // We do not use one global loader for all environments (as we did in a
+    // previous incarnation), as we soon reach the `MaxListenersExceededWarning`
+    // warning due to that same loader being overload by event listeners added
+    // every time we create a new nunjucks environment.
+    const loader = new nunjucks.FileSystemLoader(dirViews, {
+      watch: false,
+      noCache: false,
+    });
+
     const env = new nunjucks.Environment(loader, {
       autoescape: true,
       throwOnUndefined: false,
@@ -68,7 +72,7 @@ module.exports = function mwNunjucks(app, viewDirs, govukFrontendTemplate) {
     });
     res.nunjucksEnvironment = env;
 
-    // Load filters
+    // Load filters into environment
     const viewFiltersDir = npath.resolve(__dirname, '..', 'view-filters');
     require(npath.resolve(viewFiltersDir, '_load'))(env);
 
