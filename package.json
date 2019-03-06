@@ -25,7 +25,7 @@
     "dotenv": "6.2.0",
     "fs-extra": "7.0.1",
     "govuk-frontend": "2.8.0",
-    "govuk_template_jinja": "0.24.1",
+    "govuk_template_jinja": "0.25.0",
     "lodash.merge": "4.6.1",
     "moment": "2.24.0",
     "node-sass": "4.11.0",
@@ -61,7 +61,7 @@
     "sinon": "7.2.7",
     "sinon-chai": "3.3.0",
     "uuid": "3.3.2",
-    "yargs": "13.2.1"
+    "yargs": "13.2.2"
   },
   "peerDependencies": {
     "express": "4.x",
