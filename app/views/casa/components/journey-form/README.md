@@ -29,7 +29,7 @@ Which will render something like this:
   ... your form inputs here ...
 
   <footer class="casa-form-control-block govuk-body">
-    <button type="submit" class="govuk-button">
+    <button type="submit" class="govuk-button" data-prevent-double-click="true" id="continue-button">
       Save changes
     </button>
 
@@ -37,6 +37,8 @@ Which will render something like this:
   </footer>
 </form>
 ```
+
+Note that the submit button is configured to prevent double-clicks and avoid duplicate submissions.
 
 ## Component arguments
 

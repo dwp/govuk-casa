@@ -13,7 +13,8 @@
         attributes: {
           id: 'continue-button'
         },
-        text: t('common:form.buttons.saveChanges.label') if params.inEditMode else t('common:form.buttons.continue.label')
+        text: t('common:form.buttons.saveChanges.label') if params.inEditMode else t('common:form.buttons.continue.label'),
+        preventDoubleClick: true
       }) }}
 
       {% if params.inEditMode %}
