@@ -34,7 +34,7 @@
     "recursive-readdir-sync": "1.0.6",
     "request": "2.88.0",
     "request-promise": "4.2.4",
-    "uglify-js": "3.4.9",
+    "uglify-js": "3.4.10",
     "uid-safe": "2.1.5"
   },
   "devDependencies": {
