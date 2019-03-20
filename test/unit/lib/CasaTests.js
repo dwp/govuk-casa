@@ -407,7 +407,7 @@ describe('Casa', () => {
 
       const dirMiddleware = npath.resolve(__dirname, '../../../app/middleware');
       const proxies = {};
-      ['headers', 'mount', 'static', 'session', 'nunjucks', 'i18n', 'variables'].forEach((m) => {
+      ['headers', 'mount', 'static', 'nunjucks', 'session', 'i18n', 'variables'].forEach((m) => {
         proxies[`${dirMiddleware}/${m}.js`] = emitter.bind({ moduleName: m });
       });
       const CasaProxy = proxyquire('../../../lib/Casa', proxies);
@@ -423,7 +423,7 @@ describe('Casa', () => {
       const sequencer = (m) => {
         sequence.push(m)
       };
-      const moduleOrder = ['headers', 'mount', 'static', 'session', 'nunjucks', 'i18n', 'variables'];
+      const moduleOrder = ['headers', 'mount', 'static', 'nunjucks', 'session', 'i18n', 'variables'];
       moduleOrder.forEach((m) => {
         requireWatcher.on(m, sequencer);
       });
