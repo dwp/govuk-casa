@@ -1,3 +1,13 @@
+<a name="2.4.1"></a>
+## [2.4.1](https://github.com/dwp/govuk-casa/compare/2.4.0...2.4.1) (2019-03-20)
+
+
+### Performance Improvements
+
+* **memory:** remove potential source of memory leaks ([7dd658d](https://github.com/dwp/govuk-casa/commit/7dd658d))
+
+
+
 <a name="2.4.0"></a>
 # [2.4.0](https://github.com/dwp/govuk-casa/compare/2.3.1...2.4.0) (2019-03-05)
 
