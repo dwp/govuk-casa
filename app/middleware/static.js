@@ -26,6 +26,8 @@ const recursiveReaddir = require('recursive-readdir-sync');
 const sass = require('node-sass');
 const logger = require('../../lib/Logger')('static');
 
+const onehour = 3600000;
+
 /**
  * Compile the Sass source files, and store output into the `compiledAssetsDir`.
  *
@@ -94,12 +96,16 @@ function addGovukFrontendStaticAssets(
 ) {
   // JavaScript
   app.use(`${govukFrontendVirtualUrl}/js/all.js`, expStatic(`${npmGovukFrontend}/all.js`, {
-    etag: false,
+    etag: true,
+    lastModified: false,
+    maxage: onehour,
   }));
 
   // Images and Font assets
   app.use(`${govukFrontendVirtualUrl}/assets`, expStatic(`${npmGovukFrontend}/assets`, {
-    etag: false,
+    etag: true,
+    lastModified: false,
+    maxage: onehour,
   }));
 
   // `govuk_template_jinja` JS assets
@@ -109,7 +115,9 @@ function addGovukFrontendStaticAssets(
   //  * cookie bar handling
   //  * show/hide element stuff
   app.use(`${govukFrontendVirtualUrl}/js/govuk-template.js`, expStatic(`${npmGovukTemplateJinja}/assets/javascripts/govuk-template.js`, {
-    etag: false,
+    etag: true,
+    lastModified: false,
+    maxage: onehour,
   }));
 }
 
@@ -145,7 +153,9 @@ function addCasaStaticAssets(
   );
 
   app.use(prefixCasa, expStatic(casaAssetsDir, {
-    etag: false,
+    etag: true,
+    lastModified: false,
+    maxage: onehour,
   }));
 }
 
