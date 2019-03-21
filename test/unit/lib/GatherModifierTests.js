@@ -99,5 +99,25 @@ describe('GatherModifier', () => {
       validAddressStructure(v);
       expect(v.postcode).to.equal('W1 1QA');
     });
+
+    it('reformats a postcode with spaces after letters', () => {
+      const v = GatherModifier.trimPostalAddressObject({
+        fieldValue: {
+          postcode: ' bd 1 3 4 qa ',
+        },
+      });
+      validAddressStructure(v);
+      expect(v.postcode).to.equal('BD13 4QA');
+    });
+
+    it('does not reformats an invalid postcode', () => {
+      const v = GatherModifier.trimPostalAddressObject({
+        fieldValue: {
+          postcode: ' bd 1 3 4 q ',
+        },
+      });
+      validAddressStructure(v);
+      expect(v.postcode).to.equal('bd 1 3 4 q');
+    });
   });
 });
