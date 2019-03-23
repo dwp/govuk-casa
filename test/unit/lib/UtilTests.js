@@ -44,6 +44,14 @@ describe('Util', () => {
     it('should empty string for missing paths', () => {
       expect(Util.objectPathString()).to.equal('');
     });
+
+    it('should place quotes around each unquoted bracketed element in a single string', () => {
+      expect(Util.objectPathString('ab[cd]')).to.equal('ab["cd"]');
+    });
+
+    it('should place quotes around each unquoted bracketed element, in a list of strings', () => {
+      expect(Util.objectPathString('a[b]', 'cd[e]')).to.equal('a["b"].cd["e"]');
+    });
   });
 
   describe('objectPathValue()', () => {
