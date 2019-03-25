@@ -28,10 +28,12 @@ const casaApp = casa(expressAppInstance, {
   // csp (Objectl; optional; default {})
   // Content-Security-Policy directives, where each key of the object is a valid
   // CSP directive (e.g. default-src, script-src, img-src, etc) and the value
-  // if the CSP header value.
-  // CASA will always append its own `script-src` values to any set here.
+  // is an array of the CSP header values to be added.
+  // CASA will always append its own `script-src` values to any set here which
+  // include by default: 'self', 'unsafe-inline', 
+  // https://www.google-analytics.com/ and https://www.googletagmanager.com/
   csp: {
-    'script-src': 'http://myexample.test/scripts/',
+    'script-src': ['http://myexample.test/scripts/'],
   },
 
   headers: {
