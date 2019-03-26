@@ -77,7 +77,7 @@
     "quality": "npm run quality:coverage",
     "quality:coverage": "nyc npm test",
     "security": "npm run security:vulnerable-packages",
-    "security:vulnerable-packages": "npm audit",
+    "security:vulnerable-packages": "npm audit --json | node -e 'a=JSON.parse(fs.readFileSync(\"/dev/stdin\",\"utf-8\")).metadata.vulnerabilities;process.exit(a.high+a.critical);'",
     "package:changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "start-pen-test-service": "PORT=4000 node ./test/penetration/server.js"
   },
