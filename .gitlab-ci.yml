@@ -79,7 +79,7 @@ checkmarx:
   stage: security-tests
   <<: *executor-docker
   <<: *not-branches
-  image: $CI_REGISTRY/provisioning/checkmarx-cli:latest
+  image: $CI_REGISTRY/engineering-practice/checkmarx-cli:latest
   variables:
     CHECKMARX_REPORT_FORMAT: PDF
   script:
@@ -111,6 +111,8 @@ zap:
   image: docker:18.09@sha256:201c31cae6daa97001fe9c0cd2e2d3a157ca6447aaa74b070189790445627511
   services:
     - docker:18.09-dind@sha256:46567f80dea8b6f458190937f69d13ef95e36c6574c9a9509caf028009d69ad0
+  before_script:
+    - export NO_PROXY="$NO_PROXY,docker"
   script:
     - docker network create --internal test
     - docker run -d -v $(pwd):/package/:rw --name $HOSTNAME --net test --hostname $HOSTNAME -p 4000:4000 node:10.10.0-alpine /bin/sh -c "cd /package && npm run start-pen-test-service"
