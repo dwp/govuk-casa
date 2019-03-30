@@ -47,7 +47,7 @@
     "chai-http": "4.2.1",
     "cheerio": "1.0.0-rc.2",
     "conventional-changelog-cli": "2.0.12",
-    "eslint": "5.15.3",
+    "eslint": "5.16.0",
     "eslint-plugin-sonarjs": "0.3.0",
     "express": "4.16.4",
     "express-session": "1.15.6",
@@ -58,7 +58,7 @@
     "node-mocks-http": "1.7.3",
     "nyc": "13.3.0",
     "proxyquire": "2.1.0",
-    "sinon": "7.3.0",
+    "sinon": "7.3.1",
     "sinon-chai": "3.3.0",
     "uuid": "3.3.2",
     "yargs": "13.2.2"
