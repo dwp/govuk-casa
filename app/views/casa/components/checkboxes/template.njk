@@ -1,5 +1,8 @@
 {% from "components/checkboxes/macro.njk" import govukCheckboxes %}
 
+{# Ensure field name is always suffixed with [] to have it parsed consistently as an array #}
+{% set fieldName = params.name | replace('[]', '') + '[]' %}
+
 {% set fieldErrors = params.casaErrors[params.name] %}
 
 {# Build up attributes #}
@@ -24,6 +27,7 @@
 
 {# Merge parameters #}
 {% set mergedParams = mergeObjects(params, {
+  name: fieldName,
   idPrefix: params.idPrefix if params.idPrefix else 'f-' + params.name,
   attributes: mergedAttributes,
   items: mergedItems,
