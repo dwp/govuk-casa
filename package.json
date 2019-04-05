@@ -5,6 +5,7 @@
   "main": "casa.js",
   "files": [
     "app/**/*",
+    "definitions/**/*",
     "lib/**/*",
     "src/**/*",
     "casa.js",

@@ -14,5 +14,5 @@
 * Ending a session
 * PageDirectory
 * UserJourney
-* Util
+* [`Util.js`](api/util.md)
 * Validation

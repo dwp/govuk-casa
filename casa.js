@@ -22,11 +22,11 @@ const npath = require('path');
 const csrf = require('csurf');
 const expressBodyParser = require('body-parser');
 const logger = require('./lib/Logger')('boot');
-const PageDirectory = require('./lib/PageDirectory');
 const I18n = require('./lib/I18n');
 const Casa = require('./lib/Casa');
 
 const endSession = require('./lib/bootstrap/end-session.js');
+const loadDefinitionsConstructor = require('./lib/bootstrap/load-definitions.js');
 
 /**
  * Create a new CASA application instance, that will decorate a specified
@@ -113,33 +113,10 @@ function CasaBootstrap(expressApp, config) {
     csrfSupplyToken,
   ];
 
-  /**
-   * Load page and journey definitions. The calling application should call this
-   * function once all custom routes and configuration has been put in place -
-   * it should be the last call made just before starting the HTTP server.
-   *
-   * @param  {object} pages Page definitions, indexed by page id (url slug)
-   * @param  {UserJourney} journey Journey definition
-   * @return {void}
-   */
-  function loadDefinitions(pages, journey) {
-    // Wrap page meta in the directory wrapper for simpler, consistent querying
-    const pageDirectory = new PageDirectory(pages);
-
-    // Add the `review` page definition, if it makes up part of the journey
-    if (journey.containsWaypoint('review') && typeof pages.review === 'undefined') {
-      /* eslint-disable-next-line global-require,no-param-reassign */
-      pages.review = require('./app/page-definitions/review.js')(expressApp, pageDirectory, journey);
-    }
-
-    // Mount journey-management middleware
-    casa.mountJourneyExpressMiddleware(csrfMiddleware, pageDirectory, journey);
-  }
-
   return {
     config: casa.getConfig(),
     router: expressRouter,
-    loadDefinitions,
+    loadDefinitions: loadDefinitionsConstructor(casa, csrfMiddleware),
     csrfMiddleware,
     endSession,
   };

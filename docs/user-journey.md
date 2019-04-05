@@ -6,6 +6,8 @@ The simplest journey is a linear, one-page-after-the-other affair. However, you 
 
 For all the code examples below, we'll store our user journey definition in the `definitions/journey.js` file.
 
+> **NEW IN 3.x** - [Multiple journeys can now be defined](#multiple-journeys), and run independently of each other.
+
 ## Terminology
 
 * **Waypoint**: A single stop on the journey (i.e. a page that the user visits)
@@ -48,7 +50,7 @@ Sometimes you might want to skip over a particular waypoint if it is not relevan
 To mark a waypoint as conditional, simply pass a 2-element `Array` (rather than a `String`) describing both the waypoint id, and a function that returns `true` if the waypoint should be included, or `false` if it should be skipped. The function receives a single parameter containing all the data currently held in the session, indexed by the waypoint id of each page, eg:
 
 ```javascript
-["waypoint-id-here", (sessionData) => {
+["waypoint-id-here", (dataContext) => {
   // Perform some logic to determine if waypoint should be included, or not
   return true;
 }]
@@ -59,7 +61,7 @@ You may also pass a specially formatted object to achieve the same result:
 ```javascript
 {
   id: "waypoint-id-here",
-  condition: (sessionData) => {
+  condition: (dataContext) => {
     // Perform some logic to determine if waypoint should be included, or not
     return true;
   }
@@ -76,10 +78,46 @@ module.exports = (function () {
   linear.addWaypoints([
     'personal-info',
     'contact-details',
-    [`contact-preferences`, (sessionData) => {
-      // We only want to capture preferences if the user provided a non-empty telephone number in the `contact-details` page
-      return sessionData['contact-details'].phoneNumber.match(/\d+/i);
+    [`contact-preferences`, (dataContext) => {
+      // We only want to capture preferences if the user provided a non-empty
+      // telephone number in the `contact-details` page
+      return dataContext['contact-details'].phoneNumber.match(/\d+/i);
     }],
+    'hobbies',
+    'submit'
+  ]);
+  linear.end();
+
+  const journey = new UserJourney.Map();
+  journey.startAt(linear);
+  return journey;
+})();
+```
+
+## Waypoint "passability"
+
+Whilst traversing a road, CASA will run a "passability test" on each waypoint to determine if the user can pass it and move onto the next waypoint. By default this test will check that the following conditions are both met:
+
+* There is data associated with the waypoint
+* There are no validation errors associated with the waypoint
+
+This is usually fine for most circumstances, but if you need to fine tune this behaviour you can define an `is_passable` function as follows:
+
+```javascript
+const UserJourney = require('@dwp/govuk-casa/lib/UserJourney');
+
+module.exports = (function () {
+  const linear = new UserJourney.Road();
+  linear.addWaypoints([
+    'personal-info',
+    'contact-details',
+    {
+      id: 'contact-preferences',
+      is_passable: (dataContext, validationContext) => {
+        // Always consider this waypoint passable!
+        return true;
+      }
+    },
     'hobbies',
     'submit'
   ]);
@@ -216,5 +254,67 @@ const UserJourney = require('@dwp/govuk-casa/lib/UserJourney.js');
 // literal string.
 casaApp.router.get(UserJourney.Road.WAYPOINT_FAULT_ID, (req, res) => {
   res.status(500).render('my-custom-journey-fault-page.njk');
+});
+```
+
+## Multiple journeys
+
+CASA supports multiple user journey maps, which could be useful if your service can be sensibly split up in several loosely-dependent journeys, allowing you to manage their lifecycles separately.
+
+Getting started is a simple case of passing an Array of `UserJourney.Map` instances to the `loadDefinitions()` function where you previously just passed one; for example:
+
+```javascript
+// journeys.js - define the journeys
+const UserJourney = require('@dwp/govuk-casa/lib/UserJourney');
+
+module.exports = (function () {
+  // ...
+  const map1 = new UserJourney.Map('my-journey-a');
+  const map2 = new UserJourney.Map('another-one');
+  // ...
+
+  return [ map1, map2 ];
+})();
+```
+
+```javascript
+// app.js - bootstrap the app
+const casaApp = casa({ ... });
+
+casaApp.loadDefinitions(
+  /* page meta goes here */,
+  require('journeys.js'),
+);
+```
+
+It is important to note that page waypoints remain global in scope, and not associated with any single journey. For example, `/my-journey-a/hello` and `/another-one/hello` would actually point to the _same_ page (`hello`), containing the same data and validation errors.
+
+
+### Controlling access to journeys
+
+By default journeys are completely independent of each other, meaning you can visit the waypoints on any journey without having visited any on another journey. This might not be the behaviour you want, so there are some approaches you can take to make journeys dependent on the state of another.
+
+Given:
+
+* two journeys; `zoo` (with waypoints `bears`, `snakes`, `rhinos`) and `theme-park` (with waypoints `tumbler`, `spinner`, `toilets`)
+* users must complete the `zoo` journey before being able to visit any waypoints on `theme-park`
+
+**Option 1: Middleware test**
+
+```javascript
+// This middleware must be mounted before any journeys are loaded by CASA.
+// When a user attempts to visit `theme-park` before they've completed the
+// `rhinos` page, we'll redirect them back to the start of the `zoo` journey.
+casa.router.use('/theme-park/*', (req, res, next) => {
+  const isTraversable = req.journeyData ? preliminaryJourney.traverse(
+    req.journeyData.getData(),
+    req.journeyData.getValidationErrors(),
+  ).includes('rhinos') : false;
+
+  if (isTraversable) {
+    next();
+  } else {
+    res.status(302).redirect(`${mountUrl}zoo/bears`);
+  }
 });
 ```

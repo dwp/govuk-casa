@@ -6,7 +6,7 @@ const JourneyData = require('../../../lib/JourneyData');
 
 const middleware = require('../../../app/middleware/journey.js');
 
-describe('Middleware: session', () => {
+describe('Middleware: journey', () => {
   const mockApp = {
     use: () => {},
     set: () => {},
@@ -26,7 +26,7 @@ describe('Middleware: session', () => {
 
   describe('Traverse journey', () => {
     it('should set journeyWaypointId on the request object for a waypoint in the journey', (done) => {
-      const mi = middleware(mockApp, mountUrl, userJourney);
+      const mi = middleware(mockApp, mountUrl, [userJourney]);
 
       const req = httpMocks.createRequest();
       req.url = '/page0';
@@ -39,7 +39,7 @@ describe('Middleware: session', () => {
     });
 
     it('should set journeyWaypointId on the request object for a waypoint not in the journey', (done) => {
-      const mi = middleware(mockApp, mountUrl, userJourney);
+      const mi = middleware(mockApp, mountUrl, [userJourney]);
 
       const req = httpMocks.createRequest();
       req.url = '/waypoint-abc';
@@ -52,7 +52,7 @@ describe('Middleware: session', () => {
     });
 
     it('should redirect to the waypoint after the last completed waypoint, when an unvisited waypoint is requested', (done) => {
-      const mi = middleware(mockApp, mountUrl, userJourney);
+      const mi = middleware(mockApp, mountUrl, [userJourney]);
 
       const req = httpMocks.createRequest();
       req.journeyData = new JourneyData({
@@ -74,7 +74,7 @@ describe('Middleware: session', () => {
     });
 
     it('should redirect to the first waypoint with validation errors, when a later waypoint is visited', (done) => {
-      const mi = middleware(mockApp, mountUrl, userJourney);
+      const mi = middleware(mockApp, mountUrl, [userJourney]);
 
       const req = httpMocks.createRequest();
       req.journeyData = new JourneyData({
@@ -100,7 +100,7 @@ describe('Middleware: session', () => {
     });
 
     it('should set res.locals.journeyPreviousUrl to the previously visited waypoint', (done) => {
-      const mi = middleware(mockApp, mountUrl, userJourney);
+      const mi = middleware(mockApp, mountUrl, [userJourney]);
 
       const req = httpMocks.createRequest();
       req.journeyData = new JourneyData({

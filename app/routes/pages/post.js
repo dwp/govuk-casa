@@ -199,23 +199,23 @@ function doRedirect(logger, req, res, mountUrl, pageMeta, journey, prePostWaypoi
    */
   function calculateNextWaypoint() {
     let nextWaypoint;
-
+    const waypointPrefix = `${mountUrl}/${journey.guid || ''}/`.replace(/\/+/g, '/');
     if (req.inEditMode) {
       // When in edit mode, the user should be redirected back to the 'review'
-      // UI after submitting their update unless - due to the journey data
-      // being altered - the waypoints along the journey have changed.
-      // If the user hasn't yet reached the 'review' step, the 'journey'
-      // middleware will ensure they are redirected back to the correct next
-      // waypoint.
-      nextWaypoint = 'review';
+      // UI (denoted by the `req.editOriginUrl`) after submitting their update
+      // unless - due to the journey data being altered - the waypoints along
+      // the journey have changed. If the user hasn't yet reached the 'review'
+      // step, the 'journey' middleware will ensure they are redirected back to
+      // the correct next waypoint.
+      nextWaypoint = req.editOriginUrl;
       prePostWaypoints.pre.every((el, i) => {
         if (typeof prePostWaypoints.post[i] === 'undefined') {
           return false;
         }
-        nextWaypoint = prePostWaypoints.post[i];
         const same = el === prePostWaypoints.post[i];
         if (!same) {
           logger.info(`Journey altered (${el} -> ${prePostWaypoints.post[i]})`);
+          nextWaypoint = `${waypointPrefix}${prePostWaypoints.post[i]}`;
         }
         return same;
       });
@@ -229,16 +229,15 @@ function doRedirect(logger, req, res, mountUrl, pageMeta, journey, prePostWaypoi
         waypoints.length - 2,
       );
       if (positionInJourney > -1) {
-        nextWaypoint = waypoints[positionInJourney + 1];
+        nextWaypoint = `${waypointPrefix}${waypoints[positionInJourney + 1]}`;
       } else {
-        nextWaypoint = req.url;
+        nextWaypoint = req.originalUrl;
       }
-      nextWaypoint = util.getPageIdFromUrl(nextWaypoint);
     } else {
-      nextWaypoint = req.url;
+      nextWaypoint = req.originalUrl;
     }
 
-    return nextWaypoint;
+    return `/${nextWaypoint}`.replace(/\/+/g, '/');
   }
 
   /**
@@ -256,9 +255,8 @@ function doRedirect(logger, req, res, mountUrl, pageMeta, journey, prePostWaypoi
         logger.error(err);
         res.status(500).send('500 Internal Server Error (session unsaved)');
       } else {
-        const redirectUrl = `${mountUrl}/${waypoint}`.replace(/\/+/g, '/');
-        logger.debug(`Redirect: ${req.journeyWaypointId} -> ${waypoint} (${redirectUrl})`);
-        res.status(302).redirect(`${redirectUrl}#`);
+        logger.debug(`Redirect: ${req.journeyWaypointId} -> ${waypoint}`);
+        res.status(302).redirect(`${waypoint}#`);
       }
     });
   }
@@ -304,6 +302,7 @@ function doRender(logger, req, res, pageMeta, errors) {
         formErrors: errors,
         formErrorsGovukArray: govukErrors,
         inEditMode: req.inEditMode,
+        editOriginUrl: req.editOriginUrl,
       });
     }
   });
@@ -313,17 +312,17 @@ function doRender(logger, req, res, pageMeta, errors) {
  * Make an instance of the default POST route handler.
  *
  * @param {string} mountUrl CASA mount url
- * @param  {PageDirectory} pages Pages directory
- * @param  {UserJourney.Map} journey User journey map
- * @param  {bool} allowPageEdit Whether page edits are allowed
+ * @param {PageDirectory} pages Pages directory
+ * @param {UserJourney.Map|Array} journey Array of UserJourney.Map instances
  * @return {function} The route handler
  */
-module.exports = function routePagePost(mountUrl, pages, journey, allowPageEdit) {
+module.exports = function routePagePost(mountUrl, pages, journey) {
   if (!(pages instanceof PageDirectory)) {
     throw new TypeError('Invalid type. Was expecting PageDirectory');
   }
-  if (!(journey instanceof UserJourney.Map)) {
-    throw new TypeError('Invalid type. Was expecting UserJourney.Map');
+  const journeys = Array.isArray(journey) ? journey : [journey];
+  if (!journeys.every(j => (j instanceof UserJourney.Map))) {
+    throw new TypeError('journey must be a UserJourney.Map or an array of UserJourney.Map instances');
   }
 
   /**
@@ -336,21 +335,14 @@ module.exports = function routePagePost(mountUrl, pages, journey, allowPageEdit)
    */
   /* eslint-disable-next-line no-unused-vars,no-inline-comments */
   return function routePagePostHandler(req, res, next) {
-    // NOSONAR
-    // Load meta
     const logger = loggerFunction('routes:post');
     logger.setSessionId(req.session.id);
-    req.journeyWaypointId = req.journeyWaypointId
-      || util.getPageIdFromUrl(req.url);
-    const pageMeta = pages.getPageMeta(req.journeyWaypointId);
 
-    // Are we in edit mode?
-    if ('edit' in req.body && allowPageEdit) {
-      req.inEditMode = true;
-      delete req.body.edit;
-    } else {
-      req.inEditMode = false;
-    }
+    // Determine current journey being traversed, and load page meta
+    const activeJourney = util.getJourneyFromUrl(journeys, req.url);
+    req.journeyWaypointId = req.journeyWaypointId
+      || util.getPageIdFromJourneyUrl(activeJourney, req.url);
+    const pageMeta = pages.getPageMeta(req.journeyWaypointId);
 
     // Execute chain of events:
     // Gather -> Validate -> Redirect / Render errors
@@ -363,7 +355,8 @@ module.exports = function routePagePost(mountUrl, pages, journey, allowPageEdit)
     // in order to reach the review page (and thus the editing mode). Edit mode
     // can be enabled at any time prior to reaching review (by adding `?edit` to
     // the URL), but this case will be handled by normal traversal.
-    const preGatherWaypoints = journey.traverse(
+
+    const preGatherWaypoints = activeJourney.traverse(
       req.journeyData.getData(),
       req.inEditMode ? {} : req.journeyData.getValidationErrors(),
     );
@@ -374,9 +367,12 @@ module.exports = function routePagePost(mountUrl, pages, journey, allowPageEdit)
         // that traversals can work correctly
         req.journeyData.clearValidationErrorsForPage(req.journeyWaypointId);
         req.session.journeyValidationErrors = req.journeyData.getValidationErrors();
-        return doRedirect(logger, req, res, mountUrl, pageMeta, journey, {
+        return doRedirect(logger, req, res, mountUrl, pageMeta, activeJourney, {
           pre: preGatherWaypoints,
-          post: journey.traverse(req.journeyData.getData(), req.journeyData.getValidationErrors()),
+          post: activeJourney.traverse(
+            req.journeyData.getData(),
+            req.journeyData.getValidationErrors(),
+          ),
         });
       })
       .catch((errors) => {

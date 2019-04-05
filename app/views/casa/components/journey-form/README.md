@@ -13,6 +13,7 @@ A "Continue" button (and "Cancel" link if in edit mode) will also be added.
   casaMountUrl: '...',
   csrfToken: '...',
   inEditMode: true,
+  editOriginUrl: '/url/to/review/page',
   buttonBarHidden: false
 }) %}
   ... your form inputs here ...
@@ -25,6 +26,7 @@ Which will render something like this:
 <form action="#" method="post" autocomplete="off" novalidate class="casa-journey-form">
   <input type="hidden" name="_csrf" value="..." />
   <input type="hidden" name="edit" value="true" />
+  <input type="hidden" name="editorigin" value="/url/to/review/page" />
 
   ... your form inputs here ...
 
@@ -33,7 +35,7 @@ Which will render something like this:
       Save changes
     </button>
 
-    <a href="/review" class="casa-cancel-review-link govuk-link--no-visited-state">Cancel</a>
+    <a href="/url/to/review/page" class="casa-cancel-review-link govuk-link--no-visited-state">Cancel</a>
   </footer>
 </form>
 ```
@@ -46,5 +48,6 @@ Note that the submit button is configured to prevent double-clicks and avoid dup
 |------|------|----------|-------------|
 | `casaMountUrl` | string | Yes | URL prefix (available to user's templates via the global `casaMountUrl` variable) |
 | `csrfToken` | string | Yes | Token used to protect form from CSRF (available to user's templates via the global `csrfToken` variable) |
-| `inEditMode` | boolean | No | Toggle edit-mode of the form (available to user's templates via the global `inEditMode` variable) |
+| `inEditMode` | boolean | No | Toggle edit-mode of the form (available to page templates using default GET/POST handlers via the local `inEditMode` variable) |
+| `editOriginUrl` | string | No | Absolute URL to the page from which the edit request came (defaults to `review`) (available to user's templates using default GET/POST handlers via the local `editOriginUrl` variable) |
 | `buttonBarHidden` | boolean | No | Toggle the rendering of the bar containing the "Continue" button and "Cancel" link.Useful if you want to render your own buttons |

@@ -1,17 +1,22 @@
 const util = require('../../../lib/Util.js');
 const loggerFunction = require('../../../lib/Logger');
 const PageDirectory = require('../../../lib/PageDirectory');
+const UserJourney = require('../../../lib/UserJourney');
 
 /**
  * Make an instance of the default GET route handler
  *
- * @param  {PageDirectory} pages Pages directory
- * @param  {bool} allowPageEdit Whether to allow edit mode
+ * @param {PageDirectory} pages Pages directory
+ * @param {UserJourney.Map|Array} journey UserJourney.Map instance(s)
  * @return {function} The route handler
  */
-module.exports = function routePageGet(pages, allowPageEdit) {
+module.exports = function routePageGet(pages, journey) {
   if (!(pages instanceof PageDirectory)) {
     throw new TypeError('Invalid type. Was expecting PageDirectory');
+  }
+  const journeys = Array.isArray(journey) ? journey : [journey];
+  if (!journeys.every(j => (j instanceof UserJourney.Map))) {
+    throw new TypeError('journey must be a UserJourney.Map or an array of UserJourney.Map instances');
   }
 
   /**
@@ -28,7 +33,8 @@ module.exports = function routePageGet(pages, allowPageEdit) {
     // Load meta
     const logger = loggerFunction('routes:get');
     logger.setSessionId(req.session.id);
-    const pageId = util.getPageIdFromUrl(req.url);
+    const activeJourney = util.getJourneyFromUrl(journeys, req.url);
+    const pageId = util.getPageIdFromJourneyUrl(activeJourney, req.url);
     const pageMeta = pages.getPageMeta(pageId);
     const hooks = pageMeta.hooks || {};
 
@@ -38,9 +44,11 @@ module.exports = function routePageGet(pages, allowPageEdit) {
      * @return {void}
      */
     function render() {
+      logger.debug(`Rendering view for ${pageId} (editmode=${req.inEditMode ? 'true' : 'false'})`);
       res.render(pageMeta.view, {
         formData: req.journeyData.getDataForPage(pageId),
-        inEditMode: 'edit' in req.query && allowPageEdit,
+        inEditMode: req.inEditMode,
+        editOriginUrl: req.editOriginUrl,
       });
     }
 

@@ -23,12 +23,13 @@
  * The `next()` function takes an optional error object containing an array of
  * errors for each field, e.g:
  *   next({
- *     fieldName: [{inline: '...', summary: '...'}, ...]
+ *     <fieldName>: [{inline: '...', summary: '...'}, ...],
+ *     ...
  *   })
  *
  * "Override":
  * -----------
- * To completely override the behaviour of a POST or GET route, define an
+ * To completely override the behaviour of a POST or GET route, define
  * appropriate handlers in the page's meta object. E.g:
  *   pages['my-page'] = {
  *     handlers: {
@@ -43,13 +44,21 @@ module.exports = function routePages(
   router,
   csrfMiddleware,
   pages,
-  journey,
+  journeys,
   allowPageEdit,
 ) {
-  const getHandler = require('./pages/get.js')(pages, allowPageEdit);
-  const postHandler = require('./pages/post.js')(mountUrl, pages, journey, allowPageEdit);
-  pages.getAllPageIds().forEach((pageId) => {
-    router.get(`/${pageId}`, csrfMiddleware, getHandler);
-    router.post(`/${pageId}`, csrfMiddleware, postHandler);
+  const getHandler = require('./pages/get.js')(pages, journeys);
+  const postHandler = require('./pages/post.js')(mountUrl, pages, journeys, allowPageEdit);
+  const editModeHandler = require('./pages/edit-mode.js')(mountUrl, allowPageEdit);
+
+  // Where page meta has been defined, attach GET and POST handlers to each
+  // journey/page-waypoint combo
+  const pageMetaKeys = pages.getAllPageIds();
+  journeys.forEach((journey) => {
+    journey.allWaypoints().filter(w => pageMetaKeys.includes(w)).forEach((waypoint) => {
+      const routeUrl = `/${journey.guid || ''}/${waypoint}`.replace(/\/+/g, '/');
+      router.get(routeUrl, csrfMiddleware, editModeHandler, getHandler);
+      router.post(routeUrl, csrfMiddleware, editModeHandler, postHandler);
+    });
   });
 };

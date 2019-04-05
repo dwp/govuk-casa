@@ -74,6 +74,7 @@ As we want our pages to all have the same custom layout (2-thirds + 1-third colu
     {% call casaJourneyForm({
       csrfToken: csrfToken,
       inEditMode: inEditMode,
+      editOriginUrl: editOriginUrl,
       casaMountUrl: casaMountUrl
     }) %}
       {% block journey_form %}{% endblock %}
@@ -463,7 +464,7 @@ Session handling is managed through the `express-session` interface, so you are 
 
 CASA provides a simple implementation of the ["Check your answers"](https://design-system.service.gov.uk/patterns/check-answers/) pattern. You can of course roll your own implementation, but if you'd like to take advantage of the CASA variant (which will eventually aim to keep up to date with the pattern), here's how ...
 
-First, add a `review` waypoint to your journey. This is just like any other waypoint, but CASA just happens to provide an Express handler for this particular waypoint ID. This should come before your final `submit` page. For example, taking the example journey further above, we just add `review` to the list of waypoints, just before `submit`:
+First, add a `review` waypoint (or name it whatever you wish) to your journey. This should come before your final `submit` page. For example, taking the example journey further above, we just add `review` to the list of waypoints, just before `submit`:
 
 ```javascript
 // definitions/journey.js
@@ -559,11 +560,13 @@ Next, you'll need to design some _review block_ markup for each of your data-gat
 {% endblock %}
 ```
 
-And in order to tell CASA where to find those templates, specify a `reviewBlockView` on each in your page definition file:
+And finally, we need to add some meta info for our new `review` page, and in order to tell CASA where to find those templates, specify a `reviewBlockView` on each in your page definition file:
 
 ```javascript
 // definitions/pages.js
-module.exports = {
+const reviewPageDefinition = require('@dwp/govuk-casa/definitions/review-page.js');
+
+const pages = {
   'personal-info': {
     view: 'pages/personal-info.njk',
     fieldValidators: require('./field-validators/personal-info.js'),
@@ -574,4 +577,10 @@ module.exports = {
     reviewBlockView: 'pages-review/hobbies.njk'
   }
 };
+
+pages.review = reviewPageDefinition(pages);
+
+module.exports = pages;
 ```
+
+Note we're using CASA's provided `definitions/review-page.js` definition which simply adds a `prerender` hook to render the page as needed.

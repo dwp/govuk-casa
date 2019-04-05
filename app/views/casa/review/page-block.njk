@@ -11,7 +11,7 @@
       {% if reviewErrors[waypointId] %}
         <span class="casa-review-page-error">{{ t('review:block.containsErrors') }}</span>
       {% endif %}
-      <a href="{{ casaMountUrl }}{{ waypointId }}?edit">
+      <a href="{{ changeUrlPrefix }}{{ waypointId }}?edit&editorigin={{ editOriginUrl }}">
         {{ t('review:block.changeLink') }}
       </a>
     </th>

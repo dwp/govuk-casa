@@ -1,5 +1,6 @@
 const { expect } = require('chai');
 const Util = require('../../../lib/Util.js');
+const UserJourney = require('../../../lib/UserJourney.js');
 
 describe('Util', () => {
   describe('getPageIdFromUrl()', () => {
@@ -162,5 +163,55 @@ describe('Util', () => {
     it('should be true when custom character regexes are removed on an array', () => expect(Util.isEmpty([' ', '\t'], {
       regexRemove: /\s/g,
     })).to.be.true);
+  });
+
+  describe('getJourneyFromUrl()', () => {
+    it('should return the only journey in an array', () => {
+      const journey = new UserJourney.Map();
+      expect(Util.getJourneyFromUrl([journey], 'completely-ignored')).to.equal(journey);
+    });
+
+    it('should return a matching user journey', () => {
+      const journeys = [
+        new UserJourney.Map('example-one'),
+        new UserJourney.Map('example-onemore'),
+        new UserJourney.Map('example-two'),
+      ];
+      expect(Util.getJourneyFromUrl(journeys, 'example-one')).to.equal(journeys[0]);
+      expect(Util.getJourneyFromUrl(journeys, 'example-one/with-a-page')).to.equal(journeys[0]);
+      expect(Util.getJourneyFromUrl(journeys, 'example-one/with/sub/pages')).to.equal(journeys[0]);
+      expect(Util.getJourneyFromUrl(journeys, 'example-two/with/sub/pages')).to.equal(journeys[2]);
+    });
+
+    it('should return null when no match is found', () => {
+      const journeys = [
+        new UserJourney.Map('example-one'),
+        new UserJourney.Map('example-two'),
+      ];
+      expect(Util.getJourneyFromUrl(journeys, 'example-onemore')).to.equal(null);
+    });
+  });
+
+  describe('getPageIdFromJourneyUrl()', () => {
+    it('should return the page url portion of a journey-prefixed url', () => {
+      const journey = new UserJourney.Map('example-one');
+      expect(Util.getPageIdFromJourneyUrl(journey, 'example-one/waypoint-test')).to.equal('waypoint-test');
+      expect(Util.getPageIdFromJourneyUrl(journey, 'example-one/waypoint/test')).to.equal('waypoint/test');
+    });
+
+    it('should return the page url portion of a journey-prefixed url, when journey guid is empty', () => {
+      const journey = new UserJourney.Map();
+      expect(Util.getPageIdFromJourneyUrl(journey, 'example-one/waypoint-test')).to.equal('example-one/waypoint-test');
+      expect(Util.getPageIdFromJourneyUrl(journey, 'example-one/waypoint/test')).to.equal('example-one/waypoint/test');
+    });
+
+    it('should return the original page url if the journey prefix is not featured in the url', () => {
+      const journey = new UserJourney.Map('example-one');
+      expect(Util.getPageIdFromJourneyUrl(journey, 'example-two/waypoint/test')).to.equal('example-two/waypoint/test');
+    });
+
+    it('should return the original page url if the journey is undefined', () => {
+      expect(Util.getPageIdFromJourneyUrl(null, 'example-two/waypoint/test')).to.equal('example-two/waypoint/test');
+    });
   });
 });

@@ -81,6 +81,7 @@ Such pages will receive the following variables:
 * `formErrors` (`object`) - holds any errors for each of the fields (indexed by field name)
 * `formErrorsGovukArray` (`array`) - equivalent of `formErrors`, but in a format suitable for the `govukErrorSummary()` macro
 * `inEditMode` (`boolean`) - whether the current journey form should be displayed in "edit mode"
+* `editOriginUrl` (`string`) - the URL to which a user should be returned after editing a page
 
 Here we'll create a page for the `personal-info` waypoint; save this to `view/pages/personal-info.njk`:
 
@@ -109,6 +110,7 @@ Here we'll create a page for the `personal-info` waypoint; save this to `view/pa
   {% call casaJourneyForm({
     csrfToken: csrfToken,
     inEditMode: inEditMode,
+    editOriginUrl: editOriginUrl,
     casaMountUrl: casaMountUrl
   }) %}
     <header>

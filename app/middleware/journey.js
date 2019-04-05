@@ -6,24 +6,36 @@
  * Enhances `req` with:
  *  string journeyWaypointId = Converts requested URL into a string suitable for
  *      use as a journey waypoint ID (i.e. remove trailing slashes)
+ *  UserJourney.Map journeyActive = The currently active user journey map
+ *
+ * Enhances `res.locals` with:
+ *  string journeyPreviousUrl = Absolute URL to the previous page in the journey
+ *      (if applicable)
  */
 
 const util = require('../../lib/Util');
 const logger = require('../../lib/Logger')('journey');
 
-module.exports = function mwJourney(router, mountUrl, userJourney) {
+/**
+ * @param {express} router An ExpressJS router
+ * @param {string} mountUrl Mount url; used for generating redirects
+ * @param {Array} userJourneys UserJourney.Map instance(s)
+ * @return {object} Mounted middleware
+ */
+module.exports = function mwJourney(router, mountUrl, userJourneys) {
   /**
    * Traverse the journey with the user's current context, and determine
    * if the requested page falls within those traversed waypoints.
    * Also make a `journeyPreviousUrl` variable available to the templates
    * (via `res.locals`) so it can be used for the "Back" button.
    *
+   * @param {UserJourney.Map} userJourney Which map to traverse
    * @param {request} req Request object
    * @param {response} res Response object
    * @param {function} next Chain function
    * @returns {void}
    */
-  function testTraversal(req, res, next) {
+  function testTraversal(userJourney, req, res, next) {
     let traversed;
     if (req.journeyData) {
       traversed = userJourney.traverse(
@@ -35,14 +47,15 @@ module.exports = function mwJourney(router, mountUrl, userJourney) {
     }
 
     const currentUrlIndex = traversed.indexOf(req.journeyWaypointId);
+    const redirectUrlPrefix = `${mountUrl}/${userJourney.guid || ''}/`.replace(/\/+/g, '/');
     if (currentUrlIndex === -1) {
-      let redirectUrl = `${mountUrl}/${traversed[traversed.length - 1]}`;
+      let redirectUrl = `${redirectUrlPrefix}${traversed[traversed.length - 1]}`;
       redirectUrl = redirectUrl.replace(/\/+/g, '/');
       logger.debug(`Traversal redirect: ${req.journeyWaypointId} to ${redirectUrl}`);
       res.status(302).redirect(`${redirectUrl}#`);
     } else {
       if (currentUrlIndex > 0) {
-        let redirectUrl = `${mountUrl}/${traversed[currentUrlIndex - 1]}`;
+        let redirectUrl = `${redirectUrlPrefix}${traversed[currentUrlIndex - 1]}`;
         redirectUrl = redirectUrl.replace(/\/+/g, '/');
         res.locals.journeyPreviousUrl = redirectUrl;
       }
@@ -54,14 +67,31 @@ module.exports = function mwJourney(router, mountUrl, userJourney) {
   // journey.
   /* eslint-disable-next-line require-jsdoc */
   const mwJourneyTraverse = (req, res, next) => {
-    // Create `journeyWaypointId` on the request, so all upstream handlers have
-    // a consistent reference to it
-    req.journeyWaypointId = util.getPageIdFromUrl(req.url);
+    // Determine which journey the user is on, and strip its guid from the
+    // request URL; the remainder gives us the page's waypoint ID, which we'll
+    // attach to the `req` object so that all upstream handlers can use it.
+    // Bear in mind that the router's mount URL will _not_ be included in the
+    // `req.url`, so we don't need to do any extra work to remove it, ref:
+    // https://expressjs.com/en/api.html#req.originalUrl
+    const userJourney = util.getJourneyFromUrl(userJourneys, req.url);
+    Object.defineProperty(req, 'journeyActive', {
+      value: userJourney,
+      configurable: false,
+      enumerable: true,
+      writable: false,
+    });
+    const journeyWaypointId = util.getPageIdFromJourneyUrl(userJourney, req.url);
+    Object.defineProperty(req, 'journeyWaypointId', {
+      value: journeyWaypointId,
+      configurable: false,
+      enumerable: true,
+      writable: false,
+    });
 
     // We can skip to next route handler if the waypoint doesn't feature in the
     // defined user journey.
-    if (userJourney.containsWaypoint(req.journeyWaypointId)) {
-      testTraversal(req, res, next);
+    if (userJourney && userJourney.containsWaypoint(req.journeyWaypointId)) {
+      testTraversal(userJourney, req, res, next);
     } else {
       next();
     }

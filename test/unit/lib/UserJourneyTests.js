@@ -2,6 +2,27 @@ const { expect } = require('chai');
 const UserJourney = require('../../../lib/UserJourney.js');
 
 describe('UserJourney.Map', () => {
+  describe('constructor', () => {
+    it('should throw a SyntaxError if the guid is not a String', () => {
+      const msg = /^guid must be a string$/;
+      expect(() => new UserJourney.Map(1)).to.throw(TypeError, msg);
+      expect(() => new UserJourney.Map([])).to.throw(TypeError, msg);
+      expect(() => new UserJourney.Map({})).to.throw(TypeError, msg);
+      expect(() => new UserJourney.Map(() => {})).to.throw(TypeError, msg);
+    });
+
+    it('should throw a SyntaxError if the guid is not a valid URL path', () => {
+      expect(() => new UserJourney.Map('not/valid')).to.throw(SyntaxError);
+      expect(() => new UserJourney.Map('not*valid')).to.throw(SyntaxError);
+      expect(() => new UserJourney.Map('/not-valid')).to.throw(SyntaxError);
+      expect(() => new UserJourney.Map(' notvalid')).to.throw(SyntaxError);
+    });
+
+    it('should not throw an exception for valid arguments', () => {
+      expect(() => new UserJourney.Map('valid-url-12-3')).to.not.throw();
+    });
+  });
+
   describe('startAt()', () => {
     it('should throw an error if anything other than a Road is set', () => {
       const map = new UserJourney.Map();
@@ -67,13 +88,24 @@ describe('UserJourney.Map', () => {
         }).to.throw(TypeError);
       });
 
-      it('includes a non-function condition', () => {
+      it('includes a non-function "is_present" condition', () => {
         const r1 = new UserJourney.Road();
         expect(() => {
           r1.addWaypoints([
-            { id: '', condition: true },
+            { id: '', is_present: true },
           ]);
-        }).to.throw(TypeError);
+        }).to.throw(TypeError, /^Object waypoint is_present condition must be a function$/);
+      });
+
+      it('includes a non-function "is_passable" condition', () => {
+        const r1 = new UserJourney.Road();
+        [true, '', {}, [], null, 123].forEach((wrongType) => {
+          expect(() => {
+            r1.addWaypoints([
+              { id: '', is_passable: wrongType },
+            ]);
+          }).to.throw(TypeError, /^Object waypoint is_passable condition must be a function$/);
+        });
       });
     });
 
@@ -88,12 +120,12 @@ describe('UserJourney.Map', () => {
       expect(wp.show()).to.equal(true);
     });
 
-    it('should push an object onto the stack containing the correct id and show function for an object waypoint', () => {
+    it('should push an object onto the stack containing the correct id and is_present function for an object waypoint', () => {
       /* eslint-disable-next-line require-jsdoc */
       const testFunction = () => {};
       const r1 = new UserJourney.Road();
       r1.addWaypoints([
-        { id: 'test0', condition: testFunction },
+        { id: 'test0', is_present: testFunction },
       ]);
       const wp = r1.getPOIs().pop();
       expect(wp).to.have.property('id').and.equals('test0');
@@ -587,7 +619,7 @@ describe('UserJourney.Map', () => {
       };
 
       // The waypoint fault id may change, but we use the literal here to catch
-      // that change
+      // that change. The constant is present in `UserJourney.Road.WAYPOINT_FAULT_ID`
       expect(map.traverse(dataContext)).to.contain('journey-fault');
       expect(map.traverse(dataContext)).to.contain('p1');
       expect(map.traverse(dataContext)).to.not.contain('p3');
@@ -621,8 +653,61 @@ describe('UserJourney.Map', () => {
       };
 
       // The waypoint fault id may change, but we use the literal here to catch
-      // that change
+      // that change. The constant is present in `UserJourney.Road.WAYPOINT_FAULT_ID`
       expect(map.traverse(dataContext)).to.contain('journey-fault');
+      expect(map.traverse(dataContext)).to.contain('p1');
+      expect(map.traverse(dataContext)).to.not.contain('p2');
+    });
+
+    it('should include waypoints that occur after a waypoint where "is_passable" condition returns true', () => {
+      const map = new UserJourney.Map();
+
+      const road1 = new UserJourney.Road();
+      road1.addWaypoints([
+        'p0',
+        {
+          id: 'p1',
+          is_passable: () => (true),
+        },
+        'p2',
+      ]);
+
+      map.startAt(road1);
+
+      const dataContext = {
+        p0: { data: true },
+      };
+      const validationContext = {
+        p1: { fieldName0: [] },
+      };
+
+      expect(map.traverse(dataContext, validationContext)).to.contain('p0');
+      expect(map.traverse(dataContext, validationContext)).to.contain('p1');
+      expect(map.traverse(dataContext, validationContext)).to.contain('p2');
+    });
+
+    it('should not include waypoints that occur after a waypoint where "is_passable" condition returns false', () => {
+      const map = new UserJourney.Map();
+
+      const road1 = new UserJourney.Road();
+      road1.addWaypoints([
+        'p0',
+        {
+          id: 'p1',
+          is_passable: () => (false),
+        },
+        'p2',
+      ]);
+
+      map.startAt(road1);
+
+      const dataContext = {
+        p0: { data: true },
+        p1: { data: true },
+        p2: { data: true },
+      };
+
+      expect(map.traverse(dataContext)).to.contain('p0');
       expect(map.traverse(dataContext)).to.contain('p1');
       expect(map.traverse(dataContext)).to.not.contain('p2');
     });

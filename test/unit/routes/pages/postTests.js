@@ -21,7 +21,7 @@ describe('Routes: pages POST', () => {
     it('should throw an error if the userjourney map is the wrong type', () => {
       expect(() => {
         createHandler('/', new PageDirectory(), 'string', false);
-      }).to.throw(TypeError, 'Was expecting UserJourney.Map');
+      }).to.throw(TypeError, /^journey must be a UserJourney.Map or an array of UserJourney.Map instances$/);
     });
 
     it('should return the handler function on successful initialisation', () => {
@@ -63,51 +63,6 @@ describe('Routes: pages POST', () => {
       res = httpMocks.createResponse({
         eventEmitter: EventEmitter,
       });
-    });
-
-    it('should be false when not in query', (done) => {
-      res.on('end', () => {
-        try {
-          expect(req).to.have.property('inEditMode', false);
-          done();
-        } catch (e) {
-          done(e);
-        }
-      });
-
-      handler(req, res);
-    });
-
-    it('should be false when true in post body, but global setting is disabled', (done) => {
-      req.body.edit = true;
-
-      res.on('end', () => {
-        try {
-          expect(req).to.have.property('inEditMode', false);
-          done();
-        } catch (e) {
-          done(e);
-        }
-      });
-
-      handler(req, res);
-    });
-
-    it('should be true when in query, and global setting is enabled', (done) => {
-      handler = createHandler('/', directory, map, true);
-
-      req.body.edit = true;
-
-      res.on('end', () => {
-        try {
-          expect(req).to.have.property('inEditMode', true);
-          done();
-        } catch (e) {
-          done(e);
-        }
-      });
-
-      handler(req, res);
     });
 
     it('should redirect to the last page injourney after a successful validation following failed validation', (done) => {
@@ -736,6 +691,7 @@ describe('Routes: pages POST', () => {
     it('should redirect to the same URL if the waypoint is not defined in the journey', (done) => {
       Object.assign(reqMock, {
         url: '/waypoint-not-in-the-journey',
+        originalUrl: '/waypoint-not-in-the-journey',
         body: {
           dummyData: 'data',
         },
@@ -756,8 +712,10 @@ describe('Routes: pages POST', () => {
     it('should redirect to the review page if in edit mode and the user journey has not been altered', (done) => {
       Object.assign(reqMock, {
         url: '/page1',
+        originalUrl: '/page1',
+        inEditMode: true,
+        editOriginUrl: 'review',
         body: {
-          edit: true,
           dummyData: 'data',
         },
       });
@@ -777,8 +735,9 @@ describe('Routes: pages POST', () => {
     it('should redirect to the last unchanged waypoint if in edit mode and the user journey has been altered', (done) => {
       Object.assign(reqMock, {
         url: '/page2',
+        inEditMode: true,
+        editOriginUrl: 'review',
         body: {
-          edit: true,
           x: 1,
         },
       });

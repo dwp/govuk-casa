@@ -3,14 +3,23 @@ const httpMocks = require('node-mocks-http');
 const { EventEmitter } = require('events');
 const PageDirectory = require('../../../../lib/PageDirectory');
 const JourneyData = require('../../../../lib/JourneyData');
+const UserJourney = require('../../../../lib/UserJourney');
 
 const createHandler = require('../../../../app/routes/pages/get');
 
 describe('Routes: pages GET', () => {
+  const validUserJourneyMap = new UserJourney.Map();
+  const start = new UserJourney.Road();
+  validUserJourneyMap.startAt(start);
+
   it('should throw an error if the page definitions are the wrong type', () => {
     expect(() => {
-      createHandler([], false);
-    }).to.throw(TypeError, 'Invalid type');
+      createHandler([], validUserJourneyMap, false);
+    }).to.throw(TypeError, /^Invalid type. Was expecting PageDirectory$/);
+
+    expect(() => {
+      createHandler(new PageDirectory({ page0: { view: '' } }), null, false);
+    }).to.throw(TypeError, /^journey must be a UserJourney.Map or an array of UserJourney.Map instances$/);
   });
 
   it('should render an inferred view where a specific view is not provided', (done) => {
@@ -18,7 +27,7 @@ describe('Routes: pages GET', () => {
       page0: {
         view: 'page0',
       },
-    }), false);
+    }), validUserJourneyMap, false);
 
     const req = httpMocks.createRequest({
       url: '/page0',
@@ -48,7 +57,7 @@ describe('Routes: pages GET', () => {
       page1: {
         view: 'page1',
       },
-    }), false);
+    }), validUserJourneyMap, false);
 
     const req = httpMocks.createRequest({
       url: '/page0',
@@ -75,7 +84,7 @@ describe('Routes: pages GET', () => {
       page0: {
         view: 'page0',
       },
-    }), false);
+    }), validUserJourneyMap, false);
 
     const req = httpMocks.createRequest({
       url: '/page0',
@@ -102,73 +111,6 @@ describe('Routes: pages GET', () => {
     handler(req, res);
   });
 
-  describe('Edit mode setting', () => {
-    let handler;
-    let req;
-    let res;
-
-    beforeEach(() => {
-      handler = createHandler(new PageDirectory({
-        page0: {
-          view: 'page0',
-        },
-      }), false);
-
-      req = httpMocks.createRequest({
-        url: '/page0',
-        session: {
-          id: 'sessionId',
-        },
-        journeyData: new JourneyData({
-          page0: {
-            x: 1,
-          },
-        }),
-      });
-
-      res = httpMocks.createResponse({
-        eventEmitter: EventEmitter,
-      });
-    });
-
-    it('should be false when not in query', (done) => {
-      res.on('end', () => {
-        expect(res._getRenderData()).to.have.property('inEditMode', false);
-        done();
-      });
-
-      handler(req, res);
-    });
-
-    it('should be false when true in query, but global setting is disabled', (done) => {
-      req.query.edit = true;
-
-      res.on('end', () => {
-        expect(res._getRenderData()).to.have.property('inEditMode', false);
-        done();
-      });
-
-      handler(req, res);
-    });
-
-    it('should be true when in query, and global setting is enabled', (done) => {
-      handler = createHandler(new PageDirectory({
-        page0: {
-          view: 'page0',
-        },
-      }), true);
-
-      req.query.edit = true;
-
-      res.on('end', () => {
-        expect(res._getRenderData()).to.have.property('inEditMode', true);
-        done();
-      });
-
-      handler(req, res);
-    });
-  });
-
   it('should execute prerender hook when present', (done) => {
     const handler = createHandler(new PageDirectory({
       page0: {
@@ -180,7 +122,7 @@ describe('Routes: pages GET', () => {
           },
         },
       },
-    }), false);
+    }), validUserJourneyMap, false);
 
     const req = httpMocks.createRequest({
       url: '/page0',

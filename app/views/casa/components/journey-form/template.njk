@@ -3,6 +3,7 @@
 <form action="#" method="post" autocomplete="off" novalidate class="casa-journey-form">
   <input type="hidden" name="_csrf" value="{{ params.csrfToken }}" />
   {% if params.inEditMode %}<input type="hidden" name="edit" value="true" />{% endif %}
+  {% if params.inEditMode and params.editOriginUrl %}<input type="hidden" name="editorigin" value="{{ params.editOriginUrl }}" />{% endif %}
 
   {# FORM CONTENT HERE #}
   {{ caller() }}
@@ -18,7 +19,7 @@
       }) }}
 
       {% if params.inEditMode %}
-        <a href="{{ params.casaMountUrl }}review" class="casa-cancel-review-link govuk-link--no-visited-state">{{ t('common:form.buttons.cancel.label') }}</a>
+        <a href="{{ params.editOriginUrl }}" class="casa-cancel-review-link govuk-link--no-visited-state">{{ t('common:form.buttons.cancel.label') }}</a>
       {% endif %}
     </footer>
   {% endif %}
