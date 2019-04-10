@@ -1,3 +1,21 @@
+<a name="2.4.2"></a>
+## [2.4.2](https://github.com/dwp/govuk-casa/compare/2.4.1...2.4.2) (2019-04-10)
+
+
+### Bug Fixes
+
+* error link hrefs ([eafe887](https://github.com/dwp/govuk-casa/commit/eafe887)), closes [#49](https://github.com/dwp/govuk-casa/issues/49)
+* **gather-modifier:** postcode reformatting accessibility changes ([f291509](https://github.com/dwp/govuk-casa/commit/f291509))
+* udpate csp options docs ([e618bb5](https://github.com/dwp/govuk-casa/commit/e618bb5))
+* **validation:** dateObject before/after offset comparison ([6153995](https://github.com/dwp/govuk-casa/commit/6153995))
+
+
+### Features
+
+* **static:** back to the future fix ([49353d0](https://github.com/dwp/govuk-casa/commit/49353d0))
+
+
+
 <a name="2.4.1"></a>
 ## [2.4.1](https://github.com/dwp/govuk-casa/compare/2.4.0...2.4.1) (2019-03-20)
 
