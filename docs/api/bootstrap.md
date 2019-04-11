@@ -1,6 +1,6 @@
 # Initialising CASA
 
-CASA is essentially a series of middlware for ExpressJS, so by "initialising CASA" we are simply referring to the process of "configuring and adding the CASA middleware to Express".
+CASA is essentially a series of middleware for ExpressJS, so by "initialising CASA" we are simply referring to the process of "configuring and adding the CASA middleware to Express".
 
 And that initialisation takes place via the main `@dwp/govuk-casa` module ...
 
@@ -25,20 +25,30 @@ const casaApp = casa(expressAppInstance, {
   // Directory to which CASA's compiled JS/CSS templates will be saved at runtime
   compiledAssetsDir: './static/',
 
-  // csp (Objectl; optional; default {})
+  // csp (Object; optional; default {})
   // Content-Security-Policy directives, where each key of the object is a valid
   // CSP directive (e.g. default-src, script-src, img-src, etc) and the value
   // is an array of the CSP header values to be added.
   // CASA will always append its own `script-src` values to any set here which
-  // include by default: 'self', 'unsafe-inline', 
+  // include by default: 'self', 'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU=',
   // https://www.google-analytics.com/ and https://www.googletagmanager.com/
+  //
+  // Inline javascript will be blocked by default, to allow inline code (such as
+  // a Google Analytics snippet) hash all the code between the opening closing
+  // script tag (including white space) using a CSP hash generator, for example:
+  // https://report-uri.com/home/hash
   csp: {
-    'script-src': ['http://myexample.test/scripts/'],
+    'script-src': [
+      // Allowed domain for external scripts
+      'http://myexample.test/scripts/',
+      // Hash of inline javascript
+      '\'sha256-jK59m1pDTzv3NoVMHTjnCbPj0s0ltLLwkWTCN3tTq9Y=\'',
+    ],
   },
 
   headers: {
     // disabled (Array; optional; default [])
-    // List of headers to expllicitly disable. This is useful if you use a
+    // List of headers to explicitly disable. This is useful if you use a
     // downstream proxy that is already adding certain headers to responses.
     disabled: [],
   },
@@ -81,11 +91,11 @@ const casaApp = casa(expressAppInstance, {
   serviceName: 'My little CASA app',
 
   sessions: {
-    // cookiePath (String; optional; default sames as mountUrl)
+    // cookiePath (String; optional; default same as mountUrl)
     // Session cookie is set to be valid for this URL path.
     // Note: changing this from `/` to `/some/sub/path` whilst there are still
     // session cookies in the wild, will cause conflict and prevent CASA from
-    // expirying those existing `/` cookies. Resolution is for user to close and
+    // expiring those existing `/` cookies. Resolution is for user to close and
     // reopen browser, or clear all cookies manually.
     cookiePath: '/',
 
@@ -107,7 +117,7 @@ const casaApp = casa(expressAppInstance, {
     store: new MemoryStore(),
 
     // ttl (Number; required)
-    // Session time-to-live (in seconds) without interaction befire it is
+    // Session time-to-live (in seconds) without interaction before it is
     // deleted from the server. Cookies are "browser session cookies", which
     // means they expire when the user closes their browser. However, the server
     // will track the age of each session and expire it after this TTL if it

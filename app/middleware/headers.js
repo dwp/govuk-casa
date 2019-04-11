@@ -58,10 +58,10 @@ module.exports = function mwHeaders(app, cspConfig, disabledHeadersConfig) {
     };
 
     // CASA requires these script-src entries to be included in the CSP
-    // NOTE: The GOVUK template uses inline JS, so requires 'unsafe-inline'
     const requiredScriptSources = [
       '\'self\'',
-      '\'unsafe-inline\'',
+      // hash of inline GOV.UK template JS to add 'js-enabled' body class
+      '\'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU=\'',
       'https://www.google-analytics.com/',
       'https://www.googletagmanager.com/',
     ];

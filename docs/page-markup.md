@@ -148,6 +148,17 @@ Adding your own CSS and JavaScript is a case of overriding the `head` and `bodyE
 {% endblock %}
 ```
 
+**Note:** any inline JavaScript you add within a `<script>` tag will be blocked by the Content Security Policy (CSP). You can allow it by [adding a hash](https://report-uri.com/home/hash) of everything inside the tag (including whitespace) to the CSP `script-src` config:
+
+```javascript
+const casaApp = casa(app, {
+  ...
+  csp: {
+    'script-src': '\'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU=\''
+  }
+});
+```
+
 ## Customising the cookie message
 
 CASA provides a `casa/partials/cookie_message.njk` template that you can override to inject your own content into its default cookie message bar, e.g.:

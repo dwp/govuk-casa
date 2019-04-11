@@ -1,6 +1,8 @@
 const { expect } = require('chai');
-const httpMocks = require('node-mocks-http');
+const crypto = require('crypto');
 const moment = require('moment');
+const httpMocks = require('node-mocks-http');
+const helpers = require('../templates/helpers');
 
 const middleware = require('../../../app/middleware/headers.js');
 
@@ -149,8 +151,9 @@ describe('Middleware: headers', () => {
       const csp = headers['content-security-policy'];
       expect(csp).to.contain('custom-script-src');
       expect(csp).to.have.string("script-src 'self'");
-      expect(csp).to.have.string("'unsafe-inline'");
+      expect(csp).to.have.string("'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='");
       expect(csp).to.have.string('https://www.google-analytics.com/');
+      expect(csp).to.have.string('https://www.googletagmanager.com/');
     });
   });
 
@@ -169,8 +172,9 @@ describe('Middleware: headers', () => {
       expect(headers).to.have.property('content-security-policy');
       const csp = headers['content-security-policy'];
       expect(csp).to.have.string("script-src 'self'");
-      expect(csp).to.have.string("'unsafe-inline'");
+      expect(csp).to.have.string("'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='");
       expect(csp).to.have.string('https://www.google-analytics.com/');
+      expect(csp).to.have.string('https://www.googletagmanager.com/');
     });
   });
 
@@ -194,8 +198,41 @@ describe('Middleware: headers', () => {
       const csp = headers['content-security-policy'];
       expect(csp).to.have.string('script-src');
       expect(csp).to.have.string("script-src 'self'");
-      expect(csp).to.have.string("'unsafe-inline'");
+      expect(csp).to.have.string("'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='");
       expect(csp).to.have.string('https://www.google-analytics.com/');
+      expect(csp).to.have.string('https://www.googletagmanager.com/');
+    });
+  });
+
+  it('should add script-src hashes for all inline javascript in the GOV.UK template', () => {
+    const mi = middleware({
+      set: () => {},
+      use: () => {},
+    }, null);
+
+    const req = httpMocks.createRequest();
+    const res = httpMocks.createResponse();
+
+    const govukTemplatePath = require.resolve('govuk-frontend/template.njk');
+    const $ = helpers.renderTemplateFile(govukTemplatePath, {});
+
+    const scriptHashes = [];
+
+    $('script').each((i, elem) => {
+      const inlineJs = $(elem).html();
+
+      if (inlineJs) {
+        const hash = crypto.createHash('sha256').update(inlineJs, 'utf-8').digest('base64');
+        scriptHashes[i] = `'sha256-${hash}'`;
+      }
+    });
+
+    mi.handleHeaders(req, res, () => {
+      const headers = lowercaseKeys(res._getHeaders());
+
+      expect(headers).to.have.property('content-security-policy');
+      const csp = headers['content-security-policy'];
+      scriptHashes.forEach(hash => expect(csp).to.have.string(hash));
     });
   });
 
