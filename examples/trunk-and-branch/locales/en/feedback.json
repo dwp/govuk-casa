@@ -1,0 +1,15 @@
+{
+  "pageTitle": "Feedback",
+  "h1": "Feedback",
+  "complete": {
+    "h1": "Thank You"
+  },
+  "field": {
+    "feedback": {
+      "label": "Please provide your feedback below"
+    }
+  },
+  "errorMsg": {
+    "inline": "Please provide details"
+  }
+}

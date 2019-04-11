@@ -1,0 +1,27 @@
+{% extends "layouts/custom-main.njk" %}
+
+{% from "components/button/macro.njk" import govukButton %}
+
+{% block page_title %}
+  {{ t('finish:pageTitle') }}
+{% endblock %}
+
+{% block content %}
+  <form action="{{ casaMountUrl }}preliminary/finish" method="post">
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+    <h1 class="heading-large">{{ t('finish:h1') }}</h1>
+
+    <div class="form-group">
+      <p>
+        This is the final submission page; a final chance for the user to confirm they want to go ahead.
+      </p>
+    </div>
+
+    <p class="govuk-body">
+      {{ govukButton({
+        text: t('finish:form.buttons.submit.label')
+      }) }}
+    </p>
+  </form>
+{% endblock %}

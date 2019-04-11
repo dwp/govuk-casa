@@ -1,0 +1,26 @@
+{% extends "layouts/journey.njk" %}
+
+{% from "casa/components/radios/macro.njk" import casaGovukRadios %}
+
+{% block casaPageTitle %}
+  {{ t('action:pageTitle') }}
+{% endblock %}
+
+{% block journey_form %}
+  <p class="govuk-body">
+    Do you like horror books?
+  </p>
+
+  {{ casaGovukRadios({
+    name: 'like',
+    casaValue: formData['like'],
+    casaErrors: formErrors,
+    items: [{
+      text: t('common:yes'),
+      value: 'yes'
+    }, {
+      text: t('common:no'),
+      value: 'no'
+    }]
+  }) }}
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "layouts/journey.njk" %}
+
+{% from "components/button/macro.njk" import govukButton %}
+
+{% block casaPageTitle %}
+  {{ t('task-list:pageTitle') }}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-xl">
+      Task List
+    </h1>
+
+    <ol class="app-task-list">
+      <li>
+        <h2 class="app-task-list__section">
+          Preliminary
+        </h2>
+        <ul class="app-task-list__items">
+          <li class="app-task-list__item">
+            <a class="app-task-list__task-name" href="{{ casaMountUrl }}preliminary/declaration" aria-describedby="eligibility-completed">
+              Declaration
+            </a>
+            <!-- <strong class="govuk-tag app-task-list__task-completed" id="eligibility-completed">Completed</strong> -->
+          </li>
+          <li class="app-task-list__item">
+            <a class="app-task-list__task-name" href="{{ casaMountUrl }}preliminary/contact-details" aria-describedby="read-declaration-completed">
+              Contact details
+            </a>
+          </li>
+          <li class="app-task-list__item">
+            <a class="app-task-list__task-name" href="{{ casaMountUrl }}preliminary/dob" aria-describedby="read-declaration-completed">
+              Date of birth
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <h2 class="app-task-list__section">
+          Books
+        </h2>
+        <ul class="app-task-list__items">
+          <li class="app-task-list__item">
+            <a class="app-task-list__task-name" href="{{ casaMountUrl }}books/action-books" aria-describedby="company-information-completed">
+              Action books
+            </a>
+          </li>
+          <li class="app-task-list__item">
+            <a class="app-task-list__task-name" href="{{ casaMountUrl }}books/thriller-books" aria-describedby="company-information-completed">
+              Thriller books
+            </a>
+          </li>
+          <li class="app-task-list__item">
+            <a class="app-task-list__task-name" href="{{ casaMountUrl }}books/horror-books" aria-describedby="company-information-completed">
+              Horror books
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ol>
+
+    <p class="govuk-body">
+      {{ govukButton({
+        text: "Finish",
+        href: casaMountUrl + 'preliminary/finish'
+      }) }}
+    </p>
+  </div>
+
+  <div class="govuk-grid-column-one-third">
+    {% include "partials/journey-sidebar.njk" %}
+  </div>
+</div>
+{% endblock %}

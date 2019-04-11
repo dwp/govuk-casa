@@ -1,0 +1,13 @@
+{
+  "pageTitle": "Contact details",
+  "h1": "Contact details",
+  "field": {
+    "tel": {
+      "label": "Phone number"
+    },
+    "email": {
+      "label": "Email",
+      "invalid": "Enter a valid email address"
+    }
+  }
+}

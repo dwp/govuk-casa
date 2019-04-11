@@ -1,0 +1,20 @@
+{% extends "layouts/custom-main.njk" %}
+
+{% from "components/button/macro.njk" import govukButton %}
+
+{% block casaPageTitle %}
+  {{ t('welcome:pageTitle') }}
+{% endblock %}
+
+{% block content %}
+  <h1 class="govuk-heading-xl">{{ t('welcome:h1') }}</h1>
+
+  {{ t('welcome:html.body') | safe }}
+
+  <p class="govuk-body">
+    {{ govukButton({
+      text: t('welcome:btn'),
+      href: casaMountUrl + "preliminary/declaration"
+    }) }}
+  </p>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "casa/review/page-block.njk" %}
+
+{% block pageBlockTitle %}
+  {{ t('dob:h1') }}
+{% endblock %}
+
+{% block journeyWaypointId %}
+  dob
+{% endblock %}
+
+{% block reviewBlock %}
+  {% set pData = journeyData['dob'] %}
+
+  <tbody>
+    <tr>
+      <td>
+        {{ t('dob:dob.label') }}
+      </td>
+      <td colspan="2">
+        {{ pData.dob | formatDateObject }}
+      </td>
+    </tr>
+  </tbody>
+{% endblock %}

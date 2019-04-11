@@ -1,0 +1,13 @@
+{#
+ # This is a basic wrapper around the default CASA main template, and is used
+ # only to add some custom styling. If you don't need anything custom in your
+ # wrapping layout, just extend your page templates from `casa/layouts/main.njk`
+ # instead.
+ #}
+{% extends "casa/layouts/main.njk" %}
+
+{# Add our custom stylesheets #}
+{% block head %}
+  {% include "partials/custom-styles.njk" %}
+{% endblock %}
+

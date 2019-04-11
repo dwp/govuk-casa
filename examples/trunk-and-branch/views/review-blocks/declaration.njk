@@ -1,0 +1,24 @@
+{% extends "casa/review/page-block.njk" %}
+
+{% block pageBlockTitle %}
+  {{ t('declaration:h1') }}
+{% endblock %}
+
+{% block journeyWaypointId %}
+  declaration
+{% endblock %}
+
+{% block reviewBlock %}
+  {% set pData = journeyData['declaration'] %}
+
+  <tbody>
+    <tr>
+      <td>
+        Ready?
+      </td>
+      <td colspan="2">
+        {{ 'Yes' if pData.ready else 'No' }}
+      </td>
+    </tr>
+  </tbody>
+{% endblock %}

@@ -1,0 +1,12 @@
+{
+  "serviceName": "CASA Example: Trunk and Branch",
+  "yes": "Yes",
+  "no": "No",
+  "form": {
+    "buttons": {
+      "submit": {
+        "label": "Submit"
+      }
+    }
+  }
+}
