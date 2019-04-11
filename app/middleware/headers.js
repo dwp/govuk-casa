@@ -1,7 +1,8 @@
 /*
  * Manipulate or parse headers.
  */
-const moment = require('moment');
+const isStaticAsset = /.*\.(js|jpe?g|css|png|svg|woff2?|eot|ttf|otf)/;
+const oneDay = 86400000;
 
 /**
  * Setup middleware.
@@ -15,6 +16,9 @@ module.exports = function mwHeaders(app, cspConfig, disabledHeadersConfig) {
   // ETags are disabled completely. See also "static" middleware.
   app.set('etag', false);
 
+  // Remove powered by express header
+  app.set('x-powered-by', false);
+
   /**
    * Define some common headers for all requests.
    * Remove security-sensitive headers that may otherwise reveal information.
@@ -25,8 +29,6 @@ module.exports = function mwHeaders(app, cspConfig, disabledHeadersConfig) {
    * @returns {void}
    */
   const handleHeaders = (req, res, next) => {
-    res.removeHeader('X-Powered-By');
-
     const csp = cspConfig || {};
     const disabledHeaders = disabledHeadersConfig || [];
 
@@ -39,10 +41,10 @@ module.exports = function mwHeaders(app, cspConfig, disabledHeadersConfig) {
 
     // Caching policy
     // Cache static assets more agressively
-    if (req.url.match(/.*\.(js|jpe?g|css|png|svg|woff2?|eot|ttf|otf)/)) {
+    if (isStaticAsset.test(req.url)) {
       headers['Cache-Control'] = 'public';
       headers.Pragma = 'cache';
-      headers.Expires = `${moment.utc().add(1, 'day').format('ddd, DD MMM YYYY HH:mm:ss')} GMT`
+      headers.Expires = new Date(Date.now() + oneDay).toUTCString();
     } else {
       headers['Cache-Control'] = 'no-cache, no-store, must-revalidate, private';
       headers.Pragma = 'no-cache';
@@ -87,6 +89,7 @@ module.exports = function mwHeaders(app, cspConfig, disabledHeadersConfig) {
 
     next();
   };
+
   app.use(handleHeaders);
 
   return {
