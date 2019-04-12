@@ -4,5 +4,5 @@
 //  $casaMountUrl: "/path/to/your/defined/mount/url";
 //  @import 'node_modules/govuk-casa/src/css/casaMountUrl';
 
-$casaMountUrl: "/" !default;
+$casaMountUrl: "~~~CASA_MOUNT_URL~~~" !default;
 $govuk-assets-path: $casaMountUrl + "govuk/frontend/assets/";

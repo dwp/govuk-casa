@@ -20,61 +20,61 @@
  */
 
 const npath = require('path');
-const uglifyJs = require('uglify-js');
 const fs = require('fs-extra');
 const recursiveReaddir = require('recursive-readdir-sync');
-const sass = require('node-sass');
 const logger = require('../../lib/Logger')('static');
 
 const onehour = 3600000;
 
 /**
- * Compile the Sass source files, and store output into the `compiledAssetsDir`.
+ * Inject the configured `mountUrl` into the pre-compiled CSS sources, and copy
+ * all CSS and JS to the `compiledAssetsDir` directory.
  *
- * This is executed once when the process first starts.
- *
- * @param {express} app Express app
+ * @param {string} npmGovukCasa Path to root of `govuk-casa` module
  * @param {string} compiledAssetsDir Directory where compiled assets are saved
- * @param {string} npmGovukFrontend Path to `govuk-fronted` node module
- * @param {string} npmGovukCasa Root path of `govuk-casa`
  * @param {string} mountUrl Mount point
  * @returns {void}
- * @throws {Exception} For an IO errors
+ * @throws {Exception} For any IO errors
  */
-function compileSassSources(
-  app,
-  compiledAssetsDir,
-  npmGovukFrontend,
-  npmGovukCasa,
-  mountUrl,
-) {
-  // We need to compile the Sass sources statically, and cache because the
-  // `node-sass-middleware` will not cache CSS if `importer` doesn't return
-  // null.
-  const casaSassSrcDir = npath.resolve(npmGovukCasa, 'src', 'css');
-  const dstDir = npath.resolve(compiledAssetsDir, 'casa', 'css');
+function prepareCasaStaticAssets(npmGovukCasa, compiledAssetsDir, mountUrl) {
+  const srcDir = npath.resolve(npmGovukCasa, 'dist', 'casa');
+  const dstDir = npath.resolve(compiledAssetsDir, 'casa');
+  const MOUNT_URL_PLACEHOLDER = /~~~CASA_MOUNT_URL~~~/g;
 
-  const partialRegex = new RegExp(`\\${npath.sep}_[^\\${npath.sep}]+$`);
-  const files = recursiveReaddir(casaSassSrcDir).filter(f => !f.match(partialRegex));
-
-  files.forEach((file) => {
-    const fSrc = fs.readFileSync(file, { encoding: 'utf8' });
-    const cssContent = sass.renderSync({
-      data: `$casaMountUrl: "${mountUrl}";${fSrc}`,
-      includePaths: [
-        casaSassSrcDir,
-        `${npmGovukFrontend}`,
-      ],
-      outputStyle: 'compressed',
-    }).css.toString('utf8');
-
-    const dstPath = npath.resolve(dstDir, npath.relative(casaSassSrcDir, file))
-      .replace(/\.scss$/, '.css');
+  // Inject mountUrl into CSS sources and copy across
+  recursiveReaddir(`${srcDir}/css`).forEach((file) => {
+    const css = fs.readFileSync(file, { encoding: 'utf8' }).replace(MOUNT_URL_PLACEHOLDER, mountUrl);
+    const dstPath = npath.resolve(`${dstDir}/css`, npath.relative(`${srcDir}/css`, file));
     fs.ensureDirSync(npath.dirname(dstPath));
-    fs.writeFileSync(dstPath, cssContent, {
+    fs.writeFileSync(dstPath, css, {
       encoding: 'utf8',
     });
   });
+
+  // Copy JS sources
+  recursiveReaddir(`${srcDir}/js`).forEach((file) => {
+    const dstPath = npath.resolve(`${dstDir}/js`, npath.relative(`${srcDir}/js`, file));
+    fs.ensureDirSync(npath.dirname(dstPath));
+    fs.copyFile(file, dstPath);
+  });
+}
+
+/**
+ * Serve up all assets from the `compiledAssetsDir` directory.
+ *
+ * @param {express} app Express app
+ * @param {Express.Static} expStatic Static module from ExpressJS
+ * @param {string} compiledAssetsDir Directory where static assets are saved
+ * @param {string} prefixCasa Virtual URL prefix
+ * @returns {void}
+ */
+function addCasaStaticAssets(app, expStatic, compiledAssetsDir, prefixCasa) {
+  const casaAssetsDir = npath.resolve(compiledAssetsDir, 'casa');
+  app.use(prefixCasa, expStatic(casaAssetsDir, {
+    etag: true,
+    lastModified: false,
+    maxage: onehour,
+  }));
 }
 
 /**
@@ -122,58 +122,14 @@ function addGovukFrontendStaticAssets(
 }
 
 /**
- * Compile and serve CASA assets.
- * `casa.js` will contain all sources from `src/js/casa.js`
- *
- * @param {express} app Express app
- * @param {Express.Static} expStatic Static module from ExpressJS
- * @param {string} compiledAssetsDir Directory where static assets are saved
- * @param {string} prefixCasa Virtual URL prefix
- * @returns {void}
- */
-function addCasaStaticAssets(
-  app,
-  expStatic,
-  compiledAssetsDir,
-  prefixCasa,
-) {
-  const casaAssetsDir = npath.resolve(compiledAssetsDir, 'casa');
-  const uglifyCasa = uglifyJs.minify({
-    'casa.js': fs.readFileSync(npath.resolve(__dirname, '../../src/js/casa.js'), 'utf8'),
-  });
-  if (uglifyCasa.error) {
-    throw new Error(`Got error whilst uglifying casa.js: ${uglifyCasa.error.message}`);
-  }
-  fs.ensureDirSync(npath.resolve(casaAssetsDir, 'js'));
-  fs.writeFileSync(
-    npath.resolve(casaAssetsDir, 'js/casa.js'),
-    uglifyCasa.code, {
-      encoding: 'utf8',
-    },
-  );
-
-  app.use(prefixCasa, expStatic(casaAssetsDir, {
-    etag: true,
-    lastModified: false,
-    maxage: onehour,
-  }));
-}
-
-/**
  * Add package versions to template for use in cache-busting URLs.
  *
  * @param {express} app Express app
- * @param {string} compiledAssetsDir Directory where static assets are saved
  * @param {string} npmGovukFrontend Root of `govuk-frontend`
  * @param {string} npmGovukTemplateJinja Root of `govuk_template_jinja`
  * @return {Function} Handler that adds versions to the current request
  */
-function addPackageVersions(
-  app,
-  compiledAssetsDir,
-  npmGovukFrontend,
-  npmGovukTemplateJinja,
-) {
+function addPackageVersions(app, npmGovukFrontend, npmGovukTemplateJinja) {
   const srcs = {
     govukFrontend: npath.resolve(npmGovukFrontend, 'package.json'),
     govukTemplateJinja: npath.resolve(npmGovukTemplateJinja, 'package.json'),
@@ -205,11 +161,10 @@ function addPackageVersions(
 * Format of the `npmPackages` paramter:
 * {
 *   govukTemplateJinja: <path to root of govuk_template_jinja module>,
-*   govukFrontendToolkit: <path to root of govuk_frontend_toolkit module>,
-*   govukElementsSass: <path to root of govuk-elements-sass module>,
 *   govukFrontend: <path to root of govuk-frontend module>,
-*   govukCasa: <path to root of govuk-casa module>
+*   govukCasa: <path to root of govuk-casa module>,
 * }
+*
 * @param {Express} app Express App
 * @param {Express.Static} expressStatic Express static middleware
 * @param {string} mountUrl Mount URL
@@ -244,13 +199,19 @@ module.exports = function mwStatic(
   // is the URL from which all GOVUK Frontend client-side assets.
   app.set('casaGovukFrontendVirtualUrl', govukFrontendVirtualUrl);
 
-  // Compile all Sass sources
-  compileSassSources(
-    app,
-    compiledAssetsDir,
-    npmGovukFrontend,
+  // Prepare CASA core static assets
+  prepareCasaStaticAssets(
     npmGovukCasa,
+    compiledAssetsDir,
     mountUrl,
+  );
+
+  // Serve up all static assets from the `compiledAssetsDir`
+  addCasaStaticAssets(
+    app,
+    expressStatic,
+    compiledAssetsDir,
+    prefixCasa,
   );
 
   // Serve GOVUK template assets
@@ -261,15 +222,10 @@ module.exports = function mwStatic(
     npmGovukFrontend,
     npmGovukTemplateJinja,
   );
-  addCasaStaticAssets(
-    app,
-    expressStatic,
-    compiledAssetsDir,
-    prefixCasa,
-  );
+
+  // Add package versions metadata
   const handlePackageVersionInit = addPackageVersions(
     app,
-    compiledAssetsDir,
     npmGovukFrontend,
     npmGovukTemplateJinja,
   );

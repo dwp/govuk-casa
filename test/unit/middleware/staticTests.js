@@ -129,6 +129,27 @@ describe('Middleware: static', () => {
     }).to.not.throw();
   });
 
+  it('should replace the mount url string placeholder in CSS sources', () => {
+    middleware(
+      mockExpressApp,
+      mockExpressStatic,
+      '/test-mount-url/',
+      compiledAssetsDir,
+      npmPackages,
+    );
+
+    const expectedContent = 'body{background-image:url(/test-mount-url/images/bg.gif);}a{background-image:url(/test-mount-url/images/a.gif);}';
+
+    const cssContent = fs.readFileSync(`${compiledAssetsDir}/casa/css/casa.css`, {
+      encoding: 'utf8',
+    });
+    const cssIeContent = fs.readFileSync(`${compiledAssetsDir}/casa/css/casa-ie8.css`, {
+      encoding: 'utf8',
+    });
+    expect(cssContent).to.equal(expectedContent);
+    expect(cssIeContent).to.equal(expectedContent);
+  });
+
   it('should add package versions to "res.locals" for toolkit, frontend and CASA', (done) => {
     const mi = middleware(
       mockExpressApp,

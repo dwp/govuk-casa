@@ -3,5 +3,7 @@
 .DS_Store
 .sonar/
 .nyc_output/
+dist/*
+!dist/.gitkeep
 node_modules/
 npm-debug.log

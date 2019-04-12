@@ -84,3 +84,11 @@ Various Nunjucks macros, templates and browser JavaScript/CSS assets marked as d
 **Removal of `partials/journey-sidebar.njk` and its use in other templates**
 
 **Removal of CSS rules** - replace `heading-large` with `govuk-heading-xl`; replace `form-group` with `govuk-form-group`; replace `form-control-1-4` with `govuk-input--width-10`; replace `phase-banner` with `govuk-phase-banner`
+
+## Runtime static asset compilation removed
+
+The `node-sass` and `uglify-js` dependencies have been moved to `devDependencies` and will no longer compile the SASS and JS sources at boot-time. Instead they are compiled at build time, and bundled in the `dist/` directory.
+
+If you open one of the `dist/casa/css/*.css` files, you'll notice mention of `~~~CASA_MOUNT_URL~~~`; this is a placeholder that gets replaced at bootime with the value of the `mountUrl` config setting.
+
+You may need to make alterations to your application if you somehow depended on `node-sass` or `uglify-js` being present at runtime.
