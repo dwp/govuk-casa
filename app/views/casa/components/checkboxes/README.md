@@ -1,15 +1,20 @@
 # `casaGovukCheckboxes()`
 
-Extends the `govukCheckboxes()` macro.
+Extends the [`govukCheckboxes()`](https://design-system.service.gov.uk/components/checkboxes/) macro.
 
 Custom parameters:
 
 * `casaValue` (`array`) - the value of the chosen checkbox(es). This is a convenience for toggling the `checked` flag on the appropriate `item`, but you can also manually set `checked` on each item if you need to use more specific logic for determining checked state.
 * `casaErrors` - form errors (just pass `formErrors`)
 
+
+## Example usage
+
 Basic example:
 
 ```nunjucks
+{% from "casa/components/checkboxes/macro.njk" import casaGovukCheckboxes %}
+
 casaGovukCheckboxes({
   name: "preferences",
   casaValue: formData.preferences,
@@ -43,6 +48,8 @@ casaGovukCheckboxes({
 To associate a checkbox item with a toggleable DOM element:
 
 ```nunjucks
+{% from "casa/components/checkboxes/macro.njk" import casaGovukCheckboxes %}
+
 casaGovukCheckboxes({
   name: "preferences",
   casaValue: formData.preferences,

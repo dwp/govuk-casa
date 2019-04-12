@@ -129,7 +129,7 @@ rules.optional
 
 ## `postalAddressObject`
 
-Validates UK postal addresses captured through the [`casaPostAddressObject()`](../app/views/casa/components/postal-address-object) macro, which arrive as separate values for the street name/number (`address1`), additional street information (`address2`), town/city (`address3`), county (`address4`) and postcode (`postcode`).
+Validates UK postal addresses captured through the [`casaPostAddressObject()`](../app/views/casa/components/postal-address-object/README.md) macro, which arrive as separate values for the street name/number (`address1`), additional street information (`address2`), town/city (`address3`), county (`address4`) and postcode (`postcode`).
 
 ```javascript
 // Minimal
