@@ -66,6 +66,34 @@ describe('Middleware: headers', () => {
     });
   });
 
+  it('should set x-xss-protection header to "1; mode=block"', (done) => {
+    const req = httpMocks.createRequest();
+
+    const res = httpMocks.createResponse();
+
+    stdMiddleware.handleHeaders(req, res, () => {
+      const headers = lowercaseKeys(res._getHeaders());
+      expect(headers['x-xss-protection']).to.equal('1; mode=block');
+      done();
+    });
+  });
+
+  it('should set x-xss-protection header to "0" if user-agent is IE 8', (done) => {
+    const req = httpMocks.createRequest({
+      headers: {
+        'user-agent': 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0)',
+      },
+    });
+
+    const res = httpMocks.createResponse();
+
+    stdMiddleware.handleHeaders(req, res, () => {
+      const headers = lowercaseKeys(res._getHeaders());
+      expect(headers['x-xss-protection']).to.equal('0');
+      done();
+    });
+  });
+
   it('should set correct cache headers for non-graphic assets', (done) => {
     const req = httpMocks.createRequest({
       url: '/page.html',

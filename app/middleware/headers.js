@@ -2,6 +2,7 @@
  * Manipulate or parse headers.
  */
 const isStaticAsset = /.*\.(js|jpe?g|css|png|svg|woff2?|eot|ttf|otf)/;
+const isIE8 = /MSIE\s*8/i;
 const oneDay = 86400000;
 
 /**
@@ -19,6 +20,9 @@ module.exports = function mwHeaders(app, cspConfig, disabledHeadersConfig) {
   // Remove powered by express header
   app.set('x-powered-by', false);
 
+  const csp = cspConfig || {};
+  const disabledHeaders = disabledHeadersConfig || [];
+
   /**
    * Define some common headers for all requests.
    * Remove security-sensitive headers that may otherwise reveal information.
@@ -29,15 +33,17 @@ module.exports = function mwHeaders(app, cspConfig, disabledHeadersConfig) {
    * @returns {void}
    */
   const handleHeaders = (req, res, next) => {
-    const csp = cspConfig || {};
-    const disabledHeaders = disabledHeadersConfig || [];
-
     // Cross-site protections
     const headers = {
       'X-Content-Type-Options': 'nosniff',
-      'X-XSS-Protection': 1,
+      'X-XSS-Protection': '1; mode=block',
       'X-Frame-Options': 'DENY',
     };
+
+    // X-XSS-Protection introduces a security bug into IE8, so disable it if IE8
+    if (isIE8.test(req.headers['user-agent'])) {
+      headers['X-XSS-Protection'] = '0';
+    }
 
     // Caching policy
     // Cache static assets more agressively
