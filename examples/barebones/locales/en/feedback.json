@@ -10,6 +10,7 @@
     }
   },
   "errorMsg": {
-    "inline": "Please provide details"
+    "inline": "Please provide details",
+    "summary": "Please provide details"
   }
 }

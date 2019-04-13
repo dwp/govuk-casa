@@ -3,9 +3,7 @@
 {% set fieldErrors = params.casaErrors[params.name] %}
 
 {# Generate validation data- attributes #}
-{% set mergedAttributes = params.attributes or {
-  'data-target': params.casaContentTargetId or null
-} %}
+{% set mergedAttributes = params.attributes or {} %}
 {% if fieldErrors %}
   {% set mergedAttributes = mergeObjects(mergedAttributes, {
     'data-validation': {fn: params.name, va: fieldErrors[0].validator} | dump

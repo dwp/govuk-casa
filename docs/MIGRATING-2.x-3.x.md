@@ -74,3 +74,13 @@ If you're using conditionals in Array-notation, no changes are needed.
 The `unsafe-inline` CSP header allowed any inline `<script>` scripts to be executed, regardless of their content. Attacks could potentially expoit this feature (via other injection vectors if they exist) to insert arbitrary scripts.
 
 If you have have any inline `<script>` in your templates, you will need to [configure CASA](api/bootstrap.md) to use an appropriate CSP header value for each of them, i.e. using nonces, or content hashes - see [https://content-security-policy.com/](https://content-security-policy.com/) for more information.
+
+## Removal of v1 assets
+
+Various Nunjucks macros, templates and browser JavaScript/CSS assets marked as deprecated (these were used in CASA v1 prior to introducing the GOVUK Frontend module) have now been removed. This includes:
+
+**Removal of all `*.html` macro/template files** - you should now use the equuivalent `*.njk` files
+
+**Removal of `partials/journey-sidebar.njk` and its use in other templates**
+
+**Removal of CSS rules** - replace `heading-large` with `govuk-heading-xl`; replace `form-group` with `govuk-form-group`; replace `form-control-1-4` with `govuk-input--width-10`; replace `phase-banner` with `govuk-phase-banner`

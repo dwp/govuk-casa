@@ -278,7 +278,7 @@ module.exports = function (router) {
 {% endblock %}
 
 {% block content %}
-  <h1 class="heading-large">Welcome</h1>
+  <h1 class="govuk-heading-xl">Welcome</h1>
 
   <p class="govuk-body">
     Let's get started ...
@@ -332,7 +332,7 @@ module.exports = function (casaApp, mountUrl, router, csrf) {
   <form action="{{ casaMountUrl }}submit" method="post">
     <input type="hidden" name="_csrf" value="{{ csrfToken }}">
 
-    <h1 class="heading-large">Submit your answers</h1>
+    <h1 class="govuk-heading-xl">Submit your answers</h1>
 
     <p class="govuk-body">
       This is the final submission page; a final chance for the user to confirm they want to go ahead.
@@ -367,7 +367,7 @@ module.exports = function (router) {
 {% endblock %}
 
 {% block content %}
-  <h1 class="heading-large">Thank You</h1>
+  <h1 class="govuk-heading-xl">Thank You</h1>
 
   <p class="govuk-body">
     Your details have been submitted successfully. Here's what will happen next ...
