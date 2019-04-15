@@ -342,6 +342,8 @@ describe('Casa', () => {
           'block-all-mixed-content': [],
           'require-sri-for': [],
           'upgrade-insecure-requests': [],
+          'report-uri': [],
+          'report-to': [],
         };
         config.csp = csp;
         casa.loadConfig(config);
