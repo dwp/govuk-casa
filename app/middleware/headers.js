@@ -14,7 +14,8 @@ const oneDay = 86400000;
  * @return {object} Applied middleware functions
  */
 module.exports = function mwHeaders(app, cspConfig, disabledHeadersConfig) {
-  // ETags are disabled completely. See also "static" middleware.
+  // ETags are disabled by default here. See also "static" middleware, where
+  // they are re-enabled on a case-by-case basis.
   app.set('etag', false);
 
   // Remove powered by express header
