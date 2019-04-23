@@ -57,6 +57,7 @@
     "minimatch": "3.0.4",
     "mocha": "6.1.4",
     "node-mocks-http": "1.7.3",
+    "npm-audit-resolver": "1.5.0",
     "nyc": "14.0.0",
     "proxyquire": "2.1.0",
     "sinon": "7.3.2",
@@ -78,7 +79,7 @@
     "quality": "npm run quality:coverage",
     "quality:coverage": "nyc npm test",
     "security": "npm run security:vulnerable-packages",
-    "security:vulnerable-packages": "npm audit --json | node -e 'a=JSON.parse(fs.readFileSync(\"/dev/stdin\",\"utf-8\")).metadata.vulnerabilities;process.exit(a.high+a.critical);'",
+    "security:vulnerable-packages": "check-audit --json | node -e 'a=JSON.parse(fs.readFileSync(\"/dev/stdin\",\"utf-8\")).metadata.vulnerabilities;process.exit(a.high+a.critical);'",
     "package:changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "start-pen-test-service": "PORT=4000 node ./test/penetration/server.js"
   },
