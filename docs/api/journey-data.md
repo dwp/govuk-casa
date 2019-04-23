@@ -70,3 +70,14 @@ req.journeyData.setValidationErrorsForPage('a-waypoint-id', { /* errors */});
 req.session.journeyData = req.journeyData.getData();
 req.session.journeyValidationErrors = req.journeyData.getValidationErrors();
 ```
+
+And before you complete the response (or relinquish control to the next middleware layer), be sure that your session data is persisted by explcitly calling `session.save()`. For example, prior to redirecting:
+
+```javascript
+req.session.save((err) => {
+  // handle error, then redirect
+  res.redirect('/somewhere');
+});
+```
+
+See this note for more information: https://github.com/expressjs/session#sessionsavecallback

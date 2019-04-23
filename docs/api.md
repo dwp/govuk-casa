@@ -3,7 +3,7 @@
 * [Initialising CASA](api/bootstrap.md)
   * [Middleware sequencing](api/middleware.md)
 * [Logging](api/logging.md)
-* [Journey data](api/journey-data.md)
+* [Journey data and sessions](api/journey-data.md)
 * Multilingual suport
 * Page definitions
   * Hooks
