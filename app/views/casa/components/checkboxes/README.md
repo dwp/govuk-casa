@@ -2,6 +2,8 @@
 
 Extends the [`govukCheckboxes()`](https://design-system.service.gov.uk/components/checkboxes/) macro.
 
+Note that for consistency, values gathered from this macro will always be an array. To accomplish this, under the hood the name of the field will always be automatically suffixed with `[]`, which is then parsed by the `body-parser` middleware as an array.
+
 Custom parameters:
 
 * `casaValue` (`array`) - the value of the chosen checkbox(es). This is a convenience for toggling the `checked` flag on the appropriate `item`, but you can also manually set `checked` on each item if you need to use more specific logic for determining checked state.
