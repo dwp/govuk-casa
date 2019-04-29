@@ -17,7 +17,7 @@ Apart from `session-file-store` and `moment`, all dependencies listed in `packag
 
 ```bash
 # Install everything
-npm ci
+npm install
 
 # Start the app in debug mode, on port 3000
 DEBUG=casa* PORT=3000 npm start

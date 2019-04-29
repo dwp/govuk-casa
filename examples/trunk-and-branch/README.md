@@ -9,7 +9,7 @@ This is quite a common pattern where you have a "task list" page from which the 
 
 ```bash
 # Install everything
-npm ci
+npm install
 
 # Start the app in debug mode, on port 3000
 DEBUG=casa* PORT=3000 npm start
