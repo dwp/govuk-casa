@@ -1,7 +1,7 @@
 {
-  "name": "@dwp/govuk-casa-example-barebones",
+  "name": "@dwp/govuk-casa-example-trunk-and-branch",
   "version": "1.0.0",
-  "description": "Simple barebones example CASA application",
+  "description": "Simple trunk-and-branch example CASA application",
   "main": "app.js",
   "dependencies": {
     "@dwp/govuk-casa": "*",

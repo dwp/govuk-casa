@@ -11,7 +11,7 @@ Touches on all common aspects of developing a citizen-facing web application, in
 
 _NOTE:_ Welsh translations have been intentionally left out so you can see the string reference appear in the rendered templates.
 
-Apart from `session-file-store` and `moment`, all dependencies listed in `package.json` are peer dependencies of CASA (i.e. they are required for CASA to work).
+Apart from `moment`, all dependencies listed in `package.json` are peer dependencies of CASA (i.e. they are required for CASA to work).
 
 ## Getting started
 

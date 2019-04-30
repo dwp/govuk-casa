@@ -48,7 +48,7 @@ views/
 app.js
 ```
 
-If you just want to get a quick and dirty CASA application up and running, take a look at **[Deploying a CASA app](docs/deploying.md)** first.
+If you just want to get a quick and dirty CASA application up and running, take a look at **[Deploying a CASA app](docs/deploying.md)** first or browse through one of the [example applications](examples/).
 
 However, if you'd like to build an understanding of the core concepts involved in building a CASA app, a good place to start is to begin designing your _User Journey_. This will provide CASA with information about the high-level flow that a user takes through your service, including the various conditional forks that may appear in the journey. Visit **[Designing a User Journey](docs/user-journey.md)** to get started.
 

@@ -1,8 +1,7 @@
 /**
  * Defines the user's potential journeys through the application screens.
  *
- * This factory method returns a singleton instance of the `lib/UserJourney.Map`
- * class, which is configured here to describe the ESA-specific user journeys.
+ * This factory method returns an instance of the `lib/UserJourney.Map` class.
  */
 
 const UserJourney = require('@dwp/govuk-casa/lib/UserJourney');
@@ -49,8 +48,6 @@ exports = module.exports = (function MyAppUserJourney() {
 
   // End of the road
   end.addWaypoints([
-    // Add the 'review' waypoint only if you want to include the built-in "check
-    // your answers" functionality provided by CASA.
     'review',
     // The very last waypoint in the journey is the submission handler.
     // Implement your own handler for this on `{{ mountUrl }}/submit`.
