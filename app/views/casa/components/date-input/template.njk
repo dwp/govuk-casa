@@ -20,26 +20,32 @@
   id: params.id if params.id else 'f-' + params.namePrefix,
   namePrefix: '',
   attributes: mergedAttributes,
-  items: [{
-    label: t('macros:dateInput.day'),
-    name: params.namePrefix + '[dd]',
-    id: 'f-' + params.namePrefix + '[dd]',
-    value: params.casaValue.dd,
-    classes: 'govuk-input--width-2 ' + (inputErrorClass if includes(fieldErrors[0].focusSuffix, '[dd]') or not hasSuffixHighlights)
-  }, {
-    label: t('macros:dateInput.month'),
-    name: params.namePrefix + '[mm]',
-    id: 'f-' + params.namePrefix + '[mm]',
-    value: params.casaValue.mm,
-    classes: 'govuk-input--width-2 ' + (inputErrorClass if includes(fieldErrors[0].focusSuffix, '[mm]') or not hasSuffixHighlights),
-    attributes: attributes_mm
-  }, {
-    label: t('macros:dateInput.year'),
-    name: params.namePrefix + '[yyyy]',
-    id: 'f-' + params.namePrefix + '[yyyy]',
-    value: params.casaValue.yyyy,
-    classes: 'govuk-input--width-4 ' + (inputErrorClass if includes(fieldErrors[0].focusSuffix, '[yyyy]') or not hasSuffixHighlights)
-  }],
+  items: [
+    mergeObjectsDeep({
+      label: t('macros:dateInput.day'),
+      classes: 'govuk-input--width-2 ' + (inputErrorClass if includes(fieldErrors[0].focusSuffix, '[dd]') or not hasSuffixHighlights)
+    }, params.items[0] if params.items[0] else {}, {
+      id: 'f-' + params.namePrefix + '[dd]',
+      name: params.namePrefix + '[dd]',
+      value: params.casaValue.dd
+    }),
+    mergeObjectsDeep({
+      label: t('macros:dateInput.month'),
+      classes: 'govuk-input--width-2 ' + (inputErrorClass if includes(fieldErrors[0].focusSuffix, '[mm]') or not hasSuffixHighlights)
+    }, params.items[1] if params.items[1] else {}, {
+      id: 'f-' + params.namePrefix + '[mm]',
+      name: params.namePrefix + '[mm]',
+      value: params.casaValue.mm
+    }),
+    mergeObjectsDeep({
+      label: t('macros:dateInput.year'),
+      classes: 'govuk-input--width-4 ' + (inputErrorClass if includes(fieldErrors[0].focusSuffix, '[yyyy]') or not hasSuffixHighlights)
+    }, params.items[2] if params.items[2] else {}, {
+      id: 'f-' + params.namePrefix + '[yyyy]',
+      name: params.namePrefix + '[yyyy]',
+      value: params.casaValue.yyyy
+    })
+  ],
   errorMessage: {
     text: t(params.casaErrors[params.namePrefix][0].inline)
   } if params.casaErrors[params.namePrefix] else null
