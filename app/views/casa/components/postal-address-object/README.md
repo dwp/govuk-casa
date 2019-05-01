@@ -2,8 +2,9 @@
 
 Custom parameters:
 
-* `casaValue` - the value of the chosen radio button. This is a convenience for toggling the `checked` flag on the appropriate `item`, but you can also manually set `checked` on each item if you need to use more specific logic for determining checked state.
+* `value` - the value of the address object, in `{address1: '', address2: '', address3: '', address4: '', postcode: ''}` format
 * `casaErrors` - form errors (just pass `formErrors`)
+* `address[1-4]` and `postcode` - for specifying extra attributes for each of the address input components
 
 ## Example usage
 
@@ -15,7 +16,34 @@ Basic example:
 {{ casaPostalAddressObject({
   name: 'address',
   value: formData.address,
-  casaErrors: formErrors,
+  casaErrors: formErrors
+}) }}
+```
+
+With configurable items:
+
+```nunjucks
+{% from "casa/components/postal-address-object/macro.njk" import casaPostalAddressObject %}
+
+{{ casaPostalAddressObject({
+  name: 'address',
+  value: formData.address,
+  address1: {
+    autocomplete: 'address-line1'
+  },
+  address2: {
+    autocomplete: 'address-line2'
+  },
+  address3: {
+    autocomplete: 'address-level2'
+  },
+  address4: {
+    autocomplete: 'address-level1'
+  },
+  postcode: {
+    autocomplete: 'postal-code'
+  },
+  casaErrors: formErrors
 }) }}
 ```
 
