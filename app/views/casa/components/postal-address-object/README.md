@@ -15,7 +15,34 @@ Basic example:
 {{ casaPostalAddressObject({
   name: 'address',
   value: formData.address,
-  casaErrors: formErrors,
+  casaErrors: formErrors
+}) }}
+```
+
+With configurable items:
+
+```nunjucks
+{% from "casa/components/postal-address-object/macro.njk" import casaPostalAddressObject %}
+
+{{ casaPostalAddressObject({
+  name: 'address',
+  value: formData.address,
+  address1: {
+    autocomplete: 'address-line1'
+  },
+  address2: {
+    autocomplete: 'address-line2'
+  },
+  address3: {
+    autocomplete: 'address-level2'
+  },
+  address4: {
+    autocomplete: 'address-level1'
+  },
+  postcode: {
+    autocomplete: 'postal-code'
+  },
+  casaErrors: formErrors
 }) }}
 ```
 
