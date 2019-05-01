@@ -23,6 +23,41 @@ casaGovukDateInput({
 })
 ```
 
+With configurable items:
+
+```nunjucks
+{% from "casa/components/date-input/macro.njk" import casaGovukDateInput %}
+
+casaGovukDateInput({
+  namePrefix: "dateOfBirth",
+  casaValue: formData.dateOfBirth,
+  casaErrors: formErrors,
+  items: [
+    {
+      autocomplete: "bday-day",
+      attributes: {
+        min: "1",
+        max: "31"
+      }
+    },
+    {
+      autocomplete: "bday-month",
+      attributes: {
+        min: "1",
+        max: "12"
+      }
+    },
+    {
+      autocomplete: "bday-year",
+      attributes: {
+        min: "1",
+        max: "9999"
+      }
+    }
+  ]
+})
+```
+
 ## Companion validation
 
 There is a companion validation rule - [`dateObject`](../../../../../docs/field-validation-rules.md#dateObject) - that you can use to ensure the dates are passed in correctly.
