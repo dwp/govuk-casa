@@ -1,3 +1,56 @@
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/dwp/govuk-casa/compare/2.4.2...3.0.0) (2019-05-02)
+
+
+### Bug Fixes
+
+* **security:** remove 'unsafe-inline' from script src in CSP header ([e6a4fbd](https://github.com/dwp/govuk-casa/commit/e6a4fbd))
+* **security:** set x-xss-protection header to `1; mode=block` ([9824762](https://github.com/dwp/govuk-casa/commit/9824762))
+
+
+### Code Refactoring
+
+* remove sass and uglify; compile assets at build time ([97c2ceb](https://github.com/dwp/govuk-casa/commit/97c2ceb))
+* remove v1 macros and CSS ([40a419a](https://github.com/dwp/govuk-casa/commit/40a419a))
+
+
+### Features
+
+* add support for `report-uri` and `report-to` CSP directives ([2616f44](https://github.com/dwp/govuk-casa/commit/2616f44))
+* add support for mulitple user journey maps ([c56211b](https://github.com/dwp/govuk-casa/commit/c56211b))
+
+
+### Performance Improvements
+
+* some small performance improvements to headers middleware ([4831264](https://github.com/dwp/govuk-casa/commit/4831264))
+
+
+### BREAKING CHANGES
+
+* If your service relies on CASA running sass/uglify
+compilation at boot-time, this will no longer be the case and your
+sources will need to be compiled in an alternative way.
+
+Signed-off-by: james.gauld <james.gauld@engineering.digital.dwp.gov.uk>
+* Any templates using the v1 macros or CSS/Sass rules
+will need to migrate to using latest equivalents. See
+docs/MIGRARTING-2.x-3.x.md for more details.
+
+Signed-off-by: james.gauld <james.gauld@engineering.digital.dwp.gov.uk>
+* **security:** Having 'unsafe-inline' set by default in the CSP header
+prevents protection against XSS attacks by allowing any inline JS to be
+executed in the browser. I'm removing this in favour of developers
+explicitly allowing each inline script block.
+
+Signed-off-by: Niall Molloy <niall.molloy@engineering.digital.dwp.gov.uk>
+* The review page page is no longer automatically added and
+must now be manually defined in page meta config. Conditional waypoint syntax
+change.
+
+Signed-off-by: james.gauld <james.gauld@engineering.digital.dwp.gov.uk>
+
+
+
 <a name="2.4.2"></a>
 ## [2.4.2](https://github.com/dwp/govuk-casa/compare/2.4.1...2.4.2) (2019-04-10)
 
