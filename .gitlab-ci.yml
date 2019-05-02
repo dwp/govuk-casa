@@ -88,6 +88,7 @@ checkmarx:
   artifacts:
     paths:
       - .checkmarx
+  allow_failure: true
 
 outdated:
   stage: security-tests
