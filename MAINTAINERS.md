@@ -80,12 +80,16 @@ git push git@github.com:dwp/govuk-casa.git master
 Now publish to [npmjs.com](https://npmjs.com/):
 
 ```bash
-# Login to npm
+# Check if you're logged in, or login to npm
+npm whoami
 npm adduser --scope=@dwp
 
 # Dry-run the publication to check all looks ok
 npm publish --dry-run
 
-# Publish the npm package
-npm publish
+# Publish the npm package, using the appropriate tag:
+# - For `master` branch, use `latest` tag
+# - For `maintain/2.x` branch, use `previous` tag
+# - For an upcoming major bump, use `next` tag
+npm publish --tag latest
 ```
