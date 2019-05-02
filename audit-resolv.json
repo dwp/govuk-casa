@@ -1,32 +1,5 @@
 {
-  "788|@commitlint/cli>@commitlint/load>cosmiconfig>js-yaml": {
-    "remind": 1556607284913
-  },
-  "788|@commitlint/travis-cli>@commitlint/cli>@commitlint/load>cosmiconfig>js-yaml": {
-    "remind": 1556607284913
-  },
-  "788|husky>cosmiconfig>js-yaml": {
-    "remind": 1556607284913
-  },
-  "813|@commitlint/cli>@commitlint/load>cosmiconfig>js-yaml": {
-    "remind": 1556607284913
-  },
-  "813|@commitlint/travis-cli>@commitlint/cli>@commitlint/load>cosmiconfig>js-yaml": {
-    "remind": 1556607284913
-  },
-  "813|husky>cosmiconfig>js-yaml": {
-    "remind": 1556607284913
-  },
-  "813|eslint>js-yaml": {
-    "remind": 1556607284913
-  },
-  "755|conventional-changelog-cli>conventional-changelog>conventional-changelog-core>conventional-changelog-writer>handlebars": {
-    "remind": 1556607284913
-  },
-  "755|nyc>istanbul-reports>handlebars": {
-    "remind": 1556607284913
-  },
   "803|node-sass>node-gyp>tar": {
-    "remind": 1556607284913
+    "remind": 1557360000000
   }
 }
