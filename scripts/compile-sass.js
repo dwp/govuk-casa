@@ -8,7 +8,7 @@
  */
 
 /* eslint-disable-next-line import/no-extraneous-dependencies */
-const sass = require('node-sass');
+const sass = require('sass');
 const path = require('path');
 const recursiveReaddir = require('recursive-readdir-sync');
 const fs = require('fs-extra');
