@@ -1,4 +1,6 @@
-# CASA
+# CASA 
+
+[![Build Status](https://travis-ci.org/dwp/govuk-casa.svg?branch=master)](https://travis-ci.org/dwp/govuk-casa)
 
 A compact framework for building government services, quickly and securely.
 
