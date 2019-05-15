@@ -11,7 +11,7 @@ module.exports = function reviewPageDefinition(pagesMeta) {
         // and make journey data and errors available to templates
         const userJourney = req.journeyActive;
         res.locals.editOriginUrl = `${req.baseUrl}${req.path}`;
-        res.locals.changeUrlPrefix = `${res.locals.casaMountUrl}${req.journeyActive.guid || ''}/`.replace(/\/+/g, '/');
+        res.locals.changeUrlPrefix = `${res.locals.casa.mountUrl}${req.journeyActive.guid || ''}/`.replace(/\/+/g, '/');
         res.locals.journeyData = req.journeyData.getData();
         res.locals.reviewErrors = req.journeyData.getValidationErrors();
 

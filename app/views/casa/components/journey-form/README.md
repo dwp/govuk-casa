@@ -10,8 +10,8 @@ A "Continue" button (and "Cancel" link if in edit mode) will also be added.
 {% from "casa/components/journey-form/macro.njk" import casaJourneyForm %}
 
 {% call casaJourneyForm({
-  casaMountUrl: '...',
-  csrfToken: '...',
+  casaMountUrl: casa.mountUrl,
+  csrfToken: casa.csrfToken,
   inEditMode: true,
   editOriginUrl: '/url/to/review/page',
   buttonBarHidden: false
@@ -46,8 +46,8 @@ Note that the submit button is configured to prevent double-clicks and avoid dup
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| `casaMountUrl` | string | Yes | URL prefix (available to user's templates via the global `casaMountUrl` variable) |
-| `csrfToken` | string | Yes | Token used to protect form from CSRF (available to user's templates via the global `csrfToken` variable) |
+| `casaMountUrl` | string | Yes | URL prefix (available to user's templates via the global `casa.mountUrl` variable) |
+| `csrfToken` | string | Yes | Token used to protect form from CSRF (available to user's templates via the global `casa.csrfToken` variable) |
 | `inEditMode` | boolean | No | Toggle edit-mode of the form (available to page templates using default GET/POST handlers via the local `inEditMode` variable) |
 | `editOriginUrl` | string | No | Absolute URL to the page from which the edit request came (defaults to `review`) (available to user's templates using default GET/POST handlers via the local `editOriginUrl` variable) |
 | `buttonBarHidden` | boolean | No | Toggle the rendering of the bar containing the "Continue" button and "Cancel" link.Useful if you want to render your own buttons |

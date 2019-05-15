@@ -3,7 +3,7 @@
 {% from "components/back-link/macro.njk" import govukBackLink %}
 
 {# When back link is not needed, add `main.govuk-main-wrapper--l` class to retain padding #}
-{% if inEditMode or not journeyPreviousUrl %}
+{% if inEditMode or not casa.journeyPreviousUrl %}
   {% set mainClasses %}{{ mainClasses }} govuk-main-wrapper--l{% endset %}
 {% endif %}
 
@@ -11,17 +11,17 @@
 {% block beforeContent %}
   {# Phase banner #}
   {# TODO: remove phase variable - just get template author to override a `casa/partials/phase_banner.njk` template #}
-  {% if phase == 'alpha' %}
+  {% if casa.phase == 'alpha' %}
     {% include "casa/partials/phase_banner_alpha.njk" %}
-  {% elseif phase == 'beta' %}
+  {% elseif casa.phase == 'beta' %}
     {% include "casa/partials/phase_banner_beta.njk" %}
   {% endif %}
 
   {# Add back link, if appropriate #}
-  {% if not inEditMode and journeyPreviousUrl %}
+  {% if not inEditMode and casa.journeyPreviousUrl %}
     {{ govukBackLink({
       text: t('common:back'),
-      href: journeyPreviousUrl
+      href: casa.journeyPreviousUrl
     }) }}
   {% endif %}
 {% endblock %}

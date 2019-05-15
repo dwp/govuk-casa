@@ -34,67 +34,35 @@ module.exports = function mwNunjucks(app, viewDirs, govukFrontendTemplate) {
   ) {
     throw new TypeError('Expected GOVUK template on path template.njk');
   }
-  // Resolve all application template search paths, and add CASA-specific dirs
+
+  // Resolve all application template search paths, and add CASA-specific dirs.
+  // Resolove priority: userland template > CASA templates > GOVUK templates
   const dirViews = (viewDirs || []).map(dir => npath.resolve(dir)).concat([
     npath.resolve(__dirname, '..', 'views'),
     npath.resolve(govukFrontendTemplate, '..'),
   ]);
 
-  /**
-   * Setup a nunjucks environment, per request, so we can tailor the environment
-   * to the needs of the request (e.g. using a specific language for rendering).
-   *
-   * This is available on all application routes, not just CASA router, so you
-   * can use the same Nunjucks environment on custom, application-specific
-   * routes.
-   *
-   * @param {Request} req Request
-   * @param {Response} res Response
-   * @param {Function} next Next route handler
-   * @returns {void}
-   */
-  const handleEnvironmentInit = (req, res, next) => {
-    // Prepare a file loader for use with our Nunjucks environments.
-    // We do not use one global loader for all environments (as we did in a
-    // previous incarnation), as we soon reach the `MaxListenersExceededWarning`
-    // warning due to that same loader being overload by event listeners added
-    // every time we create a new nunjucks environment.
-    const loader = new nunjucks.FileSystemLoader(dirViews, {
-      watch: false,
-      noCache: false,
-    });
+  // Prepare a single Nunjucks environment for all responses to use. Note that
+  // we cannot prepare response-specific global functions/filters if we use a
+  // single environment, but the performance gains of doing so are significant.
+  const loader = new nunjucks.FileSystemLoader(dirViews, {
+    watch: false,
+    noCache: false,
+  });
 
-    const env = new nunjucks.Environment(loader, {
-      autoescape: true,
-      throwOnUndefined: false,
-      trimBlocks: false,
-      lstripBlocks: false,
-    });
-    res.nunjucksEnvironment = env;
+  const env = new nunjucks.Environment(loader, {
+    autoescape: true,
+    throwOnUndefined: false,
+    trimBlocks: false,
+    lstripBlocks: false,
+  });
 
-    // Load filters into environment
-    const viewFiltersDir = npath.resolve(__dirname, '..', 'view-filters');
-    require(npath.resolve(viewFiltersDir, '_load'))(env);
+  // Load filters into environment
+  const viewFiltersDir = npath.resolve(__dirname, '..', 'view-filters');
+  require(npath.resolve(viewFiltersDir, '_load'))(env);
 
-    // Customise the `render()` response method to use this specific Nunjucks
-    // environment for the current request.
-    res.render = function nunjucksRender(name, opts, callback) {
-      const mergedOpts = Object.assign({}, opts || {}, res.locals || {});
-      env.render(name, mergedOpts, callback || ((err, data) => {
-        if (err) {
-          logger.error(`Nunjucks error during render of "${name}". ${err.message}`);
-          res.send('Something went wrong with displaying this page. Please go back and try again.');
-        } else {
-          res.send(data);
-        }
-      }));
-    };
-
-    next();
-  };
-  app.use(handleEnvironmentInit);
-
-  return {
-    handleEnvironmentInit,
-  };
+  // Apply Nunjucks to Express and set as the default rendering engine
+  env.express(app);
+  app.set('view engine', 'njk');
+  logger.trace('Nunjucks configured');
 };

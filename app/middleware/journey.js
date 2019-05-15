@@ -8,7 +8,7 @@
  *      use as a journey waypoint ID (i.e. remove trailing slashes)
  *  UserJourney.Map journeyActive = The currently active user journey map
  *
- * Enhances `res.locals` with:
+ * Enhances `res.locals.casa` with:
  *  string journeyPreviousUrl = Absolute URL to the previous page in the journey
  *      (if applicable)
  */
@@ -26,7 +26,7 @@ module.exports = function mwJourney(router, mountUrl, userJourneys) {
   /**
    * Traverse the journey with the user's current context, and determine
    * if the requested page falls within those traversed waypoints.
-   * Also make a `journeyPreviousUrl` variable available to the templates
+   * Also make a `casa.journeyPreviousUrl` variable available to the templates
    * (via `res.locals`) so it can be used for the "Back" button.
    *
    * @param {UserJourney.Map} userJourney Which map to traverse
@@ -57,7 +57,7 @@ module.exports = function mwJourney(router, mountUrl, userJourneys) {
       if (currentUrlIndex > 0) {
         let redirectUrl = `${redirectUrlPrefix}${traversed[currentUrlIndex - 1]}`;
         redirectUrl = redirectUrl.replace(/\/+/g, '/');
-        res.locals.journeyPreviousUrl = redirectUrl;
+        res.locals.casa.journeyPreviousUrl = redirectUrl;
       }
       next();
     }

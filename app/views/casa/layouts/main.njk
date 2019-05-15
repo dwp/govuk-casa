@@ -21,9 +21,9 @@
 
 
 {% block beforeContent %}
-  {% if phase == 'alpha' %}
+  {% if casa.phase == 'alpha' %}
     {% include "casa/partials/phase_banner_alpha.njk" %}
-  {% elseif phase == 'beta' %}
+  {% elseif casa.phase == 'beta' %}
     {% include "casa/partials/phase_banner_beta.njk" %}
   {% endif %}
 {% endblock %}

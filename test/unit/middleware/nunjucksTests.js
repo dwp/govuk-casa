@@ -1,89 +1,53 @@
 const npath = require('path');
 const { expect } = require('chai');
-const httpMocks = require('node-mocks-http');
-const { EventEmitter } = require('events');
+const express = require('express');
+const nunjucks = require('nunjucks');
 
 const middleware = require('../../../app/middleware/nunjucks.js');
 
 describe('Middleware: nunjucks', () => {
-  const mockExpressApp = {
-    use: () => {},
-    get: k => (k === 'view engine' ? 'html' : undefined),
-    set: () => {},
-  };
+  let expressApp;
+
   const viewDirs = [
     npath.resolve(__dirname, '../testdata/views'),
   ];
-  const govukTemplatePath = '../testdata/views/layouts/template.njk';
+  const govukTemplatePath = npath.resolve(__dirname, '../testdata/views/layouts/template.njk');
+  const casaRoot = npath.resolve(__dirname, '..', '..', '..');
+
+  beforeEach(() => {
+    expressApp = express();
+  });
 
   it('should throw an exception when the govuk template path does not point to the template file', () => {
     expect(() => {
-      middleware(mockExpressApp, viewDirs, 'invalid-path')
+      middleware(expressApp, viewDirs, 'invalid-path')
     }).to.throw(TypeError, 'template.njk');
   });
 
-  it('should store the nunjucks environment on the response object', (done) => {
-    const mi = middleware(mockExpressApp, null, govukTemplatePath);
-
-    const req = httpMocks.createRequest();
-    const res = httpMocks.createResponse();
-
-    mi.handleEnvironmentInit(req, res, () => {
-      /* eslint-disable-next-line no-unused-expressions */
-      expect(res.nunjucksEnvironment).to.not.be.undefined;
-      done();
-    });
+  it('should add all view directories to the template loader in the correct priority order', () => {
+    middleware(expressApp, ['dir1', 'dir2'], govukTemplatePath);
+    const paths = expressApp.get('nunjucksEnv').loaders[0].searchPaths;
+    expect(paths).to.deep.equal([
+      npath.join(casaRoot, 'dir1'),
+      npath.join(casaRoot, 'dir2'),
+      npath.join(casaRoot, 'app/views'),
+      npath.dirname(govukTemplatePath),
+    ]);
   });
 
-  it('should render a view using a custom callback', (done) => {
-    const mi = middleware(mockExpressApp, viewDirs, govukTemplatePath);
-
-    const req = httpMocks.createRequest();
-    const res = httpMocks.createResponse();
-
-    mi.handleEnvironmentInit(req, res, () => {
-      expect(res.render).to.exist; /* eslint-disable-line no-unused-expressions */
-      res.render('hello-world.njk', {}, (err, data) => {
-        expect(err).to.be.null; /* eslint-disable-line no-unused-expressions */
-        expect(data).to.have.string('Hello, World');
-        done();
-      });
-    });
+  it('should configure loader to cache templates', () => {
+    middleware(expressApp, null, govukTemplatePath);
+    const loader = expressApp.get('nunjucksEnv').loaders[0];
+    return expect(loader.noCache).to.be.false;
   });
 
-  it('should render a view using a default callback', (done) => {
-    const mi = middleware(mockExpressApp, viewDirs, govukTemplatePath);
-
-    const req = httpMocks.createRequest();
-
-    const res = httpMocks.createResponse({
-      eventEmitter: EventEmitter,
-    });
-    res.on('end', () => {
-      expect(res._getData()).to.have.string('Hello, World');
-      done();
-    });
-
-    mi.handleEnvironmentInit(req, res, () => {
-      res.render('hello-world.njk');
-    });
+  it('should set the Express view engine to "njk"', () => {
+    middleware(expressApp, null, govukTemplatePath);
+    return expect(expressApp.get('view engine')).to.equals('njk');
   });
 
-  it('should display a message if template filas to render', (done) => {
-    const mi = middleware(mockExpressApp, viewDirs, govukTemplatePath);
-
-    const req = httpMocks.createRequest();
-
-    const res = httpMocks.createResponse({
-      eventEmitter: EventEmitter,
-    });
-    res.on('end', () => {
-      expect(res._getData()).to.have.string('Something went wrong with displaying this page. Please go back and try again.');
-      done();
-    });
-
-    mi.handleEnvironmentInit(req, res, () => {
-      res.render('invalid-markup.njk');
-    });
+  it('should store the nunjucks environment in the Express application', () => {
+    middleware(expressApp, null, govukTemplatePath);
+    return expect(expressApp.get('nunjucksEnv')).to.be.an.instanceOf(nunjucks.Environment);
   });
 });

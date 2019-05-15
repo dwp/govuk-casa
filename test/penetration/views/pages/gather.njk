@@ -23,10 +23,10 @@
   </p>
 
   {% call casaJourneyForm({
-    csrfToken: csrfToken,
+    csrfToken: casa.csrfToken,
     inEditMode: inEditMode,
     editOriginUrl: editOriginUrl,
-    casaMountUrl: casaMountUrl
+    casaMountUrl: casa.mountUrl
   }) %}
     {{ casaGovukInput({
       name: 'field_input',

@@ -3,7 +3,9 @@
 {% from "casa/components/radios/macro.njk" import casaGovukRadios %}
 
 {# This page is the first on a detached user journey map, so we have to set the back button link explicitly #}
-{% set journeyPreviousUrl = casaMountUrl + 'preliminary/task-list' %}
+{% set casa = mergeObjects(casa, {
+  journeyPreviousUrl: casa.mountUrl + 'preliminary/task-list'
+})}
 
 {% block casaPageTitle %}
   {{ t('action:pageTitle') }}

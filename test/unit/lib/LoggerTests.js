@@ -7,6 +7,11 @@ describe('Logger', () => {
     expect(logger).to.be.an('object');
   });
 
+  it('should provide an trace() method', () => {
+    const logger = Logger();
+    return expect(logger.trace).to.exist;
+  });
+
   it('should provide an info() method', () => {
     const logger = Logger();
     return expect(logger.info).to.exist;

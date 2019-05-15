@@ -24,8 +24,9 @@ CASA provides the following templates, all of which can be overridden in your pr
 
 The following global variables are available to your templates:
 
-* `casaMountUrl` (`string`) - the URL prefix on which your app is running (mirrors the `mountUrl` config setting)
-* `csrfToken` (`string`) - a CSRF token you can use in forms
+* `casa.mountUrl` (`string`) - the URL prefix on which your app is running (mirrors the `mountUrl` config setting)
+* `casa.csrfToken` (`string`) - a CSRF token you can use in forms
+* `casa.journeyPreviousUrl` (`string`) - the URL to the previous page in the current user journey
 * `govuk.*` (`object`) - various data related to the GOVUK Frontend layout template; see [`app/middleware/variables.js`](../app/middleware/variables.js) for a full list of data in this object
 
 The following global functions are available to your templates:
@@ -58,7 +59,7 @@ Here we'll create a welcome page to serve as the entry point for new visitors; s
   </p>
 
   <p class="govuk-body">
-    <a href="{{ casaMountUrl }}personal-info">Let's get started</a>
+    <a href="{{ casa.mountUrl }}personal-info">Let's get started</a>
   </p>
 {% endblock %}
 ```
@@ -89,8 +90,8 @@ Here we'll create a page for the `personal-info` waypoint; save this to `view/pa
 {% extends "casa/layouts/journey.njk" %}
 
 {% from "components/error-summary/macro.njk" import govukErrorSummary %}
-{% from "casa/components/journey-form/macro.njk" import casaJourneyForm %}
-{% from "casa/components/input/macro.njk" import casaGovukInput %}
+{% from "casa/components/journey-form/macro.njk" import casaJourneyForm with context %}
+{% from "casa/components/input/macro.njk" import casaGovukInput with context %}
 
 {# Use `casaPageTitle` rather than `pageTitle` to let CASA prefix it with "Error:" when the form contains errors #}
 {% block casaPageTitle %}
@@ -108,10 +109,10 @@ Here we'll create a page for the `personal-info` waypoint; save this to `view/pa
 
   {# Wrap your form in a CASA <form>, complete with submit/cancel buttons #}
   {% call casaJourneyForm({
-    csrfToken: csrfToken,
+    csrfToken: casa.csrfToken,
     inEditMode: inEditMode,
     editOriginUrl: editOriginUrl,
-    casaMountUrl: casaMountUrl
+    casaMountUrl: casa.mountUrl
   }) %}
     <header>
       <h1 class="govuk-heading-xl">

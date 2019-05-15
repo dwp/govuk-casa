@@ -7,8 +7,8 @@
 {% endblock %}
 
 {% block content %}
-  <form action="{{ casaMountUrl }}preliminary/finish" method="post">
-    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+  <form action="{{ casa.mountUrl }}preliminary/finish" method="post">
+    <input type="hidden" name="_csrf" value="{{ casa.csrfToken }}">
 
     <h1 class="govuk-heading-xl">{{ t('finish:h1') }}</h1>
 

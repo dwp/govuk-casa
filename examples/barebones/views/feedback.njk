@@ -9,7 +9,7 @@
 
 {% block content %}
   <form action="{{ mountUrl }}feedback" method="post">
-    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+    <input type="hidden" name="_csrf" value="{{ casa.csrfToken }}">
 
     {% if formErrorsGovukArray %}
       {{ govukErrorSummary({
