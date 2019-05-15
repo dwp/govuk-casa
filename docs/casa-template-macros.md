@@ -33,13 +33,15 @@ To help make this a little simpler, we've provided a suite of "wrapper macros" t
 
 ```nunjucks
 {# Use the equivalent CASA wrapper macro #}
-{% from "casa/components/input/macro.njk" import casaGovukInput %}
+{% from "casa/components/input/macro.njk" import casaGovukInput with context %}
 
 {{ casaGovukInput({
   name: 'dob',
   casaErrors: formErrors
 }) }}
 ```
+
+> **NOTE:** It is important to include the `with context` annotation when importing any of the CASA macros (basically everything in `casa/components/*`). This gives the macro access to the global `casa` object and the global `t()` translation function.
 
 As of this writing the following wrapper macros are available:
 

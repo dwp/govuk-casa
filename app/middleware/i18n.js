@@ -28,8 +28,9 @@ module.exports = function mwI18n(app, supportedLocales, I18nUtility) {
    *  `req.session.language`
    *  `req.params.lang`
    *
-   * Stores the chosen language in `req.language` and the object used for
-   * translation in `req.i18nTranslator`
+   * Stores the chosen language in `req.language`.
+   * Prepares an instance of the translation function on `req.i18nTranslator`.
+   * Creates a `res.locals.t()` function for use in templates.
    *
    * @param {Request} req Request
    * @param {Response} res Response
@@ -56,7 +57,17 @@ module.exports = function mwI18n(app, supportedLocales, I18nUtility) {
       [req.language] = supportedLocales;
     }
 
+    // Create usable references to the translation function
     req.i18nTranslator = new I18nUtility.Translator(req.language);
+    // res.locals.language = req.language;  // TODO add to new casa.* locals object?
+    res.locals.t = req.i18nTranslator.t.bind(req.i18nTranslator);
+
+    // This is used by the GOVUK layout template
+    res.locals.htmlLang = req.language;
+
+    // When updating the session, we need to explicitly save before sending
+    // response because - depending on the session store - this operation may
+    // otherwise overlap with subsequent requests from the user.
     if (req.session && req.session.language !== currentSessionLanguage) {
       req.session.save((err) => {
         if (err) {
@@ -70,27 +81,7 @@ module.exports = function mwI18n(app, supportedLocales, I18nUtility) {
   };
   app.use(handleRequestInit);
 
-  /**
-   * Add the `t()` global function to the Nunjuck engine. This will make it
-   * available to all templates, including macros.
-   *
-   * @param {Request} req Request
-   * @param {Response} res Response
-   * @param {Function} next Next route handler
-   * @returns {void}
-   */
-  const handleNunjucksSeeding = (req, res, next) => {
-    res.nunjucksEnvironment.addGlobal(
-      't',
-      req.i18nTranslator.t.bind(req.i18nTranslator),
-    );
-
-    next();
-  };
-  app.use(handleNunjucksSeeding);
-
   return {
     handleRequestInit,
-    handleNunjucksSeeding,
   };
 };

@@ -59,7 +59,7 @@ As we want our pages to all have the same custom layout (2-thirds + 1-third colu
 {% extends "casa/layouts/journey.njk" %}
 
 {% from "components/error-summary/macro.njk" import govukErrorSummary %}
-{% from "casa/components/journey-form/macro.njk" import casaJourneyForm %}
+{% from "casa/components/journey-form/macro.njk" import casaJourneyForm with context %}
 
 {% block content %}
 <div class="govuk-grid-row">
@@ -72,10 +72,10 @@ As we want our pages to all have the same custom layout (2-thirds + 1-third colu
     {% endif %}
 
     {% call casaJourneyForm({
-      csrfToken: csrfToken,
+      csrfToken: casa.csrfToken,
       inEditMode: inEditMode,
       editOriginUrl: editOriginUrl,
-      casaMountUrl: casaMountUrl
+      casaMountUrl: casa.mountUrl
     }) %}
       {% block journey_form %}{% endblock %}
     {% endcall %}
@@ -97,7 +97,7 @@ Now we can setup each of our journey pages, using the above layout. First, the `
 {# views/pages/personal-info.njk #}
 {% extends "layouts/custom-journey.njk" %}
 
-{% from "casa/components/input/macro.njk" import casaGovukInput %}
+{% from "casa/components/input/macro.njk" import casaGovukInput with context %}
 
 {% block casaPageTitle %}
   t('personal-info:title')
@@ -196,7 +196,7 @@ Next, our `hobbies` page (which does't use validation):
 {# views/pages/hobbies.njk #}
 {% extends "layouts/custom-journey.njk" %}
 
-{% from "casa/components/textarea/macro.njk" import casaGovukTextarea %}
+{% from "casa/components/textarea/macro.njk" import casaGovukTextarea with context %}
 
 {% block casaPageTitle %}
   {{ t('hobbies:title') }}
@@ -287,7 +287,7 @@ module.exports = function (router) {
   <p class="govuk-body">
     {{ govukButton({
       text: "Start",
-      href: casaMountUrl + "personal-info"
+      href: casa.mountUrl + "personal-info"
     }) }}
   </p>
 {% endblock %}
@@ -329,8 +329,8 @@ module.exports = function (casaApp, mountUrl, router, csrf) {
 {% endblock %}
 
 {% block content %}
-  <form action="{{ casaMountUrl }}submit" method="post">
-    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+  <form action="{{ casa.mountUrl }}submit" method="post">
+    <input type="hidden" name="_csrf" value="{{ casa.csrfToken }}">
 
     <h1 class="govuk-heading-xl">Submit your answers</h1>
 

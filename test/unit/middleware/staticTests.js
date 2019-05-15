@@ -161,14 +161,16 @@ describe('Middleware: static', () => {
 
     const req = httpMocks.createRequest();
     const res = httpMocks.createResponse();
-    res.locals = {};
+    res.locals = {
+      casa: {},
+    };
 
     mi.handlePackageVersionInit(req, res, () => {
-      expect(res.locals.casaPackageVersions).to.be.an('object');
+      expect(res.locals.casa.packageVersions).to.be.an('object');
       /* eslint-disable no-unused-expressions */
-      expect(res.locals.casaPackageVersions.govukFrontend).to.not.be.undefined;
-      expect(res.locals.casaPackageVersions.govukTemplateJinja).to.not.be.undefined;
-      expect(res.locals.casaPackageVersions.casaMain).to.not.be.undefined;
+      expect(res.locals.casa.packageVersions.govukFrontend).to.not.be.undefined;
+      expect(res.locals.casa.packageVersions.govukTemplateJinja).to.not.be.undefined;
+      expect(res.locals.casa.packageVersions.casaMain).to.not.be.undefined;
       /* eslint-enable no-unused-expressions */
       done();
     });

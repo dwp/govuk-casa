@@ -8,7 +8,7 @@
 
 {% block content %}
   <form action="" method="post">
-    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+    <input type="hidden" name="_csrf" value="{{ casa.csrfToken }}">
     <input type="hidden" name="reviewed" value="true" />
 
     <h1 class="govuk-heading-xl">{{ t('review:h1') }}</h1>

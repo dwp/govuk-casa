@@ -11,7 +11,7 @@ npm start
 DEBUG=casa* npm start
 ```
 
-Each namespace is suffixed by each of the standard loglevels, `info`, `error`, `warn`, `fatal`, `debug`. For example, `casa:i18n:info`.
+Each namespace is suffixed by each of the standard loglevels, `info`, `error`, `warn`, `fatal`, `debug`, `trace`. For example, `casa:i18n:info`.
 
 | Namespace           | Description  | Source(s) |
 |---------------------|--------------|-----------|

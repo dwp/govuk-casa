@@ -21,8 +21,8 @@ module.exports = function mwVariables(app, mountUrl, phase, serviceName) {
     };
 
     // CASA-specific vars
-    res.locals.casaMountUrl = mountUrl;
-    res.locals.phase = phase;
+    res.locals.casa.mountUrl = mountUrl;
+    res.locals.casa.phase = phase;
     next();
   };
   app.use(handleVariablesSet);

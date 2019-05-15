@@ -217,30 +217,28 @@ describe('Middleware: i18n', () => {
     expect(spySave).to.have.been.called; /* eslint-disable-line no-unused-expressions */
   });
 
-  it('should add the t() function to the Nunjucks environment', (done) => {
+  it('should add the t() function to the Nunjucks res.locals', (done) => {
     const req = httpMocks.createRequest();
-    req.i18nTranslator = {
-      t: () => {},
-    };
-
     const res = httpMocks.createResponse();
-    res.nunjucksEnvironment = {
-      addGlobal: (fname, func) => {
-        res.__testOutput = {
-          fname,
-          func,
-        };
-      },
-    };
 
     const I18nUtility = I18n(['../tesdata/locales'], ['en']);
     const mi = middleware(mockExpressApp, ['en'], I18nUtility);
 
-    mi.handleNunjucksSeeding(req, res, () => {
-      expect(res.__testOutput).to.have.property('fname');
-      expect(res.__testOutput.fname).to.equal('t');
-      expect(res.__testOutput).to.have.property('func');
-      expect(res.__testOutput.func).to.be.a('function');
+    mi.handleRequestInit(req, res, () => {
+      expect(res).to.have.property('locals').to.have.property('t').to.be.a('Function');
+      done();
+    });
+  });
+
+  it('should set res.locals.htmlLang for use in GOVUK template', (done) => {
+    const req = httpMocks.createRequest();
+    const res = httpMocks.createResponse();
+
+    const I18nUtility = I18n(['../tesdata/locales'], ['en']);
+    const mi = middleware(mockExpressApp, ['en'], I18nUtility);
+
+    mi.handleRequestInit(req, res, () => {
+      expect(res).to.have.property('locals').to.have.property('htmlLang').to.equal('en');
       done();
     });
   });

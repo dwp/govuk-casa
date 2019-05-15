@@ -99,7 +99,7 @@ describe('Middleware: journey', () => {
       });
     });
 
-    it('should set res.locals.journeyPreviousUrl to the previously visited waypoint', (done) => {
+    it('should set res.locals.casa.journeyPreviousUrl to the previously visited waypoint', (done) => {
       const mi = middleware(mockApp, mountUrl, [userJourney]);
 
       const req = httpMocks.createRequest();
@@ -109,10 +109,12 @@ describe('Middleware: journey', () => {
       });
       req.url = '/page2';
       const res = httpMocks.createResponse();
-      res.locals = {};
+      res.locals = {
+        casa: {},
+      };
 
       mi.mwJourneyTraverse(req, res, () => {
-        expect(res.locals).to.have.property('journeyPreviousUrl', '/page1');
+        expect(res.locals).to.have.property('casa').to.have.property('journeyPreviousUrl', '/page1');
         done();
       });
     });

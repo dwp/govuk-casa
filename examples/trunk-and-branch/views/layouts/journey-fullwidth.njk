@@ -18,10 +18,10 @@
   {% endif %}
 
   {% call casaJourneyForm({
-    csrfToken: csrfToken,
+    csrfToken: casa.csrfToken,
     inEditMode: inEditMode,
     editOriginUrl: editOriginUrl,
-    casaMountUrl: casaMountUrl
+    casaMountUrl: casa.mountUrl
   }) %}
     {% block journey_form %}{% endblock %}
   {% endcall %}

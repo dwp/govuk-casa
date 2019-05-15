@@ -20,7 +20,9 @@ describe('Middleware: variables', () => {
       t: s => (`${s}-TRANSLATED`),
     };
     const res = httpMocks.createResponse();
-    res.locals = {};
+    res.locals = {
+      casa: {},
+    };
 
     mi.handleVariablesSet(req, res, () => {
       expect(res.locals.govuk.assetPath).to.equal('test-prefix/assets');
@@ -28,8 +30,8 @@ describe('Middleware: variables', () => {
       expect(res.locals.govuk.components.header.serviceName).to.equal('Test Service Name-TRANSLATED');
       expect(res.locals.govuk.components.header.serviceUrl).to.equal('/testMountUrl');
       expect(res.locals.govuk.components.header.homepageUrl).to.equal('https://www.gov.uk/');
-      expect(res.locals.casaMountUrl).to.equal('/testMountUrl');
-      expect(res.locals.phase).to.equal('TestPhase');
+      expect(res.locals.casa.mountUrl).to.equal('/testMountUrl');
+      expect(res.locals.casa.phase).to.equal('TestPhase');
       done();
     });
   });

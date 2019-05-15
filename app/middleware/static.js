@@ -149,7 +149,7 @@ function addPackageVersions(app, npmGovukFrontend, npmGovukTemplateJinja) {
 
   /* eslint-disable-next-line require-jsdoc */
   const handlePackageVersionInit = (req, res, next) => {
-    res.locals.casaPackageVersions = casaPackageVersions;
+    res.locals.casa.packageVersions = casaPackageVersions;
     next();
   };
   app.use(handlePackageVersionInit);

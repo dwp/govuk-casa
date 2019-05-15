@@ -7,8 +7,8 @@
 {% endblock %}
 
 {% block content %}
-  <form action="{{ casaMountUrl }}submit" method="post">
-    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+  <form action="{{ casa.mountUrl }}submit" method="post">
+    <input type="hidden" name="_csrf" value="{{ casa.csrfToken }}">
 
     <h1 class="govuk-heading-xl">{{ t('submit:h1') }}</h1>
 
@@ -23,7 +23,7 @@
         text: t('submit:form.buttons.submit.label')
       }) }}
 
-      <a href="{{ casaMountUrl }}review" class="casa-cancel-review-link govuk-link--no-visited-state">{{ t('common:form.buttons.cancel.label') }}</a>
+      <a href="{{ casa.mountUrl }}review" class="casa-cancel-review-link govuk-link--no-visited-state">{{ t('common:form.buttons.cancel.label') }}</a>
     </p>
   </form>
 {% endblock %}

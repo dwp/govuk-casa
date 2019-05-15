@@ -56,6 +56,13 @@ function CasaBootstrap(expressApp, config) {
   ];
   const I18nUtility = I18n(localeDirs, config.i18n.locales);
 
+  // Prepare a global `casa` template object which will house all our template
+  // variables, accumulated through middleware.
+  expressApp.use((req, res, next) => {
+    res.locals.casa = {};
+    next();
+  });
+
   // Pre-journey middleware
   const commonMiddlewareArgs = [casa, expressSession, expressJs.static, I18nUtility];
   const mountCommonMiddleware = casa.mountCommonExpressMiddleware.bind(...commonMiddlewareArgs);
@@ -76,8 +83,8 @@ function CasaBootstrap(expressApp, config) {
   /**
    * Generate CSRF protection to use on all mutating (POST) requests. The
    * `csrfSupplyToken` function will make the current token available to views
-   * via the `csrfToken` variable, which you can use as so:
-   *   <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+   * via the `casa.csrfToken` variable, which you can use as so:
+   *   <input type="hidden" name="_csrf" value="{{ casa.csrfToken }}">
    */
   const bodyParser = expressBodyParser.urlencoded({
     // Adds support for array[style][params] -> objects
@@ -104,7 +111,7 @@ function CasaBootstrap(expressApp, config) {
    * @returns {void}
    */
   const csrfSupplyToken = (req, res, next) => {
-    res.locals.csrfToken = req.csrfToken();
+    res.locals.casa.csrfToken = req.csrfToken();
     next();
   };
   const csrfMiddleware = [
