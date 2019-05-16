@@ -58,7 +58,7 @@ Here we'll create a welcome page to serve as the entry point for new visitors; s
   </p>
 
   <p class="govuk-body">
-    <a href="{{ casaMountUrl }}personal-info">Let's get started</a
+    <a href="{{ casaMountUrl }}personal-info">Let's get started</a>
   </p>
 {% endblock %}
 ```
