@@ -9,6 +9,7 @@ image: node:10.15.3-alpine@sha256:ba9152d0e2aa5fe45cb090b8e07757a28fa2fc6a6bfd1a
     - master
     - develop
     - tags
+    - maintain/2.x
 
 stages:
   - build
@@ -54,11 +55,11 @@ sonar-scanner:
   stage: quality-tests
   <<: *executor-docker
   <<: *not-branches
-  image: "$CI_REGISTRY/provisioning/docker-sonar-scanner:latest"
+  image: "$CI_REGISTRY/engineering-practice/sonar-scanner:latest"
   dependencies:
     - coverage
   script:
-    - sonar-scanner -Dsonar.projectBaseDir=$CI_PROJECT_DIR
+    - 'sonar-scanner -Dsonar.projectBaseDir="$CI_PROJECT_DIR"'
 
 sensitives:
   stage: security-tests
