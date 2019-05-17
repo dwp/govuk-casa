@@ -1,20 +1,26 @@
 {
   "788|@commitlint/cli>@commitlint/load>cosmiconfig>js-yaml": {
-    "remind": 1557360000000
+    "remind": 1559260800000
   },
   "788|@commitlint/travis-cli>@commitlint/cli>@commitlint/load>cosmiconfig>js-yaml": {
-    "remind": 1557360000000
+    "remind": 1559260800000
   },
   "813|@commitlint/cli>@commitlint/load>cosmiconfig>js-yaml": {
-    "remind": 1557360000000
+    "remind": 1559260800000
   },
   "813|@commitlint/travis-cli>@commitlint/cli>@commitlint/load>cosmiconfig>js-yaml": {
-    "remind": 1557360000000
+    "remind": 1559260800000
   },
   "813|eslint>js-yaml": {
-    "remind": 1557360000000
+    "remind": 1559260800000
   },
   "803|node-sass>node-gyp>tar": {
-    "remind": 1557360000000
+    "remind": 1559260800000
+  },
+  "886|node-sass>node-gyp>fstream": {
+    "remind": 1559260800000
+  },
+  "886|node-sass>node-gyp>tar>fstream": {
+    "remind": 1559260800000
   }
 }
