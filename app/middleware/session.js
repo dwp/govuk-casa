@@ -9,6 +9,7 @@
 
 const uid = require('uid-safe');
 const moment = require('moment');
+const querystring = require('querystring');
 const logger = require('../../lib/Logger')('session');
 const JourneyData = require('../../lib/JourneyData');
 
@@ -84,7 +85,8 @@ module.exports = function mwSession(app, expressSession, mountUrl, sessionCfg) {
           httpOnly: true,
           secure: sessionCfg.secure,
         });
-        res.status(302).redirect(`${mountUrl}session-timeout#`);
+        const referer = req.originalUrl ? `?${querystring.stringify({ referer: req.originalUrl })}` : '#';
+        res.status(302).redirect(`${mountUrl}session-timeout${referer}`);
       });
     } else if (req.session) {
       req.session.dateExpire = moment().add(sessionCfg.ttl, 's').toISOString();

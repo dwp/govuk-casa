@@ -1,6 +1,7 @@
 const { expect } = require('chai');
 const httpMocks = require('node-mocks-http');
 const { EventEmitter } = require('events');
+const querystring = require('querystring');
 const moment = require('moment');
 const JourneyData = require('../../../lib/JourneyData');
 
@@ -124,6 +125,7 @@ describe('Middleware: session', () => {
 
     it('should destroy the session and redirect user to timeout page if the destruction flag is set', (done) => {
       const req = httpMocks.createRequest();
+      req.originalUrl = '/test/url-here?with=some+query%2Fdata'
       req.casaSessionExpired = 'EXPIRED_SESSION_ID';
       req.session = {
         destroy: (cb) => {
@@ -135,7 +137,10 @@ describe('Middleware: session', () => {
       });
       res.on('end', () => {
         expect(res._getStatusCode()).to.equal(302);
-        expect(res._getRedirectUrl()).to.equal(`${mountUrl}session-timeout#`);
+        expect(res._getRedirectUrl()).to.equal(`${mountUrl}session-timeout?referer=%2Ftest%2Furl-here%3Fwith%3Dsome%2Bquery%252Fdata`);
+        expect(querystring.parse(res._getRedirectUrl().replace(/^.+\?/, ''))).to.deep.equal({
+          referer: req.originalUrl,
+        });
         expect(req).to.not.have.property('casaSessionExpired');
         done();
       });
