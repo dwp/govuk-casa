@@ -1,3 +1,25 @@
+<a name="4.0.0"></a>
+# [4.0.0](https://github.com/dwp/govuk-casa/compare/3.0.1...4.0.0) (2019-05-17)
+
+
+### Features
+
+* **session:** pass referer url in session-timeout redirect ([7e0b3d0](https://github.com/dwp/govuk-casa/commit/7e0b3d0)), closes [#56](https://github.com/dwp/govuk-casa/issues/56)
+
+
+### Performance Improvements
+
+* **nunjucks:** improve performance of template rendering and loading ([0838fbc](https://github.com/dwp/govuk-casa/commit/0838fbc))
+
+
+### BREAKING CHANGES
+
+* **nunjucks:** Macros now require access to the same scope as the
+templates being rendered, so must be imported with context. See
+docs/MIGRATING-3.x-4.x.md
+
+
+
 <a name="3.0.1"></a>
 ## [3.0.1](https://github.com/dwp/govuk-casa/compare/3.0.0...3.0.1) (2019-05-09)
 
