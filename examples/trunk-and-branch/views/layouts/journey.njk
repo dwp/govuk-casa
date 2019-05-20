@@ -1,7 +1,7 @@
 {% extends "casa/layouts/journey.njk" %}
 
 {% from "components/error-summary/macro.njk" import govukErrorSummary %}
-{% from "casa/components/journey-form/macro.njk" import casaJourneyForm %}
+{% from "casa/components/journey-form/macro.njk" import casaJourneyForm with context %}
 
 {# Add our custom stylesheets #}
 {% block head %}

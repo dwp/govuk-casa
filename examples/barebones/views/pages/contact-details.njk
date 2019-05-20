@@ -1,7 +1,7 @@
 {% extends "layouts/journey.njk" %}
 
-{% from "casa/components/input/macro.njk" import casaGovukInput %}
-{% from "casa/components/postal-address-object/macro.njk" import casaPostalAddressObject %}
+{% from "casa/components/input/macro.njk" import casaGovukInput with context %}
+{% from "casa/components/postal-address-object/macro.njk" import casaPostalAddressObject with context %}
 
 {% block casaPageTitle %}
   {{ t('contact-details:pageTitle') }}
