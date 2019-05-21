@@ -23,7 +23,7 @@ pages['review'] = reviewPageDefinition(pages);
 
 This will add all the equivalent page definition attributes that were previously given to the automatically-added `review` page.
 
-With the possibility of multiple review pages being littered around multiple User Journeys, CASA needs to know how to return the user to the correct review page once they have cancelled or saved their data. To this end, the `cassaJourneyForm()` Nunjucks macro now accepts a new `editOriginUrl` attribute which denotes the URL to which the user will be redirected after saving/cancelling their edit. This will default to `<mountUrl><journeyGuid>/review` for backwards compatibility.
+With the possibility of multiple review pages being littered around multiple User Journeys, CASA needs to know how to return the user to the correct review page once they have cancelled or saved their data. To this end, the `casaJourneyForm()` Nunjucks macro now accepts a new `editOriginUrl` attribute which denotes the URL to which the user will be redirected after saving/cancelling their edit. This will default to `<mountUrl><journeyGuid>/review` for backwards compatibility.
 
 For example, you will now need to generate the journey form as follows:
 
