@@ -1,3 +1,13 @@
+<a name="2.5.0"></a>
+# [2.5.0](https://github.com/dwp/govuk-casa/compare/2.4.3...2.5.0) (2019-05-21)
+
+
+### Features
+
+* **session:** pass referer url in session-timeout redirect ([aaa481f](https://github.com/dwp/govuk-casa/commit/aaa481f)), closes [#56](https://github.com/dwp/govuk-casa/issues/56)
+
+
+
 <a name="2.4.3"></a>
 ## [2.4.3](https://github.com/dwp/govuk-casa/compare/2.4.2...2.4.3) (2019-05-02)
 
