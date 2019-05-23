@@ -14,7 +14,7 @@
     "!**/*/.gitkeep"
   ],
   "engines": {
-    "node": ">=8.9.0 <=11.0.0"
+    "node": ">=10.0.0 <13.0.0"
   },
   "repository": {
     "type": "git",
