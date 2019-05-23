@@ -33,17 +33,6 @@
     "nino": {
         "label": "National Insurance number",
         "empty": "Enter your National Insurance number"
-      },
-    "gender": {
-      "label": "Are you male or female?",
-      "options": {
-        "male": {
-          "label": "Male"
-        },
-        "female": {
-          "label": "Female"
-        }
       }
-    }
   }
 }
