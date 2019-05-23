@@ -1,14 +1,14 @@
 {% extends "casa/layouts/journey.njk" %}
 
 {% from "components/error-summary/macro.njk" import govukErrorSummary %}
-{% from "casa/components/journey-form/macro.njk" import casaJourneyForm %}
+{% from "casa/components/journey-form/macro.njk" import casaJourneyForm with context %}
 
 {# New CASA wrapper macros #}
-{% from "casa/components/checkboxes/macro.njk" import casaGovukCheckboxes %}
-{% from "casa/components/input/macro.njk" import casaGovukInput %}
-{% from "casa/components/date-input/macro.njk" import casaGovukDateInput %}
-{% from "casa/components/radios/macro.njk" import casaGovukRadios %}
-{% from "casa/components/textarea/macro.njk" import casaGovukTextarea %}
+{% from "casa/components/checkboxes/macro.njk" import casaGovukCheckboxes with context %}
+{% from "casa/components/input/macro.njk" import casaGovukInput with context %}
+{% from "casa/components/date-input/macro.njk" import casaGovukDateInput with context %}
+{% from "casa/components/radios/macro.njk" import casaGovukRadios with context %}
+{% from "casa/components/textarea/macro.njk" import casaGovukTextarea with context %}
 
 {% block content %}
   {% if formErrorsGovukArray %}
@@ -23,10 +23,10 @@
   </p>
 
   {% call casaJourneyForm({
-    csrfToken: csrfToken,
+    csrfToken: casa.csrfToken,
     inEditMode: inEditMode,
     editOriginUrl: editOriginUrl,
-    casaMountUrl: casaMountUrl
+    casaMountUrl: casa.mountUrl
   }) %}
     {{ casaGovukInput({
       name: 'field_input',
