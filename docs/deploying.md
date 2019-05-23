@@ -220,6 +220,19 @@ Next, our `hobbies` page (which does't use validation):
 {% endblock %}
 ```
 
+```javascript
+// definitions/field-validators/hobbies.js
+const Validation = require('@dwp/govuk-casa/lib/Validation');
+const r = Validation.rules;
+const sf = Validation.SimpleField;
+
+module.exports = {
+  description: sf([
+    r.optional
+  ]),
+};
+```
+
 ```json
 // locales/en/hobbies.json
 {
@@ -244,10 +257,11 @@ We now need to describe all of our journey pages to CASA, by means of a meta def
 module.exports = {
   'personal-info': {
     view: 'pages/personal-info.njk',
-    fieldValidators: require('./field-validators/personal-info.js')
+    fieldValidators: require('./field-validators/personal-info.js'),
   },
   hobbies: {
     view: 'pages/hobbies.njk'
+    fieldValidators: require('./field-validators/hobbies.js'),
   }
 };
 ```
@@ -462,7 +476,7 @@ Session handling is managed through the `express-session` interface, so you are 
 
 ## Adding a "Check your answers" page
 
-CASA provides a simple implementation of the ["Check your answers"](https://design-system.service.gov.uk/patterns/check-answers/) pattern. You can of course roll your own implementation, but if you'd like to take advantage of the CASA variant (which will eventually aim to keep up to date with the pattern), here's how ...
+CASA provides a simple implementation of the ["Check your answers"](https://design-system.service.gov.uk/patterns/check-answers/) pattern. You can of course roll your own implementation, but if you'd like to take advantage of the CASA variant (which aims to keep up to date with the pattern), here's how ...
 
 First, add a `review` waypoint (or name it whatever you wish) to your journey. This should come before your final `submit` page. For example, taking the example journey further above, we just add `review` to the list of waypoints, just before `submit`:
 
@@ -486,49 +500,83 @@ module.exports = (function () {
 })();
 ```
 
-Next, you'll need to design some _review block_ markup for each of your data-gathering pages. Here's some review blocks for each of our pages:
+Next, you'll need to design some _review block_ markup for each of your data-gathering pages. These pages will have access to the following variables:
+
+| Variable | Description |
+|----------|-------------|
+| `waypointId` | ID of the page waypoint being rendered |
+| `waypointEditUrl` | The URL that will take the user back to the waypoint, in edit mode |
+
+Here's some review blocks for each of our pages:
 
 ```nunjucks
 {# views/pages-review/personal-info.njk #}
 {% extends "casa/review/page-block.njk" %}
 
+{% from "components/summary-list/macro.njk" import govukSummaryList %}
+
 {% block pageBlockTitle %}
   {{ t('personal-info:title') }}
-{% endblock %}
-
-{% block journeyWaypointId %}
-  personal-info
 {% endblock %}
 
 {% block reviewBlock %}
   {% set pData = journeyData['personal-info'] %}
 
-  <tbody>
-    <tr>
-      <td>
-        {{ t('personal-info:field.firstName.label') }}
-      </td>
-      <td colspan="2">
-        {{ pData.firstName }}
-      </td>
-    </tr>
-    <tr>
-      <td>
-        {{ t('personal-info:field.lastName.label') }}
-      </td>
-      <td colspan="2">
-        {{ pData.lastName }}
-      </td>
-    </tr>
-    <tr>
-      <td>
-        {{ t('personal-info:field.email.label') }}
-      </td>
-      <td colspan="2">
-        {{ pData.email }}
-      </td>
-    </tr>
-  </tbody>
+  {{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-9 check-your-answers",
+    rows: [{
+      key: {
+        text: t('personal-info:field.firstName.label')
+      },
+      value: {
+        text: pData.firstName
+      },
+      actions: {
+        items: [
+          {
+            href: waypointEditUrl + '#f-firstName',
+            text: t('review:block.changeLink'),
+            visuallyHiddenText: t('personal-info:field.firstName.label') | lower,
+            classes: 'govuk-link--no-visited-state'
+          }
+        ]
+      }
+    }, {
+      key: {
+        text: t('personal-info:field.lastName.label')
+      },
+      value: {
+        text: pData.lastName
+      },
+      actions: {
+        items: [
+          {
+            href: waypointEditUrl + '#f-lastName',
+            text: t('review:block.changeLink'),
+            visuallyHiddenText: t('personal-info:field.lastName.label') | lower,
+            classes: 'govuk-link--no-visited-state'
+          }
+        ]
+      }
+    }, {
+      key: {
+        text: t('personal-info:field.email.label')
+      },
+      value: {
+        text: pData.email
+      },
+      actions: {
+        items: [
+          {
+            href: waypointEditUrl + '#f-email',
+            text: t('review:block.changeLink'),
+            visuallyHiddenText: t('personal-info:field.email.label') | lower,
+            classes: 'govuk-link--no-visited-state'
+          }
+        ]
+      }
+    }]
+  }) }}
 {% endblock %}
 ```
 
@@ -536,27 +584,36 @@ Next, you'll need to design some _review block_ markup for each of your data-gat
 {# views/pages-review/hobbies.njk #}
 {% extends "casa/review/page-block.njk" %}
 
+{% from "components/summary-list/macro.njk" import govukSummaryList %}
+
 {% block pageBlockTitle %}
   {{ t('hobbies:title') }}
-{% endblock %}
-
-{% block journeyWaypointId %}
-  hobbies
 {% endblock %}
 
 {% block reviewBlock %}
   {% set pData = journeyData['hobbies'] %}
 
-  <tbody>
-    <tr>
-      <td>
-        {{ t('hobbies:field.description.label') }}
-      </td>
-      <td colspan="2">
-        {{ pData.description | nl2br }}
-      </td>
-    </tr>
-  </tbody>
+  {{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-9 check-your-answers",
+    rows: [{
+      key: {
+        text: t('hobbies:field.description.label')
+      },
+      value: {
+        text: pData.description
+      },
+      actions: {
+        items: [
+          {
+            href: waypointEditUrl + '#f-description',
+            text: t('review:block.changeLink'),
+            visuallyHiddenText: t('hobbies:field.description.label') | lower,
+            classes: 'govuk-link--no-visited-state'
+          }
+        ]
+      }
+    }]
+  }) }}
 {% endblock %}
 ```
 
@@ -574,6 +631,7 @@ const pages = {
   },
   hobbies: {
     view: 'pages/hobbies.njk',
+    fieldValidators: require('./field-validators/hobbies.js'),
     reviewBlockView: 'pages-review/hobbies.njk'
   }
 };

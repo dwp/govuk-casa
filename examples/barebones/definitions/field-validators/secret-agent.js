@@ -3,13 +3,13 @@ const r = Validation.rules;
 const sf = Validation.SimpleField;
 
 const fieldValidators = {
-  tel: sf([
+  license: sf([
     r.optional,
+    r.strlen.bind({
+      max: 20,
+      errorMsgMax: 'The license id is too long',
+    }),
   ]),
-  email: sf([
-    r.optional,
-    r.email
-  ])
 };
 
 module.exports = fieldValidators;

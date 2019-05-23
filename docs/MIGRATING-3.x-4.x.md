@@ -63,3 +63,57 @@ app.get('nunjucksEnv').addGlobal('myFunction', () => { ... });
 Each data field gathered by CASA must have an accompanying field validator. Where this is not the case, the POSTed data will not be gathered into the session and effectively ignored by CASA.
 
 If you are missing any validators in your existing project, see [how to work with this mandatory behaviour](field-validation.md#defining-fields-to-be-gathered).
+
+## Review blocks must now use the `govukSummaryList()` macro
+
+The built-in review page wrapper template now implements the [GOVUK Summary List pattern](https://design-system.service.gov.uk/components/summary-list/) rather than its custom layout.
+
+Previously your review blocks may have looked a bit like this:
+
+```nunjucks
+{% block reviewBlock %}
+<tbody>
+  <tr>
+    <td>
+      Question label here
+    </td>
+    <td colspan="2">
+      Question answer here
+    </td>
+  </tr>
+</tbody>
+{% endblock %}
+```
+
+The equivalent in version 4 would look like this:
+
+```nunjucks
+{% from "components/summary-list/macro.njk" import govukSummaryList %}
+
+{% block reviewBlock %}
+{{ govukSummaryList({
+  classes: "govuk-!-margin-bottom-9 check-your-answers",
+  rows: [
+    {
+      key: {
+        text: 'Question label here'
+      },
+      value: {
+        text: 'Question answer here'
+      },
+      actions: {
+        items: [
+          {
+            href: waypointEditUrl + '#f-the-input-id',
+            text: t('review:block.changeLink'),
+            classes: 'govuk-link--no-visited-state'
+          }
+        ]
+      }
+    }
+  ]
+}) }}
+{% endblock %}
+```
+
+See [Adding a "Check your answers" page](deploying.md#adding-a-check-your-answers-page) for more information.

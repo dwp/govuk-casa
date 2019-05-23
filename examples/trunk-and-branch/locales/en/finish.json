@@ -1,0 +1,11 @@
+{
+  "pageTitle": "Finish",
+  "h1": "Finish",
+  "form": {
+    "buttons": {
+      "submit": {
+        "label": "Finish"
+      }
+    }
+  }
+}

@@ -1,24 +1,35 @@
 {% extends "casa/review/page-block.njk" %}
 
+{% from "components/summary-list/macro.njk" import govukSummaryList %}
+
 {% block pageBlockTitle %}
   {{ t('declaration:h1') }}
-{% endblock %}
-
-{% block journeyWaypointId %}
-  declaration
 {% endblock %}
 
 {% block reviewBlock %}
   {% set pData = journeyData['declaration'] %}
 
-  <tbody>
-    <tr>
-      <td>
-        Ready?
-      </td>
-      <td colspan="2">
-        {{ 'Yes' if pData.ready else 'No' }}
-      </td>
-    </tr>
-  </tbody>
+  {{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-9 check-your-answers",
+    rows: [
+      {
+        key: {
+          text: 'Ready?'
+        },
+        value: {
+          text: 'Yes' if pData.ready else 'No'
+        },
+        actions: {
+          items: [
+            {
+              href: waypointEditUrl + '#f-ready',
+              text: t('review:block.changeLink'),
+              visuallyHiddenText: 'ready',
+              classes: 'govuk-link--no-visited-state'
+            }
+          ]
+        }
+      }
+    ]
+  }) }}
 {% endblock %}

@@ -1,74 +1,125 @@
 {% extends "casa/review/page-block.njk" %}
 
+{% from "components/summary-list/macro.njk" import govukSummaryList %}
+
 {% block pageBlockTitle %}
   {{ t('personal-details:h1') }}
-{% endblock %}
-
-{% block journeyWaypointId %}
-  personal-details
 {% endblock %}
 
 {% block reviewBlock %}
   {% set pData = journeyData['personal-details'] %}
 
-  <tbody>
-    <tr>
-      <td>
-        {{ t('personal-details:field.title.label') }}
-      </td>
-      <td colspan="2">
-        {{ pData.title }}
-      </td>
-    </tr>
-    <tr>
-      <td>
-        {{ t('personal-details:field.firstName.label') }}
-      </td>
-      <td colspan="2">
-        {{ pData['first-name'] }}
-      </td>
-    </tr>
-    <tr>
-      <td>
-        {{ t('personal-details:field.middleNames.label') }}
-      </td>
-      <td colspan="2">
-        {{ pData['middle-name'] }}
-      </td>
-    </tr>
-    <tr>
-      <td>
-        {{ t('personal-details:field.lastName.label') }}
-      </td>
-      <td colspan="2">
-        {{ pData.lastName }}
-      </td>
-    </tr>
-    <tr>
-      <td>
-        {{ t('personal-details:field.dob.label') }}
-      </td>
-      <td colspan="2">
-        {{ pData.dob | formatDateObject }}
-      </td>
-    </tr>
-    <tr>
-      <td>
-        {{ t('personal-details:field.nino.label') }}
-      </td>
-      <td colspan="2">
-        {{ pData.nino | replace(r/^([a-z]+).*$/i, "$1*******") }}
-      </td>
-    </tr>
-    {% if pData.gender %}
-      <tr>
-        <td>
-          {{ t('personal-details:field.gender.label') }}
-        </td>
-        <td colspan="2">
-          {{ t('personal-details:field.gender.options.' + pData.gender + '.label') }}
-        </td>
-      </tr>
-    {% endif %}
-  </tbody>
+  {{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-9 check-your-answers",
+    rows: [
+      {
+        key: {
+          text: t('personal-details:field.title.label')
+        },
+        value: {
+          text: pData.title
+        },
+        actions: {
+          items: [
+            {
+              href: waypointEditUrl + '#f-title',
+              text: t('review:block.changeLink'),
+              visuallyHiddenText: t('personal-details:field.title.label') | lower,
+              classes: 'govuk-link--no-visited-state'
+            }
+          ]
+        }
+      },
+      {
+        key: {
+          text: t('personal-details:field.firstName.label')
+        },
+        value: {
+          text: pData['first-name']
+        },
+        actions: {
+          items: [
+            {
+              href: waypointEditUrl + '#f-first-name',
+              text: t('review:block.changeLink'),
+              visuallyHiddenText: t('personal-details:field.firstName.label') | lower,
+              classes: 'govuk-link--no-visited-state'
+            }
+          ]
+        }
+      },
+      {
+        key: {
+          text: t('personal-details:field.middleNames.label')
+        },
+        value: {
+          text: pData['middle-name']
+        },
+        actions: {
+          items: [
+            {
+              href: waypointEditUrl + '#f-middle-name',
+              text: t('review:block.changeLink'),
+              visuallyHiddenText: t('personal-details:field.middleNames.label') | lower,
+              classes: 'govuk-link--no-visited-state'
+            }
+          ]
+        }
+      },
+      {
+        key: {
+          text: t('personal-details:field.lastName.label')
+        },
+        value: {
+          text: pData.lastName
+        },
+        actions: {
+          items: [
+            {
+              href: waypointEditUrl + '#f-lastName',
+              text: t('review:block.changeLink'),
+              visuallyHiddenText: t('personal-details:field.lastName.label') | lower,
+              classes: 'govuk-link--no-visited-state'
+            }
+          ]
+        }
+      },
+      {
+        key: {
+          text: t('personal-details:field.dob.label')
+        },
+        value: {
+          text: pData.dob | formatDateObject
+        },
+        actions: {
+          items: [
+            {
+              href: waypointEditUrl + '#f-dob[dd]',
+              text: t('review:block.changeLink'),
+              visuallyHiddenText: t('personal-details:field.dob.label') | lower,
+              classes: 'govuk-link--no-visited-state'
+            }
+          ]
+        }
+      },
+      {
+        key: {
+          text: t('personal-details:field.nino.label')
+        },
+        value: {
+          text: pData.nino | replace(r/^([a-z]+).*$/i, "$1*******")
+        },
+        actions: {
+          items: [
+            {
+              href: waypointEditUrl + '#f-nino',
+              text: t('review:block.changeLink'),
+              visuallyHiddenText: t('personal-details:field.nino.label') | lower,
+              classes: 'govuk-link--no-visited-state'
+            }
+          ]
+        }
+      }
+    ]
+  }) }}
 {% endblock %}

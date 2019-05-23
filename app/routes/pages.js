@@ -49,7 +49,7 @@ module.exports = function routePages(
 ) {
   const getHandler = require('./pages/get.js')(pages, journeys);
   const postHandler = require('./pages/post.js')(mountUrl, pages, journeys, allowPageEdit);
-  const editModeHandler = require('./pages/edit-mode.js')(mountUrl, allowPageEdit);
+  const editModeHandler = require('./pages/edit-mode.js')(allowPageEdit);
 
   // Where page meta has been defined, attach GET and POST handlers to each
   // journey/page-waypoint combo

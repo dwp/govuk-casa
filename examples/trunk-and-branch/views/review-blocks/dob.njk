@@ -1,24 +1,35 @@
 {% extends "casa/review/page-block.njk" %}
 
+{% from "components/summary-list/macro.njk" import govukSummaryList %}
+
 {% block pageBlockTitle %}
   {{ t('dob:h1') }}
-{% endblock %}
-
-{% block journeyWaypointId %}
-  dob
 {% endblock %}
 
 {% block reviewBlock %}
   {% set pData = journeyData['dob'] %}
 
-  <tbody>
-    <tr>
-      <td>
-        {{ t('dob:dob.label') }}
-      </td>
-      <td colspan="2">
-        {{ pData.dob | formatDateObject }}
-      </td>
-    </tr>
-  </tbody>
+  {{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-9 check-your-answers",
+    rows: [
+      {
+        key: {
+          text: t('dob:dob.label')
+        },
+        value: {
+          text: pData.dob | formatDateObject
+        },
+        actions: {
+          items: [
+            {
+              href: waypointEditUrl + '#f-dob[dd]',
+              text: t('review:block.changeLink'),
+              visuallyHiddenText: t('dob:dob.label') | lower,
+              classes: 'govuk-link--no-visited-state'
+            }
+          ]
+        }
+      }
+    ]
+  }) }}
 {% endblock %}

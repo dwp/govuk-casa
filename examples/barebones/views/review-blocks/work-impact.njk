@@ -1,70 +1,140 @@
 {% extends "casa/review/page-block.njk" %}
 
+{% from "components/summary-list/macro.njk" import govukSummaryList %}
+
 {% block pageBlockTitle %}
   {{ t('work-impact:h1') }}
-{% endblock %}
-
-{% block journeyWaypointId %}
-  work-impact
 {% endblock %}
 
 {% block reviewBlock %}
   {% set pData = journeyData['work-impact'] %}
 
-  <tbody>
-    <tr>
-      <td>
-        {{ t('work-impact:moreDifficult.label') }}
-      </td>
-      <td colspan="2">
-        {{ pData.moreDifficult }}
-      </td>
-    </tr>
-    {% if pData.moreDifficult == 'yes' %}
-      <tr>
-        <td>
-          {{ t('work-impact:harderHow.label') }}
-        </td>
-        <td colspan="2">
-          {{ pData.harderHow }}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          {{ t('work-impact:getAroundProblems.label') }}
-        </td>
-        <td colspan="2">
-          {{ pData.getAroundProblems }}
-        </td>
-      </tr>
-      {% if pData.getAroundProblems == 'yes' %}
-        <tr>
-          <td>
-            {{ t('work-impact:problemSolutions.label') }}
-          </td>
-          <td colspan="2">
-            {{ pData.problemSolutions }}
-          </td>
-        </tr>
-      {% endif %}
-      <tr>
-        <td>
-          {{ t('work-impact:knowWhatWouldHelp.label') }}
-        </td>
-        <td colspan="2">
-          {{ pData.knowWhatWouldHelp }}
-        </td>
-      </tr>
-      {% if pData.knowWhatWouldHelp == 'yes' %}
-        <tr>
-          <td>
-            {{ t('work-impact:whatWouldHelp.label') }}
-          </td>
-          <td colspan="2">
-            {{ pData.whatWouldHelp }}
-          </td>
-        </tr>
-      {% endif %}
+  {% set rows = [{
+    key: {
+      text: t('work-impact:moreDifficult.label')
+    },
+    value: {
+      text: pData.moreDifficult
+    },
+    actions: {
+      items: [
+        {
+          href: waypointEditUrl + '#f-moreDifficult',
+          text: t('review:block.changeLink'),
+          visuallyHiddenText: t('work-impact:moreDifficult.label') | lower,
+          classes: 'govuk-link--no-visited-state'
+        }
+      ]
+    }
+  }] %}
+
+  {% if pData.moreDifficult == 'yes' %}
+    {% set rows = (rows.push(
+      {
+        key: {
+          text: t('work-impact:harderHow.label')
+        },
+        value: {
+          text: pData.harderHow
+        },
+        actions: {
+          items: [
+            {
+              href: waypointEditUrl + '#f-harderHow',
+              text: t('review:block.changeLink'),
+              visuallyHiddenText: t('work-impact:harderHow.label') | lower,
+              classes: 'govuk-link--no-visited-state'
+            }
+          ]
+        }
+      },
+      {
+        key: {
+          text: t('work-impact:getAroundProblems.label')
+        },
+        value: {
+          text: pData.getAroundProblems
+        },
+        actions: {
+          items: [
+            {
+              href: waypointEditUrl + '#f-getAroundProblems',
+              text: t('review:block.changeLink'),
+              visuallyHiddenText: t('work-impact:getAroundProblems.label') | lower,
+              classes: 'govuk-link--no-visited-state'
+            }
+          ]
+        }
+      }
+    ), rows) %}
+    {% if pData.getAroundProblems == 'yes' %}
+      {% set rows = (rows.push(
+        {
+          key: {
+            text: t('work-impact:problemSolutions.label')
+          },
+          value: {
+            text: pData.problemSolutions
+          },
+          actions: {
+            items: [
+              {
+                href: waypointEditUrl + '#f-problemSolutions',
+                text: t('review:block.changeLink'),
+                visuallyHiddenText: t('work-impact:problemSolutions.label') | lower,
+                classes: 'govuk-link--no-visited-state'
+              }
+            ]
+          }
+        }
+      ), rows) %}
     {% endif %}
-  </tbody>
+    {% set rows = (rows.push(
+      {
+        key: {
+          text: t('work-impact:knowWhatWouldHelp.label')
+        },
+        value: {
+          text: pData.knowWhatWouldHelp
+        },
+        actions: {
+          items: [
+            {
+              href: waypointEditUrl + '#f-knowWhatWouldHelp',
+              text: t('review:block.changeLink'),
+              visuallyHiddenText: t('work-impact:knowWhatWouldHelp.label') | lower,
+              classes: 'govuk-link--no-visited-state'
+            }
+          ]
+        }
+      }
+    ), rows) %}
+    {% if pData.knowWhatWouldHelp == 'yes' %}
+      {% set rows = (rows.push(
+        {
+          key: {
+            text: t('work-impact:whatWouldHelp.label')
+          },
+          value: {
+            text: pData.whatWouldHelp
+          },
+          actions: {
+            items: [
+              {
+                href: waypointEditUrl + '#f-whatWouldHelp',
+                text: t('review:block.changeLink'),
+                visuallyHiddenText: t('work-impact:whatWouldHelp.label') | lower,
+                classes: 'govuk-link--no-visited-state'
+              }
+            ]
+          }
+        }
+      ), rows) %}
+    {% endif %}
+  {% endif %}
+
+  {{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-9 check-your-answers",
+    rows: rows
+  }) }}
 {% endblock %}

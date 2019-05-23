@@ -1,52 +1,101 @@
 {% extends "casa/review/page-block.njk" %}
 
+{% from "components/summary-list/macro.njk" import govukSummaryList %}
+
 {% block pageBlockTitle %}
   {{ t('contact-details:h1') }}
-{% endblock %}
-
-{% block journeyWaypointId %}
-  contact/details
 {% endblock %}
 
 {% block reviewBlock %}
   {% set pData = journeyData['contact/details'] %}
 
-  <tbody>
-    <tr>
-      <td>
-        {{ t('contact-details:field.tel.label') }}
-      </td>
-      <td colspan="2">
-        {{ pData.tel }}
-      </td>
-    </tr>
-    <tr>
-      <td>
-        {{ t('contact-details:field.telOther.label') }}
-      </td>
-      <td colspan="2">
-        {{ pData.telOther }}
-      </td>
-    </tr>
-    <tr>
-      <td>
-        {{ t('contact-details:field.email.label') }}
-      </td>
-      <td colspan="2">
-        {{ pData.email }}
-      </td>
-    </tr>
-    <tr>
-      <td valign="top">
-        {{ t('contact-details:field.address.label') }}
-      </td>
-      <td colspan="2">
-        {{ pData.address.address1 }}<br/>
-        {{ pData.address.address2 }}<br/>
-        {{ pData.address.address3 }}<br/>
-        {{ pData.address.address4 }}<br/>
-        {{ pData.address.postcode }}<br/>
-      </td>
-    </tr>
-  </tbody>
+  {% set addressFormatted %}
+    {{ pData.address.address1 }}<br>
+    {% if pData.address.address2 %}
+      {{ pData.address.address2 }}<br>
+    {% endif %}
+    {{ pData.address.address3 }}<br>
+    {% if pData.address.address4 %}
+      {{ pData.address.address4 }}<br>
+    {% endif %}
+    {{ pData.address.postcode }}
+  {% endset %}
+
+  {{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-9 check-your-answers",
+    rows: [
+      {
+        key: {
+          text: t('contact-details:field.tel.label')
+        },
+        value: {
+          text: pData.tel
+        },
+        actions: {
+          items: [
+            {
+              href: waypointEditUrl + '#f-tel',
+              text: t('review:block.changeLink'),
+              visuallyHiddenText: t('contact-details:field.tel.label') | lower,
+              classes: 'govuk-link--no-visited-state'
+            }
+          ]
+        }
+      },
+      {
+        key: {
+          text: t('contact-details:field.telOther.label')
+        },
+        value: {
+          text: pData.telOther
+        },
+        actions: {
+          items: [
+            {
+              href: waypointEditUrl + '#f-telOther',
+              text: t('review:block.changeLink'),
+              visuallyHiddenText: t('contact-details:field.telOther.label') | lower,
+              classes: 'govuk-link--no-visited-state'
+            }
+          ]
+        }
+      },
+      {
+        key: {
+          text: t('contact-details:field.email.label')
+        },
+        value: {
+          text: pData.email
+        },
+        actions: {
+          items: [
+            {
+              href: waypointEditUrl + '#f-email',
+              text: t('review:block.changeLink'),
+              visuallyHiddenText: t('contact-details:field.email.label') | lower,
+              classes: 'govuk-link--no-visited-state'
+            }
+          ]
+        }
+      },
+      {
+        key: {
+          text: t('contact-details:field.address.label')
+        },
+        value: {
+          html: addressFormatted
+        },
+        actions: {
+          items: [
+            {
+              href: waypointEditUrl + '#f-address[address1]',
+              text: t('review:block.changeLink'),
+              visuallyHiddenText: t('contact-details:field.address.label') | lower,
+              classes: 'govuk-link--no-visited-state'
+            }
+          ]
+        }
+      }
+    ]
+  }) }}
 {% endblock %}

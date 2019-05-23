@@ -22,6 +22,7 @@ exports = module.exports = (function() {
   pages['secret-agent'] = {
     view: 'pages/secret-agent.njk',
     reviewBlockView: 'review-blocks/secret-agent.njk',
+    fieldValidators: require('./field-validators/secret-agent'),
   };
 
   pages['work-impact'] = {

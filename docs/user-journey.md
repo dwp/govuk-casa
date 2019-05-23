@@ -61,7 +61,7 @@ You may also pass a specially formatted object to achieve the same result:
 ```javascript
 {
   id: "waypoint-id-here",
-  condition: (dataContext) => {
+  is_present: (dataContext) => {
     // Perform some logic to determine if waypoint should be included, or not
     return true;
   }

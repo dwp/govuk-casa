@@ -2,10 +2,10 @@
   "pageTitle": "Contact details",
   "h1": "Contact details",
   "html": {
-    "intro": "<p>
+    "intro": "<p class=\"govuk-body\">
         This form demonstrates a conditional fork in the user journey.
       </p>
-      <p>
+      <p class=\"govuk-body\">
         Try leaving all optional fields blank and continuing. Then come back and enter <code>007</code> in the first telephone field before continuing. The latter action will take you on a slightly different journey.
       </p>"
   },

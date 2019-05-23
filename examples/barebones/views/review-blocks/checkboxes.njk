@@ -1,24 +1,35 @@
 {% extends "casa/review/page-block.njk" %}
 
+{% from "components/summary-list/macro.njk" import govukSummaryList %}
+
 {% block pageBlockTitle %}
   {{ t('checkboxes:h1') }}
-{% endblock %}
-
-{% block journeyWaypointId %}
-  checkboxes
 {% endblock %}
 
 {% block reviewBlock %}
   {% set pData = journeyData['checkboxes'] %}
 
-  <tbody>
-    <tr>
-      <td>
-        {{ t('checkboxes:boxes.label') }}
-      </td>
-      <td colspan="2">
-        {{ pData.boxes }}
-      </td>
-    </tr>
-  </tbody>
+  {{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-9 check-your-answers",
+    rows: [
+      {
+        key: {
+          text: t('checkboxes:boxes.label')
+        },
+        value: {
+          text: pData.boxes | join(', ')
+        },
+        actions: {
+          items: [
+            {
+              href: waypointEditUrl + '#f-boxes',
+              text: t('review:block.changeLink'),
+              visuallyHiddenText: t('checkboxes:boxes.label') | lower,
+              classes: 'govuk-link--no-visited-state'
+            }
+          ]
+        }
+      }
+    ]
+  }) }}
 {% endblock %}

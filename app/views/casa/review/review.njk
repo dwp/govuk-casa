@@ -7,28 +7,30 @@
 {% endblock %}
 
 {% block content %}
-  <form action="" method="post">
-    <input type="hidden" name="_csrf" value="{{ casa.csrfToken }}">
-    <input type="hidden" name="reviewed" value="true" />
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
 
-    <h1 class="govuk-heading-xl">{{ t('review:h1') }}</h1>
+      <form action="" method="post">
+        <input type="hidden" name="_csrf" value="{{ casa.csrfToken }}">
+        <input type="hidden" name="reviewed" value="true" />
 
-    <div class="govuk-form-group">
-      <table class="govuk-table check-your-answers">
+        <h1 class="govuk-heading-xl">{{ t('review:h1') }}</h1>
 
         <!-- Include blocks for all pages in the user's journey -->
         {% for block in reviewBlocks %}
+          {% set waypointId = block.waypointId %}
+          {% set waypointEditUrl = block.waypointEditUrl %}
           {% include block.reviewBlockView ignore missing %}
         {% endfor %}
 
-      </table>
-    </div>
+        <p class="govuk-body">
+          {{ govukButton({
+            text: t('common:form.buttons.next.label'),
+            type: 'submit'
+          }) }}
+        </p>
+      </form>
 
-    <p class="govuk-body">
-      {{ govukButton({
-        text: t('common:form.buttons.next.label'),
-        type: 'submit'
-      }) }}
-    </p>
-  </form>
+    </div>
+  </div>
 {% endblock %}

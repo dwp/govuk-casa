@@ -4,14 +4,13 @@
  * Note `req.query.*` are all uri-decoded prior to this point.
  */
 
-module.exports = (mountUrl, allowPageEdit) => (req, res, next) => {
+module.exports = allowPageEdit => (req, res, next) => {
   let inEditMode = false;
   let editOriginUrl = '';
-  let urlPrefix = mountUrl;
-  if (req.journeyActive && req.journeyActive.guid) {
-    urlPrefix = `${urlPrefix}${req.journeyActive.guid}`
-  }
-  const DEFAULT_REVIEW_URL = `${urlPrefix}/review`.replace(/\/+/g, '/');
+
+  // By default, we'll assume that the current page is the "review" page which
+  // users will be guided back to after editing a page.
+  const DEFAULT_REVIEW_URL = `${req.originalUrl}`;
 
   if (allowPageEdit) {
     if (req.method === 'GET') {

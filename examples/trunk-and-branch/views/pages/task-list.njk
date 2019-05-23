@@ -16,46 +16,51 @@
     <ol class="app-task-list">
       <li>
         <h2 class="app-task-list__section">
-          Preliminary
+          <span class="app-task-list__section-number">1. </span> Preliminary
         </h2>
         <ul class="app-task-list__items">
           <li class="app-task-list__item">
-            <a class="app-task-list__task-name" href="{{ casa.mountUrl }}preliminary/declaration" aria-describedby="eligibility-completed">
+            <a class="app-task-list__task-name" href="{{ casa.mountUrl }}preliminary/declaration" {%- if journeyData['declaration'] %} aria-describedby="declaration-completed"{% endif %}>
               Declaration
-            </a>
-            <!-- <strong class="govuk-tag app-task-list__task-completed" id="eligibility-completed">Completed</strong> -->
+            </a>{% if journeyData['declaration'] %}
+            <strong class="govuk-tag app-task-list__task-completed" id="declaration-completed">Completed</strong>{% endif %}
           </li>
           <li class="app-task-list__item">
-            <a class="app-task-list__task-name" href="{{ casa.mountUrl }}preliminary/contact-details" aria-describedby="read-declaration-completed">
+            <a class="app-task-list__task-name" href="{{ casa.mountUrl }}preliminary/contact-details" {%- if journeyData['contact-details'] %} aria-describedby="contact-details-completed"{% endif %}>
               Contact details
-            </a>
+            </a>{% if journeyData['contact-details'] %}
+            <strong class="govuk-tag app-task-list__task-completed" id="contact-details-completed">Completed</strong>{% endif %}
           </li>
           <li class="app-task-list__item">
-            <a class="app-task-list__task-name" href="{{ casa.mountUrl }}preliminary/dob" aria-describedby="read-declaration-completed">
+            <a class="app-task-list__task-name" href="{{ casa.mountUrl }}preliminary/dob" {%- if journeyData['dob'] %} aria-describedby="dob-completed"{% endif %}>
               Date of birth
-            </a>
+            </a>{% if journeyData['dob'] %}
+            <strong class="govuk-tag app-task-list__task-completed" id="dob-completed">Completed</strong>{% endif %}
           </li>
         </ul>
       </li>
       <li>
         <h2 class="app-task-list__section">
-          Books
+          <span class="app-task-list__section-number">2. </span> Books
         </h2>
         <ul class="app-task-list__items">
           <li class="app-task-list__item">
-            <a class="app-task-list__task-name" href="{{ casa.mountUrl }}books/action-books" aria-describedby="company-information-completed">
+            <a class="app-task-list__task-name" href="{{ casa.mountUrl }}books/action-books" {%- if journeyData['action-books'] %} aria-describedby="action-books-completed"{% endif %}>
               Action books
-            </a>
+            </a>{% if journeyData['action-books'] %}
+            <strong class="govuk-tag app-task-list__task-completed" id="action-books-completed">Completed</strong>{% endif %}
           </li>
           <li class="app-task-list__item">
-            <a class="app-task-list__task-name" href="{{ casa.mountUrl }}books/thriller-books" aria-describedby="company-information-completed">
+            <a class="app-task-list__task-name" href="{{ casa.mountUrl }}books/thriller-books" {%- if journeyData['thriller-books'] %} aria-describedby="thriller-books-completed"{% endif %}>
               Thriller books
-            </a>
+            </a>{% if journeyData['thriller-books'] %}
+            <strong class="govuk-tag app-task-list__task-completed" id="thriller-books-completed">Completed</strong>{% endif %}
           </li>
           <li class="app-task-list__item">
-            <a class="app-task-list__task-name" href="{{ casa.mountUrl }}books/horror-books" aria-describedby="company-information-completed">
+            <a class="app-task-list__task-name" href="{{ casa.mountUrl }}books/horror-books" {%- if journeyData['horror-books'] %} aria-describedby="horror-books-completed"{% endif %}>
               Horror books
-            </a>
+            </a>{% if journeyData['horror-books'] %}
+            <strong class="govuk-tag app-task-list__task-completed" id="horror-books-completed">Completed</strong>{% endif %}
           </li>
         </ul>
       </li>

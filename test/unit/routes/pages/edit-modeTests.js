@@ -11,7 +11,7 @@ describe('Routes: edit-mode extraction', () => {
 
   describe('Edit mode setting', () => {
     it('should be false when not in GET query', () => {
-      const handler = createHandler('/', true);
+      const handler = createHandler(true);
       const stubReq = {
         method: 'GET',
         query: {},
@@ -21,7 +21,7 @@ describe('Routes: edit-mode extraction', () => {
     });
 
     it('should be false when not in POST body', () => {
-      const handler = createHandler('/', true);
+      const handler = createHandler(true);
       const stubReq = {
         method: 'POST',
         body: {},
@@ -31,7 +31,7 @@ describe('Routes: edit-mode extraction', () => {
     });
 
     it('should be false when in GET query, but global setting is disabled', () => {
-      const handler = createHandler('/', false);
+      const handler = createHandler(false);
       const stubReq = {
         method: 'GET',
         query: {
@@ -43,7 +43,7 @@ describe('Routes: edit-mode extraction', () => {
     });
 
     it('should be false when in POST body, but global setting is disabled', () => {
-      const handler = createHandler('/', false);
+      const handler = createHandler(false);
       const stubReq = {
         method: 'POST',
         body: {
@@ -55,7 +55,7 @@ describe('Routes: edit-mode extraction', () => {
     });
 
     it('should be true when in GET query, and global setting is enabled', () => {
-      const handler = createHandler('/', true);
+      const handler = createHandler(true);
       const stubReq = {
         method: 'GET',
         query: {
@@ -67,7 +67,7 @@ describe('Routes: edit-mode extraction', () => {
     });
 
     it('should be true when in POST body, and global setting is enabled', () => {
-      const handler = createHandler('/', true);
+      const handler = createHandler(true);
       const stubReq = {
         method: 'POST',
         body: {
@@ -79,7 +79,7 @@ describe('Routes: edit-mode extraction', () => {
     });
 
     it('should remove the edit parameter from request query and body', () => {
-      const handler = createHandler('/', true);
+      const handler = createHandler(true);
       const stubReq = {
         method: 'POST',
         body: {
@@ -96,32 +96,34 @@ describe('Routes: edit-mode extraction', () => {
   });
 
   describe('Edit origin url', () => {
-    it('should default to /review when not defined in GET query', () => {
-      const handler = createHandler('/test/', true);
+    it('should default to current page when not defined in GET query', () => {
+      const handler = createHandler(true);
       const stubReq = {
         method: 'GET',
         query: {
           edit: true,
         },
+        originalUrl: 'TEST-URL',
       };
       handler(stubReq, null, () => {});
-      expect(stubReq).to.have.property('editOriginUrl').that.equals('/test/review');
+      expect(stubReq).to.have.property('editOriginUrl').that.equals('TEST-URL');
     });
 
-    it('should default to /review when not defined in POST body', () => {
-      const handler = createHandler('/test/', true);
+    it('should default to current page when not defined in POST body', () => {
+      const handler = createHandler(true);
       const stubReq = {
         method: 'POST',
         body: {
           edit: true,
         },
+        originalUrl: 'TEST-URL',
       };
       handler(stubReq, null, () => {});
-      expect(stubReq).to.have.property('editOriginUrl').that.equals('/test/review');
+      expect(stubReq).to.have.property('editOriginUrl').that.equals('TEST-URL');
     });
 
     it('should default to empty string when defined in GET query, but global setting disabled', () => {
-      const handler = createHandler('/test/', false);
+      const handler = createHandler(false);
       const stubReq = {
         method: 'GET',
         query: {
@@ -134,7 +136,7 @@ describe('Routes: edit-mode extraction', () => {
     });
 
     it('should default to empty string when defined in POST body, but global setting disabled', () => {
-      const handler = createHandler('/test/', false);
+      const handler = createHandler(false);
       const stubReq = {
         method: 'POST',
         body: {
@@ -147,7 +149,7 @@ describe('Routes: edit-mode extraction', () => {
     });
 
     it('should escape all non-valid characters when defined in GET query', () => {
-      const handler = createHandler('/test/', true);
+      const handler = createHandler(true);
       const stubReq = {
         method: 'GET',
         query: {
@@ -160,7 +162,7 @@ describe('Routes: edit-mode extraction', () => {
     });
 
     it('should escape all non-valid characters when defined in POST body', () => {
-      const handler = createHandler('/test/', true);
+      const handler = createHandler(true);
       const stubReq = {
         method: 'POST',
         body: {
@@ -173,7 +175,7 @@ describe('Routes: edit-mode extraction', () => {
     });
 
     it('should remove the editorigin parameter from request query and body', () => {
-      const handler = createHandler('/', true);
+      const handler = createHandler(true);
       const stubReq = {
         method: 'POST',
         body: {
