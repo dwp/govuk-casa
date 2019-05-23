@@ -4,9 +4,9 @@
 {% from "components/input/macro.njk" import govukInput %}
 
 {# New CASA wrapper macros #}
-{% from "casa/components/input/macro.njk" import casaGovukInput %}
-{% from "casa/components/date-input/macro.njk" import casaGovukDateInput %}
-{% from "casa/components/postal-address-object/macro.njk" import casaPostalAddressObject %}
+{% from "casa/components/input/macro.njk" import casaGovukInput with context %}
+{% from "casa/components/date-input/macro.njk" import casaGovukDateInput with context %}
+{% from "casa/components/postal-address-object/macro.njk" import casaPostalAddressObject with context %}
 
 
 {% block casaPageTitle %}

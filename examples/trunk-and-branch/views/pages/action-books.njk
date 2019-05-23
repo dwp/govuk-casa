@@ -1,6 +1,6 @@
 {% extends "layouts/journey.njk" %}
 
-{% from "casa/components/radios/macro.njk" import casaGovukRadios %}
+{% from "casa/components/radios/macro.njk" import casaGovukRadios with context %}
 
 {# This page is the first on a detached user journey map, so we have to set the back button link explicitly #}
 {% set casa = mergeObjects(casa, {
