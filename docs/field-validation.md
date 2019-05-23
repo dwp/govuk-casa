@@ -6,6 +6,42 @@ If using [CASA's GOVUK Frontend macro wrappers](casa-template-macros.md), each i
 
 Before input is validated it can be manipulated by [Gather Modifier](gather-modifiers.md) functions.
 
+## Defining fields to be gathered
+
+Every data field _must_ have an accompanying validator if you want CASA to gather it into the session. This ensures that we are only ingesting data that has gone through a validator, or is at least a known entity.
+
+However, in some situations you may find that not all data necessarily needs to be validated, but you still want it to be gathered. In this case you can use the built-in [`optional`](field-validation-rules.md#optional) validation rule.
+
+For example, take this page template and its accompanying validators:
+
+```html
+<form>
+  <input name="name" />
+  <input name="ref_number" />
+</form>
+```
+
+```javascript
+{
+  name: SimpleField([
+    rules.required,
+  ]),
+}
+```
+
+This would result in `ref_number` not being gathered into the CASA session, because there is no validator defined for the `ref_number` field. In this case, if you want to gather `ref_number`, simply add a validator containing the built-in `optional` rule, i.e:
+
+```javascript
+{
+  name: SimpleField([
+    rules.required,
+  ]),
+  ref_number: SimpleField([
+    r.optional,
+  ]),
+}
+```
+
 ## Built-in rules
 
 Validation rules are simple functions that return a `Promise` that is either resolved if the data is valid, or rejected if invalid.

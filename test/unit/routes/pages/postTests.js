@@ -10,6 +10,10 @@ const createHandler = require('../../../../app/routes/pages/post');
 
 const sf = Validation.SimpleField;
 
+const noopResolveValidator = sf([
+  () => (Promise.resolve()),
+]);
+
 describe('Routes: pages POST', () => {
   describe('Initialisation', () => {
     it('should throw an error if the page definitions are the wrong type', () => {
@@ -38,7 +42,14 @@ describe('Routes: pages POST', () => {
     let res;
 
     beforeEach(() => {
-      directory = new PageDirectory();
+      directory = new PageDirectory({
+        page1: {
+          view: 'page1',
+          fieldValidators: {
+            testfield: noopResolveValidator,
+          },
+        },
+      });
 
       const road0 = new UserJourney.Road();
       road0.addWaypoints(['page0', 'page1', 'page2']);
@@ -71,8 +82,7 @@ describe('Routes: pages POST', () => {
       Object.assign(req, {
         url: '/page1',
         body: {
-          edit: true,
-          dummyContent: true,
+          testfield: true,
         },
         journeyData: new JourneyData(
           {
@@ -102,10 +112,13 @@ describe('Routes: pages POST', () => {
   });
 
   describe('Gathering', () => {
-    it('should populate the req.journeyData object with all captured data', (done) => {
+    it('should populate the req.journeyData object with all whitelisted captured data', (done) => {
       const directory = new PageDirectory({
         page0: {
           view: 'page0',
+          fieldValidators: {
+            name: noopResolveValidator,
+          },
         },
       });
 
@@ -121,6 +134,7 @@ describe('Routes: pages POST', () => {
         url: '/page0',
         body: {
           name: 'Joe',
+          age: 42,
         },
         session: {
           id: 'sessionId',
@@ -152,6 +166,9 @@ describe('Routes: pages POST', () => {
       const directory = new PageDirectory({
         page0: {
           view: 'page0',
+          fieldValidators: {
+            name: noopResolveValidator,
+          },
           hooks: {
             pregather: (req, res, cb) => {
               req.HOOK_CALLED = true;
@@ -202,6 +219,9 @@ describe('Routes: pages POST', () => {
       const directory = new PageDirectory({
         page0: {
           view: 'page0',
+          fieldValidators: {
+            name: noopResolveValidator,
+          },
           fieldGatherModifiers: {
             name: v => (v.fieldValue === 'Joe' ? 'Jim' : v.fieldValue),
           },
@@ -268,14 +288,31 @@ describe('Routes: pages POST', () => {
     let reqMock;
     let resMock;
 
+    const dummyValidator = sf([
+      () => (Promise.resolve()),
+    ]);
+
     beforeEach(() => {
       directory = new PageDirectory({
+        page0: {
+          view: 'page0',
+          fieldValidators: {
+            dummy: dummyValidator,
+          },
+        },
+        page1: {
+          view: 'page1',
+          fieldValidators: {
+            dummy: dummyValidator,
+          },
+        },
         page2: {
           view: 'page2',
           fieldValidators: {
             x: sf([
               v => (v === 1 ? Promise.resolve() : Promise.reject(new Error('VALIDATION FAIL'))),
             ]),
+            dummy: dummyValidator,
           },
         },
         page3: {
@@ -284,10 +321,14 @@ describe('Routes: pages POST', () => {
             y: sf([
               v => (v === 1 ? Promise.resolve() : Promise.reject(new Error('VALIDATION FAIL'))),
             ]),
+            dummy: dummyValidator,
           },
         },
         page4: {
           view: 'page4',
+          fieldValidators: {
+            dummy: dummyValidator,
+          },
           hooks: {
             prevalidate: (req, res, cb) => {
               req.PREVALIDATE_HOOK_CALLED = true;
@@ -305,6 +346,7 @@ describe('Routes: pages POST', () => {
             z: sf([
               v => (v === 1 ? Promise.resolve() : Promise.reject(new Error('VALIDATION FAIL'))),
             ]),
+            dummy: dummyValidator,
           },
           hooks: {
             prerender: () => {
@@ -321,6 +363,7 @@ describe('Routes: pages POST', () => {
             x: sf([
               v => (v === 100 ? Promise.resolve() : Promise.reject(new Error('VALIDATION FAIL'))),
             ]),
+            dummy: dummyValidator,
           },
           hooks: {
             prerender: () => {
@@ -337,6 +380,7 @@ describe('Routes: pages POST', () => {
             x: sf([
               v => (v === 100 ? Promise.resolve() : Promise.reject(new Error('VALIDATION FAIL'))),
             ]),
+            dummy: dummyValidator,
           },
           hooks: {
             prerender: () => {
@@ -354,6 +398,7 @@ describe('Routes: pages POST', () => {
                 return v === 1 ? Promise.resolve() : Promise.reject(err)
               },
             ]),
+            dummy: dummyValidator,
           },
         },
       });
@@ -375,8 +420,8 @@ describe('Routes: pages POST', () => {
           },
         },
         journeyData: new JourneyData({
-          page0: { data: true },
-          page1: { data: true },
+          page0: { dummy: true },
+          page1: { dummy: true },
         }),
       });
       reqMock.i18nTranslator = {
@@ -416,7 +461,7 @@ describe('Routes: pages POST', () => {
       Object.assign(reqMock, {
         url: '/page3',
         body: {
-          x: 'this should trigger validation rejection',
+          y: 'this should trigger validation rejection',
         },
       });
 
@@ -482,7 +527,7 @@ describe('Routes: pages POST', () => {
       Object.assign(reqMock, {
         url: '/page4',
         body: {
-          x: 1,
+          dummy: 1,
         },
       });
 
@@ -523,17 +568,18 @@ describe('Routes: pages POST', () => {
       Object.assign(reqMock, {
         url: '/page6',
         body: {
+          dummy: true,
           x: 1,
         },
       });
 
       reqMock.journeyData = new JourneyData({
-        page0: { data: true },
-        page1: { data: true },
-        page2: { data: true },
-        page3: { data: true },
-        page4: { data: true },
-        page5: { data: true },
+        page0: { dummy: true },
+        page1: { dummy: true },
+        page2: { dummy: true },
+        page3: { dummy: true },
+        page4: { dummy: true },
+        page5: { dummy: true },
       });
 
       resMock.on('end', () => {
@@ -576,10 +622,17 @@ describe('Routes: pages POST', () => {
     let reqMock;
     let resMock;
 
+    const dummyValidators = {
+      dummy: sf([() => (Promise.resolve())]),
+    };
+
     beforeEach(() => {
       directory = new PageDirectory({
         page0: {
           view: 'page0',
+          fieldValidators: Object.assign({
+            testfield: noopResolveValidator,
+          }, dummyValidators),
           hooks: {
             preredirect: (req, res, cb) => {
               req.PREREDIRECT_HOOK_CALLED = true;
@@ -587,10 +640,20 @@ describe('Routes: pages POST', () => {
             },
           },
         },
-        page1: { view: 'page1' },
-        page2: { view: 'page2' },
-        page3: { view: 'page3' },
-        page4: { view: 'page4' },
+        page1: {
+          view: 'page1',
+          fieldValidators: Object.assign({
+            testfield: noopResolveValidator,
+          }, dummyValidators),
+        },
+        page2: {
+          view: 'page2',
+          fieldValidators: Object.assign({
+            x: noopResolveValidator,
+          }, dummyValidators),
+        },
+        page3: { view: 'page3', fieldValidators: dummyValidators },
+        page4: { view: 'page4', fieldValidators: dummyValidators },
       });
 
       const road0 = new UserJourney.Road();
@@ -616,13 +679,13 @@ describe('Routes: pages POST', () => {
           },
         },
         journeyData: new JourneyData({
-          page0: { data: true },
-          page1: { data: true },
-          page2: { data: true, x: 0 },
-          page3a: { data: true },
-          page4a: { data: true },
-          page3b: { data: true },
-          page4b: { data: true },
+          page0: { dummy: true },
+          page1: { dummy: true },
+          page2: { dummy: true, x: 0 },
+          page3a: { dummy: true },
+          page4a: { dummy: true },
+          page3b: { dummy: true },
+          page4b: { dummy: true },
         }),
       });
 
@@ -652,7 +715,7 @@ describe('Routes: pages POST', () => {
       Object.assign(reqMock, {
         url: '/page0',
         body: {
-          dummyData: 1,
+          testfield: 1,
         },
       });
 
@@ -716,7 +779,7 @@ describe('Routes: pages POST', () => {
         inEditMode: true,
         editOriginUrl: 'review',
         body: {
-          dummyData: 'data',
+          testfield: 'data',
         },
       });
 

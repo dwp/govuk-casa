@@ -57,3 +57,9 @@ res.nunjucksEnvironment.addGlobal('myFunction', () => { ... });
 ```javascript
 app.get('nunjucksEnv').addGlobal('myFunction', () => { ... });
 ```
+
+## Field validators are now mandatory
+
+Each data field gathered by CASA must have an accompanying field validator. Where this is not the case, the POSTed data will not be gathered into the session and effectively ignored by CASA.
+
+If you are missing any validators in your existing project, see [how to work with this mandatory behaviour](field-validation.md#defining-fields-to-be-gathered).
