@@ -48,7 +48,7 @@ module.exports = function routePageGet(pages, journey) {
       res.render(pageMeta.view, {
         formData: req.journeyData.getDataForPage(pageId),
         inEditMode: req.inEditMode,
-        editOriginUrl: res.locals.editOriginUrl || req.editOriginUrl,
+        editOriginUrl: req.editOriginUrl,
       });
     }
 
