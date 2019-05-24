@@ -26,7 +26,7 @@ function executeHook(logger, req, res, pageMeta, hookName) {
   return new Promise((resolve) => {
     const hooks = pageMeta && pageMeta.hooks ? pageMeta.hooks : {};
     if (typeof hooks[hookName] === 'function') {
-      logger.debug(`Run ${hookName} hook for ${req.journeyWaypointId}`);
+      logger.trace('Run %s hook for %s', hookName, req.journeyWaypointId);
       hooks[hookName](req, res, () => {
         // Will not resolve if hook executes `res.send()`
         resolve();
@@ -113,7 +113,7 @@ function replaceObjectPathValue(logger, pageData, field, value) {
       [field]: value,
     });
   } catch (err) {
-    logger.debug('Exception in replaceObjectPathValue');
+    logger.debug('Exception in replaceObjectPathValue: %s', err.message);
   }
 }
 

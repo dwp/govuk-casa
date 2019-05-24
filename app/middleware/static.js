@@ -193,7 +193,7 @@ module.exports = function mwStatic(
   } catch (e) {
     throw new ReferenceError('Compiled static assets directory does not exist');
   }
-  logger.info(`Compiled static assets dir: ${compiledAssetsDir}`);
+  logger.info('Compiled static assets dir: %s', compiledAssetsDir);
 
   // Store GOVUK template virtual URL prefix for other places to use it. This
   // is the URL from which all GOVUK Frontend client-side assets.

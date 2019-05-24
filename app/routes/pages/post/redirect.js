@@ -45,7 +45,7 @@ module.exports = function doRedirect(
         }
         const same = el === prePostWaypoints.post[i];
         if (!same) {
-          logger.info(`Journey altered (${el} -> ${prePostWaypoints.post[i]})`);
+          logger.trace('Journey altered (%s -> %s)', el, prePostWaypoints.post[i]);
           nextWaypoint = `${waypointPrefix}${prePostWaypoints.post[i]}`;
         }
         return same;
@@ -83,10 +83,10 @@ module.exports = function doRedirect(
     // redirect (seemed to only affect Windows), so here we save explicitly.
     req.session.save((err) => {
       if (err) {
-        logger.error(err);
+        logger.error('Failed to save session prior to redirect. %s', err.message);
         res.status(500).send('500 Internal Server Error (session unsaved)');
       } else {
-        logger.debug(`Redirect: ${req.journeyWaypointId} -> ${waypoint}`);
+        logger.trace('Redirect: %s -> %s', req.journeyWaypointId, waypoint);
         res.status(302).redirect(`${waypoint}#`);
       }
     });

@@ -42,7 +42,7 @@ module.exports = function mwSession(app, expressSession, mountUrl, sessionCfg) {
       // We can only check for an undefined req.session here because by the time
       // this function returns, a new session will have been created.
       if (req.sessionID && typeof req.session === 'undefined') {
-        logger.info(
+        logger.debug(
           'Server session %s has expired. Flagging for destruction.',
           req.sessionID,
         );
@@ -70,7 +70,7 @@ module.exports = function mwSession(app, expressSession, mountUrl, sessionCfg) {
       req.casaSessionExpired
       || (dateExpire && moment().isSameOrAfter(dateExpire))
     ) {
-      logger.info(
+      logger.debug(
         'Destroying expired session %s (tmp new ID %s)',
         req.casaSessionExpired || req.sessionID,
         req.sessionID,
@@ -78,7 +78,7 @@ module.exports = function mwSession(app, expressSession, mountUrl, sessionCfg) {
       delete req.casaSessionExpired;
       req.session.destroy((err) => {
         if (err) {
-          logger.debug(err);
+          logger.debug('Failed to destory session. Error: %s', err.message);
         }
         res.clearCookie(sessionCfg.name, {
           path: sessionCfg.cookiePath,

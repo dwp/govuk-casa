@@ -51,7 +51,7 @@ module.exports = function mwJourney(router, mountUrl, userJourneys) {
     if (currentUrlIndex === -1) {
       let redirectUrl = `${redirectUrlPrefix}${traversed[traversed.length - 1]}`;
       redirectUrl = redirectUrl.replace(/\/+/g, '/');
-      logger.debug(`Traversal redirect: ${req.journeyWaypointId} to ${redirectUrl}`);
+      logger.debug('Traversal redirect: %s to %s', req.journeyWaypointId, redirectUrl);
       res.status(302).redirect(`${redirectUrl}#`);
     } else {
       if (currentUrlIndex > 0) {

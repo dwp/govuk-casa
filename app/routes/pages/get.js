@@ -44,7 +44,7 @@ module.exports = function routePageGet(pages, journey) {
      * @return {void}
      */
     function render() {
-      logger.debug(`Rendering view for ${pageId} (editmode=${req.inEditMode ? 'true' : 'false'})`);
+      logger.trace('Rendering view for %s (editmode=%s)', pageId, req.inEditMode ? 'true' : 'false');
       res.render(pageMeta.view, {
         formData: req.journeyData.getDataForPage(pageId),
         inEditMode: req.inEditMode,
@@ -54,7 +54,7 @@ module.exports = function routePageGet(pages, journey) {
 
     // Hook: prerender
     if (typeof hooks.prerender === 'function') {
-      logger.debug(`Running prerender hook for ${req.journeyWaypointId}`);
+      logger.trace('Running prerender hook for "%s" waypoint', req.journeyWaypointId);
       hooks.prerender(req, res, () => {
         render();
       });

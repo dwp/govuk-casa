@@ -44,7 +44,7 @@ function CasaBootstrap(expressApp, config) {
   try {
     casa.loadConfig(config);
   } catch (ex) {
-    logger.fatal(`[CONFIG ERROR] ${ex.message}`);
+    logger.fatal('[CONFIG ERROR] %s', ex.message);
     return process.exit(1);
   }
 
@@ -78,7 +78,7 @@ function CasaBootstrap(expressApp, config) {
   // Mount the router onto the path defined in `mountUrl`.
   // This must be done after all CASA middleware has been mounted.
   expressApp.use(config.mountUrl, expressRouter);
-  logger.info(`Routes mounted onto ${config.mountUrl}`);
+  logger.info('Routes mounted onto %s', config.mountUrl);
 
   /**
    * Generate CSRF protection to use on all mutating (POST) requests. The

@@ -23,7 +23,7 @@ module.exports = function meErrors(app) {
    * @returns {void}
    */
   const handle404 = (req, res) => {
-    logger.info(`404 - ${req.url}`);
+    logger.info('404 - %s', req.url);
     res.status(404).render('casa/errors/404.njk');
   };
   app.use(handle404);

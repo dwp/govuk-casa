@@ -89,7 +89,7 @@ module.exports = function routePagePost(mountUrl, pages, journey) {
         }
 
         // Store validation results so they can be used during future traversals
-        logger.debug('Storing validation errors on waypoint %s', req.journeyWaypointId);
+        logger.trace('Storing validation errors on waypoint %s', req.journeyWaypointId);
         req.journeyData.setValidationErrorsForPage(req.journeyWaypointId, errors);
         req.session.journeyValidationErrors = req.journeyData.getValidationErrors();
 
@@ -97,7 +97,7 @@ module.exports = function routePagePost(mountUrl, pages, journey) {
       })
       .catch((err) => {
         // Capture any other errors
-        logger.debug(err.stack);
+        logger.error('POST handler failed: %s', err.stack);
         res.status(500).send('500 Internal Server Error (render error)');
       });
   };

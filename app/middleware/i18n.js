@@ -71,7 +71,7 @@ module.exports = function mwI18n(app, supportedLocales, I18nUtility) {
     if (req.session && req.session.language !== currentSessionLanguage) {
       req.session.save((err) => {
         if (err) {
-          logger.error(`Failed to save language to session. ${err.message}`);
+          logger.error('Failed to save language to session. Error: %s', err.message);
         }
         next();
       });

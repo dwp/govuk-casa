@@ -33,7 +33,7 @@ function runGatherModifiers(logger, pageData, field, gatherModifiers) {
  */
 function doGatherDataModification(logger, waypointId, postData, pageMeta) {
   if (pageMeta && pageMeta.fieldGatherModifiers) {
-    logger.debug(`Run munging for ${waypointId}`);
+    logger.trace('Run gather-modifier for %s', waypointId);
 
     Object.keys(pageMeta.fieldGatherModifiers).forEach((field) => {
       runGatherModifiers(logger, postData, field, pageMeta.fieldGatherModifiers[field]);

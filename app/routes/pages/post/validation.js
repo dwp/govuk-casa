@@ -26,7 +26,7 @@ module.exports = function doValidation(logger, req, res, pageId, pageMeta) {
   function runValidation() {
     let result;
     if (pageMeta && pageMeta.fieldValidators) {
-      logger.debug(`Run validation for ${req.journeyWaypointId}`);
+      logger.trace('Run validation for %s', req.journeyWaypointId);
       result = Validation.processor(
         pageMeta.fieldValidators,
         req.journeyData.getDataForPage(pageId), {
