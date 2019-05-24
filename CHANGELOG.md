@@ -1,3 +1,27 @@
+<a name="4.0.1"></a>
+## [4.0.1](https://github.com/dwp/govuk-casa/compare/4.0.0...4.0.1) (2019-05-24)
+
+
+### Code Refactoring
+
+* whitelist fields with validators for session ingestion ([57e4c95](https://github.com/dwp/govuk-casa/commit/57e4c95)), closes [#38](https://github.com/dwp/govuk-casa/issues/38)
+
+
+### Features
+
+* **review:** use govukSummaryList component for Check Answers screen ([e97462c](https://github.com/dwp/govuk-casa/commit/e97462c))
+
+
+### BREAKING CHANGES
+
+* **review:** Any services using the current layout will need to
+modify review block template for each individual page in their service.
+* Where previously field validators were optional, they
+are now mandatory if the data submitted for those fields is required to
+be ingested into the CASA session.
+
+
+
 <a name="4.0.0"></a>
 # [4.0.0](https://github.com/dwp/govuk-casa/compare/3.0.1...4.0.0) (2019-05-17)
 
