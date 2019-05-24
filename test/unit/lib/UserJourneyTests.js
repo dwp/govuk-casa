@@ -626,6 +626,25 @@ describe('UserJourney.Map', () => {
       expect(map.traverse(dataContext)).to.contain('p1');
       expect(map.traverse(dataContext)).to.not.contain('p2');
     });
+
+    it('should skip the first falsy conditional waypoint in the first road', () => {
+      const map = new UserJourney.Map();
+
+      const road1 = new UserJourney.Road();
+      road1.addWaypoints([
+        ['p0', () => (false)],
+        'p1',
+      ]);
+
+      map.startAt(road1);
+
+      const dataContext = {
+        p1: { data: true },
+      };
+
+      expect(map.traverse(dataContext)).to.contain('p1');
+      expect(map.traverse(dataContext)).to.not.contain('p0');
+    });
   });
 
   describe('traverseAhead()', () => {
