@@ -8,7 +8,6 @@
     "definitions/**/*",
     "dist/**/*",
     "lib/**/*",
-    "src/**/*",
     "casa.js",
     "!**/*/.DS_Store",
     "!**/*/.gitkeep"
