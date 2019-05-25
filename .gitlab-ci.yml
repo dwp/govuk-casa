@@ -1,4 +1,4 @@
-image: node:10.15.3-alpine@sha256:ba9152d0e2aa5fe45cb090b8e07757a28fa2fc6a6bfd1ae828e55cdbb9a30944
+image: node:10.15.3-alpine@sha256:101042fddccda3a5ae5fbd6752fa568c663e9dc18cec7f7e7b8300c88480fcbe
 
 .executor-docker: &executor-docker
   tags:
@@ -111,9 +111,9 @@ zap:
   variables:
     HOSTNAME: pentest.service
     PENTEST_SERVICE_URL: http://$HOSTNAME:4000/
-  image: docker:18.09@sha256:201c31cae6daa97001fe9c0cd2e2d3a157ca6447aaa74b070189790445627511
+  image: docker:18.09@sha256:bf929409251faa1d1fcf63af68d02bb942054cfbe14e6ad9dca0dc4a01cbffad
   services:
-    - docker:18.09-dind@sha256:46567f80dea8b6f458190937f69d13ef95e36c6574c9a9509caf028009d69ad0
+    - docker:18.09-dind@sha256:323f789b9bea83331e79760593736a1b0102572393c50220f4f2256bd37d20b9
   before_script:
     - export NO_PROXY="$NO_PROXY,docker"
   script:
