@@ -97,7 +97,7 @@ function CasaBootstrap(expressApp, config) {
       /* eslint-disable no-underscore-dangle */
       // Here we clear the token after extracting to maintain cleaner data. It
       // is only used for this CSRF purpose.
-      const token = req.body._csrf;
+      const token = String(req.body._csrf);
       delete req.body._csrf;
       return token;
       /* eslint-enable no-underscore-dangle */

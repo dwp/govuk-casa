@@ -103,10 +103,10 @@ describe('Routes: edit-mode extraction', () => {
         query: {
           edit: true,
         },
-        originalUrl: 'TEST-URL',
+        originalUrl: '/TEST-URL',
       };
       handler(stubReq, null, () => {});
-      expect(stubReq).to.have.property('editOriginUrl').that.equals('TEST-URL');
+      expect(stubReq).to.have.property('editOriginUrl').that.equals('/TEST-URL');
     });
 
     it('should default to current page when not defined in POST body', () => {
@@ -116,10 +116,10 @@ describe('Routes: edit-mode extraction', () => {
         body: {
           edit: true,
         },
-        originalUrl: 'TEST-URL',
+        originalUrl: '/TEST-URL',
       };
       handler(stubReq, null, () => {});
-      expect(stubReq).to.have.property('editOriginUrl').that.equals('TEST-URL');
+      expect(stubReq).to.have.property('editOriginUrl').that.equals('/TEST-URL');
     });
 
     it('should default to empty string when defined in GET query, but global setting disabled', () => {
@@ -154,11 +154,11 @@ describe('Routes: edit-mode extraction', () => {
         method: 'GET',
         query: {
           edit: true,
-          editorigin: '!@£$%^&*()_+€#=\\\u0100\xFF ////this/is-a/valid/p4rt   ',
+          editorigin: '!@£$%^&*()_+€=\\\u0100\xFF ////this/#is-a/valid/p4rt   ',
         },
       };
       handler(stubReq, null, () => {});
-      expect(stubReq).to.have.property('editOriginUrl').that.equals('/this/is-a/valid/p4rt');
+      expect(stubReq).to.have.property('editOriginUrl').that.equals('/!@%C2%A3$%^&*()_+%E2%82%AC=/%C4%80%C3%BF%20////this/');
     });
 
     it('should escape all non-valid characters when defined in POST body', () => {
@@ -167,11 +167,37 @@ describe('Routes: edit-mode extraction', () => {
         method: 'POST',
         body: {
           edit: true,
-          editorigin: '!@£$%^&*()_+€#=\\\u0100\xFF ////this/is-a/valid/p4rt   ',
+          editorigin: '!@£$%^&*()_+€=\\\u0100\xFF ////this/#is-a/valid/p4rt   ',
         },
       };
       handler(stubReq, null, () => {});
-      expect(stubReq).to.have.property('editOriginUrl').that.equals('/this/is-a/valid/p4rt');
+      expect(stubReq).to.have.property('editOriginUrl').that.equals('/!@%C2%A3$%^&*()_+%E2%82%AC=/%C4%80%C3%BF%20////this/');
+    });
+
+    it('should only include the pathname when editorigin includes domain in POST body', () => {
+      const handler = createHandler(true);
+      const stubReq = {
+        method: 'POST',
+        body: {
+          edit: true,
+          editorigin: 'http://somewhere.test/path/name/here?p=1#x',
+        },
+      };
+      handler(stubReq, null, () => {});
+      expect(stubReq).to.have.property('editOriginUrl').that.equals('/path/name/here');
+    });
+
+    it('should only include the pathname when editorigin includes domain in GET body', () => {
+      const handler = createHandler(true);
+      const stubReq = {
+        method: 'GET',
+        query: {
+          edit: true,
+          editorigin: 'http://somewhere.test/path/name/here?p=1#x',
+        },
+      };
+      handler(stubReq, null, () => {});
+      expect(stubReq).to.have.property('editOriginUrl').that.equals('/path/name/here');
     });
 
     it('should remove the editorigin parameter from request query and body', () => {
