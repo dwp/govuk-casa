@@ -1,3 +1,13 @@
+<a name="2.5.1"></a>
+## [2.5.1](https://github.com/dwp/govuk-casa/compare/2.5.0...2.5.1) (2019-05-28)
+
+
+### Bug Fixes
+
+* **journey:** obey conditional on very first waypoint in journey ([5813030](https://github.com/dwp/govuk-casa/commit/5813030)), closes [#60](https://github.com/dwp/govuk-casa/issues/60)
+
+
+
 <a name="2.5.0"></a>
 # [2.5.0](https://github.com/dwp/govuk-casa/compare/2.4.3...2.5.0) (2019-05-21)
 
