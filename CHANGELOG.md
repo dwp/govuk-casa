@@ -1,3 +1,8 @@
+<a name="2.5.2"></a>
+## [2.5.2](https://github.com/dwp/govuk-casa/compare/2.5.1...2.5.2) (2019-05-28)
+
+
+
 <a name="2.5.1"></a>
 ## [2.5.1](https://github.com/dwp/govuk-casa/compare/2.5.0...2.5.1) (2019-05-28)
 
