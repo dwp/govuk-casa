@@ -3,7 +3,7 @@
  */
 const isStaticAsset = /.*\.(js|jpe?g|css|png|svg|woff2?|eot|ttf|otf)/;
 const isIE8 = /MSIE\s*8/i;
-const oneDay = 86400000;
+const oneHundredDaysInSeconds = 86400000;
 
 /**
  * Setup middleware.
@@ -59,6 +59,7 @@ module.exports = function mwHeaders(app, cspConfig, disabledHeadersConfig) {
     'X-XSS-Protection': '1; mode=block',
     'X-Frame-Options': 'DENY',
     'Content-Security-Policy': cspDirectives.join('; '),
+    'Strict-Transport-Security': `max-age=${oneHundredDaysInSeconds}`,
   };
 
   /**
@@ -83,7 +84,7 @@ module.exports = function mwHeaders(app, cspConfig, disabledHeadersConfig) {
     if (isStaticAsset.test(req.url)) {
       headers['Cache-Control'] = 'public';
       headers.Pragma = 'cache';
-      headers.Expires = new Date(Date.now() + oneDay).toUTCString();
+      headers.Expires = new Date(Date.now() + oneHundredDaysInSeconds).toUTCString();
     } else {
       headers['Cache-Control'] = 'no-cache, no-store, must-revalidate, private';
       headers.Pragma = 'no-cache';

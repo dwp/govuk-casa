@@ -62,6 +62,7 @@ describe('Middleware: headers', () => {
       expect(headers).to.have.property('x-content-type-options');
       expect(headers).to.have.property('x-xss-protection');
       expect(headers).to.have.property('x-frame-options');
+      expect(headers).to.have.property('strict-transport-security');
       done();
     });
   });
