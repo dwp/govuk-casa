@@ -260,7 +260,7 @@ module.exports = {
     fieldValidators: require('./field-validators/personal-info.js'),
   },
   hobbies: {
-    view: 'pages/hobbies.njk'
+    view: 'pages/hobbies.njk',
     fieldValidators: require('./field-validators/hobbies.js'),
   }
 };
