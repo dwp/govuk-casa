@@ -16,3 +16,4 @@
 * UserJourney
 * [`Util.js`](api/util.md)
 * Validation
+* [Style Guide](api/style-guide.md)

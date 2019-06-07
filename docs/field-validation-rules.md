@@ -1,6 +1,6 @@
 # Built-in Validation Rules
 
-You can use any of these [built-in validation rules](../lib/validation-rules/) by including the `@dwp/govuk-casa/lib/Validation` object, ie:
+You can use any of these [built-in validation rules](../lib/validation/rules/) by including the `@dwp/govuk-casa/lib/Validation` object, ie:
 
 ```javascript
 const { rules } = require('@dwp/govuk-casa/lib/Validation');
@@ -8,7 +8,7 @@ const { rules } = require('@dwp/govuk-casa/lib/Validation');
 
 ## `dateObject`
 
-Validates dates captured from the [`casaGovukDateInput()`](../app/views/casa/components/date-input) macro, which arrive as separate values for day (`dd`), month (`mm`) and year (`yyyy`).
+Validates dates captured from the [`casaGovukDateInput()`](../views/casa/components/date-input) macro, which arrive as separate values for day (`dd`), month (`mm`) and year (`yyyy`).
 
 All date comparison and format validation is done with the [`moment`](https://momentjs.com/) library.
 
@@ -129,7 +129,7 @@ rules.optional
 
 ## `postalAddressObject`
 
-Validates UK postal addresses captured through the [`casaPostAddressObject()`](../app/views/casa/components/postal-address-object/README.md) macro, which arrive as separate values for the street name/number (`address1`), additional street information (`address2`), town/city (`address3`), county (`address4`) and postcode (`postcode`).
+Validates UK postal addresses captured through the [`casaPostAddressObject()`](../views/casa/components/postal-address-object/README.md) macro, which arrive as separate values for the street name/number (`address1`), additional street information (`address2`), town/city (`address3`), county (`address4`) and postcode (`postcode`).
 
 ```javascript
 // Minimal

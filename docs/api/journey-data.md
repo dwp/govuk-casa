@@ -1,6 +1,6 @@
 # Handling Journey Data
 
-The [`app/middleware/session.js`](../../app/middleware/session.js) middleware is responsible for making available the `req.journeyData` object for every incoming request, which is an instance of the [`lib/JourneyData.js`](../../lib/JourneyData.js) class.
+The [`middleware/session/`](../../middleware/session/) middleware is responsible for making available the `req.journeyData` object for every incoming request, which is an instance of the [`lib/JourneyData.js`](../../lib/JourneyData.js) class.
 
 This object holds all gathered data, and information about any valiation errors arising from that data.
 

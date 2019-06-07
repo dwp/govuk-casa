@@ -17,19 +17,19 @@ So the changes you'll need to make are ..
 
 ### 1. Importing macros
 
-Wherever you are importing Nunjucks macros, be sure to add `with context` to the end of that import. For example:
+Wherever you are importing any of CASA's Nunjucks macros, be sure to add `with context` to the end of that import. For example:
 
 **Previous method:**
 ```nunjucks
-{% from "components/back-link/macro.njk" import govukBackLink %}
+{% from "casa/components/date-input/macro.njk" import casaGovukDateInput %}
 ```
 
 **New method:**
 ```nunjucks
-{% from "components/back-link/macro.njk" import govukBackLink with context %}
+{% from "casa/components/date-input/macro.njk" import casaGovukDateInput with context %}
 ```
 
-Not all macros make use of the transdlation function, but we recommend adding `with context` to all `casa/*` imports to ensure forwards compatibility.
+Not all macros make use of the translation function, but we recommend adding `with context` to all `casa/*` imports to ensure forwards compatibility.
 
 ### 2. Update references to core CASA template variables
 

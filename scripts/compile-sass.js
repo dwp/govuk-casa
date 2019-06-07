@@ -10,10 +10,10 @@
 /* eslint-disable-next-line import/no-extraneous-dependencies */
 const sass = require('sass');
 const path = require('path');
-const recursiveReaddir = require('recursive-readdir-sync');
+const klaw = require('klaw-sync');
 const fs = require('fs-extra');
 
-const Casa = require('../lib/Casa.js');
+const { resolveModulePath } = require('../lib/Util.js');
 
 /**
  * Compile all Sass files in the `src/casa/` source directory, and store output
@@ -30,7 +30,10 @@ function compileSassSources(targetDir, npmGovukFrontend, npmGovukCasa) {
   const dstDir = path.resolve(targetDir, 'casa', 'css');
 
   const partialRegex = new RegExp(`\\${path.sep}_[^\\${path.sep}]+$`);
-  const files = recursiveReaddir(casaSassSrcDir).filter(f => !f.match(partialRegex));
+  const files = klaw(casaSassSrcDir, {
+    nodir: true,
+    filter: f => (!f.path.match(partialRegex)),
+  }).map(f => f.path);
 
   files.forEach((file) => {
     const cssContent = sass.renderSync({
@@ -53,6 +56,6 @@ function compileSassSources(targetDir, npmGovukFrontend, npmGovukCasa) {
 
 compileSassSources(
   path.resolve('./dist/'),
-  Casa.resolveModulePath('govuk-frontend', module.paths),
+  resolveModulePath('govuk-frontend', module.paths),
   path.resolve(__dirname, '../'),
 );

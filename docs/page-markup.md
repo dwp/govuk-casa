@@ -27,7 +27,7 @@ The following global variables are available to your templates:
 * `casa.mountUrl` (`string`) - the URL prefix on which your app is running (mirrors the `mountUrl` config setting)
 * `casa.csrfToken` (`string`) - a CSRF token you can use in forms
 * `casa.journeyPreviousUrl` (`string`) - the URL to the previous page in the current user journey
-* `govuk.*` (`object`) - various data related to the GOVUK Frontend layout template; see [`app/middleware/variables.js`](../app/middleware/variables.js) for a full list of data in this object
+* `govuk.*` (`object`) - various data related to the GOVUK Frontend layout template; see [`middleware/variables/index.js`](../middleware/variables/index.js) for a full list of data in this object
 
 The following global functions are available to your templates:
 

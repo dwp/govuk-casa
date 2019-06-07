@@ -3,11 +3,9 @@
  */
 
 const qs = require('querystring');
-const Validation = require('../lib/Validation');
+const { rules, SimpleField } = require('../lib/validation/index.js');
 
-const { rules, SimpleField } = Validation;
-
-module.exports = function reviewPageDefinition(pagesMeta) {
+module.exports = function reviewPageDefinition(pagesMeta = {}) {
   return {
     view: 'casa/review/review.njk',
     fieldValidators: {

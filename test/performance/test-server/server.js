@@ -3,7 +3,7 @@ const path = require('path');
 const os = require('os');
 const uuid = require('uuid/v1');
 const fs = require('fs');
-const casa = require('../../../casa.js');
+const { configure } = require('../../../casa.js');
 
 const STATIC_DIR = path.join(os.tmpdir(), uuid(), 'static');
 fs.mkdirSync(STATIC_DIR, {
@@ -16,10 +16,14 @@ process.on('SIGHUP', () => {
 });
 
 const app = express();
-const casaApp = casa(app, {
+const casaApp = configure(app, {
   mountUrl: '/',
   views: {
     dirs: [path.resolve(__dirname, 'views')],
+  },
+  i18n: {
+    dirs: [],
+    locales: ['en'],
   },
   compiledAssetsDir: STATIC_DIR,
   sessions: {

@@ -4,9 +4,9 @@ const fs = require('fs');
 const nunjucks = require('nunjucks');
 
 // Configure Nunujucks environments in same way as main application
-// see `middleware/nunjucks.js`
+// see `middleware/nunjucks/index.js`
 const nunjucksLoader = new nunjucks.FileSystemLoader([
-  npath.resolve(__dirname, '../../../app/views/'),
+  npath.resolve(__dirname, '../../../views/'),
   npath.resolve(require.resolve('govuk-frontend'), '../'),
 ], {
   watch: false,
@@ -20,8 +20,8 @@ const nunjucksEnv = new nunjucks.Environment(nunjucksLoader, {
 });
 
 // Add view filters/functions to environment
-const viewFiltersDir = npath.resolve(__dirname, '../../../app/view-filters');
-require(npath.resolve(viewFiltersDir, '_load'))(nunjucksEnv); // eslint-disable-line import/no-dynamic-require
+const viewFiltersDir = npath.resolve(__dirname, '../../../lib/view-filters');
+require(npath.resolve(viewFiltersDir, 'index.js'))(nunjucksEnv); // eslint-disable-line import/no-dynamic-require
 
 // Add stub translation function
 nunjucksEnv.addGlobal('t', k => k);

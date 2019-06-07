@@ -45,16 +45,16 @@ To help make this a little simpler, we've provided a suite of "wrapper macros" t
 
 As of this writing the following wrapper macros are available:
 
-* `casaGovukCheckboxes()` (`casa/components/checkboxes/macro.njk`, [`README.md`](../app/views/casa/components/checkboxes/README.md))
-* `casaGovukDateInput()` (`casa/components/date-input/macro.njk`, [`README.md`](../app/views/casa/components/date-input/README.md))
-* `casaGovukInput()` (`casa/components/input/macro.njk`, [`README.md`](../app/views/casa/components/input/README.md))
-* `casaGovukTextarea()` (`casa/components/textarea/macro.njk`, [`README.md`](../app/views/casa/components/textarea/README.md))
-* `casaGovukRadios()` (`casa/components/radios/macro.njk`, [`README.md`](../app/views/casa/components/radios/README.md))
+* `casaGovukCheckboxes()` (`casa/components/checkboxes/macro.njk`, [`README.md`](../views/casa/components/checkboxes/README.md))
+* `casaGovukDateInput()` (`casa/components/date-input/macro.njk`, [`README.md`](../views/casa/components/date-input/README.md))
+* `casaGovukInput()` (`casa/components/input/macro.njk`, [`README.md`](../views/casa/components/input/README.md))
+* `casaGovukTextarea()` (`casa/components/textarea/macro.njk`, [`README.md`](../views/casa/components/textarea/README.md))
+* `casaGovukRadios()` (`casa/components/radios/macro.njk`, [`README.md`](../views/casa/components/radios/README.md))
 
 ## CASA components
 
 In addition to the GOVUK wrappers, there are a few CASA-specific macros available:
 
-* `casaJourneyForm` (`casa/components/journey-form/macro.njk`, [`README.md`](../app/views/casa/components/journey-form/README.md))<br/>
+* `casaJourneyForm` (`casa/components/journey-form/macro.njk`, [`README.md`](../views/casa/components/journey-form/README.md))<br/>
   This is used to wrap your journey forms within a `<form>` element that is geared up to work with CASA's default `GET`/`POST` handlers
-* `casaPostalAddressObject` (`casa/components/postal-address-object/macro.njk`, [`README.md`](../app/views/casa/components/postal-address-object/README.md))
+* `casaPostalAddressObject` (`casa/components/postal-address-object/macro.njk`, [`README.md`](../views/casa/components/postal-address-object/README.md))
