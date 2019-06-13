@@ -49,6 +49,7 @@ views/
   partials/
 app.js
 ```
+If you want to go through a step-by-step tutorial, please take a look at [ale-suggestions](https://github.com/opensourcegeek/ale-suggestions)
 
 If you just want to get a quick and dirty CASA application up and running, take a look at **[Deploying a CASA app](docs/deploying.md)** first or browse through one of the [example applications](examples/).
 
