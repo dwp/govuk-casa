@@ -1,3 +1,18 @@
+<a name="3.0.2"></a>
+## [3.0.2](https://github.com/dwp/govuk-casa/compare/3.0.1...3.0.2) (2019-06-27)
+
+
+### Bug Fixes
+
+* **journey:** obey conditional on very first waypoint in journey ([91c04cb](https://github.com/dwp/govuk-casa/commit/91c04cb)), closes [#60](https://github.com/dwp/govuk-casa/issues/60)
+
+
+### Features
+
+* **session:** pass referer url in session-timeout redirect ([f87f1d7](https://github.com/dwp/govuk-casa/commit/f87f1d7)), closes [#56](https://github.com/dwp/govuk-casa/issues/56)
+
+
+
 <a name="3.0.1"></a>
 ## [3.0.1](https://github.com/dwp/govuk-casa/compare/3.0.0...3.0.1) (2019-05-09)
 
