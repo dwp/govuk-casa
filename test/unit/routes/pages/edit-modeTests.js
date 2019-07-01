@@ -200,6 +200,36 @@ describe('Routes: edit-mode extraction', () => {
       expect(stubReq).to.have.property('editOriginUrl').that.equals('/path/name/here');
     });
 
+    it('should consolidate leading & trailing slashes from pathname when editorigin includes domain in POST body', () => {
+      // URLs prefixed with `//` with adopt the protocol of the referring page;
+      // e.g //somewhere.test is valid
+      const handler = createHandler(true);
+      const stubReq = {
+        method: 'POST',
+        body: {
+          edit: true,
+          editorigin: 'http://somewhere.test//path/name/here//?p=1#x',
+        },
+      };
+      handler(stubReq, null, () => {});
+      expect(stubReq).to.have.property('editOriginUrl').that.equals('/path/name/here/');
+    });
+
+    it('should consolidate leading & trailing slashes from pathname when editorigin includes domain in GET body', () => {
+      // URLs prefixed with `//` with adopt the protocol of the referring page;
+      // e.g //somewhere.test is valid
+      const handler = createHandler(true);
+      const stubReq = {
+        method: 'GET',
+        query: {
+          edit: true,
+          editorigin: 'http://somewhere.test//path/name/here//?p=1#x',
+        },
+      };
+      handler(stubReq, null, () => {});
+      expect(stubReq).to.have.property('editOriginUrl').that.equals('/path/name/here/');
+    });
+
     it('should remove the editorigin parameter from request query and body', () => {
       const handler = createHandler(true);
       const stubReq = {

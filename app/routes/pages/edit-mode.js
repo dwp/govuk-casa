@@ -27,7 +27,7 @@ module.exports = allowPageEdit => (req, res, next) => {
   // Extract path name from edit origin url
   try {
     const u = new URL(editOriginUrl, 'http://placeholder.test');
-    req.editOriginUrl = u.pathname.replace(/^\/+$/, '');
+    req.editOriginUrl = u.pathname.replace(/^\/+/, '/').replace(/\/+$/, '/').replace(/^\/+$/, '');
   } catch (e) {
     req.editOriginUrl = '';
   }
