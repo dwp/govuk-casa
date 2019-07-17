@@ -14,7 +14,9 @@ module.exports = (config) => {
       'middleware/**/*.js',
     ],
     mochaOptions: {
-      files: 'test/unit/**/*.test.js',
+      spec: [
+        'test/unit/**/*.test.js',
+      ],
     },
     thresholds: {
       high: 80,

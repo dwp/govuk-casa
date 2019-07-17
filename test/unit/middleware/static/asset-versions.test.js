@@ -31,7 +31,7 @@ describe('Middleware: static/asset-versions', () => {
     stubNext = sinon.stub();
   });
 
-  it('should return a functoin', () => {
+  it('should return a function', () => {
     expect(mwVersions(mockLogger)).to.be.an.instanceOf(Function);
   });
 
