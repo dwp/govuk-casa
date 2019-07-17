@@ -38,9 +38,9 @@
     "uid-safe": "2.1.5"
   },
   "devDependencies": {
-    "@commitlint/cli": "8.0.0",
-    "@commitlint/config-conventional": "8.0.0",
-    "@commitlint/travis-cli": "8.0.0",
+    "@commitlint/cli": "8.1.0",
+    "@commitlint/config-conventional": "8.1.0",
+    "@commitlint/travis-cli": "8.1.0",
     "@dwp/commitlint-config-base": "1.1.0",
     "@dwp/eslint-config-base": "2.1.0",
     "autocannon": "4.0.0",
@@ -61,7 +61,7 @@
     "npm-audit-resolver": "1.5.0",
     "nyc": "14.1.1",
     "proxyquire": "2.1.1",
-    "sass": "1.22.4",
+    "sass": "1.22.5",
     "sinon": "7.3.2",
     "sinon-chai": "3.3.0",
     "stryker": "0.35.1",
@@ -72,7 +72,7 @@
     "stryker-mocha-runner": "0.17.1",
     "uglify-js": "3.6.0",
     "uuid": "3.3.2",
-    "yargs": "13.2.4"
+    "yargs": "13.3.0"
   },
   "peerDependencies": {
     "express": "4.x",
