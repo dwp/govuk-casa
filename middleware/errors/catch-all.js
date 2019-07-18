@@ -11,7 +11,7 @@ module.exports = logger => (err, req, res, next) => {
     logger.info('[403] CSRF token missing/invalid');
     res.status(403).render('casa/errors/403.njk');
   } else {
-    logger.error('[500] Internal Server Error', err);
+    logger.error('[500] Internal Server Error - %s - %s', err.message, err.stack.toString());
     res.status(500).render('casa/errors/500.njk');
   }
 };

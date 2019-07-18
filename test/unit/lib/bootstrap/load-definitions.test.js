@@ -5,7 +5,7 @@ const sinon = require('sinon');
 
 const { app, router } = require('../../helpers/express-mocks.js');
 
-const UserJourney = require('../../../../lib/UserJourney.js');
+const Graph = require('../../../../lib/Graph.js');
 const loadDefinitionsConstructor = require('../../../../lib/bootstrap/load-definitions.js');
 
 const { expect } = chai;
@@ -48,9 +48,10 @@ describe('lib/bootstrap/load-definitions.js', () => {
         sessions: { ttl: 3600 },
       });
 
-      validUserJourneyMap = new UserJourney.Map();
-      const start = new UserJourney.Road();
-      validUserJourneyMap.startAt(start);
+      validUserJourneyMap = new Graph();
+      validUserJourneyMap.addOrigin('origin-id', 'node-id');
+      // const start = new UserJourney.Road();
+      // validUserJourneyMap.startAt(start);
     });
 
     it('should throw a TypeError when pages is an invalid type', () => {
@@ -70,7 +71,7 @@ describe('lib/bootstrap/load-definitions.js', () => {
     });
 
     it('should throw a TypeError when journey is an invalid type', () => {
-      const exceptionMsg = /^journey must be a UserJourney.Map or an array of UserJourney.Map instances$/;
+      const exceptionMsg = /^Journey graph must be a Graph instance$/;
 
       expect(() => {
         loadDefinitions({}, null);
@@ -89,41 +90,18 @@ describe('lib/bootstrap/load-definitions.js', () => {
       }).to.throw(TypeError, exceptionMsg);
     });
 
-    it('should throw an Error when the only Map has a guid', () => {
-      expect(() => {
-        loadDefinitions({}, [
-          new UserJourney.Map('should-be-null'),
-        ]);
-      }).to.throw(Error, /^When using a single journey, the guid must be null$/);
-    });
-
     it('should not throw an exception when given valid arguments', () => {
       expect(() => {
         loadDefinitions({}, validUserJourneyMap);
       }).to.not.throw();
     });
 
-    describe('mulitple journeys', () => {
-      it('should throw an Error if any journeys do not specify a guid', () => {
-        const journeys = [
-          new UserJourney.Map('guid1'),
-          new UserJourney.Map(),
-        ];
+    describe('origins', () => {
+      it('should throw an Error if no origins are specified', () => {
+        const journeys = new Graph();
         expect(() => {
           loadDefinitions({}, journeys);
-        }).to.throw(Error, /^All journeys must specify a unique guid$/);
-      });
-
-      it('should throw an Error if duplicate journey guids are used', () => {
-        const journeys = [
-          new UserJourney.Map('guid1'),
-          new UserJourney.Map('guid2'),
-          new UserJourney.Map('guid1'),
-          new UserJourney.Map('guid1'),
-        ];
-        expect(() => {
-          loadDefinitions({}, journeys);
-        }).to.throw(Error, /^Duplicate journey guids found: guid1$/);
+        }).to.throw(Error, /^There must be at least 1 defined origin in the graph$/);
       });
     });
 

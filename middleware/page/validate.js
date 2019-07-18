@@ -52,6 +52,8 @@ module.exports = (pageMeta = {}) => (req, res, next) => {
       }
 
       // Store validation results so they can be used during future traversals
+      // TODO: Handle possible exceptions thrown by the below; e.g. if `errors`
+      // are not in valid format, an exception is thrown by `setValidationErrorsForPage`
       logger.trace('Storing validation errors on waypoint %s', pageId);
       req.journeyData.setValidationErrorsForPage(pageId, errors);
       req.session.journeyValidationErrors = req.journeyData.getValidationErrors();

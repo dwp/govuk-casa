@@ -18,7 +18,8 @@ module.exports = function reviewPageDefinition(pagesMeta = {}) {
         // Determine active journey in order to define the "edit origin" URL,
         // and make journey data and errors available to templates
         const userJourney = req.journeyActive;
-        res.locals.changeUrlPrefix = `${res.locals.casa.mountUrl}${req.journeyActive.guid || ''}/`.replace(/\/+/g, '/');
+        const { journeyOrigin } = req;
+        res.locals.changeUrlPrefix = `${res.locals.casa.mountUrl}${journeyOrigin.originId || ''}/`.replace(/\/+/g, '/');
         res.locals.journeyData = req.journeyData.getData();
         res.locals.reviewErrors = req.journeyData.getValidationErrors();
 
@@ -26,13 +27,16 @@ module.exports = function reviewPageDefinition(pagesMeta = {}) {
         // order to get to this review point (not all journey waypoints will
         // have been touched, but may contain data which needs to be ignored)
         let waypointsTraversed;
+        const traversalOptions = {
+          startNode: journeyOrigin.node,
+        };
         if (req.journeyData) {
-          waypointsTraversed = userJourney.traverse(
-            req.journeyData.getData(),
-            req.journeyData.getValidationErrors(),
-          );
+          waypointsTraversed = userJourney.traverse({
+            data: req.journeyData.getData(),
+            validation: req.journeyData.getValidationErrors(),
+          }, traversalOptions);
         } else {
-          waypointsTraversed = userJourney.traverse();
+          waypointsTraversed = userJourney.traverse({}, traversalOptions);
         }
         res.locals.reviewBlocks = waypointsTraversed.map((waypointId) => {
           const meta = pagesMeta[waypointId] || {};

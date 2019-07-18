@@ -38,6 +38,8 @@
  *   };
  */
 
+const mwPrepare = require('./prepare-request.js');
+const mwSkip = require('./skip.js');
 const mwJourneyRails = require('./journey-rails.js');
 const mwJourneyContinue = require('./journey-continue.js');
 const mwCsrfProtection = require('./csrf.js');
@@ -50,38 +52,48 @@ module.exports = function routePages(
   mountUrl,
   router,
   pages,
-  journeys,
+  graph,
   allowPageEdit,
 ) {
-  // Where page meta has been defined, attach GET and POST handlers to each
-  // journey/page-waypoint combo
   const pageMetaKeys = pages.getAllPageIds();
-  journeys.forEach((journey) => {
-    journey.allWaypoints().filter(w => pageMetaKeys.includes(w)).forEach((waypoint) => {
-      const routeUrl = `/${journey.guid || ''}/${waypoint}`.replace(/\/+/g, '/');
-      const pageMeta = pages.getPageMeta(waypoint);
+  const origins = graph.getOrigins();
 
-      router.get(
-        routeUrl,
-        mwJourneyRails(mountUrl, journeys),
-        mwCsrfProtection,
-        mwDetectEditMode(allowPageEdit),
-        // TODO: Maybe put the hook executions at this level? e.g.
-        // mwExecutePageHooks(pageMeta, 'prerender')
-        // because then custom routes could choose to include them or not
-        mwRenderPage(pageMeta),
-      );
+  // If there's only one origin node, we won't bother prefixing urls with the
+  // origin id
+  let routePrefix = '/';
+  if (!origins.length) {
+    throw new ReferenceError('No origin nodes have been defined. Cannot start graph traversal.');
+  } else if (origins.length > 1) {
+    routePrefix = `/(${origins.map(o => o.originId).join('|')})`;
+  }
 
-      router.post(
-        routeUrl,
-        mwJourneyRails(mountUrl, journeys),
-        mwCsrfProtection,
-        mwDetectEditMode(allowPageEdit),
-        mwGatherData(pageMeta),
-        mwValidateData(pageMeta),
-        mwJourneyContinue(pageMeta, mountUrl),
-        mwRenderPage(pageMeta),
-      );
-    });
+  graph.getNodes().filter(w => pageMetaKeys.includes(w)).forEach((waypoint) => {
+    const routeUrl = new RegExp(`^${routePrefix}/${waypoint}$`.replace(/\/+/g, '/'));
+    const pageMeta = pages.getPageMeta(waypoint);
+
+    router.get(
+      routeUrl,
+      mwPrepare(graph),
+      mwJourneyRails(mountUrl, graph),
+      mwSkip(mountUrl, graph),
+      mwCsrfProtection,
+      mwDetectEditMode(allowPageEdit),
+      // TODO: Maybe put the hook executions at this level? e.g.
+      // mwExecutePageHooks(pageMeta, 'prerender')
+      // because then custom routes could choose to include them or not
+      mwRenderPage(pageMeta),
+    );
+
+    router.post(
+      routeUrl,
+      mwPrepare(graph),
+      mwJourneyRails(mountUrl, graph),
+      mwCsrfProtection,
+      mwDetectEditMode(allowPageEdit),
+      mwGatherData(pageMeta),
+      mwValidateData(pageMeta),
+      mwJourneyContinue(pageMeta, mountUrl),
+      mwRenderPage(pageMeta),
+    );
   });
 };

@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 const proxyquire = require('proxyquire');
 const chai = require('chai');
 const sinon = require('sinon');
@@ -9,7 +10,7 @@ chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
 const { request, response } = require('../../helpers/express-mocks.js');
-const { map: journeyMap } = require('../../helpers/journey-mocks.js');
+const { graph: journeyGraph } = require('../../helpers/journey-mocks.js');
 const logger = require('../../helpers/logger-mock.js');
 
 describe('Middleware: page/journey-continue', () => {
@@ -32,7 +33,8 @@ describe('Middleware: page/journey-continue', () => {
     middleware = mwJourney();
     mockRequest = request();
     mockRequest = Object.assign(mockRequest, {
-      journeyActive: journeyMap(),
+      journeyActive: journeyGraph(),
+      journeyOrigin: { originId: '', node: '' },
       journeyData: {
         getData: sinon.stub().returns({}),
         getValidationErrors: sinon.stub().returns({}),
@@ -77,9 +79,7 @@ describe('Middleware: page/journey-continue', () => {
     expect(mockRequest.session.save).to.be.calledOnceWithExactly(sinon.match.func);
   });
 
-  it.skip('should return a 500 response if an error occurs during session save', () => {
-
-  });
+  it('should return a 500 response if an error occurs during session save');
 
   it('should pass errors to next middleware if "preredirect" hook fails', async () => {
     const error = new Error('test-error');
@@ -127,7 +127,7 @@ describe('Middleware: page/journey-continue', () => {
         inEditMode: false,
         originalUrl: '/test-original-url?test',
       });
-      mockRequest.journeyActive.containsWaypoint.returns(false);
+      mockRequest.journeyActive.containsNode.returns(false);
       await middlewareWithConfig(mockRequest, mockResponse, stubNext);
       expect(mockResponse.status).to.be.calledOnceWithExactly(302);
       expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-original-url?test#');
@@ -140,9 +140,13 @@ describe('Middleware: page/journey-continue', () => {
       mockRequest = Object.assign(mockRequest, {
         inEditMode: false,
       });
-      mockRequest.journeyActive.guid = 'test-guid';
-      mockRequest.journeyActive.containsWaypoint.returns(true);
-      mockRequest.journeyActive.traverse.returns(['page0', 'page1', 'page2']);
+      mockRequest.journeyOrigin = { originId: 'test-guid', node: 'page0' };
+      mockRequest.journeyActive.containsNode.returns(true);
+      mockRequest.journeyActive.traverseNextEdges.returns([
+        { source: 'page0', target: 'page1', name: 'next', label: { targetOrigin: undefined } },
+        { source: 'page1', target: 'page2', name: 'next', label: { targetOrigin: undefined } },
+        { source: 'page2', target: null, name: 'next', label: { targetOrigin: undefined } },
+      ]);
       await middlewareWithConfig(mockRequest, mockResponse, stubNext);
       expect(mockResponse.status).to.be.calledOnceWithExactly(302);
       expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/test-guid/page2#');
@@ -160,15 +164,20 @@ describe('Middleware: page/journey-continue', () => {
       mockRequest = Object.assign(mockRequest, {
         inEditMode: false,
       });
-      mockRequest.journeyActive.containsWaypoint.returns(true);
-      mockRequest.journeyActive.traverse.returns(['page0', 'page1', 'page2']);
+      mockRequest.journeyOrigin = { originId: '', node: 'page0' };
+      mockRequest.journeyActive.containsNode.returns(true);
+      mockRequest.journeyActive.traverseNextEdges.returns([
+        { source: 'page0', target: 'page1', name: 'next', label: { targetOrigin: undefined } },
+        { source: 'page1', target: 'page2', name: 'next', label: { targetOrigin: undefined } },
+        { source: 'page2', target: null, name: 'next', label: { targetOrigin: undefined } },
+      ]);
       await middlewareWithConfig(mockRequest, mockResponse, stubNext);
       expect(mockResponse.status).to.be.calledOnceWithExactly(302);
       expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/page2#');
       expect(mockLogger.trace).to.be.calledWithExactly(
         'Check waypoint %s can be reached (journey guid = %s)',
         'page2',
-        null,
+        '',
       );
     });
   });
