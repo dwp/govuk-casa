@@ -53,20 +53,23 @@ describe('definitions: review.page', () => {
     });
 
     it('should call next middleware in chain', () => {
+      mockRequest.journeyOrigin = { originId: '', node: '' };
       prerender(mockRequest, mockResponse, stubNext);
       expect(stubNext).to.be.calledOnceWithExactly();
     });
 
     it('should set the correct "changeUrlPrefix" template variable', () => {
+      mockRequest.journeyOrigin = { originId: '', node: '' };
       prerender(mockRequest, mockResponse, stubNext);
       expect(mockResponse.locals).has.property('changeUrlPrefix').that.equals('/test-mount/');
 
-      mockRequest.journeyActive.guid = 'test-guid';
+      mockRequest.journeyOrigin = { originId: 'test-guid', node: '' };
       prerender(mockRequest, mockResponse, stubNext);
       expect(mockResponse.locals).has.property('changeUrlPrefix').that.equals('/test-mount/test-guid/')
     });
 
     it('should set the correct "journeyData" template variable', () => {
+      mockRequest.journeyOrigin = { originId: '', node: '' };
       mockRequest.journeyData.getData = sinon.stub().returns({
         test: 'data',
       });
@@ -77,6 +80,7 @@ describe('definitions: review.page', () => {
     });
 
     it('should set the correct "reviewErrors" template variable', () => {
+      mockRequest.journeyOrigin = { originId: '', node: '' };
       mockRequest.journeyData.getValidationErrors = sinon.stub().returns('test-errors');
       prerender(mockRequest, mockResponse, stubNext);
       expect(mockResponse.locals).has.property('reviewErrors').that.eql('test-errors');
@@ -90,6 +94,7 @@ describe('definitions: review.page', () => {
         testPage1: {},
       }).hooks.prerender;
       mockRequest.editOriginUrl = 'test-origin';
+      mockRequest.journeyOrigin = { originId: '', node: '' };
       mockRequest.journeyActive.traverse = sinon.stub().returns(['testPage0', 'testPage1']);
       prerender(mockRequest, mockResponse, stubNext);
       expect(mockResponse.locals).has.property('reviewBlocks').that.deep.eql([{

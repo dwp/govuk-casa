@@ -11,6 +11,7 @@ module.exports = (config) => {
     testFramework: 'mocha',
     coverageAnalysis: 'all',
     mutate: [
+      'lib/**/*.js',
       'middleware/**/*.js',
     ],
     mochaOptions: {

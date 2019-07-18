@@ -55,7 +55,7 @@ describe('Middleware: errors/catch-all', () => {
 
     it('should create an error log', () => {
       middleware(mockError, mockRequest, mockResponse);
-      expect(mockLogger.error).to.have.been.calledOnceWithExactly('[500] Internal Server Error', mockError);
+      expect(mockLogger.error).to.have.been.calledOnceWith('[500] Internal Server Error - %s - %s', 'Test Error');
     });
 
     it('should set HTTP status to 500', () => {

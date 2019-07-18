@@ -16,7 +16,15 @@ const data = () => ({
   setValidationErrorsForPage: sinon.stub(),
 });
 
+const graph = () => ({
+  containsNode: sinon.stub().returns(false),
+  traverse: sinon.stub().returns([]),
+  traverseNextEdges: sinon.stub().returns([]),
+  getOrigins: sinon.stub().returns([]),
+});
+
 module.exports = {
   map,
   data,
+  graph,
 };

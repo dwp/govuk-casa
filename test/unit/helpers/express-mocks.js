@@ -30,6 +30,7 @@ const response = () => {
   res.clearCookie = sinon.stub().returns(res);
   res.redirect = sinon.stub().returns(res);
   res.render = sinon.stub().returns(res);
+  res.send = sinon.stub().returns(res);
   res.setHeader = sinon.stub().returns(res);
   res.status = sinon.stub().returns(res);
   res.locals = {};

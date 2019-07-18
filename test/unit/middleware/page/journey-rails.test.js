@@ -15,93 +15,72 @@ describe('Middleware: page/journey-rails', () => {
   let mockRequest;
   let mockResponse;
   let stubNext;
-  let stubUserJourney;
-  let stubJourneyWaypointId;
+  let stubGraph;
+  // let stubJourneyWaypointId;
 
-  const stubUtil = {
-    getJourneyFromUrl: sinon.stub().callsFake(() => (stubUserJourney)),
-    getPageIdFromJourneyUrl: sinon.stub().callsFake(() => (stubJourneyWaypointId)),
-  };
+  // const stubUtil = {
+  //   getJourneyFromUrl: sinon.stub().callsFake(() => (stubGraph)),
+  //   getPageIdFromJourneyUrl: sinon.stub().callsFake(() => (stubJourneyWaypointId)),
+  // };
 
-  const myJourney = proxyquire('../../../../middleware/page/journey-rails.js', {
-    '../../lib/Util.js': stubUtil,
+  const mwJourney = proxyquire('../../../../middleware/page/journey-rails.js', {
     '../../lib/Logger.js': sinon.stub().callsFake(() => (mockLogger)),
   });
 
   beforeEach(() => {
     mockLogger = logger();
-    middleware = myJourney(mockLogger);
     mockRequest = request();
     mockResponse = response();
     stubNext = sinon.stub();
-    stubUserJourney = {
-      guid: null,
-      containsWaypoint: sinon.stub().returns(true),
+    stubGraph = {
+      containsNode: sinon.stub().returns(true),
       traverse: sinon.stub().returns([]),
-    }
-  });
-
-  it('should create a read-only req.journeyActive property holding the active user journey', () => {
-    middleware(mockRequest, mockResponse, stubNext);
-    expect(mockRequest).to.have.property('journeyActive').and.equals(stubUserJourney);
-    expect(Reflect.getOwnPropertyDescriptor(mockRequest, 'journeyActive')).to.contain({
-      configurable: false,
-      enumerable: true,
-      writable: false,
-    });
-  });
-
-  it('should create a read-only req.journeyWaypointId property holding the current journey waypoint identifier', () => {
-    const TEST_WAYPOINT = 'waypoint-abc';
-    stubJourneyWaypointId = TEST_WAYPOINT;
-    middleware(mockRequest, mockResponse, stubNext);
-    expect(mockRequest).to.have.property('journeyWaypointId').and.equals(TEST_WAYPOINT);
-    expect(Reflect.getOwnPropertyDescriptor(mockRequest, 'journeyWaypointId')).to.contain({
-      configurable: false,
-      enumerable: true,
-      writable: false,
-    });
+    };
+    middleware = mwJourney('/', stubGraph);
   });
 
   it('should call next middleware in chain if user journey does not contain the current waypoint', () => {
-    stubUserJourney.containsWaypoint = sinon.stub().returns(false);
+    stubGraph.containsNode = sinon.stub().returns(false);
     middleware(mockRequest, mockResponse, stubNext);
     expect(stubNext).to.have.been.calledOnceWithExactly();
   });
 
   describe('should redirect to the last traversed waypoint when attempting to access an unreachable waypoint', () => {
     it('with no mountUrl', () => {
-      middleware = myJourney();
-      stubUserJourney.traverse.returns(['waypoint0', 'waypoint1', 'waypoint2']);
-      stubJourneyWaypointId = 'waypoint3';
+      stubGraph.traverse.returns(['waypoint0', 'waypoint1', 'waypoint2']);
+      middleware = mwJourney('/', stubGraph);
+      mockRequest.journeyOrigin = { originId: '', node: 'waypoint3' };
+      mockRequest.journeyWaypointId = 'waypoint3';
       middleware(mockRequest, mockResponse, stubNext);
       expect(mockResponse.status).to.have.been.calledOnceWithExactly(302);
       expect(mockResponse.redirect).to.have.been.calledOnceWithExactly('/waypoint2#');
     });
 
     it('with a mountUrl', () => {
-      middleware = myJourney('/mount-url/');
-      stubUserJourney.traverse.returns(['waypoint0', 'waypoint1', 'waypoint2']);
-      stubJourneyWaypointId = 'waypoint3';
+      stubGraph.traverse.returns(['waypoint0', 'waypoint1', 'waypoint2']);
+      middleware = mwJourney('/mount-url/', stubGraph);
+      mockRequest.journeyOrigin = { originId: '', node: 'waypoint3' };
+      mockRequest.journeyWaypointId = 'waypoint3';
       middleware(mockRequest, mockResponse, stubNext);
       expect(mockResponse.status).to.have.been.calledOnceWithExactly(302);
       expect(mockResponse.redirect).to.have.been.calledOnceWithExactly('/mount-url/waypoint2#');
     });
 
-    it('with a mount url and journey guid', () => {
-      middleware = myJourney('/mount-url/');
-      stubUserJourney.guid = 'test-journey'
-      stubUserJourney.traverse.returns(['waypoint0', 'waypoint1', 'waypoint2']);
-      stubJourneyWaypointId = 'waypoint3';
+    it('with a mount url and origin ID', () => {
+      stubGraph.traverse.returns(['waypoint0', 'waypoint1', 'waypoint2']);
+      middleware = mwJourney('/mount-url/', stubGraph);
+      mockRequest.journeyOrigin = { originId: 'test-journey', node: 'waypoint3' };
+      mockRequest.journeyWaypointId = 'waypoint3';
       middleware(mockRequest, mockResponse, stubNext);
       expect(mockResponse.status).to.have.been.calledOnceWithExactly(302);
       expect(mockResponse.redirect).to.have.been.calledOnceWithExactly('/mount-url/test-journey/waypoint2#');
     });
 
     it('and debug log is created', () => {
-      middleware = myJourney();
-      stubUserJourney.traverse.returns(['waypoint0', 'waypoint1', 'waypoint2']);
-      stubJourneyWaypointId = 'waypoint3';
+      stubGraph.traverse.returns(['waypoint0', 'waypoint1', 'waypoint2']);
+      middleware = mwJourney('/', stubGraph);
+      mockRequest.journeyOrigin = { originId: '', node: 'waypoint3' };
+      mockRequest.journeyWaypointId = 'waypoint3';
       middleware(mockRequest, mockResponse, stubNext);
       expect(mockLogger.debug).to.have.been.calledOnceWithExactly('Traversal redirect: %s to %s', 'waypoint3', '/waypoint2');
     });
@@ -109,10 +88,11 @@ describe('Middleware: page/journey-rails', () => {
 
   describe('should set res.locals.casa.journeyPreviousUrl to the last traversed waypoint when attempting to access an reachable waypoint', () => {
     it('with no mountUrl', () => {
-      middleware = myJourney();
+      stubGraph.traverse = sinon.stub().returns(['waypoint0', 'waypoint1', 'waypoint2']);
+      middleware = mwJourney('/', stubGraph);
+      mockRequest.journeyOrigin = { originId: '', node: 'waypoint2' };
+      mockRequest.journeyWaypointId = 'waypoint2';
       mockResponse.locals.casa = {};
-      stubUserJourney.traverse = sinon.stub().returns(['waypoint0', 'waypoint1', 'waypoint2']);
-      stubJourneyWaypointId = 'waypoint2';
       middleware(mockRequest, mockResponse, stubNext);
       expect(mockResponse.locals).to.deep.contain({
         casa: {
@@ -123,10 +103,11 @@ describe('Middleware: page/journey-rails', () => {
     });
 
     it('with a mountUrl', () => {
-      middleware = myJourney('/mount-url/');
+      stubGraph.traverse = sinon.stub().returns(['waypoint0', 'waypoint1', 'waypoint2']);
+      middleware = mwJourney('/mount-url/', stubGraph);
+      mockRequest.journeyOrigin = { originId: '', node: 'waypoint2' };
+      mockRequest.journeyWaypointId = 'waypoint2';
       mockResponse.locals.casa = {};
-      stubUserJourney.traverse = sinon.stub().returns(['waypoint0', 'waypoint1', 'waypoint2']);
-      stubJourneyWaypointId = 'waypoint2';
       middleware(mockRequest, mockResponse, stubNext);
       expect(mockResponse.locals).to.deep.contain({
         casa: {
@@ -136,12 +117,12 @@ describe('Middleware: page/journey-rails', () => {
       expect(stubNext).to.have.been.calledOnceWithExactly();
     });
 
-    it('with a mountUrl and journey guid', () => {
-      middleware = myJourney('/mount-url/');
+    it('with a mountUrl and origin ID', () => {
+      stubGraph.traverse = sinon.stub().returns(['waypoint0', 'waypoint1', 'waypoint2']);
+      middleware = mwJourney('/mount-url/', stubGraph);
+      mockRequest.journeyOrigin = { originId: 'test-journey', node: 'waypoint2' };
+      mockRequest.journeyWaypointId = 'waypoint2';
       mockResponse.locals.casa = {};
-      stubUserJourney.guid = 'test-journey'
-      stubUserJourney.traverse = sinon.stub().returns(['waypoint0', 'waypoint1', 'waypoint2']);
-      stubJourneyWaypointId = 'waypoint2';
       middleware(mockRequest, mockResponse, stubNext);
       expect(mockResponse.locals).to.deep.contain({
         casa: {

@@ -53,11 +53,17 @@ describe('Middleware: page/gather', () => {
 
   it('should create req.casaRequestState holding traversal state', () => {
     const middleware = mwGather()[1];
+    mockRequest.journeyOrigin = { originId: '', node: 'test-id' };
     mockRequest.journeyActive.traverse.returns([1, 2, 3]);
     mockRequest.journeyData.getData.returns('test-data');
     mockRequest.journeyData.getValidationErrors.returns('test-errors');
     middleware(mockRequest, mockResponse, stubNext);
-    expect(mockRequest.journeyActive.traverse).to.be.calledOnceWithExactly('test-data', 'test-errors');
+    expect(mockRequest.journeyActive.traverse).to.be.calledOnceWithExactly({
+      data: 'test-data',
+      validation: 'test-errors',
+    }, {
+      startNode: 'test-id',
+    });
     expect(mockRequest).to.have.property('casaRequestState').that.eql({
       preGatherTraversalSnapshot: [1, 2, 3],
     });
@@ -66,6 +72,7 @@ describe('Middleware: page/gather', () => {
 
   it('should execute the "pregather" hook', () => {
     const middleware = mwGather()[1];
+    mockRequest.journeyOrigin = { originId: '', node: '' };
     middleware(mockRequest, mockResponse, stubNext);
     expect(stubExecuteHook).to.be.calledOnceWithExactly(
       mockLogger,
@@ -80,6 +87,7 @@ describe('Middleware: page/gather', () => {
     const middleware = mwGather()[1];
     const error = new Error('test-error');
     stubExecuteHook.rejects(error);
+    mockRequest.journeyOrigin = { originId: '', node: '' };
     await middleware(mockRequest, mockResponse, stubNext);
     expect(stubNext).to.be.calledOnceWithExactly(error);
   });
@@ -95,6 +103,7 @@ describe('Middleware: page/gather', () => {
       testField: 'data-0',
       more: 'data-1',
     };
+    mockRequest.journeyOrigin = { originId: '', node: '' };
     stubExtractSessionableData.returns(mockRequest.body);
     stubRunGatherModifiers.withArgs('data-0', 'test-modifier').returns('data-0-modified');
     await middleware(mockRequest, mockResponse, stubNext);
@@ -112,6 +121,7 @@ describe('Middleware: page/gather', () => {
       test: 'data',
       more: 'data',
     };
+    mockRequest.journeyOrigin = { originId: '', node: '' };
     stubExtractSessionableData.returns({
       data: 'test-item',
     });

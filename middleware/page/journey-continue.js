@@ -5,7 +5,8 @@ module.exports = (pageMeta = {}, mountUrl = '/') => (req, res, next) => {
   const logger = createLogger('page.journey-continue');
   logger.setSessionId(req.session.id);
   const pageId = pageMeta.id;
-  const journey = req.journeyActive;
+  // const journey = req.journeyActive;
+  const { journeyOrigin, journeyActive: journey } = req;
 
   // If the page has errors, traversal must stop here until those errors are
   // resolved. It is the responsibility of the next middleware to deal with
@@ -17,7 +18,7 @@ module.exports = (pageMeta = {}, mountUrl = '/') => (req, res, next) => {
 
   function calculateNextWaypoint() {
     let nextWaypoint;
-    const waypointPrefix = `${mountUrl}/${journey.guid || ''}/`.replace(/\/+/g, '/');
+    // const waypointPrefix = `${mountUrl}/${journey.guid || ''}/`.replace(/\/+/g, '/');
     if (req.inEditMode) {
       // When in edit mode, the user should be redirected back to the 'review'
       // UI (denoted by the `req.editOriginUrl`) after submitting their update
@@ -26,11 +27,14 @@ module.exports = (pageMeta = {}, mountUrl = '/') => (req, res, next) => {
       // step, the 'journey' middleware will ensure they are redirected back to
       // the correct next waypoint.
       logger.trace('Comparing pre-gather traversal snapshot');
+      const waypointPrefix = `${mountUrl}/${journeyOrigin.originId || ''}/`.replace(/\/+/g, '/');
       const { preGatherTraversalSnapshot = [] } = req.casaRequestState || {};
-      const currentTraversalSnapshot = journey.traverse(
-        req.journeyData.getData(),
-        req.journeyData.getValidationErrors(),
-      );
+      const currentTraversalSnapshot = journey.traverse({
+        data: req.journeyData.getData(),
+        validation: req.journeyData.getValidationErrors(),
+      }, {
+        startNode: journeyOrigin.node,
+      });
       nextWaypoint = req.editOriginUrl || '';
       preGatherTraversalSnapshot.every((el, i) => {
         if (typeof currentTraversalSnapshot[i] === 'undefined') {
@@ -43,23 +47,28 @@ module.exports = (pageMeta = {}, mountUrl = '/') => (req, res, next) => {
         }
         return same;
       });
-    } else if (journey.containsWaypoint(pageId)) {
-      logger.trace('Check waypoint %s can be reached (journey guid = %s)', pageId, journey.guid);
-      const waypoints = journey.traverse(
-        req.journeyData.getData(),
-        req.journeyData.getValidationErrors(),
-      );
+    } else if (journey.containsNode(pageId)) {
+      logger.trace('Check waypoint %s can be reached (journey guid = %s)', pageId, journeyOrigin.originId);
+      const edges = journey.traverseNextEdges({
+        data: req.journeyData.getData(),
+        validation: req.journeyData.getValidationErrors(),
+      }, {
+        startNode: journeyOrigin.node,
+      });
+      const waypoints = edges.map(e => e.source);
+
       const positionInJourney = Math.min(
         waypoints.indexOf(pageId),
         waypoints.length - 2,
       );
       if (positionInJourney > -1) {
-        nextWaypoint = `${waypointPrefix}${waypoints[positionInJourney + 1]}`;
+        const edge = edges[positionInJourney];
+        nextWaypoint = `${mountUrl}/${edge.label.targetOrigin || journeyOrigin.originId || ''}/${waypoints[positionInJourney + 1]}`.replace(/\/+/g, '/');
       } else {
         nextWaypoint = req.originalUrl;
       }
     } else {
-      logger.trace('Waypoint %s not in journey %s. Returning to original url', pageId, journey.guid);
+      logger.trace('Waypoint %s not in journey %s. Returning to original url', pageId, journeyOrigin.originId);
       nextWaypoint = req.originalUrl;
     }
 

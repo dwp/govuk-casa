@@ -4,8 +4,29 @@
 
 const reviewPageDefinition = require('@dwp/govuk-casa/definitions/review-page');
 
-module.exports = (function() {
+module.exports = (casaApp, mountUrl) => {
   const pages = {};
+
+  /* -------------------------------------------------------- "trunk" journey */
+
+  // The "task-list" has a custom handler, so we don't use page meta here
+
+  pages['finish'] = {
+    view: 'finish.njk',
+    hooks: {
+      pregather: (req, res, next) => {
+        console.log(JSON.stringify(req.journeyData.getData(), null, 2));
+
+        // Remember to clear the journey data once submitted
+        casaApp.endSession(req).then(() => {
+          res.status(302).redirect(`${mountUrl}what-happens-next`);
+        }).catch((err) => {
+          console.log(err);
+          res.status(302).redirect(`${mountUrl}what-happens-next`);
+        });
+      },
+    }
+  };
 
   /* -------------------------------------------------- "preliminary" journey */
 
@@ -26,7 +47,6 @@ module.exports = (function() {
     reviewBlockView: 'review-blocks/dob.njk',
     fieldValidators: require('./field-validators/dob.js'),
   };
-
 
   /* -------------------------------------------------------- "books" journey */
 
@@ -52,4 +72,4 @@ module.exports = (function() {
   pages['initial-review'] = reviewPageDefinition(pages);
 
   return pages;
-})();
+};

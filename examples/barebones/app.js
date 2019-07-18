@@ -1,10 +1,10 @@
-const casa = require('@dwp/govuk-casa');
+const { configure } = require('@dwp/govuk-casa');
 const express = require('express');
 const path = require('path');
 
 // Create a new CASA application instance.
 const app = express();
-const casaApp = casa(app, {
+const casaApp = configure(app, {
   mountUrl: '/barebones/',
   views: {
     dirs: [ path.resolve(__dirname, 'views') ]

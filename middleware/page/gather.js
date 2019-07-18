@@ -12,16 +12,18 @@ module.exports = (pageMeta = {}) => [mwBodyParser, (req, res, next) => {
   const logger = createLogger('page.gather');
   logger.setSessionId(req.session.id);
   const pageId = pageMeta.id;
-  const journey = req.journeyActive;
+  const { journeyOrigin, journeyActive: journey } = req;
 
   // Take a traversal snapshot of the journey before we mutate the data/error
   // context
   logger.trace('Take pre-gather traversal snapshot');
   req.casaRequestState = Object.assign(req.casaRequestState || {}, {
-    preGatherTraversalSnapshot: journey.traverse(
-      req.journeyData.getData(),
-      req.journeyData.getValidationErrors(),
-    ),
+    preGatherTraversalSnapshot: journey.traverse({
+      data: req.journeyData.getData(),
+      validation: req.journeyData.getValidationErrors(),
+    }, {
+      startNode: journeyOrigin.node,
+    }),
   });
 
   /**

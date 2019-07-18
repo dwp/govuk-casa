@@ -1,10 +1,10 @@
-const casa = require('@dwp/govuk-casa');
+const { configure } = require('@dwp/govuk-casa');
 const express = require('express');
 const path = require('path');
 
 // Create a new CASA application instance.
 const app = express();
-const casaApp = casa(app, {
+const casaApp = configure(app, {
   mountUrl: '/',
   views: {
     dirs: [ path.resolve(__dirname, 'views') ]
@@ -34,13 +34,12 @@ require('./routes/complete')(casaApp.router);
 
 // Load CASA page and user journey definitions
 casaApp.loadDefinitions(
-  require('./definitions/pages.js'),
+  require('./definitions/pages.js')(casaApp, casaApp.config.mountUrl),
   require('./definitions/journeys.js')(casaApp.router, casaApp.config.mountUrl)
 );
 
 // Custom route handlers for journey waypoints
 require('./routes/task-list')(casaApp.router);
-require('./routes/finish')(casaApp, casaApp.config.mountUrl, casaApp.router, casaApp.csrfMiddleware);
 
 // Start server
 const server = app.listen(process.env.PORT || 3000, () => {

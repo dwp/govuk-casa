@@ -150,9 +150,11 @@ module.exports = {
   ConfigIngestor: require('./lib/ConfigIngestor.js'),
 
   JourneyData: require('./lib/JourneyData.js'),
-  JourneyRoad: require('./lib/JourneyRoad.js'),
-  JourneyMap: require('./lib/JourneyMap.js'),
+  // JourneyRoad: require('./lib/JourneyRoad.js'), // @deprecate
+  // JourneyMap: require('./lib/JourneyMap.js'), // @deprecate
 
   PageDirectory: require('./lib/PageDirectory.js'),
+
+  Graph: require('./lib/Graph.js'),
   // TODO: and all the rest ....
 };
