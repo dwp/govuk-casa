@@ -55,4 +55,12 @@ describe('View filter: mergeObjectsDeep', () => {
       x: 1,
     });
   });
+
+  it('should not pollute prototypes', () => {
+    const first = { ['__proto__']: { x: 1 } };
+    const merged = mergeObjectsDeep({}, first);
+    expect(merged.x).to.be.undefined;
+    expect(Object.prototype.x).to.be.undefined;
+    expect(({}).x).to.be.undefined;
+  });
 });
