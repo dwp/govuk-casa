@@ -6,6 +6,8 @@
  * `.router` property of the returned CASA app instance.
  */
 
+const util = require('util');
+
 // Globals
 // @deprecated
 global.GOVUK_CASA_DIR = __dirname;
@@ -135,26 +137,52 @@ function CasaBootstrap(expressApp, config) {
 
 /* eslint-disable global-require */
 module.exports = {
+  // Bootstrap
   configure: CasaBootstrap,
+  ConfigIngestor: require('./lib/ConfigIngestor.js'),
   middleware: require('./middleware/index.js'),
   endSession: require('./lib/bootstrap/end-session.js'),
 
+  // Page meta
+  gatherModifiers: require('./lib/gather-modifiers/index.js'),
+  PageDirectory: require('./lib/PageDirectory.js'),
+
+  // Validation
   validationRules: require('./lib/validation/rules/index.js'),
   validationProcessor: require('./lib/validation/processor.js'),
   arrayObjectFieldValidation: require('./lib/validation/ArrayObjectField.js'),
   objectFieldValidation: require('./lib/validation/ObjectField.js'),
   simpleFieldValidation: require('./lib/validation/SimpleField.js'),
 
-  gatherModifiers: require('./lib/gather-modifiers/index.js'),
+  // User journey elements
+  Plan: require('./lib/Plan.js'),
+  JourneyContext: require('./lib/JourneyContext.js'),
 
-  ConfigIngestor: require('./lib/ConfigIngestor.js'),
-
-  JourneyData: require('./lib/JourneyData.js'),
-  // JourneyRoad: require('./lib/JourneyRoad.js'), // @deprecate
-  // JourneyMap: require('./lib/JourneyMap.js'), // @deprecate
-
-  PageDirectory: require('./lib/PageDirectory.js'),
-
-  Graph: require('./lib/Graph.js'),
   // TODO: and all the rest ....
 };
+
+/* -------------------------------------------------------- Deprecated assets */
+
+const JourneyMapDeprecated = require('./lib/JourneyMap.js');
+const JourneyRoadDeprecated = require('./lib/JourneyRoad.js');
+
+module.exports.JourneyData = function JourneyData(...args) {
+  return util.deprecate(
+    () => new module.exports.JourneyContext(...args),
+    'JourneyData is deprecated. Use JourneyContext instead.',
+  )();
+}
+
+module.exports.JourneyRoad = function JourneyRoad(...args) {
+  return util.deprecate(
+    () => new JourneyRoadDeprecated(...args),
+    'JourneyRoad is deprecated. Use Plan for building user journey plans instead.',
+  )();
+}
+
+module.exports.JourneyMap = function JourneyMap(...args) {
+  return util.deprecate(
+    () => new JourneyMapDeprecated(...args),
+    'JourneyMap is deprecated. Use Plan for building user journey plans instead.',
+  )();
+}

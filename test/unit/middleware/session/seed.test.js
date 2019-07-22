@@ -1,7 +1,6 @@
 const chai = require('chai');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
-const proxyquire = require('proxyquire');
 
 const { expect } = chai;
 chai.use(sinonChai);
@@ -10,7 +9,7 @@ const { request, response } = require('../../helpers/express-mocks.js');
 
 const mwSeed = require('../../../../middleware/session/seed.js');
 
-const JourneyData = require('../../../../lib/JourneyData.js');
+const JourneyContext = require('../../../../lib/JourneyContext.js');
 
 describe('Middleware: session/expiry', () => {
   let mockRequest;
@@ -25,9 +24,9 @@ describe('Middleware: session/expiry', () => {
     middleware = mwSeed();
   });
 
-  it('should create a req.journeyData JourneyData property', () => {
+  it('should create a req.casa.journeyContext JourneyContext property', () => {
     middleware(mockRequest, mockResponse, stubNext);
-    expect(mockRequest).to.have.property('journeyData').that.is.instanceOf(JourneyData);
+    expect(mockRequest.casa).to.have.property('journeyContext').that.is.instanceOf(JourneyContext);
   });
 
   it('should call next function in middleware chain', () => {
@@ -35,34 +34,42 @@ describe('Middleware: session/expiry', () => {
     expect(stubNext).to.be.calledOnceWithExactly();
   });
 
-  describe('should create JourneyData instance with data held in session', () => {
-    let stubJourneyData;
+  describe('should create JourneyContext instance with data held in session', () => {
+    let spyFromObject;
 
     beforeEach(() => {
-      stubJourneyData = sinon.stub();
-      const proxyMwSeed = proxyquire.noPreserveCache()('../../../../middleware/session/seed.js', {
-        '../../lib/JourneyData.js': stubJourneyData,
-      });
-      middleware = proxyMwSeed();
+      spyFromObject = sinon.spy(JourneyContext, 'fromObject');
+    });
+
+    afterEach(() => {
+      spyFromObject.restore();
     });
 
     it('set journey data', () => {
-      mockRequest.session.journeyData = {
-        test: 'data',
+      mockRequest.session.journeyContext = {
+        data: {
+          test: 'data',
+        },
       };
       middleware(mockRequest, mockResponse, stubNext);
-      expect(stubJourneyData).to.be.calledOnceWith(sinon.match({
-        test: 'data',
-      }), {});
+      expect(spyFromObject).to.be.calledOnceWith(sinon.match({
+        data: {
+          test: 'data',
+        },
+      }));
     });
 
     it('set journey validation errors', () => {
-      mockRequest.session.journeyValidationErrors = {
-        test: 'data',
+      mockRequest.session.journeyContext = {
+        validation: {
+          test: 'data',
+        },
       };
       middleware(mockRequest, mockResponse, stubNext);
-      expect(stubJourneyData).to.be.calledOnceWith({}, sinon.match({
-        test: 'data',
+      expect(spyFromObject).to.be.calledOnceWith(sinon.match({
+        validation: {
+          test: 'data',
+        },
       }));
     });
   });

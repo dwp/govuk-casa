@@ -317,9 +317,9 @@ module.exports = function (casaApp, mountUrl, router, csrf) {
   });
 
   router.post('/submit', csrf, (req, res, next) => {
-    // Note, `req.journeyData` holds all the gathered data so you can manipulate
+    // Note, `req.casa.journeyContext` holds all the gathered data so you can manipulate
     // it however you wish at this point before submitting to final destination.
-    console.log(req.journeyData.getData());
+    console.log(req.casa.journeyContext.getData());
 
     // Remember to clear the journey data once submitted, then say thanks
     casaApp.endSession(req).then(() => {
@@ -520,7 +520,7 @@ Here's some review blocks for each of our pages:
 {% endblock %}
 
 {% block reviewBlock %}
-  {% set pData = journeyData['personal-info'] %}
+  {% set pData = journeyContext['personal-info'] %}
 
   {{ govukSummaryList({
     classes: "govuk-!-margin-bottom-9 check-your-answers",
@@ -591,7 +591,7 @@ Here's some review blocks for each of our pages:
 {% endblock %}
 
 {% block reviewBlock %}
-  {% set pData = journeyData['hobbies'] %}
+  {% set pData = journeyContext['hobbies'] %}
 
   {{ govukSummaryList({
     classes: "govuk-!-margin-bottom-9 check-your-answers",

@@ -1,10 +1,10 @@
-module.exports = graph => {
-  graph.addSequence(
+module.exports = plan => {
+  plan.addSequence(
     'action-books',
     'thriller-books',
     'books:horror-books',
     'trunk:task-list',
   );
 
-  graph.addOrigin('books', 'action-books');
+  plan.addOrigin('books', 'action-books');
 };

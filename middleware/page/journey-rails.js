@@ -10,31 +10,33 @@
 
 const createLogger = require('../../lib/Logger.js');
 
-module.exports = (mountUrl = '/', graph) => (req, res, next) => {
+module.exports = (mountUrl = '/', plan) => (req, res, next) => {
   const logger = createLogger('page.journey-rails');
   logger.setSessionId(req.session.id);
 
+  req.casa = req.casa || Object.create(null);
+
   // We can skip to next route handler if the waypoint doesn't feature in the
   // defined user journey.
-  if (!graph || !graph.containsNode(req.journeyWaypointId)) {
+  if (!plan || !plan.containsWaypoint(req.casa.journeyWaypointId)) {
     next();
     return;
   }
 
   const traversalOptions = {
-    startNode: req.journeyOrigin.node,
+    startWaypoint: req.casa.journeyOrigin.waypoint,
   };
-  const traversed = !req.journeyData ? graph.traverse({}, traversalOptions) : graph.traverse({
-    data: req.journeyData.getData(),
-    validation: req.journeyData.getValidationErrors(),
+  const traversed = !req.casa.journeyContext ? plan.traverse({}, traversalOptions) : plan.traverse({
+    data: req.casa.journeyContext.getData(),
+    validation: req.casa.journeyContext.getValidationErrors(),
   }, traversalOptions);
 
-  const currentUrlIndex = traversed.indexOf(req.journeyWaypointId);
-  const redirectUrlPrefix = `${mountUrl}/${req.journeyOrigin.originId || ''}/`.replace(/\/+/g, '/');
+  const currentUrlIndex = traversed.indexOf(req.casa.journeyWaypointId);
+  const redirectUrlPrefix = `${mountUrl}/${req.casa.journeyOrigin.originId || ''}/`.replace(/\/+/g, '/');
   if (currentUrlIndex === -1) {
     let redirectUrl = `${redirectUrlPrefix}${traversed[traversed.length - 1]}`;
     redirectUrl = redirectUrl.replace(/\/+/g, '/');
-    logger.debug('Traversal redirect: %s to %s', req.journeyWaypointId, redirectUrl);
+    logger.debug('Traversal redirect: %s to %s', req.casa.journeyWaypointId, redirectUrl);
     res.status(302).redirect(`${redirectUrl}#`);
   } else {
     if (currentUrlIndex > 0) {

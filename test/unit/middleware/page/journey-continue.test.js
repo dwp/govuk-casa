@@ -10,7 +10,7 @@ chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
 const { request, response } = require('../../helpers/express-mocks.js');
-const { graph: journeyGraph } = require('../../helpers/journey-mocks.js');
+const { plan: journeyPlan } = require('../../helpers/journey-mocks.js');
 const logger = require('../../helpers/logger-mock.js');
 
 describe('Middleware: page/journey-continue', () => {
@@ -33,12 +33,14 @@ describe('Middleware: page/journey-continue', () => {
     middleware = mwJourney();
     mockRequest = request();
     mockRequest = Object.assign(mockRequest, {
-      journeyActive: journeyGraph(),
-      journeyOrigin: { originId: '', node: '' },
-      journeyData: {
-        getData: sinon.stub().returns({}),
-        getValidationErrors: sinon.stub().returns({}),
-        hasValidationErrorsForPage: sinon.stub().returns(false),
+      casa: {
+        plan: journeyPlan(),
+        journeyOrigin: { originId: '', waypoint: '' },
+        journeyContext: {
+          getData: sinon.stub().returns({}),
+          getValidationErrors: sinon.stub().returns({}),
+          hasValidationErrorsForPage: sinon.stub().returns(false),
+        },
       },
     });
     mockResponse = response();
@@ -50,7 +52,7 @@ describe('Middleware: page/journey-continue', () => {
   });
 
   it('should call the next middleware in chain and return void when requested page has validation errors', () => {
-    mockRequest.journeyData.hasValidationErrorsForPage.returns(true);
+    mockRequest.casa.journeyContext.hasValidationErrorsForPage.returns(true);
     middleware = mwJourney({
       id: 'test-waypoint',
     });
@@ -113,7 +115,7 @@ describe('Middleware: page/journey-continue', () => {
           preGatherTraversalSnapshot: ['page0', 'page1', 'page2'],
         },
       });
-      mockRequest.journeyActive.traverse.returns(['page0', 'changeA', 'changeB']);
+      mockRequest.casa.plan.traverse.returns(['page0', 'changeA', 'changeB']);
       await middlewareWithConfig(mockRequest, mockResponse, stubNext);
       expect(mockResponse.status).to.be.calledOnceWithExactly(302);
       expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/changeA#');
@@ -127,7 +129,7 @@ describe('Middleware: page/journey-continue', () => {
         inEditMode: false,
         originalUrl: '/test-original-url?test',
       });
-      mockRequest.journeyActive.containsNode.returns(false);
+      mockRequest.casa.plan.containsWaypoint.returns(false);
       await middlewareWithConfig(mockRequest, mockResponse, stubNext);
       expect(mockResponse.status).to.be.calledOnceWithExactly(302);
       expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-original-url?test#');
@@ -140,9 +142,9 @@ describe('Middleware: page/journey-continue', () => {
       mockRequest = Object.assign(mockRequest, {
         inEditMode: false,
       });
-      mockRequest.journeyOrigin = { originId: 'test-guid', node: 'page0' };
-      mockRequest.journeyActive.containsNode.returns(true);
-      mockRequest.journeyActive.traverseNextEdges.returns([
+      mockRequest.casa.journeyOrigin = { originId: 'test-guid', waypoint: 'page0' };
+      mockRequest.casa.plan.containsWaypoint.returns(true);
+      mockRequest.casa.plan.traverseNextRoutes.returns([
         { source: 'page0', target: 'page1', name: 'next', label: { targetOrigin: undefined } },
         { source: 'page1', target: 'page2', name: 'next', label: { targetOrigin: undefined } },
         { source: 'page2', target: null, name: 'next', label: { targetOrigin: undefined } },
@@ -164,9 +166,9 @@ describe('Middleware: page/journey-continue', () => {
       mockRequest = Object.assign(mockRequest, {
         inEditMode: false,
       });
-      mockRequest.journeyOrigin = { originId: '', node: 'page0' };
-      mockRequest.journeyActive.containsNode.returns(true);
-      mockRequest.journeyActive.traverseNextEdges.returns([
+      mockRequest.casa.journeyOrigin = { originId: '', waypoint: 'page0' };
+      mockRequest.casa.plan.containsWaypoint.returns(true);
+      mockRequest.casa.plan.traverseNextRoutes.returns([
         { source: 'page0', target: 'page1', name: 'next', label: { targetOrigin: undefined } },
         { source: 'page1', target: 'page2', name: 'next', label: { targetOrigin: undefined } },
         { source: 'page2', target: null, name: 'next', label: { targetOrigin: undefined } },

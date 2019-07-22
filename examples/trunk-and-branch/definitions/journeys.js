@@ -2,14 +2,14 @@
  * This simply collates all of journeys together in an array.
  */
 
-const { Graph } = require('@dwp/govuk-casa');
+const { Plan } = require('@dwp/govuk-casa');
 
 module.exports = (router, mountUrl) => {
-  const graph = new Graph();
+  const plan = new Plan();
 
-  require('./journeys/trunk.js')(graph);
-  require('./journeys/preliminary.js')(graph);
-  require('./journeys/books.js')(graph);
+  require('./journeys/trunk.js')(plan);
+  require('./journeys/preliminary.js')(plan);
+  require('./journeys/books.js')(plan);
 
-  return graph;
+  return plan;
 };

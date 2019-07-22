@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block reviewBlock %}
-  {% set pData = journeyData['personal-details'] %}
+  {% set pData = journeyContext['personal-details'] %}
 
   {{ govukSummaryList({
     classes: "govuk-!-margin-bottom-9 check-your-answers",

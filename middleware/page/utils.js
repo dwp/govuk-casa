@@ -16,7 +16,7 @@ const { isObjectWithKeys } = require('../../lib/Util.js');
 function executeHook(logger, req = {}, res = {}, pageMeta = {}, hookName = '') {
   return new Promise((resolve, reject) => {
     const hooks = pageMeta && pageMeta.hooks ? pageMeta.hooks : {};
-    const journeyWaypointId = req.journeyWaypointId || '';
+    const journeyWaypointId = req.casa.journeyWaypointId || '';
     if (typeof hooks[hookName] === 'function') {
       logger.trace('Run %s hook for %s', hookName, journeyWaypointId);
       hooks[hookName](req, res, (err) => {

@@ -14,17 +14,19 @@ const data = () => ({
   clearValidationErrorsForPage: sinon.stub(),
   setDataForPage: sinon.stub(),
   setValidationErrorsForPage: sinon.stub(),
+  toObject: sinon.stub().returns({}),
+  fromObject: sinon.stub().callsFake(() => data()),
 });
 
-const graph = () => ({
-  containsNode: sinon.stub().returns(false),
+const plan = () => ({
+  containsWaypoint: sinon.stub().returns(false),
   traverse: sinon.stub().returns([]),
-  traverseNextEdges: sinon.stub().returns([]),
+  traverseNextRoutes: sinon.stub().returns([]),
   getOrigins: sinon.stub().returns([]),
 });
 
 module.exports = {
   map,
   data,
-  graph,
+  plan,
 };

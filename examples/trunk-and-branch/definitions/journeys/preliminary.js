@@ -1,5 +1,5 @@
-module.exports = graph => {
-  graph.addSequence(
+module.exports = plan => {
+  plan.addSequence(
     'declaration',
     'contact-details',
     'dob',
@@ -7,5 +7,5 @@ module.exports = graph => {
     'trunk:task-list',
   );
 
-  graph.addOrigin('preliminary', 'declaration');
+  plan.addOrigin('preliminary', 'declaration');
 };

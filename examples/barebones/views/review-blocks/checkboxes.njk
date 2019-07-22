@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block reviewBlock %}
-  {% set pData = journeyData['checkboxes'] %}
+  {% set pData = journeyContext['checkboxes'] %}
 
   {{ govukSummaryList({
     classes: "govuk-!-margin-bottom-9 check-your-answers",

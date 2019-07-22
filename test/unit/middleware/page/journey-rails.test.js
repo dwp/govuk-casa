@@ -15,11 +15,11 @@ describe('Middleware: page/journey-rails', () => {
   let mockRequest;
   let mockResponse;
   let stubNext;
-  let stubGraph;
+  let stubPlan;
   // let stubJourneyWaypointId;
 
   // const stubUtil = {
-  //   getJourneyFromUrl: sinon.stub().callsFake(() => (stubGraph)),
+  //   getJourneyFromUrl: sinon.stub().callsFake(() => (stubPlan)),
   //   getPageIdFromJourneyUrl: sinon.stub().callsFake(() => (stubJourneyWaypointId)),
   // };
 
@@ -30,57 +30,58 @@ describe('Middleware: page/journey-rails', () => {
   beforeEach(() => {
     mockLogger = logger();
     mockRequest = request();
+    mockRequest.casa = {};
     mockResponse = response();
     stubNext = sinon.stub();
-    stubGraph = {
-      containsNode: sinon.stub().returns(true),
+    stubPlan = {
+      containsWaypoint: sinon.stub().returns(true),
       traverse: sinon.stub().returns([]),
     };
-    middleware = mwJourney('/', stubGraph);
+    middleware = mwJourney('/', stubPlan);
   });
 
   it('should call next middleware in chain if user journey does not contain the current waypoint', () => {
-    stubGraph.containsNode = sinon.stub().returns(false);
+    stubPlan.containsWaypoint = sinon.stub().returns(false);
     middleware(mockRequest, mockResponse, stubNext);
     expect(stubNext).to.have.been.calledOnceWithExactly();
   });
 
   describe('should redirect to the last traversed waypoint when attempting to access an unreachable waypoint', () => {
     it('with no mountUrl', () => {
-      stubGraph.traverse.returns(['waypoint0', 'waypoint1', 'waypoint2']);
-      middleware = mwJourney('/', stubGraph);
-      mockRequest.journeyOrigin = { originId: '', node: 'waypoint3' };
-      mockRequest.journeyWaypointId = 'waypoint3';
+      stubPlan.traverse.returns(['waypoint0', 'waypoint1', 'waypoint2']);
+      middleware = mwJourney('/', stubPlan);
+      mockRequest.casa.journeyOrigin = { originId: '', waypoint: 'waypoint3' };
+      mockRequest.casa.journeyWaypointId = 'waypoint3';
       middleware(mockRequest, mockResponse, stubNext);
       expect(mockResponse.status).to.have.been.calledOnceWithExactly(302);
       expect(mockResponse.redirect).to.have.been.calledOnceWithExactly('/waypoint2#');
     });
 
     it('with a mountUrl', () => {
-      stubGraph.traverse.returns(['waypoint0', 'waypoint1', 'waypoint2']);
-      middleware = mwJourney('/mount-url/', stubGraph);
-      mockRequest.journeyOrigin = { originId: '', node: 'waypoint3' };
-      mockRequest.journeyWaypointId = 'waypoint3';
+      stubPlan.traverse.returns(['waypoint0', 'waypoint1', 'waypoint2']);
+      middleware = mwJourney('/mount-url/', stubPlan);
+      mockRequest.casa.journeyOrigin = { originId: '', waypoint: 'waypoint3' };
+      mockRequest.casa.journeyWaypointId = 'waypoint3';
       middleware(mockRequest, mockResponse, stubNext);
       expect(mockResponse.status).to.have.been.calledOnceWithExactly(302);
       expect(mockResponse.redirect).to.have.been.calledOnceWithExactly('/mount-url/waypoint2#');
     });
 
     it('with a mount url and origin ID', () => {
-      stubGraph.traverse.returns(['waypoint0', 'waypoint1', 'waypoint2']);
-      middleware = mwJourney('/mount-url/', stubGraph);
-      mockRequest.journeyOrigin = { originId: 'test-journey', node: 'waypoint3' };
-      mockRequest.journeyWaypointId = 'waypoint3';
+      stubPlan.traverse.returns(['waypoint0', 'waypoint1', 'waypoint2']);
+      middleware = mwJourney('/mount-url/', stubPlan);
+      mockRequest.casa.journeyOrigin = { originId: 'test-journey', waypoint: 'waypoint3' };
+      mockRequest.casa.journeyWaypointId = 'waypoint3';
       middleware(mockRequest, mockResponse, stubNext);
       expect(mockResponse.status).to.have.been.calledOnceWithExactly(302);
       expect(mockResponse.redirect).to.have.been.calledOnceWithExactly('/mount-url/test-journey/waypoint2#');
     });
 
     it('and debug log is created', () => {
-      stubGraph.traverse.returns(['waypoint0', 'waypoint1', 'waypoint2']);
-      middleware = mwJourney('/', stubGraph);
-      mockRequest.journeyOrigin = { originId: '', node: 'waypoint3' };
-      mockRequest.journeyWaypointId = 'waypoint3';
+      stubPlan.traverse.returns(['waypoint0', 'waypoint1', 'waypoint2']);
+      middleware = mwJourney('/', stubPlan);
+      mockRequest.casa.journeyOrigin = { originId: '', waypoint: 'waypoint3' };
+      mockRequest.casa.journeyWaypointId = 'waypoint3';
       middleware(mockRequest, mockResponse, stubNext);
       expect(mockLogger.debug).to.have.been.calledOnceWithExactly('Traversal redirect: %s to %s', 'waypoint3', '/waypoint2');
     });
@@ -88,10 +89,10 @@ describe('Middleware: page/journey-rails', () => {
 
   describe('should set res.locals.casa.journeyPreviousUrl to the last traversed waypoint when attempting to access an reachable waypoint', () => {
     it('with no mountUrl', () => {
-      stubGraph.traverse = sinon.stub().returns(['waypoint0', 'waypoint1', 'waypoint2']);
-      middleware = mwJourney('/', stubGraph);
-      mockRequest.journeyOrigin = { originId: '', node: 'waypoint2' };
-      mockRequest.journeyWaypointId = 'waypoint2';
+      stubPlan.traverse = sinon.stub().returns(['waypoint0', 'waypoint1', 'waypoint2']);
+      middleware = mwJourney('/', stubPlan);
+      mockRequest.casa.journeyOrigin = { originId: '', waypoint: 'waypoint2' };
+      mockRequest.casa.journeyWaypointId = 'waypoint2';
       mockResponse.locals.casa = {};
       middleware(mockRequest, mockResponse, stubNext);
       expect(mockResponse.locals).to.deep.contain({
@@ -103,10 +104,10 @@ describe('Middleware: page/journey-rails', () => {
     });
 
     it('with a mountUrl', () => {
-      stubGraph.traverse = sinon.stub().returns(['waypoint0', 'waypoint1', 'waypoint2']);
-      middleware = mwJourney('/mount-url/', stubGraph);
-      mockRequest.journeyOrigin = { originId: '', node: 'waypoint2' };
-      mockRequest.journeyWaypointId = 'waypoint2';
+      stubPlan.traverse = sinon.stub().returns(['waypoint0', 'waypoint1', 'waypoint2']);
+      middleware = mwJourney('/mount-url/', stubPlan);
+      mockRequest.casa.journeyOrigin = { originId: '', waypoint: 'waypoint2' };
+      mockRequest.casa.journeyWaypointId = 'waypoint2';
       mockResponse.locals.casa = {};
       middleware(mockRequest, mockResponse, stubNext);
       expect(mockResponse.locals).to.deep.contain({
@@ -118,10 +119,10 @@ describe('Middleware: page/journey-rails', () => {
     });
 
     it('with a mountUrl and origin ID', () => {
-      stubGraph.traverse = sinon.stub().returns(['waypoint0', 'waypoint1', 'waypoint2']);
-      middleware = mwJourney('/mount-url/', stubGraph);
-      mockRequest.journeyOrigin = { originId: 'test-journey', node: 'waypoint2' };
-      mockRequest.journeyWaypointId = 'waypoint2';
+      stubPlan.traverse = sinon.stub().returns(['waypoint0', 'waypoint1', 'waypoint2']);
+      middleware = mwJourney('/mount-url/', stubPlan);
+      mockRequest.casa.journeyOrigin = { originId: 'test-journey', waypoint: 'waypoint2' };
+      mockRequest.casa.journeyWaypointId = 'waypoint2';
       mockResponse.locals.casa = {};
       middleware(mockRequest, mockResponse, stubNext);
       expect(mockResponse.locals).to.deep.contain({

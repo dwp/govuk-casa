@@ -1,15 +1,14 @@
-const UserJourney = require('../../../../lib/UserJourney');
+const Plan = require('../../../../lib/Plan.js');
 
 module.exports = (function MyAppUserJourney() {
-  const road = new UserJourney.Road();
+  const plan = new Plan();
 
-  road.addWaypoints([
+  plan.addSequence(
     'gather',
     'display',
-  ]);
-  road.end();
+  );
 
-  const journey = new UserJourney.Map();
-  journey.startAt(road);
-  return journey;
+  plan.addOrigin('main', 'gather');
+
+  return plan;
 }());
