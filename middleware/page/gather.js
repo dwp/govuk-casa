@@ -11,18 +11,21 @@ const mwBodyParser = bodyParser.urlencoded({
 module.exports = (pageMeta = {}) => [mwBodyParser, (req, res, next) => {
   const logger = createLogger('page.gather');
   logger.setSessionId(req.session.id);
+
+  req.casa = req.casa || Object.create(null);
+
   const pageId = pageMeta.id;
-  const { journeyOrigin, journeyActive: journey } = req;
+  const { journeyOrigin, plan: journey } = req.casa;
 
   // Take a traversal snapshot of the journey before we mutate the data/error
   // context
   logger.trace('Take pre-gather traversal snapshot');
   req.casaRequestState = Object.assign(req.casaRequestState || {}, {
     preGatherTraversalSnapshot: journey.traverse({
-      data: req.journeyData.getData(),
-      validation: req.journeyData.getValidationErrors(),
+      data: req.casa.journeyContext.getData(),
+      validation: req.casa.journeyContext.getValidationErrors(),
     }, {
-      startNode: journeyOrigin.node,
+      startWaypoint: journeyOrigin.waypoint,
     }),
   });
 
@@ -36,10 +39,9 @@ module.exports = (pageMeta = {}) => [mwBodyParser, (req, res, next) => {
     // Store gathered journey data, and reset any cached validation errors for
     // the page
     logger.trace('Storing session data for %s', pageId);
-    req.journeyData.setDataForPage(pageId, data);
-    req.journeyData.clearValidationErrorsForPage(pageId);
-    req.session.journeyData = req.journeyData.getData();
-    req.session.journeyValidationErrors = req.journeyData.getValidationErrors();
+    req.casa.journeyContext.setDataForPage(pageId, data);
+    req.casa.journeyContext.clearValidationErrorsForPage(pageId);
+    req.session.journeyContext = req.casa.journeyContext.toObject();
   }
 
   // Promise

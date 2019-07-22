@@ -52,30 +52,30 @@ module.exports = function routePages(
   mountUrl,
   router,
   pages,
-  graph,
+  plan,
   allowPageEdit,
 ) {
   const pageMetaKeys = pages.getAllPageIds();
-  const origins = graph.getOrigins();
+  const origins = plan.getOrigins();
 
-  // If there's only one origin node, we won't bother prefixing urls with the
+  // If there's only one origin waypoint, we won't bother prefixing urls with the
   // origin id
   let routePrefix = '/';
   if (!origins.length) {
-    throw new ReferenceError('No origin nodes have been defined. Cannot start graph traversal.');
+    throw new ReferenceError('No origin waypoints have been defined. Cannot start plan traversal.');
   } else if (origins.length > 1) {
     routePrefix = `/(${origins.map(o => o.originId).join('|')})`;
   }
 
-  graph.getNodes().filter(w => pageMetaKeys.includes(w)).forEach((waypoint) => {
+  plan.getWaypoints().filter(w => pageMetaKeys.includes(w)).forEach((waypoint) => {
     const routeUrl = new RegExp(`^${routePrefix}/${waypoint}$`.replace(/\/+/g, '/'));
     const pageMeta = pages.getPageMeta(waypoint);
 
     router.get(
       routeUrl,
-      mwPrepare(graph),
-      mwJourneyRails(mountUrl, graph),
-      mwSkip(mountUrl, graph),
+      mwPrepare(plan),
+      mwJourneyRails(mountUrl, plan),
+      mwSkip(mountUrl, plan),
       mwCsrfProtection,
       mwDetectEditMode(allowPageEdit),
       // TODO: Maybe put the hook executions at this level? e.g.
@@ -86,8 +86,8 @@ module.exports = function routePages(
 
     router.post(
       routeUrl,
-      mwPrepare(graph),
-      mwJourneyRails(mountUrl, graph),
+      mwPrepare(plan),
+      mwJourneyRails(mountUrl, plan),
       mwCsrfProtection,
       mwDetectEditMode(allowPageEdit),
       mwGatherData(pageMeta),

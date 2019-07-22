@@ -15,25 +15,27 @@ module.exports = function reviewPageDefinition(pagesMeta = {}) {
     },
     hooks: {
       prerender(req, res, next) {
+        req.casa = req.casa || Object.create(null);
+
         // Determine active journey in order to define the "edit origin" URL,
         // and make journey data and errors available to templates
-        const userJourney = req.journeyActive;
-        const { journeyOrigin } = req;
+        const userJourney = req.casa.plan;
+        const { journeyOrigin } = req.casa;
         res.locals.changeUrlPrefix = `${res.locals.casa.mountUrl}${journeyOrigin.originId || ''}/`.replace(/\/+/g, '/');
-        res.locals.journeyData = req.journeyData.getData();
-        res.locals.reviewErrors = req.journeyData.getValidationErrors();
+        res.locals.journeyContext = req.casa.journeyContext.getData();
+        res.locals.reviewErrors = req.casa.journeyContext.getValidationErrors();
 
         // Determine which pages have been traversed in the user's journey in
         // order to get to this review point (not all journey waypoints will
         // have been touched, but may contain data which needs to be ignored)
         let waypointsTraversed;
         const traversalOptions = {
-          startNode: journeyOrigin.node,
+          startWaypoint: journeyOrigin.waypoint,
         };
-        if (req.journeyData) {
+        if (req.casa.journeyContext) {
           waypointsTraversed = userJourney.traverse({
-            data: req.journeyData.getData(),
-            validation: req.journeyData.getValidationErrors(),
+            data: req.casa.journeyContext.getData(),
+            validation: req.casa.journeyContext.getValidationErrors(),
           }, traversalOptions);
         } else {
           waypointsTraversed = userJourney.traverse({}, traversalOptions);

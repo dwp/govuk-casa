@@ -15,7 +15,7 @@ module.exports = (casaApp, mountUrl) => {
     view: 'finish.njk',
     hooks: {
       pregather: (req, res, next) => {
-        console.log(JSON.stringify(req.journeyData.getData(), null, 2));
+        console.log(JSON.stringify(req.casa.journeyContext.getData(), null, 2));
 
         // Remember to clear the journey data once submitted
         casaApp.endSession(req).then(() => {

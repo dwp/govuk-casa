@@ -6,8 +6,9 @@ const { expect } = chai;
 chai.use(sinonChai);
 
 const { request, response } = require('../../helpers/express-mocks.js');
-const { data: journeyData } = require('../../helpers/journey-mocks.js');
+const { data: journeyContext } = require('../../helpers/journey-mocks.js');
 const logger = require('../../helpers/logger-mock.js');
+const JourneyContext = require('../../../../lib/JourneyContext.js');
 
 const mwSkip = require('../../../../middleware/page/skip.js');
 
@@ -18,7 +19,7 @@ describe('Middleware: page/skip', () => {
 
   beforeEach(() => {
     stubRequest = request();
-    stubRequest.journeyData = journeyData();
+    stubRequest.casa = { journeyContext: journeyContext() };
     stubRequest.log = logger();
     stubResponse = response();
     stubNext = sinon.stub();
@@ -55,30 +56,33 @@ describe('Middleware: page/skip', () => {
 
   it('should overwrite journey data for the current page with __skipped__ flag', () => {
     const middleware = mwSkip('/');
-    stubRequest.journeyWaypointId = 'source-waypoint';
+    stubRequest.casa.journeyWaypointId = 'source-waypoint';
     stubRequest.query.skipto = 'target-waypoint';
     middleware(stubRequest, stubResponse, stubNext);
 
-    expect(stubRequest.journeyData.clearValidationErrorsForPage).to.be.calledOnceWithExactly('source-waypoint');
-    expect(stubRequest.journeyData.setDataForPage).to.be.calledOnceWithExactly('source-waypoint', {
+    expect(stubRequest.casa.journeyContext.clearValidationErrorsForPage).to.be.calledOnceWithExactly('source-waypoint');
+    expect(stubRequest.casa.journeyContext.setDataForPage).to.be.calledOnceWithExactly('source-waypoint', {
       __skipped__: true,
     });
   });
 
   it('should save changes to session', () => {
     const middleware = mwSkip('/test-mount/');
-    stubRequest.journeyWaypointId = 'source-waypoint';
+    stubRequest.casa.journeyWaypointId = 'source-waypoint';
     stubRequest.query.skipto = 'target-waypoint';
-    stubRequest.journeyData.getData = sinon.stub().returns('test-data');
+    stubRequest.casa.journeyContext = new JourneyContext();
+    // stubRequest.journeyContext.getData = sinon.stub().returns('test-data');
     middleware(stubRequest, stubResponse, stubNext);
 
-    expect(stubRequest.session.journeyData).to.equal('test-data');
+    expect(stubRequest.session.journeyContext.data).to.eql({
+      'source-waypoint': { __skipped__: true },
+    });
     expect(stubRequest.session.save).to.be.calledOnceWithExactly(sinon.match.func);
   });
 
   it('should redirect to the target', () => {
     const middleware = mwSkip('/test-mount/');
-    stubRequest.journeyWaypointId = 'source-waypoint';
+    stubRequest.casa.journeyWaypointId = 'source-waypoint';
     stubRequest.query.skipto = 'target-waypoint';
     middleware(stubRequest, stubResponse, stubNext);
 
@@ -86,11 +90,11 @@ describe('Middleware: page/skip', () => {
     expect(stubResponse.redirect).to.be.calledOnceWithExactly('/test-mount/target-waypoint');
   });
 
-  it('should redirect to the target on the same origin as the current node', () => {
+  it('should redirect to the target on the same origin as the current waypoint', () => {
     const middleware = mwSkip('/test-mount/');
-    stubRequest.journeyWaypointId = 'source-waypoint';
+    stubRequest.casa.journeyWaypointId = 'source-waypoint';
     stubRequest.query.skipto = 'target-waypoint';
-    stubRequest.journeyOrigin = { originId: 'test-origin' };
+    stubRequest.casa.journeyOrigin = { originId: 'test-origin' };
     middleware(stubRequest, stubResponse, stubNext);
 
     expect(stubResponse.status).to.be.calledOnceWithExactly(302);

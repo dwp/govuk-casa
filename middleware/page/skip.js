@@ -3,7 +3,7 @@
  * action to pass through it, onto a subsequent page.
  *
  * You may also need to modify the "follow" functions on each of the out-edges
- * leading away from the skipped node, so they understand to allow the skip.
+ * leading away from the skipped waypoint, so they understand to allow the skip.
  *
  * It is important that this function overwrites _all_ other data on the
  * specified waypoint.
@@ -16,8 +16,10 @@
  */
 
 module.exports = mountUrl => (req, res, next) => {
+  req.casa = req.casa || Object.create(null);
+
   const { skipto } = req.query;
-  const { journeyOrigin = { originId: '' } } = req;
+  const { journeyOrigin = { originId: '' } } = req.casa;
 
   // Validate arguments
   if (skipto === undefined) {
@@ -31,15 +33,14 @@ module.exports = mountUrl => (req, res, next) => {
 
   // Inject a special "__skipped__" data item into the waypoint's page data,
   // overwriting all other data therein.
-  req.log.info('Marking waypoint %s as skipped', req.journeyWaypointId);
-  req.journeyData.clearValidationErrorsForPage(req.journeyWaypointId);
-  req.journeyData.setDataForPage(req.journeyWaypointId, {
+  req.log.info('Marking waypoint %s as skipped', req.casa.journeyWaypointId);
+  req.casa.journeyContext.clearValidationErrorsForPage(req.casa.journeyWaypointId);
+  req.casa.journeyContext.setDataForPage(req.casa.journeyWaypointId, {
     __skipped__: true,
   });
 
   // Persist changes to session
-  req.session.journeyData = req.journeyData.getData();
-  req.session.journeyValidationErrors = req.journeyData.getValidationErrors();
+  req.session.journeyContext = req.casa.journeyContext.toObject();
 
   // Save session and send user on their way
   req.session.save((err) => {

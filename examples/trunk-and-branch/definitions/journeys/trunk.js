@@ -1,10 +1,10 @@
-module.exports = graph => {
-  graph.addSequence(
+module.exports = plan => {
+  plan.addSequence(
     'task-list',
     'finish',
   );
 
-  graph.setDoubleEdge('task-list', 'finish', (edge, dataContext, validationContext) => {
+  plan.setDualRoute('task-list', 'finish', (route, dataContext, validationContext) => {
     // Here we are preventing from users going past this point until we've
     // recieved an answer to the "horror-books.like" question, which is in
     // the `books` journey.
@@ -13,5 +13,5 @@ module.exports = graph => {
       && !(validationContext.hasOwnProperty('horror-books') && validationContext['horror-books'].length);
   });
 
-  graph.addOrigin('trunk', 'task-list');
+  plan.addOrigin('trunk', 'task-list');
 };

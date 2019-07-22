@@ -4,29 +4,29 @@
  * This factory method returns an instance of the `lib/UserJourney.Map` class.
  */
 
-const { Graph } = require('@dwp/govuk-casa');
+const { Plan } = require('@dwp/govuk-casa');
 
 exports = module.exports = (function MyAppUserJourney() {
-  const graph = new Graph();
+  const plan = new Plan();
 
-  graph.addSequence(
+  plan.addSequence(
     'personal-details',
     'checkboxes',
     'contact/details',
   );
 
-  graph.setDoubleEdge('contact/details', 'secret-agent', (e, d) => d['contact/details'].tel === '007');
-  graph.setDoubleEdge('contact/details', 'work-impact', (e, d) => d['contact/details'].tel !== '007');
+  plan.setDualRoute('contact/details', 'secret-agent', (e, d) => d['contact/details'].tel === '007');
+  plan.setDualRoute('contact/details', 'work-impact', (e, d) => d['contact/details'].tel !== '007');
 
-  graph.setDoubleEdge('secret-agent', 'work-impact');
+  plan.setDualRoute('secret-agent', 'work-impact');
 
-  graph.addSequence(
+  plan.addSequence(
     'work-impact',
     'review',
     'submit',
   );
 
-  graph.addOrigin('main', 'personal-details');
+  plan.addOrigin('main', 'personal-details');
 
-  return graph;
+  return plan;
 })();

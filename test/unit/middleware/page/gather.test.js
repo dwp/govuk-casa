@@ -9,7 +9,7 @@ chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
 const { request, response } = require('../../helpers/express-mocks.js');
-const { data: journeyData, map: journeyMap } = require('../../helpers/journey-mocks.js');
+const { data: journeyContext, map: journeyMap } = require('../../helpers/journey-mocks.js');
 const logger = require('../../helpers/logger-mock.js');
 
 describe('Middleware: page/gather', () => {
@@ -38,8 +38,7 @@ describe('Middleware: page/gather', () => {
     });
 
     mockRequest = request();
-    mockRequest.journeyActive = journeyMap();
-    mockRequest.journeyData = journeyData();
+    mockRequest.casa = { plan: journeyMap(), journeyContext: journeyContext() };
     mockResponse = response();
     stubNext = sinon.stub();
   });
@@ -53,16 +52,16 @@ describe('Middleware: page/gather', () => {
 
   it('should create req.casaRequestState holding traversal state', () => {
     const middleware = mwGather()[1];
-    mockRequest.journeyOrigin = { originId: '', node: 'test-id' };
-    mockRequest.journeyActive.traverse.returns([1, 2, 3]);
-    mockRequest.journeyData.getData.returns('test-data');
-    mockRequest.journeyData.getValidationErrors.returns('test-errors');
+    mockRequest.casa.journeyOrigin = { originId: '', waypoint: 'test-id' };
+    mockRequest.casa.plan.traverse.returns([1, 2, 3]);
+    mockRequest.casa.journeyContext.getData.returns('test-data');
+    mockRequest.casa.journeyContext.getValidationErrors.returns('test-errors');
     middleware(mockRequest, mockResponse, stubNext);
-    expect(mockRequest.journeyActive.traverse).to.be.calledOnceWithExactly({
+    expect(mockRequest.casa.plan.traverse).to.be.calledOnceWithExactly({
       data: 'test-data',
       validation: 'test-errors',
     }, {
-      startNode: 'test-id',
+      startWaypoint: 'test-id',
     });
     expect(mockRequest).to.have.property('casaRequestState').that.eql({
       preGatherTraversalSnapshot: [1, 2, 3],
@@ -72,7 +71,7 @@ describe('Middleware: page/gather', () => {
 
   it('should execute the "pregather" hook', () => {
     const middleware = mwGather()[1];
-    mockRequest.journeyOrigin = { originId: '', node: '' };
+    mockRequest.casa.journeyOrigin = { originId: '', waypoint: '' };
     middleware(mockRequest, mockResponse, stubNext);
     expect(stubExecuteHook).to.be.calledOnceWithExactly(
       mockLogger,
@@ -87,7 +86,7 @@ describe('Middleware: page/gather', () => {
     const middleware = mwGather()[1];
     const error = new Error('test-error');
     stubExecuteHook.rejects(error);
-    mockRequest.journeyOrigin = { originId: '', node: '' };
+    mockRequest.casa.journeyOrigin = { originId: '', waypoint: '' };
     await middleware(mockRequest, mockResponse, stubNext);
     expect(stubNext).to.be.calledOnceWithExactly(error);
   });
@@ -103,7 +102,7 @@ describe('Middleware: page/gather', () => {
       testField: 'data-0',
       more: 'data-1',
     };
-    mockRequest.journeyOrigin = { originId: '', node: '' };
+    mockRequest.casa.journeyOrigin = { originId: '', waypoint: '' };
     stubExtractSessionableData.returns(mockRequest.body);
     stubRunGatherModifiers.withArgs('data-0', 'test-modifier').returns('data-0-modified');
     await middleware(mockRequest, mockResponse, stubNext);
@@ -121,12 +120,12 @@ describe('Middleware: page/gather', () => {
       test: 'data',
       more: 'data',
     };
-    mockRequest.journeyOrigin = { originId: '', node: '' };
+    mockRequest.casa.journeyOrigin = { originId: '', waypoint: '' };
     stubExtractSessionableData.returns({
       data: 'test-item',
     });
     await middleware(mockRequest, mockResponse, stubNext);
-    expect(mockRequest.journeyData.setDataForPage).to.be.calledOnceWithExactly('test-id', sinon.match({
+    expect(mockRequest.casa.journeyContext.setDataForPage).to.be.calledOnceWithExactly('test-id', sinon.match({
       data: 'test-item',
     }));
   });

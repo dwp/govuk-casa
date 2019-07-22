@@ -6,6 +6,8 @@ module.exports = (pageMeta = {}) => (req, res, next) => {
   logger.setSessionId(req.session.id);
   const pageId = pageMeta.id;
 
+  req.casa = req.casa || Object.create(null);
+
   function renderErrorCallback(err, templateString) {
     if (err) {
       logger.error(err);
@@ -17,14 +19,14 @@ module.exports = (pageMeta = {}) => (req, res, next) => {
 
   function renderGET() {
     res.render(pageMeta.view, {
-      formData: req.journeyData.getDataForPage(pageId),
+      formData: req.casa.journeyContext.getDataForPage(pageId),
       inEditMode: req.inEditMode,
       editOriginUrl: req.editOriginUrl,
     }, renderErrorCallback);
   }
 
   function renderPOST() {
-    const errors = req.journeyData.getValidationErrorsForPage(pageId) || {};
+    const errors = req.casa.journeyContext.getValidationErrorsForPage(pageId) || {};
 
     // This is a convenience for the template. The `govukErrorSummary` macro
     // requires the errors be in a particular format, so here we provide our

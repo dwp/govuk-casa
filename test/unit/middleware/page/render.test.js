@@ -7,7 +7,7 @@ const { expect } = chai;
 chai.use(sinonChai);
 
 const { request, response } = require('../../helpers/express-mocks.js');
-const { data: journeyData } = require('../../helpers/journey-mocks.js');
+const { data: journeyContext } = require('../../helpers/journey-mocks.js');
 const logger = require('../../helpers/logger-mock.js');
 
 describe('Middleware: page/render', () => {
@@ -31,7 +31,7 @@ describe('Middleware: page/render', () => {
     });
 
     mockRequest = request();
-    mockRequest.journeyData = journeyData();
+    mockRequest.casa = { journeyContext: journeyContext() };
     mockResponse = response();
     stubNext = sinon.stub();
   });
@@ -66,7 +66,7 @@ describe('Middleware: page/render', () => {
         inEditMode: true,
         editOriginUrl: '/test-origin-url',
       });
-      mockRequest.journeyData.getDataForPage.returns('test-data');
+      mockRequest.casa.journeyContext.getDataForPage.returns('test-data');
       await middleware(mockRequest, mockResponse, stubNext);
       expect(mockResponse.render).to.be.calledOnceWithExactly('test-view.njk', {
         formData: 'test-data',
@@ -102,7 +102,7 @@ describe('Middleware: page/render', () => {
           t: sinon.stub().callsFake(s => (`${s}_translated`)),
         },
       });
-      mockRequest.journeyData.getDataForPage.returns('test-data');
+      mockRequest.casa.journeyContext.getDataForPage.returns('test-data');
     });
 
     it('should render the view, reflecting the posted request body', async () => {
@@ -122,7 +122,7 @@ describe('Middleware: page/render', () => {
           fieldHref: 'test-field-href',
         }],
       };
-      mockRequest.journeyData.getValidationErrorsForPage.returns(validationErrors);
+      mockRequest.casa.journeyContext.getValidationErrorsForPage.returns(validationErrors);
       await middleware(mockRequest, mockResponse, stubNext);
       expect(mockResponse.render).to.be.calledOnceWithExactly('test-view.njk', sinon.match({
         formErrors: validationErrors,
@@ -136,7 +136,7 @@ describe('Middleware: page/render', () => {
           fieldHref: 'test-field-href',
         }],
       };
-      mockRequest.journeyData.getValidationErrorsForPage.returns(validationErrors);
+      mockRequest.casa.journeyContext.getValidationErrorsForPage.returns(validationErrors);
       await middleware(mockRequest, mockResponse, stubNext);
       expect(mockResponse.render).to.be.calledOnceWithExactly('test-view.njk', sinon.match({
         formErrorsGovukArray: [{

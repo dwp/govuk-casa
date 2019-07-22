@@ -5,7 +5,7 @@ const sinon = require('sinon');
 
 const { app, router } = require('../../helpers/express-mocks.js');
 
-const Graph = require('../../../../lib/Graph.js');
+const Plan = require('../../../../lib/Plan.js');
 const loadDefinitionsConstructor = require('../../../../lib/bootstrap/load-definitions.js');
 
 const { expect } = chai;
@@ -48,8 +48,8 @@ describe('lib/bootstrap/load-definitions.js', () => {
         sessions: { ttl: 3600 },
       });
 
-      validUserJourneyMap = new Graph();
-      validUserJourneyMap.addOrigin('origin-id', 'node-id');
+      validUserJourneyMap = new Plan();
+      validUserJourneyMap.addOrigin('origin-id', 'waypoint-id');
       // const start = new UserJourney.Road();
       // validUserJourneyMap.startAt(start);
     });
@@ -71,7 +71,7 @@ describe('lib/bootstrap/load-definitions.js', () => {
     });
 
     it('should throw a TypeError when journey is an invalid type', () => {
-      const exceptionMsg = /^Journey graph must be a Graph instance$/;
+      const exceptionMsg = /^Journey plan must be a Plan instance$/;
 
       expect(() => {
         loadDefinitions({}, null);
@@ -98,10 +98,10 @@ describe('lib/bootstrap/load-definitions.js', () => {
 
     describe('origins', () => {
       it('should throw an Error if no origins are specified', () => {
-        const journeys = new Graph();
+        const journeys = new Plan();
         expect(() => {
           loadDefinitions({}, journeys);
-        }).to.throw(Error, /^There must be at least 1 defined origin in the graph$/);
+        }).to.throw(Error, /^There must be at least 1 defined origin in the plan$/);
       });
     });
 

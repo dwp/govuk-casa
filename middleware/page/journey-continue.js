@@ -5,13 +5,15 @@ module.exports = (pageMeta = {}, mountUrl = '/') => (req, res, next) => {
   const logger = createLogger('page.journey-continue');
   logger.setSessionId(req.session.id);
   const pageId = pageMeta.id;
-  // const journey = req.journeyActive;
-  const { journeyOrigin, journeyActive: journey } = req;
+
+  req.casa = req.casa || Object.create(null);
+
+  const { journeyOrigin, plan: journey } = req.casa;
 
   // If the page has errors, traversal must stop here until those errors are
   // resolved. It is the responsibility of the next middleware to deal with
   // these errors (usually `middleware/page/render.js`)
-  if (req.journeyData.hasValidationErrorsForPage(pageId)) {
+  if (req.casa.journeyContext.hasValidationErrorsForPage(pageId)) {
     logger.trace('Page %s has errors, not progressing journey. Passthrough to next middleware', pageId);
     return next();
   }
@@ -30,10 +32,10 @@ module.exports = (pageMeta = {}, mountUrl = '/') => (req, res, next) => {
       const waypointPrefix = `${mountUrl}/${journeyOrigin.originId || ''}/`.replace(/\/+/g, '/');
       const { preGatherTraversalSnapshot = [] } = req.casaRequestState || {};
       const currentTraversalSnapshot = journey.traverse({
-        data: req.journeyData.getData(),
-        validation: req.journeyData.getValidationErrors(),
+        data: req.casa.journeyContext.getData(),
+        validation: req.casa.journeyContext.getValidationErrors(),
       }, {
-        startNode: journeyOrigin.node,
+        startWaypoint: journeyOrigin.waypoint,
       });
       nextWaypoint = req.editOriginUrl || '';
       preGatherTraversalSnapshot.every((el, i) => {
@@ -47,23 +49,23 @@ module.exports = (pageMeta = {}, mountUrl = '/') => (req, res, next) => {
         }
         return same;
       });
-    } else if (journey.containsNode(pageId)) {
+    } else if (journey.containsWaypoint(pageId)) {
       logger.trace('Check waypoint %s can be reached (journey guid = %s)', pageId, journeyOrigin.originId);
-      const edges = journey.traverseNextEdges({
-        data: req.journeyData.getData(),
-        validation: req.journeyData.getValidationErrors(),
+      const routes = journey.traverseNextRoutes({
+        data: req.casa.journeyContext.getData(),
+        validation: req.casa.journeyContext.getValidationErrors(),
       }, {
-        startNode: journeyOrigin.node,
+        startWaypoint: journeyOrigin.waypoint,
       });
-      const waypoints = edges.map(e => e.source);
+      const waypoints = routes.map(e => e.source);
 
       const positionInJourney = Math.min(
         waypoints.indexOf(pageId),
         waypoints.length - 2,
       );
       if (positionInJourney > -1) {
-        const edge = edges[positionInJourney];
-        nextWaypoint = `${mountUrl}/${edge.label.targetOrigin || journeyOrigin.originId || ''}/${waypoints[positionInJourney + 1]}`.replace(/\/+/g, '/');
+        const route = routes[positionInJourney];
+        nextWaypoint = `${mountUrl}/${route.label.targetOrigin || journeyOrigin.originId || ''}/${waypoints[positionInJourney + 1]}`.replace(/\/+/g, '/');
       } else {
         nextWaypoint = req.originalUrl;
       }

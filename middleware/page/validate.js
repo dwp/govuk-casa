@@ -7,6 +7,8 @@ module.exports = (pageMeta = {}) => (req, res, next) => {
   logger.setSessionId(req.session.id);
   const pageId = pageMeta.id;
 
+  req.casa = req.casa || Object.create(null);
+
   /**
    * Run validation process.
    *
@@ -18,7 +20,7 @@ module.exports = (pageMeta = {}) => (req, res, next) => {
       logger.trace('Run validation for %s', pageId);
       result = Validation.processor(
         pageMeta.fieldValidators,
-        req.journeyData.getDataForPage(pageId), {
+        req.casa.journeyContext.getDataForPage(pageId), {
           reduceErrors: true,
         },
       );
@@ -34,9 +36,9 @@ module.exports = (pageMeta = {}) => (req, res, next) => {
     .then(() => (executeHook(logger, req, res, pageMeta, 'postvalidate')))
     .then(() => {
       // Validation has passed, so clear any validation errors currently stored
-      // against the page
-      req.journeyData.clearValidationErrorsForPage(pageId);
-      req.session.journeyValidationErrors = req.journeyData.getValidationErrors();
+      // against the page and persist to session
+      req.casa.journeyContext.clearValidationErrorsForPage(pageId);
+      req.session.journeyContext = req.casa.journeyContext.toObject();
 
       // The next middleware handler is responsible for moving the user onto the
       // correct next waypoint.
@@ -55,8 +57,8 @@ module.exports = (pageMeta = {}) => (req, res, next) => {
       // TODO: Handle possible exceptions thrown by the below; e.g. if `errors`
       // are not in valid format, an exception is thrown by `setValidationErrorsForPage`
       logger.trace('Storing validation errors on waypoint %s', pageId);
-      req.journeyData.setValidationErrorsForPage(pageId, errors);
-      req.session.journeyValidationErrors = req.journeyData.getValidationErrors();
+      req.casa.journeyContext.setValidationErrorsForPage(pageId, errors);
+      req.session.journeyContext = req.casa.journeyContext.toObject();
 
       next();
     });

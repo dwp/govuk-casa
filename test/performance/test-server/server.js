@@ -45,7 +45,7 @@ casaApp.router.get('/', (req, res) => {
 
 casaApp.router.get('/display', (req, res) => {
   res.render('display.njk', {
-    data: req.journeyData.getDataForPage('gather'),
+    data: req.casa.journeyContext.getDataForPage('gather'),
   });
 });
 

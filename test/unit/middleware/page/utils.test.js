@@ -117,7 +117,7 @@ describe('Middleware: page/utils', () => {
     it('should resolve when no hook is configured', async () => {
       const stubLogger = logger();
       const stubRequest = request();
-      stubRequest.journeyWaypointId = 'test-waypoint';
+      stubRequest.casa = { journeyWaypointId: 'test-waypoint' };
       const stubResponse = response();
       await executeHook(stubLogger, stubRequest, stubResponse, {}, 'test-hook');
       expect(stubLogger.trace).to.be.calledOnceWithExactly('No %s hook for %s', 'test-hook', 'test-waypoint');
@@ -126,7 +126,7 @@ describe('Middleware: page/utils', () => {
     it('should resolve when hook is configured and does not throw an error', async () => {
       const stubLogger = logger();
       const stubRequest = request();
-      stubRequest.journeyWaypointId = 'test-waypoint';
+      stubRequest.casa = { journeyWaypointId: 'test-waypoint' };
       const stubResponse = response();
       const pageMeta = {
         hooks: {
@@ -143,7 +143,7 @@ describe('Middleware: page/utils', () => {
     it('should reject when hook is configured and throws an error', async () => {
       const stubLogger = logger();
       const stubRequest = request();
-      stubRequest.journeyWaypointId = 'test-waypoint';
+      stubRequest.casa = { journeyWaypointId: 'test-waypoint' };
       const stubResponse = response();
       const stubError = new Error('test-error');
       const pageMeta = {

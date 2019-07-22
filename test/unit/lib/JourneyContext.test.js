@@ -1,23 +1,23 @@
 const { expect } = require('chai');
-const JourneyData = require('../../../lib/JourneyData.js');
+const JourneyContext = require('../../../lib/JourneyContext.js');
 
-describe('JourneyData', () => {
+describe('JourneyContext', () => {
   describe('constructor()', () => {
     it('should contain an empty data object in initialisation', () => {
-      const data = new JourneyData();
+      const data = new JourneyContext();
       expect(data.getData()).to.be.an('object');
       expect(data.getData()).to.be.empty; /* eslint-disable-line no-unused-expressions */
     });
 
     it('should contain an empty validation object in initialisation', () => {
-      const data = new JourneyData({});
+      const data = new JourneyContext({});
       expect(data.getValidationErrors()).to.be.an('object').and.be.empty; /* eslint-disable-line no-unused-expressions */
     });
   });
 
   describe('set/getData*()', () => {
     it('should return undefined if I request data for a non-existent page', () => {
-      const data1 = new JourneyData();
+      const data1 = new JourneyContext();
       return expect(data1.getDataForPage('unknownpage')).to.be.undefined;
     });
 
@@ -27,7 +27,7 @@ describe('JourneyData', () => {
           attr1: 'value',
         },
       };
-      const data = new JourneyData(dataset);
+      const data = new JourneyContext(dataset);
       expect(JSON.stringify(data.getData())).to.equal(JSON.stringify(dataset));
     });
 
@@ -37,7 +37,7 @@ describe('JourneyData', () => {
           attr1: 'value',
         },
       };
-      const data = new JourneyData();
+      const data = new JourneyContext();
       data.setData(dataset);
       expect(JSON.stringify(data.getData())).to.equal(JSON.stringify(dataset));
     });
@@ -48,7 +48,7 @@ describe('JourneyData', () => {
           attr1: 'value',
         },
       };
-      const data2 = new JourneyData(dataset2);
+      const data2 = new JourneyContext(dataset2);
       expect(JSON.stringify(data2.getDataForPage('pageA'))).to.equal(JSON.stringify(dataset2.pageA));
     });
 
@@ -61,7 +61,7 @@ describe('JourneyData', () => {
       const swapset = {
         attr2: 'newvalue',
       };
-      const data3 = new JourneyData();
+      const data3 = new JourneyContext();
       data3.setDataForPage('pageA', dataset.pageA);
       expect(JSON.stringify(data3.getDataForPage('pageA'))).to.equal(JSON.stringify(dataset.pageA));
       data3.setDataForPage('pageA', swapset);
@@ -71,17 +71,17 @@ describe('JourneyData', () => {
 
   describe('set/getValidationErrors*()', () => {
     it('should return an empty object for a non-existent page', () => {
-      const data1 = new JourneyData();
+      const data1 = new JourneyContext();
       return expect(data1.getValidationErrorsForPage('unknownpage')).to.be.an('Object').and.be.empty;
     });
 
     it('should return an empty object for a non-existent page', () => {
-      const data1 = new JourneyData();
+      const data1 = new JourneyContext();
       return expect(data1.getValidationErrorsForPage('unknownpage')).to.be.an('Object').and.be.empty;
     });
 
     it('should store throw a SyntaxError if validations are not in correct format', () => {
-      const data1 = new JourneyData();
+      const data1 = new JourneyContext();
       expect(() => {
         data1.setValidationErrorsForPage('p0', []);
       }).to.throw(SyntaxError);
@@ -98,7 +98,7 @@ describe('JourneyData', () => {
     });
 
     it('should clear validation errors', () => {
-      const data1 = new JourneyData({}, {
+      const data1 = new JourneyContext({}, {
         p0: { f0: [] },
         p1: { f0: [] },
       });
