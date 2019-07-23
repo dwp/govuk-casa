@@ -15,7 +15,7 @@ const { isObjectWithKeys } = require('../../lib/Util.js');
  */
 function executeHook(logger, req = {}, res = {}, pageMeta = {}, hookName = '') {
   return new Promise((resolve, reject) => {
-    const hooks = pageMeta && pageMeta.hooks ? pageMeta.hooks : {};
+    const hooks = pageMeta && pageMeta.hooks ? pageMeta.hooks : Object.create(null);
     const journeyWaypointId = req.casa.journeyWaypointId || '';
     if (typeof hooks[hookName] === 'function') {
       logger.trace('Run %s hook for %s', hookName, journeyWaypointId);
@@ -70,11 +70,11 @@ function extractSessionableData(logger, pageWaypointId, fieldValidators = {}, da
       'No field validators defined for "%s" waypoint. Will use an empty object.',
       pageWaypointId,
     );
-    return {};
+    return Object.create(null);
   }
 
   // Prune data that does not have an associated field valdiator
-  const prunedData = {};
+  const prunedData = Object.create(null);
   Object.keys(fieldValidators).forEach((k) => {
     if (typeof data[k] !== 'undefined') {
       prunedData[k] = data[k];

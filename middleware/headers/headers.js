@@ -9,7 +9,7 @@ const oneDay = 86400000;
 module.exports = (logger, defaultHeaders = {}, disabledHeaders = []) => (req, res, next) => {
   logger.trace('apply headers to %s %s', req.method.toUpperCase(), req.url);
 
-  const headers = Object.assign({}, defaultHeaders);
+  const headers = Object.assign(Object.create(null), defaultHeaders);
 
   // X-XSS-Protection introduces a security bug into IE8, so disable it if IE8
   if (isIE8.test(req.headers['user-agent'])) {

@@ -5,7 +5,7 @@
 const reviewPageDefinition = require('@dwp/govuk-casa/definitions/review-page');
 
 module.exports = (casaApp, mountUrl) => {
-  const pages = {};
+  const pages = Object.create(null);
 
   /* -------------------------------------------------------- "trunk" journey */
 

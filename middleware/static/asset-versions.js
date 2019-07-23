@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 module.exports = (logger, packagesMeta = {}) => {
-  const casaPackageVersions = {};
+  const casaPackageVersions = Object.create(null);
 
   Object.keys(packagesMeta).forEach((k) => {
     let version;

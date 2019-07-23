@@ -5,7 +5,7 @@
 const reviewPageDefinition = require('@dwp/govuk-casa/definitions/review-page');
 
 exports = module.exports = (function() {
-  var pages = {};
+  var pages = Object.create(null);
 
   pages['personal-details'] = {
     view: 'pages/personal-details.njk',

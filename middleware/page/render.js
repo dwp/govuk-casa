@@ -26,7 +26,8 @@ module.exports = (pageMeta = {}) => (req, res, next) => {
   }
 
   function renderPOST() {
-    const errors = req.casa.journeyContext.getValidationErrorsForPage(pageId) || {};
+    const errors = req.casa.journeyContext.getValidationErrorsForPage(pageId)
+      || Object.create(null);
 
     // This is a convenience for the template. The `govukErrorSummary` macro
     // requires the errors be in a particular format, so here we provide our
