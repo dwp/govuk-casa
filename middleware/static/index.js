@@ -51,7 +51,7 @@ module.exports = (args) => {
       govukFrontend = '',
       govukTemplateJinja = '',
       govukCasa = '',
-    } = {},
+    } = Object.create(null),
   } = args;
 
   const compiledAssetsDir = path.resolve(cAssetsDir);

@@ -90,7 +90,7 @@ describe('definitions: review.page', () => {
         testPage0: {
           reviewBlockView: 'test-view',
         },
-        testPage1: {},
+        testPage1: Object.create(null),
       }).hooks.prerender;
       mockRequest.editOriginUrl = 'test-origin';
       mockRequest.casa.journeyOrigin = { originId: '', waypoint: '' };

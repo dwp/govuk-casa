@@ -39,7 +39,7 @@ module.exports = function reviewPageDefinition(pagesMeta = {}) {
           waypointsTraversed = userJourney.traverse(new JourneyContext(), traversalOptions);
         }
         res.locals.reviewBlocks = waypointsTraversed.map((waypointId) => {
-          const meta = pagesMeta[waypointId] || {};
+          const meta = pagesMeta[waypointId] || Object.create(null);
           return meta.reviewBlockView ? {
             waypointId,
             waypointEditUrl: `${res.locals.changeUrlPrefix}${waypointId}?edit&${qs.stringify({

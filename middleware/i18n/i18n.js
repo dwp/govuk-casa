@@ -13,7 +13,7 @@
 */
 
 module.exports = (logger, supportedLocales = [], translatorFactory) => (req, res, next) => {
-  const currentSessionLanguage = (req.session || {}).language;
+  const currentSessionLanguage = (req.session || Object.create(null)).language;
 
   // Language pulled from query first, then session, then default
   let language = req.query.lang || currentSessionLanguage || supportedLocales[0];

@@ -105,10 +105,11 @@ function CasaBootstrap(expressApp, config) {
   // Create a configured I18n utility instance
   const i18nUtility = i18nFactory(validatedConfig.i18n.dirs, validatedConfig.i18n.locales);
 
-  // Prepare a global `casa` template object which will house all our template
-  // variables, accumulated through middleware.
+  // Prepare a `casa` namespace on both the request and response `locals`
+  // objects, which will house various variables, accumulated through middleware.
   expressApp.use((req, res, next) => {
-    res.locals.casa = {};
+    req.casa = Object.create(null);
+    res.locals.casa = Object.create(null);
     next();
   });
 
