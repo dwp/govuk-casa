@@ -30,7 +30,7 @@ module.exports = (pageMeta = {}, mountUrl = '/') => (req, res, next) => {
       // the correct next waypoint.
       logger.trace('Comparing pre-gather traversal snapshot');
       const waypointPrefix = `${mountUrl}/${journeyOrigin.originId || ''}/`.replace(/\/+/g, '/');
-      const { preGatherTraversalSnapshot = [] } = req.casaRequestState || {};
+      const { preGatherTraversalSnapshot = [] } = req.casa || Object.create(null);
       const currentTraversalSnapshot = journey.traverse({
         data: req.casa.journeyContext.getData(),
         validation: req.casa.journeyContext.getValidationErrors(),
