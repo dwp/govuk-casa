@@ -36,6 +36,7 @@ describe('Middleware: page/journey-rails', () => {
     stubPlan = {
       containsWaypoint: sinon.stub().returns(true),
       traverse: sinon.stub().returns([]),
+      traversePrevRoutes: sinon.stub().returns([]),
     };
     middleware = mwJourney('/', stubPlan);
   });
@@ -128,6 +129,30 @@ describe('Middleware: page/journey-rails', () => {
       expect(mockResponse.locals).to.deep.contain({
         casa: {
           journeyPreviousUrl: '/mount-url/test-journey/waypoint1',
+        },
+      });
+      expect(stubNext).to.have.been.calledOnceWithExactly();
+    });
+
+    it('where the previous route lies on a different origin', () => {
+      stubPlan.traversePrevRoutes = sinon.stub().returns([{
+        source: 'waypoint0',
+        target: 'waypointA',
+        name: 'prev',
+        label: {
+          sourceOrigin: 'test-journey',
+          targetOrigin: 'prev-origin',
+        },
+      }]);
+      stubPlan.traverse = sinon.stub().returns(['waypoint0']);
+      middleware = mwJourney('/mount-url/', stubPlan);
+      mockRequest.casa.journeyOrigin = { originId: 'test-journey', waypoint: 'waypoint0' };
+      mockRequest.casa.journeyWaypointId = 'waypoint0';
+      mockResponse.locals.casa = {};
+      middleware(mockRequest, mockResponse, stubNext);
+      expect(mockResponse.locals).to.deep.contain({
+        casa: {
+          journeyPreviousUrl: '/mount-url/prev-origin/waypointA',
         },
       });
       expect(stubNext).to.have.been.calledOnceWithExactly();

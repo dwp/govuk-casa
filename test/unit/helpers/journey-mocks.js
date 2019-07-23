@@ -22,6 +22,7 @@ const plan = () => ({
   containsWaypoint: sinon.stub().returns(false),
   traverse: sinon.stub().returns([]),
   traverseNextRoutes: sinon.stub().returns([]),
+  traversePrevRoutes: sinon.stub().returns([]),
   getOrigins: sinon.stub().returns([]),
 });
 
