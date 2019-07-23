@@ -1,3 +1,25 @@
+<a name="5.0.0-alpha.1"></a>
+# [5.0.0-alpha.1](https://github.com/dwp/govuk-casa/compare/4.0.4...5.0.0-alpha.1) (2019-07-23)
+
+
+### Code Refactoring
+
+* rename variables and change references to request variables ([2b76135](https://github.com/dwp/govuk-casa/commit/2b76135))
+
+
+### Features
+
+* implement graph data structure for handling journey traversals ([9f1d920](https://github.com/dwp/govuk-casa/commit/9f1d920))
+
+
+### BREAKING CHANGES
+
+* All existing references to `req.*` casa variables will need to be modified.
+* The UserJourney.* classes are no longer supported and existing journey
+ definitions will need to be modified to use the new `Plan` class.
+
+
+
 <a name="4.0.5"></a>
 ## [4.0.5](https://github.com/dwp/govuk-casa/compare/4.0.4...4.0.5) (2019-07-24)
 
