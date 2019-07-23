@@ -15,10 +15,10 @@ exports = module.exports = (function MyAppUserJourney() {
     'contact/details',
   );
 
-  plan.setDualRoute('contact/details', 'secret-agent', (e, d) => d['contact/details'].tel === '007');
-  plan.setDualRoute('contact/details', 'work-impact', (e, d) => d['contact/details'].tel !== '007');
+  plan.setRoute('contact/details', 'secret-agent', (e, d) => d['contact/details'].tel === '007');
+  plan.setRoute('contact/details', 'work-impact', (e, d) => d['contact/details'].tel !== '007');
 
-  plan.setDualRoute('secret-agent', 'work-impact');
+  plan.setRoute('secret-agent', 'work-impact');
 
   plan.addSequence(
     'work-impact',

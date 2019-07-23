@@ -20,17 +20,17 @@ describe('Plan', () => {
     });
   });
 
-  describe('setRoute', () => {
+  describe('setNamedRoute', () => {
     it('should throw a TypeError when given an invalid argument types', () => {
-      expect(() => plan.setRoute()).to.throw(TypeError, 'Expected waypoint id to be a string, got undefined');
-      expect(() => plan.setRoute('a')).to.throw(TypeError, 'Expected waypoint id to be a string, got undefined');
-      expect(() => plan.setRoute('a', 'b')).to.throw(TypeError, 'Expected route name to be a string, got undefined');
-      expect(() => plan.setRoute('a', 'b', 'bad')).to.throw(ReferenceError, 'Expected route name to be one of next, prev or origin. Got bad');
-      expect(() => plan.setRoute('a', 'b', 'next', 'bad')).to.throw(TypeError, 'Expected route condition to be a function, got string');
+      expect(() => plan.setNamedRoute()).to.throw(TypeError, 'Expected waypoint id to be a string, got undefined');
+      expect(() => plan.setNamedRoute('a')).to.throw(TypeError, 'Expected waypoint id to be a string, got undefined');
+      expect(() => plan.setNamedRoute('a', 'b')).to.throw(TypeError, 'Expected route name to be a string, got undefined');
+      expect(() => plan.setNamedRoute('a', 'b', 'bad')).to.throw(ReferenceError, 'Expected route name to be one of next, prev or origin. Got bad');
+      expect(() => plan.setNamedRoute('a', 'b', 'next', 'bad')).to.throw(TypeError, 'Expected route condition to be a function, got string');
     });
 
     it('should not throw, and store the route when given valid arguments', () => {
-      expect(() => plan.setRoute('a', 'b', 'next', () => {})).to.not.throw();
+      expect(() => plan.setNamedRoute('a', 'b', 'next', () => {})).to.not.throw();
       expect(plan.getRoutes()).to.deep.eql([{
         source: 'a',
         target: 'b',
@@ -43,15 +43,61 @@ describe('Plan', () => {
     });
 
     it('should return the Plan instance', () => {
-      expect(plan.setRoute('a', 'b', 'next', () => {})).to.equal(plan);
+      expect(plan.setNamedRoute('a', 'b', 'next', () => {})).to.equal(plan);
     });
 
     it('should emit a warning log when setting an existing route');
 
     it('should store the follow condition function', () => {
       const follow = sinon.stub();
-      plan.setRoute('a', 'b', 'next', follow);
+      plan.setNamedRoute('a', 'b', 'next', follow);
       expect(plan.getRouteCondition('a', 'b', 'next')).to.equal(follow);
+    });
+  });
+
+  describe('setRoute', () => {
+    it('should create a next and prev route', () => {
+      plan.setRoute('a', 'b');
+      expect(plan.getRoutes()).to.eql([
+        { source: 'a', target: 'b', name: 'next', label: { sourceOrigin: undefined, targetOrigin: undefined } },
+        { source: 'b', target: 'a', name: 'prev', label: { sourceOrigin: undefined, targetOrigin: undefined } },
+      ]);
+    });
+
+    it('should create a next and prev route with origins', () => {
+      plan.setRoute('originA:a', 'originB:b');
+      expect(plan.getRoutes()).to.eql([
+        { source: 'a', target: 'b', name: 'next', label: { sourceOrigin: 'originA', targetOrigin: 'originB' } },
+        { source: 'b', target: 'a', name: 'prev', label: { sourceOrigin: 'originB', targetOrigin: 'originA' } },
+      ]);
+    });
+
+    it('should create route with next and prev conditions', () => {
+      const stubNext = sinon.stub();
+      const stubPrev = sinon.stub();
+      plan.setRoute('a', 'b', stubNext, stubPrev);
+
+      plan.traverseNextRoutes({}, { startWaypoint: 'a' });
+      expect(stubNext).to.be.calledOnce;
+      expect(stubPrev).to.not.be.called;
+
+      stubNext.resetHistory();
+      stubPrev.resetHistory();
+      plan.traversePrevRoutes({}, { startWaypoint: 'b' });
+      expect(stubPrev).to.be.calledOnce;
+      expect(stubNext).to.not.be.called;
+    });
+
+    it('should create route with default prev condition that matches specified next condition', () => {
+      const stubNext = sinon.stub();
+      plan.setRoute('a', 'b', stubNext);
+
+      plan.traverseNextRoutes({}, { startWaypoint: 'a' });
+      expect(stubNext).to.be.calledOnce;
+
+      stubNext.resetHistory();
+      plan.traversePrevRoutes({}, { startWaypoint: 'b' });
+      expect(stubNext).to.be.calledOnce;
     });
   });
 
