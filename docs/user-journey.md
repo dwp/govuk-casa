@@ -306,10 +306,7 @@ Given:
 // When a user attempts to visit `theme-park` before they've completed the
 // `rhinos` page, we'll redirect them back to the start of the `zoo` journey.
 casa.router.use('/theme-park/*', (req, res, next) => {
-  const isTraversable = req.casa.journeyContext ? preliminaryJourney.traverse({
-    data: req.casa.journeyContext.getData(),
-    validation: req.casa.journeyContext.getValidationErrors(),
-  }).includes('rhinos') : false;
+  const isTraversable = req.casa.journeyContext ? preliminaryJourney.traverse(req.casa.journeyContext).includes('rhinos') : false;
 
   if (isTraversable) {
     next();
