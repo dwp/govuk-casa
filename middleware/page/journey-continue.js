@@ -31,10 +31,7 @@ module.exports = (pageMeta = {}, mountUrl = '/') => (req, res, next) => {
       logger.trace('Comparing pre-gather traversal snapshot');
       const waypointPrefix = `${mountUrl}/${journeyOrigin.originId || ''}/`.replace(/\/+/g, '/');
       const { preGatherTraversalSnapshot = [] } = req.casa || Object.create(null);
-      const currentTraversalSnapshot = journey.traverse({
-        data: req.casa.journeyContext.getData(),
-        validation: req.casa.journeyContext.getValidationErrors(),
-      }, {
+      const currentTraversalSnapshot = journey.traverse(req.casa.journeyContext, {
         startWaypoint: journeyOrigin.waypoint,
       });
       nextWaypoint = req.editOriginUrl || '';
@@ -51,10 +48,7 @@ module.exports = (pageMeta = {}, mountUrl = '/') => (req, res, next) => {
       });
     } else if (journey.containsWaypoint(pageId)) {
       logger.trace('Check waypoint %s can be reached (journey guid = %s)', pageId, journeyOrigin.originId);
-      const routes = journey.traverseNextRoutes({
-        data: req.casa.journeyContext.getData(),
-        validation: req.casa.journeyContext.getValidationErrors(),
-      }, {
+      const routes = journey.traverseNextRoutes(req.casa.journeyContext, {
         startWaypoint: journeyOrigin.waypoint,
       });
       const waypoints = routes.map(e => e.source);

@@ -20,10 +20,7 @@ module.exports = (pageMeta = {}) => [mwBodyParser, (req, res, next) => {
   // Take a traversal snapshot of the journey before we mutate the data/error
   // context
   logger.trace('Take pre-gather traversal snapshot');
-  req.casa.preGatherTraversalSnapshot = journey.traverse({
-    data: req.casa.journeyContext.getData(),
-    validation: req.casa.journeyContext.getValidationErrors(),
-  }, {
+  req.casa.preGatherTraversalSnapshot = journey.traverse(req.casa.journeyContext, {
     startWaypoint: journeyOrigin.waypoint,
   });
 

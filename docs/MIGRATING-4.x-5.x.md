@@ -94,10 +94,7 @@ journey.traverse(data, validation);
 Now `Plan` is bering used, this method still exists, but its signature has changed to accept a single object:
 
 ```javascript
-journet.traverse({
-  data: data, // e.g. req.casa.journeyContext.getData()
-  validation: validation, // e.g. req.casa.journeyContext.getValidationErrors()
-});
+journet.traverse(new JourneyContext(data, validation));
 ```
 
 ### Waypoint format changes

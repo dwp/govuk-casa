@@ -1,4 +1,4 @@
-/* eslint-disable camelcase */
+/* eslint-disable camelcase, object-curly-newline */
 const chai = require('chai');
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
@@ -6,12 +6,15 @@ const proxyquire = require('proxyquire');
 const { expect } = chai;
 
 const Plan = require('../../../lib/Plan.js');
+const JourneyContext = require('../../../lib/JourneyContext.js');
 
 describe('Plan', () => {
   let plan;
+  let stubContext;
 
   beforeEach(() => {
     plan = new Plan();
+    stubContext = new JourneyContext();
   });
 
   describe('constructor', () => {
@@ -77,13 +80,13 @@ describe('Plan', () => {
       const stubPrev = sinon.stub();
       plan.setRoute('a', 'b', stubNext, stubPrev);
 
-      plan.traverseNextRoutes({}, { startWaypoint: 'a' });
+      plan.traverseNextRoutes(stubContext, { startWaypoint: 'a' });
       expect(stubNext).to.be.calledOnce;
       expect(stubPrev).to.not.be.called;
 
       stubNext.resetHistory();
       stubPrev.resetHistory();
-      plan.traversePrevRoutes({}, { startWaypoint: 'b' });
+      plan.traversePrevRoutes(stubContext, { startWaypoint: 'b' });
       expect(stubPrev).to.be.calledOnce;
       expect(stubNext).to.not.be.called;
     });
@@ -92,39 +95,50 @@ describe('Plan', () => {
       const stubNext = sinon.stub();
       plan.setRoute('a', 'b', stubNext);
 
-      plan.traverseNextRoutes({}, { startWaypoint: 'a' });
+      plan.traverseNextRoutes(stubContext, { startWaypoint: 'a' });
       expect(stubNext).to.be.calledOnce;
 
       stubNext.resetHistory();
-      plan.traversePrevRoutes({}, { startWaypoint: 'b' });
+      plan.traversePrevRoutes(stubContext, { startWaypoint: 'b' });
       expect(stubNext).to.be.calledOnce;
     });
   });
 
   describe('traverseRoutes()', () => {
+    it('should throw a TypeError if context is not a JourneyContext', () => {
+      expect(() => {
+        plan.traverseRoutes('not-journey-context');
+      }).to.throw(TypeError, 'Expected context to be an instance of JourneyContext, got string');
+
+      expect(() => {
+        plan.addOrigin('main', 'a');
+        plan.traverseRoutes(stubContext, { routeName: 'next' });
+      }).to.not.throw();
+    });
+
     it('throw a ReferenceError when no origins have been defined', () => {
       expect(() => {
-        plan.traverseRoutes();
+        plan.traverseRoutes(stubContext);
       }).to.throw(ReferenceError, 'Plan does not contain waypoint \'undefined\'');
     });
 
     it('should throw a ReferenceError when the requested startWaypoint does not exist in the plan', () => {
       plan.addOrigin('main', 'origin-waypoint');
       expect(() => {
-        plan.traverseRoutes({}, { startWaypoint: 'missing-waypoint' });
+        plan.traverseRoutes(stubContext, { startWaypoint: 'missing-waypoint' });
       }).to.throw(ReferenceError, 'Plan does not contain waypoint \'missing-waypoint\'');
     });
 
     it('should throw a ReferenceError when no route name has been specified', () => {
       plan.addOrigin('main', 'origin-waypoint');
       expect(() => {
-        plan.traverseRoutes({}, { startWaypoint: 'origin-waypoint' });
+        plan.traverseRoutes(stubContext, { startWaypoint: 'origin-waypoint' });
       }).to.throw(ReferenceError, 'Route name must be provided');
     });
 
     it('should return only the origin waypoint when no routes match the route name', () => {
       plan.addOrigin('main', 'origin-waypoint');
-      expect(plan.traverseRoutes({}, { startWaypoint: 'origin-waypoint', routeName: 'next' })).to.deep.eql([{
+      expect(plan.traverseRoutes(stubContext, { startWaypoint: 'origin-waypoint', routeName: 'next' })).to.deep.eql([{
         source: 'origin-waypoint',
         target: null,
         name: 'next',
@@ -138,7 +152,7 @@ describe('Plan', () => {
     it('should call all follow-condition functions on the discovered routes, passing context arguments', () => {
       const stub_n0n1 = sinon.stub().returns(true);
       const stub_n1n2 = sinon.stub().returns(true);
-      const context = { data: 'test-data', validation: 'test-val', nav: 'test-nav' };
+      const context = new JourneyContext({ d: 'test-data' }, { v: 'test-val' }, { n: 'test-nav' });
 
       plan.addOrigin('main', 'n0');
       plan.setNextRoute('n0', 'n1', stub_n0n1);
@@ -148,12 +162,8 @@ describe('Plan', () => {
       const route_n1n2 = plan.getRoutes().filter(e => `${e.source}${e.target}${e.name}` === 'n1n2next')[0];
 
       plan.traverseRoutes(context, { startWaypoint: 'n0', routeName: 'next' });
-      expect(stub_n0n1).to.be.calledOnceWithExactly(
-        route_n0n1, context.data, context.validation, context.nav,
-      );
-      expect(stub_n1n2).to.be.calledOnceWithExactly(
-        route_n1n2, context.data, context.validation, context.nav,
-      );
+      expect(stub_n0n1).to.be.calledOnceWithExactly(route_n0n1, context);
+      expect(stub_n1n2).to.be.calledOnceWithExactly(route_n1n2, context);
     });
 
     it('should log exceptions in follow-condition functions, and exclude them from the result', () => {
@@ -171,7 +181,7 @@ describe('Plan', () => {
       planTest.addOrigin('main', 'n0');
       planTest.setNextRoute('n0', 'n1', stub_n0n1);
       planTest.setNextRoute('n1', 'n2', stub_n1n2);
-      planTest.traverseRoutes({}, { startWaypoint: 'n0', routeName: 'next' });
+      planTest.traverseRoutes(stubContext, { startWaypoint: 'n0', routeName: 'next' });
 
       expect(stubWarnLog).to.be.calledOnceWithExactly('Route follow function threw an exception, "%s" (%s)', 'test-error', 'n1/n2');
     });
@@ -185,7 +195,7 @@ describe('Plan', () => {
       plan.setNextRoute('n0', 'n2', stub_n0n2);
 
       expect(() => {
-        plan.traverseRoutes({}, { startWaypoint: 'n0', routeName: 'next' });
+        plan.traverseRoutes(stubContext, { startWaypoint: 'n0', routeName: 'next' });
       }).to.throw('Multiple routes were satisfied for "next" route (n0 -> n1 / n0 -> n2). Cannot choose one.');
     });
 
@@ -200,7 +210,7 @@ describe('Plan', () => {
       const route_n0n1 = plan.getRoutes().filter(e => `${e.source}${e.target}${e.name}` === 'n0n1next')[0];
       const route_n1n2 = plan.getRoutes().filter(e => `${e.source}${e.target}${e.name}` === 'n1n2next')[0];
 
-      const output = plan.traverseRoutes({}, { startWaypoint: 'n0', routeName: 'next' });
+      const output = plan.traverseRoutes(stubContext, { startWaypoint: 'n0', routeName: 'next' });
       expect(output).to.deep.eql([route_n0n1, route_n1n2, {
         source: 'n2',
         target: null,

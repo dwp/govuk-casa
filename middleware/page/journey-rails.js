@@ -9,6 +9,7 @@
  */
 
 const createLogger = require('../../lib/Logger.js');
+const JourneyContext = require('../../lib/JourneyContext.js');
 
 module.exports = (mountUrl = '/', plan) => (req, res, next) => {
   const logger = createLogger('page.journey-rails');
@@ -26,10 +27,9 @@ module.exports = (mountUrl = '/', plan) => (req, res, next) => {
   const traversalOptions = {
     startWaypoint: req.casa.journeyOrigin.waypoint,
   };
-  const traversed = !req.casa.journeyContext ? plan.traverse({}, traversalOptions) : plan.traverse({
-    data: req.casa.journeyContext.getData(),
-    validation: req.casa.journeyContext.getValidationErrors(),
-  }, traversalOptions);
+  const traversed = !req.casa.journeyContext
+    ? plan.traverse(new JourneyContext(), traversalOptions)
+    : plan.traverse(req.casa.journeyContext, traversalOptions);
 
   const currentUrlIndex = traversed.indexOf(req.casa.journeyWaypointId);
   const redirectUrlPrefix = `${mountUrl}/${req.casa.journeyOrigin.originId || ''}/`.replace(/\/+/g, '/');

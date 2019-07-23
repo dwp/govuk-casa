@@ -3,6 +3,7 @@
  */
 
 const qs = require('querystring');
+const JourneyContext = require('../lib/JourneyContext.js');
 const { rules, SimpleField } = require('../lib/validation/index.js');
 
 module.exports = function reviewPageDefinition(pagesMeta = {}) {
@@ -33,12 +34,9 @@ module.exports = function reviewPageDefinition(pagesMeta = {}) {
           startWaypoint: journeyOrigin.waypoint,
         };
         if (req.casa.journeyContext) {
-          waypointsTraversed = userJourney.traverse({
-            data: req.casa.journeyContext.getData(),
-            validation: req.casa.journeyContext.getValidationErrors(),
-          }, traversalOptions);
+          waypointsTraversed = userJourney.traverse(req.casa.journeyContext, traversalOptions);
         } else {
-          waypointsTraversed = userJourney.traverse({}, traversalOptions);
+          waypointsTraversed = userJourney.traverse(new JourneyContext(), traversalOptions);
         }
         res.locals.reviewBlocks = waypointsTraversed.map((waypointId) => {
           const meta = pagesMeta[waypointId] || {};

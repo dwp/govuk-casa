@@ -57,12 +57,12 @@ describe('Middleware: page/gather', () => {
     mockRequest.casa.journeyContext.getData.returns('test-data');
     mockRequest.casa.journeyContext.getValidationErrors.returns('test-errors');
     middleware(mockRequest, mockResponse, stubNext);
-    expect(mockRequest.casa.plan.traverse).to.be.calledOnceWithExactly({
-      data: 'test-data',
-      validation: 'test-errors',
-    }, {
-      startWaypoint: 'test-id',
-    });
+    expect(mockRequest.casa.plan.traverse).to.be.calledOnceWithExactly(
+      mockRequest.casa.journeyContext,
+      {
+        startWaypoint: 'test-id',
+      },
+    );
     expect(mockRequest.casa).to.have.property('preGatherTraversalSnapshot').that.eql([1, 2, 3]);
     expect(mockLogger.trace).to.be.calledWithExactly('Take pre-gather traversal snapshot');
   });
