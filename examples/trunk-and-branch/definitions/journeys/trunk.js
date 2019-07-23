@@ -4,7 +4,7 @@ module.exports = plan => {
     'finish',
   );
 
-  plan.setDualRoute('task-list', 'finish', (route, dataContext, validationContext) => {
+  plan.setRoute('task-list', 'finish', (route, dataContext, validationContext) => {
     // Here we are preventing from users going past this point until we've
     // recieved an answer to the "horror-books.like" question, which is in
     // the `books` journey.
