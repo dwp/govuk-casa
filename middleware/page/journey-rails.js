@@ -63,10 +63,8 @@ module.exports = (mountUrl = '/', plan) => (req, res, next) => {
     { startWaypoint: req.casa.journeyWaypointId },
   ).filter(r => r.label.targetOrigin !== undefined);
 
-  if (previousRoutes.length === 1) {
+  if (previousRoutes.length) {
     res.locals.casa.journeyPreviousUrl = `${mountUrl}/${previousRoutes[0].label.targetOrigin}/${previousRoutes[0].target}`.replace(/\/+/g, '/');
-  } else if (previousRoutes.length > 1) {
-    logger.info('%s prev routes found for waypoint %s. Cannot choose where to go.', previousRoutes.length, req.casa.journeyWaypointId);
   }
 
   next();
