@@ -186,17 +186,36 @@ describe('Plan', () => {
       expect(stubWarnLog).to.be.calledOnceWithExactly('Route follow function threw an exception, "%s" (%s)', 'test-error', 'n1/n2');
     });
 
-    it('should throw an Error when multiple routes are satisified between any waypoint pair', () => {
+    it('should log a warning, and stop traversing when multiple routes are satisified between any waypoint pair', () => {
+      const stubWarnLog = sinon.stub();
+      const PlanProxy = proxyquire('../../../lib/Plan.js', {
+        './Logger.js': () => ({
+          warn: stubWarnLog,
+        }),
+      });
+      const planTest = new PlanProxy();
+
       const stub_n0n1 = sinon.stub().returns(true);
       const stub_n0n2 = sinon.stub().returns(true);
 
-      plan.addOrigin('main', 'n0');
-      plan.setNextRoute('n0', 'n1', stub_n0n1);
-      plan.setNextRoute('n0', 'n2', stub_n0n2);
+      planTest.addOrigin('main', 'n0');
+      planTest.setNextRoute('n0', 'n1', stub_n0n1);
+      planTest.setNextRoute('n0', 'n2', stub_n0n2);
 
-      expect(() => {
-        plan.traverseRoutes(stubContext, { startWaypoint: 'n0', routeName: 'next' });
-      }).to.throw('Multiple routes were satisfied for "next" route (n0 -> n1 / n0 -> n2). Cannot choose one.');
+      const routes = planTest.traverseRoutes(stubContext, { startWaypoint: 'n0', routeName: 'next' });
+      expect(routes).to.deep.eql([{
+        source: 'n0',
+        target: null,
+        name: 'next',
+        label: {
+          sourceOrigin: undefined,
+          targetOrigin: undefined,
+        },
+      }]);
+
+      expect(stubWarnLog).to.be.calledOnceWithExactly(
+        'Multiple routes were satisfied for "next" route (n0 -> n1 / n0 -> n2). Cannot determine which to use so stopping traversal at "n0".',
+      );
     });
 
     it('should return all routes in the order they were satisfied', () => {
