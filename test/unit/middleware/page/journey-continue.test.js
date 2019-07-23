@@ -111,10 +111,8 @@ describe('Middleware: page/journey-continue', () => {
       mockRequest = Object.assign(mockRequest, {
         inEditMode: true,
         editOriginUrl: '/test-origin/',
-        casaRequestState: {
-          preGatherTraversalSnapshot: ['page0', 'page1', 'page2'],
-        },
       });
+      mockRequest.casa.preGatherTraversalSnapshot = ['page0', 'page1', 'page2'];
       mockRequest.casa.plan.traverse.returns(['page0', 'changeA', 'changeB']);
       await middlewareWithConfig(mockRequest, mockResponse, stubNext);
       expect(mockResponse.status).to.be.calledOnceWithExactly(302);

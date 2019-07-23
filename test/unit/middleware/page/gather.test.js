@@ -50,7 +50,7 @@ describe('Middleware: page/gather', () => {
     expect(middleware[1]).to.be.a('Function');
   });
 
-  it('should create req.casaRequestState holding traversal state', () => {
+  it('should create req.casa.preGatherTraversalSnapshot holding traversal state', () => {
     const middleware = mwGather()[1];
     mockRequest.casa.journeyOrigin = { originId: '', waypoint: 'test-id' };
     mockRequest.casa.plan.traverse.returns([1, 2, 3]);
@@ -63,9 +63,7 @@ describe('Middleware: page/gather', () => {
     }, {
       startWaypoint: 'test-id',
     });
-    expect(mockRequest).to.have.property('casaRequestState').that.eql({
-      preGatherTraversalSnapshot: [1, 2, 3],
-    });
+    expect(mockRequest.casa).to.have.property('preGatherTraversalSnapshot').that.eql([1, 2, 3]);
     expect(mockLogger.trace).to.be.calledWithExactly('Take pre-gather traversal snapshot');
   });
 

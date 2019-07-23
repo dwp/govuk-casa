@@ -77,6 +77,7 @@ A series of variables previously on the `req.*` namespace have been moved into `
 * `req.journeyOrigin` -> `req.casa.journeyOrigin`
 * `req.journeyWaypointId` -> `req.casa.journeyWaypointId`
 * `req.journeyActive` -> `req.casa.plan`
+* `req.casaRequestState.preGatherTraversalSnapshot` -> `req.casa.preGatherTraversalSnapshot`
 * `req.session.journeyData` -> `req.session.journeyContext.data`
 * `req.session.journeyValidationErrors` -> `req.session.journeyContext.validation`
 
