@@ -240,5 +240,27 @@ describe('Plan', () => {
         },
       }]);
     });
+
+    it('should stop traversing if a loop is encountered, finishing on the first repeated route', () => {
+      plan.addOrigin('main', 'n0');
+      plan.setNextRoute('n0', 'n1', () => (true));
+      plan.setNextRoute('n1', 'n2', () => (true));
+      plan.setNextRoute('n2', 'n3', () => (true));
+      plan.setNextRoute('n3', 'n1', () => (true));
+
+      const output = plan.traverseRoutes(stubContext, { startWaypoint: 'n0', routeName: 'next' });
+
+      // n0 -> n1 -> n2 -> n3 -> n1
+      expect(output).to.have.length(5);
+      expect(output.pop()).to.eql({
+        source: 'n1',
+        target: null,
+        name: 'next',
+        label: {
+          sourceOrigin: undefined,
+          targetOrigin: undefined,
+        },
+      });
+    });
   });
 });
