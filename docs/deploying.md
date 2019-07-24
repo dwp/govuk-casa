@@ -1,6 +1,6 @@
 # Deploying a CASA app
 
-Once you've prepared your [User Journey](user-journey.md), created your [page templates](page-markup.md), and setup [field validation](field-validation.md), then you can bring them all together into your ExpressJS web application.
+Once you've prepared your [Plan](plan.md), created your [page templates](page-markup.md), and setup [field validation](field-validation.md), then you can bring them all together into your ExpressJS web application.
 
 ## Setting up a basic service
 
@@ -29,7 +29,7 @@ npm install --save-exact express express-session session-file-store @dwp/govuk-c
 First we'll define our user journey (a simple, linear sequence of waypoints):
 
 ```javascript
-// definitions/journey.js
+// definitions/plan.js
 const UserJourney = require('@dwp/govuk-casa/lib/UserJourney');
 
 module.exports = (function () {
@@ -447,7 +447,7 @@ require('./routes/complete.js')(casaApp.router);
 // Load CASA page and user journey definitions
 casaApp.loadDefinitions(
   require('./definitions/pages.js'),
-  require('./definitions/journey.js')
+  require('./definitions/plan.js')
 );
 
 // Custom route handlers for any waypoints defined in the journey, but not in
@@ -481,7 +481,7 @@ CASA provides a simple implementation of the ["Check your answers"](https://desi
 First, add a `review` waypoint (or name it whatever you wish) to your journey. This should come before your final `submit` page. For example, taking the example journey further above, we just add `review` to the list of waypoints, just before `submit`:
 
 ```javascript
-// definitions/journey.js
+// definitions/plan.js
 const UserJourney = require('@dwp/govuk-casa/lib/UserJourney');
 
 module.exports = (function () {
