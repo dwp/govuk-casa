@@ -1,3 +1,8 @@
+<a name="5.0.0-alpha.2"></a>
+# [5.0.0-alpha.2](https://github.com/dwp/govuk-casa/compare/5.0.0-alpha.1...5.0.0-alpha.2) (2019-07-24)
+
+
+
 <a name="5.0.0-alpha.1"></a>
 # [5.0.0-alpha.1](https://github.com/dwp/govuk-casa/compare/4.0.4...5.0.0-alpha.1) (2019-07-23)
 
