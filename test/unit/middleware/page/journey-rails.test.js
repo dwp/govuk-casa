@@ -135,7 +135,7 @@ describe('Middleware: page/journey-rails', () => {
     });
 
     it('where the previous route lies on a different origin', () => {
-      stubPlan.traversePrevRoutes = sinon.stub().returns([{
+      stubPlan.getPrevOutwardRoutes = sinon.stub().returns([{
         source: 'waypoint0',
         target: 'waypointA',
         name: 'prev',

@@ -24,6 +24,7 @@ const plan = () => ({
   traverseNextRoutes: sinon.stub().returns([]),
   traversePrevRoutes: sinon.stub().returns([]),
   getOrigins: sinon.stub().returns([]),
+  getPrevOutwardRoutes: sinon.stub().returns([]),
 });
 
 module.exports = {
