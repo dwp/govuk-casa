@@ -1,6 +1,42 @@
 const { isObjectWithKeys } = require('../../lib/Util.js');
 
 /**
+* Converts an array of functions to a nested callback, eg:
+* [                                  |   function nested(req, res, next) {-
+*   function a(req, res, next) {-    |     a(req, res, () => {-
+*     ...                            |       ...
+*     next();                        |       b(req, res, () => {-
+*   },                               |         ...
+*   function b(req, res, next) {-    |         c(req, res, () => {-
+*     ...                            |           ...
+*     next();                        |           next();
+*   },                               |         });
+*   function c(req, res, next) {-    |       })
+*     ...                            |     });
+*     next();                        |   }
+*   },                               |
+* ]                                  |
+* @param  {Logger} logger Request-specific Logger instance
+* @param  {string} hookName Name of the hook being called
+* @param  {string} waypointId id of waypoint
+* @param  {array} hooks array of middleware like functions
+* @return {function} nested function
+*/
+function nestHooks(logger, hookName, waypointId, hooks) {
+  return hooks.reduce((inital, hook, hookNumber) => {
+    if (typeof hook === 'function') {
+      return (req, res, next) => {
+        inital(req, res, () => {
+          logger.trace('Running %s hook %d for %s', hookName, hookNumber + 1, waypointId);
+          hook(req, res, next);
+        })
+      }
+    }
+    return inital;
+  }, (req, res, next) => next());
+}
+
+/**
  * Generic wrapper for executing one of the page hooks.
  *
  * The returned Promise will always resolve unless the hook function ends the
@@ -16,8 +52,13 @@ const { isObjectWithKeys } = require('../../lib/Util.js');
 function executeHook(logger, req = {}, res = {}, pageMeta = {}, hookName = '') {
   return new Promise((resolve, reject) => {
     const hooks = pageMeta && pageMeta.hooks ? pageMeta.hooks : Object.create(null);
-    const journeyWaypointId = req.casa.journeyWaypointId || '';
-    if (typeof hooks[hookName] === 'function') {
+    const { journeyWaypointId } = req.casa || Object.create(null);
+    if (Array.isArray(hooks[hookName])) {
+      const nestedHooks = nestHooks(logger, hookName, req.casa.journeyWaypointId, hooks[hookName]);
+      // Will not resolve if any hook executes `res.send()`
+      logger.trace('Running nested %s hooks for %s', hookName, journeyWaypointId);
+      nestedHooks(req, res, resolve);
+    } else if (typeof hooks[hookName] === 'function') {
       logger.trace('Run %s hook for %s', hookName, journeyWaypointId);
       hooks[hookName](req, res, (err) => {
         // Will not resolve if hook executes `res.send()`
@@ -105,6 +146,7 @@ function runGatherModifiers(fieldValue, gatherModifiers = []) {
 }
 
 module.exports = {
+  nestHooks,
   executeHook,
   extractSessionableData,
   runGatherModifiers,
