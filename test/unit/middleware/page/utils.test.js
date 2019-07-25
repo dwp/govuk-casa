@@ -8,6 +8,8 @@ const { expect } = chai;
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
+const { nestHooks, executeHook } = require('../../../../middleware/page/utils.js');
+
 const { request, response } = require('../../helpers/express-mocks.js');
 const logger = require('../../helpers/logger-mock.js');
 
@@ -93,22 +95,127 @@ describe('Middleware: page/utils', () => {
     });
   });
 
+  /* ------------------------------------------------------------ nestHooks() */
+
+  describe('nestHooks()', () => {
+    const hooks = [
+      (req, res, next) => {
+        req.called1 = true;
+        next();
+      },
+      (req, res, next) => {
+        req.called2 = true;
+        next();
+      },
+      (req, res, next) => {
+        req.called3 = true;
+        next();
+      },
+    ];
+    const validPageWaypointId = 'test-waypoint';
+    const validHookName = 'prerender';
+
+    it('should return a function', () => {
+      expect(
+        nestHooks(logger(), validHookName, validPageWaypointId, hooks),
+      ).to.be.a('function');
+    });
+
+    it('should return a function that calls all functions in original array', () => {
+      const req = {};
+      const res = {};
+      const next = () => {
+        req.calledNext = true;
+      };
+
+      const nestedHooks = nestHooks(logger(), validHookName, validPageWaypointId, hooks);
+      nestedHooks(req, res, next);
+
+      expect(req.called1).to.equal(true);
+      expect(req.called2).to.equal(true);
+      expect(req.called3).to.equal(true);
+      expect(req.calledNext).to.equal(true);
+    });
+
+    it('should return a function that calls all functions in original array in the same order', () => {
+      const hooksPush = [
+        (req, res, next) => {
+          req.called.push('1');
+          next();
+        },
+        (req, res, next) => {
+          req.called.push('2');
+          next();
+        },
+        (req, res, next) => {
+          req.called.push('3');
+          next();
+        },
+      ];
+
+      const req = { called: [] };
+      const res = {};
+      const next = () => {
+        req.called.push('next');
+      };
+
+      const nestedHooks = nestHooks(logger(), validHookName, validPageWaypointId, hooksPush);
+      nestedHooks(req, res, next);
+
+      expect(req.called).to.deep.equal(['1', '2', '3', 'next']);
+    });
+
+    it('should return a function that calls all functions in the same order even if async', (done) => {
+      const hooksPush = [
+        (req, res, next) => {
+          req.called.push('1');
+          next();
+        },
+        (req, res, next) => {
+          setTimeout(() => {
+            req.called.push('2');
+            next();
+          }, 10);
+        },
+        (req, res, next) => {
+          req.called.push('3');
+          next();
+        },
+      ];
+
+      const req = { called: [] };
+      const res = {};
+      const next = () => {
+        req.called.push('next');
+        expect(req.called).to.deep.equal(['1', '2', '3', 'next']);
+        done();
+      };
+
+      const nestedHooks = nestHooks(logger(), validHookName, validPageWaypointId, hooksPush);
+      nestedHooks(req, res, next);
+    });
+
+    it('should return a function that does not try to call any none function array entries', () => {
+      const hooksNoneFunc = [...hooks];
+      hooksNoneFunc[1] = undefined;
+
+      const req = {};
+      const res = {};
+      const next = () => {
+        req.calledNext = true;
+      };
+
+      const nestedHooks = nestHooks(logger(), validHookName, validPageWaypointId, hooksNoneFunc);
+
+      expect(() => {
+        nestedHooks(req, res, next);
+      }).to.not.throw();
+    });
+  });
+
   /* ---------------------------------------------------------- executeHook() */
 
   describe('executeHook()', () => {
-    let executeHook;
-    let stubIsObjectWithKeys;
-
-    beforeEach(() => {
-      stubIsObjectWithKeys = sinon.stub().returns(true);
-
-      ({ executeHook } = proxyquire('../../../../middleware/page/utils.js', {
-        '../../lib/Util.js': {
-          isObjectWithKeys: stubIsObjectWithKeys,
-        },
-      }));
-    });
-
     it('should return a Promise', () => {
       const output = executeHook(logger());
       expect(output).to.be.an.instanceOf(Promise);
@@ -121,6 +228,27 @@ describe('Middleware: page/utils', () => {
       const stubResponse = response();
       await executeHook(stubLogger, stubRequest, stubResponse, {}, 'test-hook');
       expect(stubLogger.trace).to.be.calledOnceWithExactly('No %s hook for %s', 'test-hook', 'test-waypoint');
+    });
+
+    it('should resolve when all nested hooks do not throw an errors', async () => {
+      const stubLogger = logger();
+      const stubRequest = request();
+      stubRequest.casa = { journeyWaypointId: 'test-waypoint' };
+      const stubResponse = response();
+      const pageMeta = {
+        hooks: {
+          'test-hook': [
+            sinon.stub().callsFake((req, res, next) => next()),
+            sinon.stub().callsFake((req, res, next) => next()),
+            sinon.stub().callsFake((req, res, next) => next()),
+          ],
+        },
+      };
+      await executeHook(stubLogger, stubRequest, stubResponse, pageMeta, 'test-hook');
+      expect(stubLogger.trace).to.be.calledWithExactly('Running nested %s hooks for %s', 'test-hook', 'test-waypoint');
+      expect(pageMeta.hooks['test-hook'][0]).to.be.calledOnce;
+      expect(pageMeta.hooks['test-hook'][1]).to.be.calledOnce;
+      expect(pageMeta.hooks['test-hook'][2]).to.be.calledOnce;
     });
 
     it('should resolve when hook is configured and does not throw an error', async () => {
