@@ -1,3 +1,18 @@
+<a name="5.0.0-alpha.3"></a>
+# [5.0.0-alpha.3](https://github.com/dwp/govuk-casa/compare/5.0.0-alpha.2...5.0.0-alpha.3) (2019-07-25)
+
+
+### Bug Fixes
+
+* stop traversal once a loop is encountered ([33ce8f6](https://github.com/dwp/govuk-casa/commit/33ce8f6))
+
+
+### Features
+
+* add support for hooks as arrays ([047ed46](https://github.com/dwp/govuk-casa/commit/047ed46))
+
+
+
 <a name="5.0.0-alpha.2"></a>
 # [5.0.0-alpha.2](https://github.com/dwp/govuk-casa/compare/5.0.0-alpha.1...5.0.0-alpha.2) (2019-07-24)
 
