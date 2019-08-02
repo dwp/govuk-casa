@@ -111,7 +111,7 @@ zap:
   variables:
     HOSTNAME: pentest.service
     PENTEST_SERVICE_URL: http://$HOSTNAME:4000/
-  image: docker:18.09@sha256:bf929409251faa1d1fcf63af68d02bb942054cfbe14e6ad9dca0dc4a01cbffad
+  image: docker:18.09@sha256:265571317aef5ef53bdc88459d9e6e502e47a655b42fda0dfb5b461ddc6a39c2
   services:
     - docker:18.09-dind@sha256:323f789b9bea83331e79760593736a1b0102572393c50220f4f2256bd37d20b9
   before_script:
