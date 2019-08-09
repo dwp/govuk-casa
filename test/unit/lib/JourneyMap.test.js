@@ -1,4 +1,7 @@
 const { expect } = require('chai');
+const sinon = require('sinon');
+const proxyquire = require('proxyquire');
+
 const JourneyMap = require('../../../lib/JourneyMap.js');
 const JourneyRoad = require('../../../lib/JourneyRoad.js');
 
@@ -555,6 +558,35 @@ describe('JourneyMap', () => {
       map.startAt(roadA);
 
       expect(map.traverseAhead()).to.eql(['a', 'b', 'c', 'd', 'e', 'f']);
+    });
+  });
+
+  describe('convertToPlan()', () => {
+    let map;
+    let addOriginStub;
+    let convertStub;
+    beforeEach(() => {
+      addOriginStub = sinon.stub();
+      convertStub = sinon.stub().returns({ plan: 'this is a plan!' });
+      const mockPlan = function () {};
+      mockPlan.prototype.addOrigin = addOriginStub;
+      const mockRoadConverter = function () {};
+      mockRoadConverter.prototype.convert = convertStub;
+      const JourneyMapProxy = proxyquire('../../../lib/JourneyMap.js', {
+        './Plan.js': mockPlan,
+        './RoadConverter.js': mockRoadConverter,
+      });
+      map = new JourneyMapProxy();
+      const road1 = new JourneyRoad();
+      road1.addWaypoints(['p0', 'p1', 'p2', 'p3']);
+      map.startAt(road1);
+    });
+
+    it('should return a plan when \'convertToPlan()\' is called', () => {
+      const plan = map.convertToPlan();
+      expect(plan).to.equal('this is a plan!');
+      expect(addOriginStub).to.be.calledOnceWithExactly('main', 'p0');
+      expect(convertStub).to.be.called;
     });
   });
 });

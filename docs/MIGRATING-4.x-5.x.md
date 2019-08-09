@@ -125,6 +125,21 @@ We have adopted a Graph-based data structure to describe user journeys under the
 
 The API for defining journeys has changed drastically. See one of the [example projects](../examples/) for an idea of how journeys are now constructed, or the [documentation for building plans](plan.md) to understand how to construct your own plans from scratch.
 
+To ease migration, you can convert your existing `UserJourney.Map` instances to the new `Plan` model. At the end of your `journey.js` file, instead of returning an instance of `UserJourney.Map()`, return a call to `convertToPlan()`, for example:
+
+```javascript
+// Existing code:
+const startJourney = new UserJourney.Road();
+startJourney.addWaypoints(['waypoint1', 'etc']);
+// ...
+const myMap = new UserJourney.Map();
+myMap.startAt(startJourney);
+// New code:
+return myMap.convertToPlan();
+```
+
+NOTE: This method will be removed in a future release of CASA, so we'd suggest refactoring your code to use the new `Plan` model now.
+
 If you are using multiple journeys, bear in mind that you now have just one `Plan` instance, but with multiple "origins" (defined with `plan.addOrigin()`). A journey traversal can be started from any one of these origins.
 
 Here's a summary of example changes that you will likely need to to make:
