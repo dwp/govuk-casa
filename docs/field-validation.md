@@ -125,9 +125,7 @@ The object key should reference the `name` of the field you wish to validate and
 
 ```javascript
 // definitions/field-validators/personal-info.js
-const Validation = require('@dwp/govuk-casa/lib/Validation');
-const rules = Validation.rules;
-const SimpleField = Validation.SimpleField;
+const { validationRules: rules, simpleFieldValidation: SimpleField } = require('@dwp/govuk-casa');
 
 module.exports = {
   // Make the `name` field a required value

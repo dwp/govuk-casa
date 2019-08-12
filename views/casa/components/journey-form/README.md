@@ -7,7 +7,7 @@ A "Continue" button (and "Cancel" link if in edit mode) will also be added.
 ## Example usage
 
 ```nunjucks
-{% from "casa/components/journey-form/macro.njk" import casaJourneyForm %}
+{% from "casa/components/journey-form/macro.njk" import casaJourneyForm with context %}
 
 {% call casaJourneyForm({
   casaMountUrl: casa.mountUrl,

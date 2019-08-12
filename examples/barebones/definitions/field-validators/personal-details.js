@@ -1,6 +1,4 @@
-const Validation = require('@dwp/govuk-casa/lib/Validation');
-const r = Validation.rules;
-const sf = Validation.SimpleField;
+const { validationRules: r, simpleFieldValidation: sf} = require('@dwp/govuk-casa');
 const moment = require('moment');
 
 const fieldValidators = {

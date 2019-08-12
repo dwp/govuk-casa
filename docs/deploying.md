@@ -2,12 +2,14 @@
 
 Once you've prepared your [Plan](plan.md), created your [page templates](page-markup.md), and setup [field validation](field-validation.md), then you can bring them all together into your ExpressJS web application.
 
+After following the guides below, you'll have a basic service ready to run.
+
 ## Setting up a basic service
 
 This full application example takes us through the following steps:
 
-1. Define all pages in your user journey
-2. Create the page markup, locale dictionary and field validation definitions for each page in the journey
+1. Define all pages and waypoints that feature in your user journey Plan
+2. Create the page markup, locale dictionary and field validation definitions for each page in the Plan
 3. Create the "page meta" definitions
 4. Setup static pages:
   - An index page to welcome the user
@@ -24,29 +26,30 @@ npm init -y
 npm install --save-exact express express-session session-file-store @dwp/govuk-casa
 ```
 
-### 1. User Journey
+### 1. Plan
 
-First we'll define our user journey (a simple, linear sequence of waypoints):
+First we'll define a Plan that describes the journey our users may take (in this case, a simple, linear sequence of waypoints):
 
 ```javascript
 // definitions/plan.js
-const UserJourney = require('@dwp/govuk-casa/lib/UserJourney');
+const { Plan } = require('@dwp/govuk-casa');
 
-module.exports = (function () {
+module.exports = (() => {
   // Create the single "road" on our journey, adding the sequence of waypoints
   // (pages) that will be visited along the way.
+  const plan = new Plan();
+
   const linear = new UserJourney.Road();
-  linear.addWaypoints([
+  plan.addSequence(
     'personal-info',
     'hobbies',
     'submit'
-  ]);
-  linear.end();
+  );
 
-  // Create the journey map
-  const journey = new UserJourney.Map();
-  journey.startAt(linear);
-  return journey;
+  // Define an origin starting point
+  plan.addOrigin('main', 'personal-info');
+
+  return Plan;
 })();
 ```
 
@@ -142,29 +145,27 @@ Now we can setup each of our journey pages, using the above layout. First, the `
 
 ```javascript
 // definitions/field-validators/personal-info.js
-const Validation = require('@dwp/govuk-casa/lib/Validation');
-const r = Validation.rules;
-const sf = Validation.SimpleField;
+const { validationRules: r, simpleFieldValidation: sf } = require('@dwp/govuk-casa');
 
 module.exports = {
   firstName: sf([
     r.required.bind({
-      errorMsg: 'personal-info:field.firstName.error_required'
-    })
+      errorMsg: 'personal-info:field.firstName.error_required',
+    }),
   ]),
 
   lastName: sf([
     r.required.bind({
-      errorMsg: 'personal-info:field.lastName.error_required'
-    })
+      errorMsg: 'personal-info:field.lastName.error_required',
+    }),
   ]),
 
   email: sf([
     r.required.bind({
-      errorMsg: 'personal-info:field.email.error_required'
+      errorMsg: 'personal-info:field.email.error_required',
     }),
-    r.email
-  ])
+    r.email,
+  ]),
 };
 ```
 
@@ -222,13 +223,11 @@ Next, our `hobbies` page (which does't use validation):
 
 ```javascript
 // definitions/field-validators/hobbies.js
-const Validation = require('@dwp/govuk-casa/lib/Validation');
-const r = Validation.rules;
-const sf = Validation.SimpleField;
+const { validationRules: r, simpleFieldValidation: sf } = require('@dwp/govuk-casa');
 
 module.exports = {
   description: sf([
-    r.optional
+    r.optional,
   ]),
 };
 ```
@@ -262,7 +261,7 @@ module.exports = {
   hobbies: {
     view: 'pages/hobbies.njk',
     fieldValidators: require('./field-validators/hobbies.js'),
-  }
+  },
 };
 ```
 
@@ -274,7 +273,7 @@ Next, let's set up a route and template for the index page. This will welcome th
 
 ```javascript
 // routes/index.js
-module.exports = function (router) {
+module.exports = (router) => {
   router.get('/', (req, res, next) => {
     res.render('welcome.njk');
   });
@@ -307,7 +306,7 @@ module.exports = function (router) {
 {% endblock %}
 ```
 
-Next, a route and template for the final submission. This will use CASA's [CSRF (Cross Site Request Forgery) middleware helpers](security.md) to protect the submission form from external manipulation
+Next, a route and template for the final submission. This will use CASA's [CSRF (Cross Site Request Forgery) middleware helpers](api/middleware.md) to protect the submission form from external manipulation
 
 ```javascript
 // routes/submit.js
@@ -399,7 +398,7 @@ Finally, we can bring all this together with a service bootstrap script. This wi
 
 ```javascript
 // app.js
-const casa = require('@dwp/govuk-casa');
+const { configure } = require('@dwp/govuk-casa');
 const express = require('express');
 const path = require('path');
 
@@ -417,7 +416,7 @@ const sessionStore = new FileStore({
 
 // Create a new CASA application instance.
 const app = express();
-const casaApp = casa(app, {
+const casaApp = configure(app, {
   mountUrl: '/',
   views: {
     dirs: [path.resolve(__dirname, 'views')]
@@ -478,25 +477,26 @@ Session handling is managed through the `express-session` interface, so you are 
 
 CASA provides a simple implementation of the ["Check your answers"](https://design-system.service.gov.uk/patterns/check-answers/) pattern. You can of course roll your own implementation, but if you'd like to take advantage of the CASA variant (which aims to keep up to date with the pattern), here's how ...
 
-First, add a `review` waypoint (or name it whatever you wish) to your journey. This should come before your final `submit` page. For example, taking the example journey further above, we just add `review` to the list of waypoints, just before `submit`:
+First, add a `review` waypoint (or name it whatever you wish) to your Plan. This should come before your final `submit` page. For example, taking the example journey further above, we just add `review` to the list of waypoints, just before `submit`:
 
 ```javascript
 // definitions/plan.js
-const UserJourney = require('@dwp/govuk-casa/lib/UserJourney');
+const { Plan } = require('@dwp/govuk-casa');
 
-module.exports = (function () {
+module.exports = (() => {
+  const plan = new Plan();
+
   const linear = new UserJourney.Road();
-  linear.addWaypoints([
+  plan.addSequence(
     'personal-info',
     'hobbies',
     'review',
     'submit'
-  ]);
-  linear.end();
+  );
 
-  const journey = new UserJourney.Map();
-  journey.startAt(linear);
-  return journey;
+  plan.addOrigin('main', 'personal-info');
+
+  return Plan;
 })();
 ```
 

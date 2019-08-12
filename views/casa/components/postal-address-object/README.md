@@ -11,7 +11,7 @@ Custom parameters:
 Basic example:
 
 ```nunjucks
-{% from "casa/components/postal-address-object/macro.njk" import casaPostalAddressObject %}
+{% from "casa/components/postal-address-object/macro.njk" import casaPostalAddressObject with context %}
 
 {{ casaPostalAddressObject({
   name: 'address',
@@ -23,7 +23,7 @@ Basic example:
 With configurable items:
 
 ```nunjucks
-{% from "casa/components/postal-address-object/macro.njk" import casaPostalAddressObject %}
+{% from "casa/components/postal-address-object/macro.njk" import casaPostalAddressObject with context %}
 
 {{ casaPostalAddressObject({
   name: 'address',

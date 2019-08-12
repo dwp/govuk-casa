@@ -2,7 +2,7 @@
 
 ## GOVUK component wrappers
 
-You can use the [GOVUK Frontend component macros](https://design-system.service.gov.uk/components/) directly in your templates, but in order to work seamlessly with CASA you will need to follow a few standards:
+You can use the [GOVUK Frontend component macros](https://design-system.service.gov.uk/components/) directly in your templates, but in order to work seamlessly with CASA you will need to follow a few conventions:
 
 * When importing, bear in mind that the GOVUK components will be housed in the `components/` directory, e.g. `components/input/macro.njk`. This differs slightly to the documentation in the GOVUK Design System, so beware!
 * The `id` attribute of any elements must be in the format `f-<name>`, i.e `<... name="my-element" id="f-my-element" ... />`. Because:

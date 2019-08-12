@@ -14,7 +14,7 @@ Note that the underlying GOVUK macro has no support for a `name` parameter, and 
 Basic example:
 
 ```nunjucks
-{% from "casa/components/date-input/macro.njk" import casaGovukDateInput %}
+{% from "casa/components/date-input/macro.njk" import casaGovukDateInput with context %}
 
 casaGovukDateInput({
   namePrefix: "dateOfBirth",
@@ -26,7 +26,7 @@ casaGovukDateInput({
 With configurable items:
 
 ```nunjucks
-{% from "casa/components/date-input/macro.njk" import casaGovukDateInput %}
+{% from "casa/components/date-input/macro.njk" import casaGovukDateInput with context %}
 
 casaGovukDateInput({
   namePrefix: "dateOfBirth",

@@ -1,6 +1,6 @@
-# Handling Journey Data
+# Handling Journey State
 
-The [`middleware/session/`](../../middleware/session/) middleware is responsible for making available the `req.casa.journeyContext` object for every incoming request, which is an instance of the [`lib/JourneyContext.js`](../../lib/JourneyContext.js) class.
+The [`middleware/session/`](../../middleware/session/) middleware is responsible for making available the `req.casa.journeyContext` object for every incoming request, which is an instance of the [`JourneyContext`](../../lib/JourneyContext.js) class.
 
 This object holds all gathered data, and information about any valiation errors arising from that data.
 
@@ -28,6 +28,10 @@ req.casa.journeyContext.setDataForPage('my-page', {
 // Retrieving data per journey or per page
 req.casa.journeyContext.getData();
 req.casa.journeyContext.getDataForPage('my-page');
+
+// You can also use the `data` getter for a slightly simpler syntax
+req.casa.journeyContext.data;
+req.casa.journeyContext.data['my-page'];
 ```
 
 ```javascript
@@ -55,11 +59,15 @@ req.casa.journeyContext.getValidationErrorsForPage('my-page');
 
 // Clear validation errors for a particular page
 req.casa.journeyContext.clearValidationErrorsForPage('my-page');
+
+// You can also use the `validation` getter for a slightly simpler syntax
+req.casa.journeyContext.validation;
+req.casa.journeyContext.validation['my-page'];
 ```
 
 ## Maintaining session state
 
-If any changes are made to this object, you must write those changes back to the session, as so:
+If any changes are made to this `req.casa.journeyContext` object, you must explicitly write those changes back to the session, as so:
 
 ```javascript
 // Update the request object

@@ -15,7 +15,7 @@ Custom parameters:
 Basic example:
 
 ```nunjucks
-{% from "casa/components/checkboxes/macro.njk" import casaGovukCheckboxes %}
+{% from "casa/components/checkboxes/macro.njk" import casaGovukCheckboxes with context %}
 
 casaGovukCheckboxes({
   name: "preferences",
@@ -50,7 +50,7 @@ casaGovukCheckboxes({
 To associate a checkbox item with a toggleable DOM element:
 
 ```nunjucks
-{% from "casa/components/checkboxes/macro.njk" import casaGovukCheckboxes %}
+{% from "casa/components/checkboxes/macro.njk" import casaGovukCheckboxes with context %}
 
 casaGovukCheckboxes({
   name: "preferences",
@@ -69,7 +69,7 @@ casaGovukCheckboxes({
 })
 
 <div id="target-panel" class="js-hidden">
-  This panel will remain hidden until the "First Choice" option is chosen in the che set above.
+  This panel will remain hidden until the "First Choice" option is chosen in the set above.
 </div>
 ```
 

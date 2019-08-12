@@ -34,13 +34,13 @@ The object key should reference the `name` of the field you wish to gather and s
 
 ```javascript
 // definitions/field-gather-modifiers/personal-info.js
-const GatherModifiers = require('@dwp/govuk-casa/lib/GatherModifier');
+const { gatherModifiers } = require('@dwp/govuk-casa');
 
 const fieldGatherModifiers = {
-  fullName: GatherModifiers.trimWhitespace,
-  phoneNumber: [GatherModifiers.trimWhitespace, (value) => value.fieldValue.replace(/[\s+\-]/g, '')],
-  emailAddress: GatherModifiers.trimWhitespace,
-  address: GatherModifiers.trimPostalAddressObject
+  fullName: gatherModifiers.trimWhitespace,
+  phoneNumber: [gatherModifiers.trimWhitespace, (value) => value.fieldValue.replace(/[\s+\-]/g, '')],
+  emailAddress: gatherModifiers.trimWhitespace,
+  address: gatherModifiers.trimPostalAddressObject
 };
 
 module.exports = fieldGatherModifiers;

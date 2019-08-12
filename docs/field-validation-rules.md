@@ -3,7 +3,7 @@
 You can use any of these [built-in validation rules](../lib/validation/rules/) by including the `@dwp/govuk-casa/lib/Validation` object, ie:
 
 ```javascript
-const { rules } = require('@dwp/govuk-casa/lib/Validation');
+const { validationRules } = require('@dwp/govuk-casa');
 ```
 
 ## `dateObject`
@@ -14,12 +14,12 @@ All date comparison and format validation is done with the [`moment`](https://mo
 
 ```javascript
 // Minimal
-rules.dateObject
+validationRules.dateObject
 ```
 
 ```javascript
 // All configuration options
-rules.dateObject.bind({
+validationRules.dateObject.bind({
   // Allow single digits to be used for day/month
   allowSingleDigitDay: true,
   allowSingleDigitMonth: true,
@@ -58,12 +58,12 @@ Validates that an email is provided in a valid format.
 
 ```javascript
 // Minimal
-rules.email
+validationRules.email
 ```
 
 ```javascript
 // All configuration  options
-rules.email.bind({
+validationRules.email.bind({
   // Error message
   errorMsg: {
     summary: 'validation:rule.email.summary',
@@ -77,7 +77,7 @@ Test whether the field's value occurs within a predefined array.
 
 ```javascript
 // Minimal
-rules.inArray.bind({
+validationRules.inArray.bind({
   // Validate if value contains any of these options
   source: ['apples', 'pears', 'lemons'],
 })
@@ -85,7 +85,7 @@ rules.inArray.bind({
 
 ```javascript
 // All configuration optiona
-rules.inArray.bind({
+validationRules.inArray.bind({
   // Validate if value contains any of these options
   source: ['apples', 'pears', 'lemons']
 
@@ -102,12 +102,12 @@ Validates that the provided value conforms to the [UK national insurance number 
 
 ```javascript
 // Minimal
-rules.nino
+validationRules.nino
 ```
 
 ```javascript
 // All configuration options
-rules.nino.bind({
+validationRules.nino.bind({
   // Strip all whitespace (\u0020 spaces) from the value before validating it
   allowWhitespace: true,
 
@@ -124,7 +124,7 @@ This is a special rule that flags the field as being optional. It _must_ appear 
 
 ```javascript
 // Minimal
-rules.optional
+validationRules.optional
 ```
 
 ## `postalAddressObject`
@@ -133,12 +133,12 @@ Validates UK postal addresses captured through the [`casaPostAddressObject()`](.
 
 ```javascript
 // Minimal
-rules.postalAddressObject
+validationRules.postalAddressObject
 ```
 
 ```javascript
 // All configuration options
-rules.postAddressObject.bind({
+validationRules.postAddressObject.bind({
   // Limit the length of each address line (address1 - 4)
   strlenmax: 100,
 
@@ -176,14 +176,14 @@ Ensure that a provided values meets the rules of a regular expression.
 
 ```javascript
 // Minimal
-rules.regex.bind({
+validationRules.regex.bind({
   pattern: /^[0-9]{3}$/,
 })
 ```
 
 ```javascript
 // All configuration options
-rules.regex.bind({
+validationRules.regex.bind({
   // Match this pattern
   pattern: /^[0-9]{3}$/,
 
@@ -204,12 +204,12 @@ Marks a field as being required, i.e. it must provide a non-empty value.
 
 ```javascript
 // Minimal
-rules.required
+validationRules.required
 ```
 
 ```javascript
 // All configuration options
-rules.required.bind({
+validationRules.required.bind({
   // Error message
   errorMsg: {
     summary: 'validation:rule.required.summary',
@@ -223,7 +223,7 @@ Validate that string values meet a minimum/maximum length (no. characters).
 
 ```javascript
 // Set maximum length to 100 characters
-rules.strlen.bind({
+validationRules.strlen.bind({
   // Set at least the min or max length (or both) to make this rule worthwhile
   min: 10,
   max: 100,

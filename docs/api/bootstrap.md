@@ -5,8 +5,8 @@ CASA is essentially a series of middleware for ExpressJS, so by "initialising CA
 And that initialisation takes place via the main `@dwp/govuk-casa` module ...
 
 ```javascript
-// Import the main CASA module
-const casa = require('@dwp/govuk-casa');
+// Import the main CASA module's "configure" function
+const { configure } = require('@dwp/govuk-casa');
 
 /**
  * @param {express} expressInstance ExpressJS instance
@@ -14,7 +14,7 @@ const casa = require('@dwp/govuk-casa');
  * @throws {Error} for missing or invalid configuration
  * @returns {object} see below
  * */
-const casaApp = casa(expressAppInstance, {
+const casaApp = configure(expressAppInstance, {
   // allowPageEdit (Boolean; optional; default false)
   // If true, then journey forms can be edited via the "Check your Answers"
   // template pattern. A `?edit` suffix on the URL of any page will enable edit
