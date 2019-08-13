@@ -1,3 +1,20 @@
+<a name="5.0.0-alpha.4"></a>
+# [5.0.0-alpha.4](https://github.com/dwp/govuk-casa/compare/5.0.0-alpha.3...5.0.0-alpha.4) (2019-08-13)
+
+
+### Features
+
+* Upgrade to GOV.UK Frontend 3.0.0 ([e986a56](https://github.com/dwp/govuk-casa/commit/e986a56))
+
+
+### BREAKING CHANGES
+
+* See all changes documented in https://github.com/alphagov/govuk-frontend/releases/tag/v3.0.0
+
+Signed-off-by: Colin Rotherham <work@colinr.com>
+
+
+
 <a name="5.0.0-alpha.3"></a>
 # [5.0.0-alpha.3](https://github.com/dwp/govuk-casa/compare/5.0.0-alpha.2...5.0.0-alpha.3) (2019-07-25)
 
