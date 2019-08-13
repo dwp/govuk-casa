@@ -62,7 +62,7 @@ describe('Middleware: headers/config-defaults', () => {
   });
 
   it('should add script-src hashes for all inline javascript in the GOV.UK template', () => {
-    const govukTemplatePath = require.resolve('govuk-frontend/template.njk');
+    const govukTemplatePath = require.resolve('govuk-frontend/govuk/template.njk');
     const $ = renderTemplateFile(govukTemplatePath, {});
 
     const scriptHashes = [];

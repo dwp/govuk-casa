@@ -56,6 +56,6 @@ function compileSassSources(targetDir, npmGovukFrontend, npmGovukCasa) {
 
 compileSassSources(
   path.resolve('./dist/'),
-  resolveModulePath('govuk-frontend', module.paths),
+  path.resolve(resolveModulePath('govuk-frontend', module.paths), 'govuk'),
   path.resolve(__dirname, '../'),
 );
