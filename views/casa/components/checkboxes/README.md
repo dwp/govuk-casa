@@ -52,25 +52,25 @@ To associate a checkbox item with a toggleable DOM element:
 ```nunjucks
 {% from "casa/components/checkboxes/macro.njk" import casaGovukCheckboxes with context %}
 
+{% set panel %}
+  This panel will remain hidden until the "First Choice" option is checked
+{% endset %}
+
 casaGovukCheckboxes({
   name: "preferences",
   casaValue: formData.preferences,
   casaErrors: formErrors,
   items: [{
-    value: "firt-choice",
+    value: "first-choice",
     text: "First Choice",
-    attributes: {
-      'data-target': 'target-panel'
+    conditional: {
+      html: panel
     }
   }, {
     value: "second-choice",
     text: "Second Choice"
   }]
 })
-
-<div id="target-panel" class="js-hidden">
-  This panel will remain hidden until the "First Choice" option is chosen in the set above.
-</div>
 ```
 
 ## Displaying errors

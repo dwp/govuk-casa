@@ -33,6 +33,10 @@ If you want one of the radio items to toggle the display of an element:
 ```nunjucks
 {% from "casa/components/radios/macro.njk" import casaGovukRadios %}
 
+{% set panel %}
+  This panel will remain hidden until the "Yes" radio button is chosen
+{% endset %}
+
 {{ casaGovukRadios({
   name: 'myInput',
   casaValue: formData.myInput,
@@ -40,18 +44,14 @@ If you want one of the radio items to toggle the display of an element:
   items: [{
     text: 'Yes',
     value: 'yes',
-    attributes: {
-      'data-target': 'target-panel'
+    conditional: {
+      html: panel
     }
   }, {
     text: 'No',
     value: 'no'
   }]
 }) }}
-
-<div id="target-panel" class="js-hidden">
-  This panel will remain hidden until the "Yes" option is chosen in the radio set above.
-</div>
 ```
 
 ## Displaying errors
