@@ -52,7 +52,7 @@ const casa = require('@dwp/govuk-casa');
 const casaApp = casa(app, { ... });
 ```
 
-You could now use the new `configure()` function to do the same:
+You must now use the new `configure()` function to do the same:
 
 ```javascript
 const { configure } = require('@dwp/govuk-casa');
@@ -63,6 +63,17 @@ const casaApp = configure(app, { ... });
 ### Use `JourneyContext`
 
 The new [`JourneyContext`](../lib/JourneyContext.js) class replaces `JourneyData`. If you instantiate this class anywhere, you should begin replacing those calls with `JourneyContext`. Whilst the `JourneyData` class remains available, it is simply there as a temporary alias for `JourneyContext` and will removed in a future release.
+
+Everywhere you are currently referring to `journeyData` should be changed to `journeyContext`.
+
+This class has the same `getData()`, `getDataForPage()` methods, but also adds convenient getters for data and validation too. Here are the equivalents:
+
+| Before | After |
+|--------|-------|
+| `journeyContext.getData()` | `journeyContext.data` |
+| `journeyContext.getDataForPage('my-page')` | `journeyContext.data['my-page']` |
+| `journeyContext.getValidationErrors()` | `journeyContext.validation` |
+| `journeyContext.getValidationErrorsForPage('my-page')` | `journeyContext.validation['my-page']` |
 
 When storing a `JourneyContext` instance in session, use the new `toObject()` method to prepare it for storage:
 
@@ -110,11 +121,20 @@ You can no longer use `/` in waypoint IDs. This is due to how the URLs are now p
 
 ### `UserJourney` replaced with `Plan`
 
-We have adopted a Graph-based data structure to describe user journeys under the hood, which are managed through a new [`Plan`](#link-to-class) class.
+We have adopted a Graph-based data structure to describe user journeys under the hood, which are managed through a new [`Plan`](#../lib/Plan.js) class. The older `UserJourney.*` classes have all been rolled into this one `Plan` class.
 
-The API for defining journeys has changed drastically. See one of the [example projects](../examples/) for an idea of how journeys are now constructed.
+The API for defining journeys has changed drastically. See one of the [example projects](../examples/) for an idea of how journeys are now constructed, or the [documentation for building plans](plan.md) to understand how to construct your own plans from scratch.
 
 If you are using multiple journeys, bear in mind that you now have just one `Plan` instance, but with multiple "origins" (defined with `plan.addOrigin()`). A journey traversal can be started from any one of these origins.
+
+Here's a summary of example changes that you will likely need to to make:
+
+| Example | Before | After |
+|---------|--------|-------|
+| Basic road | <code>r = new UserJourney.Road();<br/>r.addWaypoints(['a', 'b', 'c']);<br/>r.end();</code> | <code>p = new Plan();<br/>p.addSequence('a', 'b', 'c')</code> |
+| Merging roads | <code>r1 = new UserJourney.Road();<br/>r1.addWaypoints(['a', 'b']);<br/><br/>r2 = new UserJourney.Road();<br/>r2.addWaypoints(['c', 'd']);<br/><br/>r1.mergeWith(r2);</code> | <code>p = new Plan();<br/>p.addSequence('a', 'b', 'c', 'd');</code> |
+| Conditional forks | <code>r1 = new UserJourney.Road();<br/>r1.addWaypoints(['a', 'b']);<br/><br/>r2 = new UserJourney.Road();<br/>r2.addWaypoints(['c', 'd']);<br/><br/>r3 = new UserJourney.Road();<br/>r3.addWaypoints(['e', 'f']);<br/><br/>r1.fork([r2, r3], () => (someTest ? r2 : r3));</code> | <code>p = new Plan();<br/>p.addSequence('a', 'b');<br/>p.setRoute('b', 'c', someTest);<br/>p.setRoute('b', 'e', !someTest);</code> |
+| Creating a plan | <code>r = new UserJourney.Road();<br/>r.addWaypoints(['a', 'b', 'c']);<br/><br/>j = new UserJourney.Map();<br/>j.startAt(r);<br/>return j;</code> | <code>p = new Plan();<br/>p.setSequence('a', 'b', 'c');<br/>return p;</code> |
 
 ### `mergeObjects` replaced with `mergeObjectsDeep`
 

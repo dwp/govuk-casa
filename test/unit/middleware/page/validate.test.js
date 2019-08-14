@@ -29,7 +29,7 @@ describe('Middleware: page/validate', () => {
 
     mwValidate = proxyquire('../../../../middleware/page/validate.js', {
       '../../lib/Logger.js': sinon.stub().returns(mockLogger),
-      '../../lib/Validation.js': {
+      '../../lib/validation/index.js': {
         processor: stubValidationProcessor,
       },
       './utils.js': {

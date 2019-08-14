@@ -21,6 +21,7 @@
     "middleware/**/*.js"
   ],
   "exclude": [
+    "lib/Validation.js",
     "middleware/page/index.js",
     "node_modules/**",
     "test/**"

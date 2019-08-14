@@ -26,6 +26,8 @@ Connect two waypoints with a two-way route as follows:
 
 ```javascript
 const { Plan } = require('@dwp/govuk-casa');
+
+const plan = new Plan();
 plan.setRoute('a', 'b');
 plan.addOrigin('main', 'a');
 ```
@@ -40,6 +42,8 @@ For convenience, you can setup a sequence of two-way routes using the `Plan.addS
 
 ```javascript
 const { Plan } = require('@dwp/govuk-casa');
+
+const plan = new Plan();
 plan.addSequence('a', 'b', 'c', 'd', 'e');
 plan.addOrigin('main', 'a');
 ```
@@ -50,6 +54,8 @@ You can also create one-way routes. This can be useful if you want to force a us
 
 ```javascript
 const { Plan } = require('@dwp/govuk-casa');
+
+const plan = new Plan();
 plan.setRoute('a', 'b');
 plan.setNextRoute('b', 'c');
 plan.setPrevRoute('c', 'a');
@@ -85,6 +91,8 @@ Here's a simple example that checks the journey's data context to determine whet
 
 ```javascript
 const { Plan } = require('@dwp/govuk-casa');
+
+const plan = new Plan();
 plan.setRoute('a', 'b', (r, c) => (c.data.a.ticked === true));
 plan.setRoute('a', 'c', (r, c) => (c.data.a.ticked !== true));
 plan.setRoute('b', 'c');
@@ -105,6 +113,8 @@ For example, you might have a "spine" page that links to a series of separate wo
 
 ```javascript
 const { Plan } = require('@dwp/govuk-casa');
+
+const plan = new Plan();
 
 plan.addSequence('a', 'b', 'c');
 

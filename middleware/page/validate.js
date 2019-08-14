@@ -1,5 +1,5 @@
 const createLogger = require('../../lib/Logger');
-const Validation = require('../../lib/Validation.js');
+const Validation = require('../../lib/validation/index.js');
 const { executeHook } = require('./utils.js');
 
 module.exports = (pageMeta = {}) => (req, res, next) => {
