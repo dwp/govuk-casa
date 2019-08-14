@@ -5,33 +5,6 @@
   display: inline-block;
 }
 
-// Check your answers styling
-table.check-your-answers {
-  thead {
-    @extend .govuk-table__head !optional;
-
-    th {
-      @extend .govuk-table__header;
-    }
-
-    tr:first-child th {
-      padding-top: 3em;
-    }
-  }
-
-  thead:first-child tr th {
-    padding-top: 0;
-  }
-
-  tbody {
-    @extend .govuk-table__body !optional;
-  }
-
-  td {
-    @extend .govuk-table__cell;
-  }
-}
-
 // JavaScript-managed hidden elements
 // govuk_template_jinja uses its js-hidden class slightly differently to CASA;
 // it adds the class using JavaScript vs CASA's method of showing it and only

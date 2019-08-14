@@ -523,7 +523,7 @@ Here's some review blocks for each of our pages:
   {% set pData = journeyContext['personal-info'] %}
 
   {{ govukSummaryList({
-    classes: "govuk-!-margin-bottom-9 check-your-answers",
+    classes: "govuk-!-margin-bottom-9",
     rows: [{
       key: {
         text: t('personal-info:field.firstName.label')
@@ -594,7 +594,7 @@ Here's some review blocks for each of our pages:
   {% set pData = journeyContext['hobbies'] %}
 
   {{ govukSummaryList({
-    classes: "govuk-!-margin-bottom-9 check-your-answers",
+    classes: "govuk-!-margin-bottom-9",
     rows: [{
       key: {
         text: t('hobbies:field.description.label')

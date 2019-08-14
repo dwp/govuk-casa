@@ -92,7 +92,7 @@ The equivalent in version 4 would look like this:
 
 {% block reviewBlock %}
 {{ govukSummaryList({
-  classes: "govuk-!-margin-bottom-9 check-your-answers",
+  classes: "govuk-!-margin-bottom-9",
   rows: [
     {
       key: {
