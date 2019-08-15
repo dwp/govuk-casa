@@ -1,56 +1,23 @@
-<a name="5.0.0-alpha.4"></a>
-# [5.0.0-alpha.4](https://github.com/dwp/govuk-casa/compare/5.0.0-alpha.3...5.0.0-alpha.4) (2019-08-13)
-
+<a name="5.0.0"></a>
+# [5.0.0](https://github.com/dwp/govuk-casa/compare/5.0.0-alpha.4...5.0.0) (2019-08-15)
 
 ### Features
 
 * Upgrade to GOV.UK Frontend 3.0.0 ([e986a56](https://github.com/dwp/govuk-casa/commit/e986a56))
-
-
-### BREAKING CHANGES
-
-* See all changes documented in https://github.com/alphagov/govuk-frontend/releases/tag/v3.0.0
-
-Signed-off-by: Colin Rotherham <work@colinr.com>
-
-
-
-<a name="5.0.0-alpha.3"></a>
-# [5.0.0-alpha.3](https://github.com/dwp/govuk-casa/compare/5.0.0-alpha.2...5.0.0-alpha.3) (2019-07-25)
-
+* add support for hooks as arrays ([047ed46](https://github.com/dwp/govuk-casa/commit/047ed46))
+* implement graph data structure for handling journey traversals ([9f1d920](https://github.com/dwp/govuk-casa/commit/9f1d920))
 
 ### Bug Fixes
 
 * stop traversal once a loop is encountered ([33ce8f6](https://github.com/dwp/govuk-casa/commit/33ce8f6))
 
-
-### Features
-
-* add support for hooks as arrays ([047ed46](https://github.com/dwp/govuk-casa/commit/047ed46))
-
-
-
-<a name="5.0.0-alpha.2"></a>
-# [5.0.0-alpha.2](https://github.com/dwp/govuk-casa/compare/5.0.0-alpha.1...5.0.0-alpha.2) (2019-07-24)
-
-
-
-<a name="5.0.0-alpha.1"></a>
-# [5.0.0-alpha.1](https://github.com/dwp/govuk-casa/compare/4.0.4...5.0.0-alpha.1) (2019-07-23)
-
-
 ### Code Refactoring
 
 * rename variables and change references to request variables ([2b76135](https://github.com/dwp/govuk-casa/commit/2b76135))
 
-
-### Features
-
-* implement graph data structure for handling journey traversals ([9f1d920](https://github.com/dwp/govuk-casa/commit/9f1d920))
-
-
 ### BREAKING CHANGES
 
+* GOVUK Frontend - See all changes documented in https://github.com/alphagov/govuk-frontend/releases/tag/v3.0.0
 * All existing references to `req.*` casa variables will need to be modified.
 * The UserJourney.* classes are no longer supported and existing journey
  definitions will need to be modified to use the new `Plan` class.
