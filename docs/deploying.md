@@ -39,7 +39,6 @@ module.exports = (() => {
   // (pages) that will be visited along the way.
   const plan = new Plan();
 
-  const linear = new UserJourney.Road();
   plan.addSequence(
     'personal-info',
     'hobbies',
@@ -49,7 +48,7 @@ module.exports = (() => {
   // Define an origin starting point
   plan.addOrigin('main', 'personal-info');
 
-  return Plan;
+  return plan;
 })();
 ```
 
