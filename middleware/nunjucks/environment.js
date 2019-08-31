@@ -29,7 +29,7 @@ const path = require('path');
 module.exports = (logger, app, viewDirs = [], govukFrontendDir = '') => {
   // Resolve all application template search paths, and add CASA-specific dirs.
   // Resolove priority: userland template > CASA templates > GOVUK templates
-  const dirViews = viewDirs.map(dir => path.resolve(dir)).concat([
+  const dirViews = viewDirs.map((dir) => path.resolve(dir)).concat([
     path.resolve(__dirname, '..', '..', 'views'),
     path.resolve(govukFrontendDir, 'govuk'),
   ]);

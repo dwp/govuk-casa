@@ -9,7 +9,7 @@
 const createLogger = require('../../lib/Logger.js');
 const { parseOriginWaypointInUrl } = require('../../lib/Util.js');
 
-module.exports = plan => (req, res, next) => {
+module.exports = (plan) => (req, res, next) => {
   const logger = createLogger('page.prepare-request');
   logger.setSessionId(req.session.id);
 
@@ -30,7 +30,7 @@ module.exports = plan => (req, res, next) => {
     waypoint = urlWaypoint;
   } else {
     const { originId: urlOriginId, waypoint: urlWaypoint } = parseOriginWaypointInUrl(req.url);
-    [origin] = origins.filter(o => o.originId === urlOriginId);
+    [origin] = origins.filter((o) => o.originId === urlOriginId);
     waypoint = urlWaypoint;
   }
 

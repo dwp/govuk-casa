@@ -6,7 +6,7 @@
  */
 
 /* eslint-disable-next-line no-unused-vars */
-module.exports = logger => (err, req, res, next) => {
+module.exports = (logger) => (err, req, res, next) => {
   if (err.code === 'EBADCSRFTOKEN') {
     logger.info('[403] CSRF token missing/invalid');
     res.status(403).render('casa/errors/403.njk');

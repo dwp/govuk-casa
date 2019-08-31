@@ -51,7 +51,7 @@ module.exports = (pageMeta = {}, mountUrl = '/') => (req, res, next) => {
       const routes = journey.traverseNextRoutes(req.casa.journeyContext, {
         startWaypoint: journeyOrigin.waypoint,
       });
-      const waypoints = routes.map(e => e.source);
+      const waypoints = routes.map((e) => e.source);
 
       const positionInJourney = Math.min(
         waypoints.indexOf(pageId),

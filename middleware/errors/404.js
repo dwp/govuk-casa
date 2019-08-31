@@ -6,7 +6,7 @@
  * exhausted.
  */
 
-module.exports = logger => (req, res) => {
+module.exports = (logger) => (req, res) => {
   logger.info('[404] %s', req.url);
   res.status(404).render('casa/errors/404.njk');
 };

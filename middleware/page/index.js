@@ -64,10 +64,10 @@ module.exports = function routePages(
   if (!origins.length) {
     throw new ReferenceError('No origin waypoints have been defined. Cannot start plan traversal.');
   } else if (origins.length > 1) {
-    routePrefix = `/(${origins.map(o => o.originId).join('|')})`;
+    routePrefix = `/(${origins.map((o) => o.originId).join('|')})`;
   }
 
-  plan.getWaypoints().filter(w => pageMetaKeys.includes(w)).forEach((waypoint) => {
+  plan.getWaypoints().filter((w) => pageMetaKeys.includes(w)).forEach((waypoint) => {
     const routeUrl = new RegExp(`^${routePrefix}/${waypoint}$`.replace(/\/+/g, '/'));
     const pageMeta = pages.getPageMeta(waypoint);
 

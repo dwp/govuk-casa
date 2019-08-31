@@ -80,7 +80,7 @@ module.exports = (pageMeta = {}) => [mwBodyParser, (req, res, next) => {
 
       // return modifiedData;
     })
-    .then(modifiedData => (storeSessionData(modifiedData)))
+    .then((modifiedData) => (storeSessionData(modifiedData)))
     .then(() => {
       next();
     })

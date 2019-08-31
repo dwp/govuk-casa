@@ -31,7 +31,7 @@ module.exports = (args) => {
   const MOUNT_URL_PLACEHOLDER = /~~~CASA_MOUNT_URL~~~/g;
 
   // Inject mountUrl into CSS sources and copy across
-  klaw(`${srcDir}/css`).map(f => (f.path)).forEach((file) => {
+  klaw(`${srcDir}/css`).map((f) => (f.path)).forEach((file) => {
     const css = readFileSync(file, { encoding: 'utf8' }).replace(MOUNT_URL_PLACEHOLDER, mountUrl);
     const dstPath = path.resolve(`${dstDir}/css`, path.relative(`${srcDir}/css`, file));
     logger.debug('Copying CSS asset from %s to %s', file, dstPath);
@@ -42,7 +42,7 @@ module.exports = (args) => {
   });
 
   // Copy JS sources
-  klaw(`${srcDir}/js`).map(f => (f.path)).forEach((file) => {
+  klaw(`${srcDir}/js`).map((f) => (f.path)).forEach((file) => {
     const dstPath = path.resolve(`${dstDir}/js`, path.relative(`${srcDir}/js`, file));
     logger.debug('Copying JS asset from %s to %s', file, dstPath);
     ensureDirSync(path.dirname(dstPath));

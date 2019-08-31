@@ -8,7 +8,7 @@
 
 const uid = require('uid-safe');
 
-module.exports = logger => (req) => {
+module.exports = (logger) => (req) => {
   if (req.sessionID && typeof req.session === 'undefined') {
     logger.debug('Server session %s has expired. Flagging for destruction.', req.sessionID);
     req.casaSessionExpired = req.sessionID;

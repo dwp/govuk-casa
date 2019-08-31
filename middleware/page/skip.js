@@ -15,7 +15,7 @@
  *  /current-waypoint?skipto=next-waypoint
  */
 
-module.exports = mountUrl => (req, res, next) => {
+module.exports = (mountUrl) => (req, res, next) => {
   req.casa = req.casa || Object.create(null);
 
   const { skipto } = req.query;
