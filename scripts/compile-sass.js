@@ -32,8 +32,8 @@ function compileSassSources(targetDir, npmGovukFrontend, npmGovukCasa) {
   const partialRegex = new RegExp(`\\${path.sep}_[^\\${path.sep}]+$`);
   const files = klaw(casaSassSrcDir, {
     nodir: true,
-    filter: f => (!f.path.match(partialRegex)),
-  }).map(f => f.path);
+    filter: (f) => (!f.path.match(partialRegex)),
+  }).map((f) => f.path);
 
   files.forEach((file) => {
     const cssContent = sass.renderSync({

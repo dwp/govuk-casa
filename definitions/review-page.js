@@ -43,7 +43,7 @@ module.exports = function reviewPageDefinition(pagesMeta = {}) {
             })}`,
             reviewBlockView: meta.reviewBlockView,
           } : null;
-        }).filter(o => o !== null);
+        }).filter((o) => o !== null);
 
         next();
       },

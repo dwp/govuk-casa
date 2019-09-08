@@ -16,7 +16,7 @@ describe('Middleware: static/prepare-assets', () => {
   beforeEach(() => {
     proxyStubs = {
       path: {
-        resolve: sinon.stub().callsFake(p => (p)),
+        resolve: sinon.stub().callsFake((p) => (p)),
         relative: sinon.stub().callsFake((p, f) => (f)),
       },
       'fs-extra': {
@@ -33,7 +33,7 @@ describe('Middleware: static/prepare-assets', () => {
   });
 
   it('should substitute CASA_MOUNT_URL placeholder with correct mountUrl and write to target folder', () => {
-    proxyStubs['klaw-sync'].callsFake(dir => (dir.match(/.css$/) ? [
+    proxyStubs['klaw-sync'].callsFake((dir) => (dir.match(/.css$/) ? [
       { path: '/path/to/source.css' },
     ] : []));
     proxyStubs.path.resolve.returns('/path/to/destination.css');
@@ -55,7 +55,7 @@ describe('Middleware: static/prepare-assets', () => {
   });
 
   it('should copy JS source files to the target folder', () => {
-    proxyStubs['klaw-sync'].callsFake(dir => (dir.match(/.js$/) ? [
+    proxyStubs['klaw-sync'].callsFake((dir) => (dir.match(/.js$/) ? [
       { path: '/path/to/source.js' },
     ] : []));
     proxyStubs.path.resolve.returns('/path/to/destination.js');
@@ -69,7 +69,7 @@ describe('Middleware: static/prepare-assets', () => {
   });
 
   it('should throw an Exception if any IO operations fail', () => {
-    proxyStubs['klaw-sync'].callsFake(dir => (dir.match(/.css$/) ? [
+    proxyStubs['klaw-sync'].callsFake((dir) => (dir.match(/.css$/) ? [
       { path: '/path/to/source.css' },
     ] : []));
     proxyStubs['fs-extra'].readFileSync.throws(new Error());

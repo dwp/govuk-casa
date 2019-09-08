@@ -39,7 +39,7 @@ module.exports = (app, cspConfig = {}) => {
   });
 
   // Compile the CSP
-  cspDirectives = Object.keys(cspDirectives).map(directive => `${directive} ${cspDirectives[directive].join(' ')}`);
+  cspDirectives = Object.keys(cspDirectives).map((directive) => `${directive} ${cspDirectives[directive].join(' ')}`);
 
   // Prepare default headers
   const defaultHeaders = {

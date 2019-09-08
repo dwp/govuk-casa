@@ -99,7 +99,7 @@ describe('Middleware: page/render', () => {
         inEditMode: true,
         editOriginUrl: '/test-origin-url',
         i18nTranslator: {
-          t: sinon.stub().callsFake(s => (`${s}_translated`)),
+          t: sinon.stub().callsFake((s) => (`${s}_translated`)),
         },
       });
       mockRequest.journeyData.getDataForPage.returns('test-data');

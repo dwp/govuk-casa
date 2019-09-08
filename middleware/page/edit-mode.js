@@ -7,7 +7,7 @@
 const { URL } = require('url');
 const logger = require('../../lib/Logger')('page.edit-mode');
 
-module.exports = allowPageEdit => (req, res, next) => {
+module.exports = (allowPageEdit) => (req, res, next) => {
   let inEditMode = false;
   let editOriginUrl = '';
 

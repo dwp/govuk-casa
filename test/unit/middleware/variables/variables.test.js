@@ -20,7 +20,7 @@ describe('Middleware: session/expiry', () => {
     mockLogger = logger();
     mockRequest = request();
     mockRequest.i18nTranslator = {
-      t: sinon.stub().callsFake(s => (`${s}_translated`)),
+      t: sinon.stub().callsFake((s) => (`${s}_translated`)),
     };
     mockResponse = response();
     mockResponse.locals.casa = {};

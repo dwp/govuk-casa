@@ -81,7 +81,7 @@ describe('Middleware: i18n/i18n', () => {
   });
 
   it('should save language in session if the language has changed and call next if successful', () => {
-    mockRequest.session.save = sinon.stub().callsFake(cb => cb());
+    mockRequest.session.save = sinon.stub().callsFake((cb) => cb());
     mockRequest.query.lang = 'cy';
     mockRequest.session.language = 'en';
     middleware(mockRequest, mockResponse, stubNext);

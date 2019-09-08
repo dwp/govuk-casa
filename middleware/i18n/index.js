@@ -12,5 +12,5 @@ module.exports = (app, supportedLocales = [], I18nUtility) => {
     throw new TypeError('Provided I18n utility is an invalid type');
   }
 
-  app.use(mwI18n(logger, supportedLocales, lang => (new I18nUtility.Translator(lang))));
+  app.use(mwI18n(logger, supportedLocales, (lang) => (new I18nUtility.Translator(lang))));
 };

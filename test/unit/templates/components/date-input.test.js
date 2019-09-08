@@ -12,11 +12,12 @@ describe('casaGovukDateInput macro', () => {
    * @return {Object} DOM element (cheerio)
    */
   function buildDom(params = {}) {
-    const p = Object.assign({
+    const p = {
       namePrefix: null,
       casaValue: null,
       casaErrors: null,
-    }, params || {});
+      ...params || {},
+    };
     return helpers.renderTemplateFile(`${dirMacros}/date-input.njk`, {
       params: p,
     });

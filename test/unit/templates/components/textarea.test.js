@@ -12,11 +12,12 @@ describe('casaGovukTextarea macro', () => {
    * @return {Object} DOM element (cheerio)
    */
   function buildDom(params = {}) {
-    const p = Object.assign({
+    const p = {
       name: null,
       value: null,
       casaErrors: null,
-    }, params || {});
+      ...params || {},
+    };
     return helpers.renderTemplateFile(`${dirMacros}/textarea.njk`, {
       params: p,
     });

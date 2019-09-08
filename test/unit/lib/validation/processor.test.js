@@ -129,7 +129,7 @@ describe('Validation: processor', () => {
         };
         const p = processor(fieldValidators);
         await expect(p).to.be.rejected;
-        await expect(p.catch(err => Promise.reject(JSON.stringify(err)))).to.be.rejectedWith(/test-validator-fail/i);
+        await expect(p.catch((err) => Promise.reject(JSON.stringify(err)))).to.be.rejectedWith(/test-validator-fail/i);
       });
 
       it('should flatten a field\'s errors into a flat array (no nested objects)', async () => {
@@ -140,7 +140,7 @@ describe('Validation: processor', () => {
         };
         const p = processor(fieldValidators, context);
         await expect(p).to.be.rejected;
-        await expect(p.catch(err => Promise.reject(new Error(`LEN:${err.f1.length}`)))).to.be.rejectedWith(/LEN:5/i);
+        await expect(p.catch((err) => Promise.reject(new Error(`LEN:${err.f1.length}`)))).to.be.rejectedWith(/LEN:5/i);
       });
     });
 

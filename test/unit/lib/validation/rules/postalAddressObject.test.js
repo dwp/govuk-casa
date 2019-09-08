@@ -73,7 +73,7 @@ describe('Validation rule: postalAddressObject', () => {
           address3: 'Town',
           postcode: 'AA0 0BB',
         }),
-      ).to.be.rejected.eventually.satisfy(v => JSON.stringify(v).match(errorInlineAddress1)),
+      ).to.be.rejected.eventually.satisfy((v) => JSON.stringify(v).match(errorInlineAddress1)),
     );
 
     return Promise.all(queue);
@@ -108,7 +108,7 @@ describe('Validation rule: postalAddressObject', () => {
     // eslint-disable-next-line arrow-body-style
     queue.push(
       expect(postalAddressObject()).to.be.rejected.eventually
-        .satisfy(v => JSON.stringify(v).match(errorInlineDefault)),
+        .satisfy((v) => JSON.stringify(v).match(errorInlineDefault)),
     );
 
     queue.push(
@@ -134,7 +134,7 @@ describe('Validation rule: postalAddressObject', () => {
           address3: 'town',
           postcode: 'AA0 0BB',
         }),
-      ).to.be.rejected.eventually.satisfy(v => JSON.stringify(v).match(errorInlineAddress1)),
+      ).to.be.rejected.eventually.satisfy((v) => JSON.stringify(v).match(errorInlineAddress1)),
     );
 
     queue.push(
@@ -220,12 +220,12 @@ describe('Validation rule: postalAddressObject', () => {
           address3: '$INVALID$',
           address4: '$INVALID$',
           postcode: '$INVALID$',
-        }).catch(err => Promise.reject(JSON.stringify(err))),
+        }).catch((err) => Promise.reject(JSON.stringify(err))),
       ).to.be.rejectedWith(/err1.+err2.+err3.+err4.+err5/),
     );
 
     queue.push(
-      expect(rule().catch(err => Promise.reject(JSON.stringify(err)))).to.be.rejectedWith(
+      expect(rule().catch((err) => Promise.reject(JSON.stringify(err)))).to.be.rejectedWith(
         /errdefault/,
       ),
     );

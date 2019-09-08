@@ -57,7 +57,7 @@ module.exports = function routePages(
   // journey/page-waypoint combo
   const pageMetaKeys = pages.getAllPageIds();
   journeys.forEach((journey) => {
-    journey.allWaypoints().filter(w => pageMetaKeys.includes(w)).forEach((waypoint) => {
+    journey.allWaypoints().filter((w) => pageMetaKeys.includes(w)).forEach((waypoint) => {
       const routeUrl = `/${journey.guid || ''}/${waypoint}`.replace(/\/+/g, '/');
       const pageMeta = pages.getPageMeta(waypoint);
 

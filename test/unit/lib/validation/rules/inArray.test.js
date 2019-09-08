@@ -62,7 +62,7 @@ describe('Validation rule: inArray', () => {
 
     // Will result in an undefined result
     const result = rule('not present');
-    queue.push(expect(result.catch(err => Promise.reject(JSON.stringify(err)))).to.be.rejectedWith(/TEST INLINE/));
+    queue.push(expect(result.catch((err) => Promise.reject(JSON.stringify(err)))).to.be.rejectedWith(/TEST INLINE/));
 
     return Promise.all(queue);
   });

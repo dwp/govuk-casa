@@ -29,7 +29,7 @@ module.exports = (pageMeta = {}) => (req, res, next) => {
     // This is a convenience for the template. The `govukErrorSummary` macro
     // requires the errors be in a particular format, so here we provide our
     // errors in that format.
-    const govukErrors = Object.keys(errors).map(k => ({
+    const govukErrors = Object.keys(errors).map((k) => ({
       text: req.i18nTranslator.t(errors[k][0].summary),
       href: errors[k][0].fieldHref,
     }));

@@ -134,7 +134,8 @@ describe('Server: Config', () => {
         // - Request A completes and renders
 
         // Use test views and locales
-        const cfg = Object.assign({}, config, {
+        const cfg = {
+          ...config,
           views: {
             dirs: [path.resolve(__dirname, 'testdata', 'views')],
           },
@@ -142,7 +143,7 @@ describe('Server: Config', () => {
             dirs: [path.resolve(__dirname, 'testdata', 'locales')],
             locales: ['en', 'cy'],
           },
-        });
+        };
         delete cfg.mountController;
         configure(app, cfg);
 

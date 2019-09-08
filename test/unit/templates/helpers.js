@@ -24,7 +24,7 @@ const viewFiltersDir = npath.resolve(__dirname, '../../../lib/view-filters');
 require(npath.resolve(viewFiltersDir, 'index.js'))(nunjucksEnv); // eslint-disable-line import/no-dynamic-require
 
 // Add stub translation function
-nunjucksEnv.addGlobal('t', k => k);
+nunjucksEnv.addGlobal('t', (k) => k);
 
 /**
  * Generate a cheerio instance from the specified template source.

@@ -39,7 +39,7 @@ describe('Middleware: page/validate', () => {
     mockRequest = request();
     mockRequest.journeyData = journeyData();
     mockResponse = response();
-    stubNext = sinon.stub().callsFake(err => (err ? console.log(err) : null));
+    stubNext = sinon.stub().callsFake((err) => (err ? console.log(err) : null));
   });
 
   it('should execute the "prevalidate" hook', async () => {

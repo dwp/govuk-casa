@@ -66,7 +66,7 @@ module.exports = (pageMeta = {}) => [mwBodyParser, (req, res, next) => {
 
       // Store all modified data back to req.body so downstream handlers have
       // access to the modified data.
-      req.body = Object.assign({}, req.body, preparedData);
+      req.body = { ...req.body, ...preparedData };
       return preparedData;
 
       // // Modify and re-store data on req.body so downstream handlers have access
@@ -81,7 +81,7 @@ module.exports = (pageMeta = {}) => [mwBodyParser, (req, res, next) => {
 
       // return modifiedData;
     })
-    .then(modifiedData => (storeSessionData(modifiedData)))
+    .then((modifiedData) => (storeSessionData(modifiedData)))
     .then(() => {
       next();
     })

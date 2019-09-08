@@ -20,8 +20,8 @@ const request = () => ({
   method: 'GET',
   query: {},
   session: {
-    save: sinon.stub().callsFake(cb => cb()),
-    destroy: sinon.stub().callsFake(cb => (cb())),
+    save: sinon.stub().callsFake((cb) => cb()),
+    destroy: sinon.stub().callsFake((cb) => (cb())),
   },
 });
 

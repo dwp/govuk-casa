@@ -1,4 +1,4 @@
-module.exports = args => (req, res, next) => {
+module.exports = (args) => (req, res, next) => {
   const {
     logger,
     serviceName,
