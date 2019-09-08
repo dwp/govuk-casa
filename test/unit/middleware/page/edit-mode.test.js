@@ -154,11 +154,11 @@ describe('Middleware: page/edit-mode', () => {
         method: 'GET',
         query: {
           edit: true,
-          editorigin: '!@£$%^&*()_+€=\\\u0100\xFF ////this/#is-a/valid/p4rt   ',
+          editorigin: '.\uFE52\uFF0E!@£$%^&*()_+€=\\\u0100\xFF ////this/#is-a/valid/p4rt   ',
         },
       };
       handler(stubReq, null, () => {});
-      expect(stubReq).to.have.property('editOriginUrl').that.equals('/!@%C2%A3$%^&*()_+%E2%82%AC=/%C4%80%C3%BF%20////this/');
+      expect(stubReq).to.have.property('editOriginUrl').that.equals('/%EF%B9%92%EF%BC%8E!@%C2%A3$%^&*()_+%E2%82%AC=/%C4%80%C3%BF%20/this/');
     });
 
     it('should escape all non-valid characters when defined in POST body', () => {
@@ -167,16 +167,17 @@ describe('Middleware: page/edit-mode', () => {
         method: 'POST',
         body: {
           edit: true,
-          editorigin: '!@£$%^&*()_+€=\\\u0100\xFF ////this/#is-a/valid/p4rt   ',
+          editorigin: '.\uFE52\uFF0E!@£$%^&*()_+€=\\\u0100\xFF ////this/#is-a/valid/p4rt   ',
         },
       };
       handler(stubReq, null, () => {});
-      expect(stubReq).to.have.property('editOriginUrl').that.equals('/!@%C2%A3$%^&*()_+%E2%82%AC=/%C4%80%C3%BF%20////this/');
+      expect(stubReq).to.have.property('editOriginUrl').that.equals('/%EF%B9%92%EF%BC%8E!@%C2%A3$%^&*()_+%E2%82%AC=/%C4%80%C3%BF%20/this/');
     });
 
     it('should only include the pathname when editorigin includes domain in POST body', () => {
       const handler = mwEditMode(true);
-      const stubReq = {
+
+      let stubReq = {
         method: 'POST',
         body: {
           edit: true,
@@ -185,15 +186,56 @@ describe('Middleware: page/edit-mode', () => {
       };
       handler(stubReq, null, () => {});
       expect(stubReq).to.have.property('editOriginUrl').that.equals('/path/name/here');
+
+      stubReq = {
+        method: 'POST',
+        body: {
+          edit: true,
+          editorigin: 'http://somewhere.test//path/name/here?p=1#x',
+        },
+      };
+      handler(stubReq, null, () => {});
+      expect(stubReq).to.have.property('editOriginUrl').that.equals('/path/name/here');
+
+      stubReq = {
+        method: 'POST',
+        body: {
+          edit: true,
+          editorigin: 'http://somewhere.test/\uFEFF/path/name/here?p=1#x',
+        },
+      };
+      handler(stubReq, null, () => {});
+      expect(stubReq).to.have.property('editOriginUrl').that.equals('/%EF%BB%BF/path/name/here');
+
+      stubReq = {
+        method: 'POST',
+        body: {
+          edit: true,
+          editorigin: 'http://somewhere.test/\u2215/path/name/here?p=1#x',
+        },
+      };
+      handler(stubReq, null, () => {});
+      expect(stubReq).to.have.property('editOriginUrl').that.equals('/%E2%88%95/path/name/here');
     });
 
     it('should only include the pathname when editorigin includes domain in GET body', () => {
       const handler = mwEditMode(true);
-      const stubReq = {
+
+      let stubReq = {
         method: 'GET',
         query: {
           edit: true,
           editorigin: 'http://somewhere.test/path/name/here?p=1#x',
+        },
+      };
+      handler(stubReq, null, () => {});
+      expect(stubReq).to.have.property('editOriginUrl').that.equals('/path/name/here');
+
+      stubReq = {
+        method: 'GET',
+        query: {
+          edit: true,
+          editorigin: 'http://somewhere.test//path/name/here?p=1#x',
         },
       };
       handler(stubReq, null, () => {});
