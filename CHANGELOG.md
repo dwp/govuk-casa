@@ -1,3 +1,13 @@
+<a name="5.0.1"></a>
+## [5.0.1](https://github.com/dwp/govuk-casa/compare/5.0.0...5.0.1) (2019-09-08)
+
+
+### Bug Fixes
+
+* strip invalid characters from editorigin ([0a9d8a8](https://github.com/dwp/govuk-casa/commit/0a9d8a8))
+
+
+
 <a name="5.0.0"></a>
 # [5.0.0](https://github.com/dwp/govuk-casa/compare/5.0.0-alpha.4...5.0.0) (2019-08-15)
 
