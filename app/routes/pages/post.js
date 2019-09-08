@@ -292,7 +292,7 @@ function doRender(logger, req, res, pageMeta, errors) {
       // the `id` attribute of each input field.
       // The first `focusSuffix` entry (if present) is appended to the
       // error link in order to highlight the specific input that is in error.
-      const govukErrors = Object.keys(errors || {}).map(k => ({
+      const govukErrors = Object.keys(errors || {}).map((k) => ({
         text: req.i18nTranslator.t(errors[k][0].summary),
         href: errors[k][0].fieldHref,
       }));
@@ -321,7 +321,7 @@ module.exports = function routePagePost(mountUrl, pages, journey) {
     throw new TypeError('Invalid type. Was expecting PageDirectory');
   }
   const journeys = Array.isArray(journey) ? journey : [journey];
-  if (!journeys.every(j => (j instanceof UserJourney.Map))) {
+  if (!journeys.every((j) => (j instanceof UserJourney.Map))) {
     throw new TypeError('journey must be a UserJourney.Map or an array of UserJourney.Map instances');
   }
 

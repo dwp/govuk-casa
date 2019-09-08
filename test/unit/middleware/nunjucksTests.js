@@ -8,7 +8,7 @@ const middleware = require('../../../app/middleware/nunjucks.js');
 describe('Middleware: nunjucks', () => {
   const mockExpressApp = {
     use: () => {},
-    get: k => (k === 'view engine' ? 'html' : undefined),
+    get: (k) => (k === 'view engine' ? 'html' : undefined),
     set: () => {},
   };
   const viewDirs = [

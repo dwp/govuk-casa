@@ -33,7 +33,7 @@ module.exports = function reviewPageDefinition(pagesMeta) {
             waypointId,
             reviewBlockView: meta.reviewBlockView,
           } : null;
-        }).filter(o => o !== null);
+        }).filter((o) => o !== null);
 
         next();
       },

@@ -203,7 +203,7 @@ describe('Routes: pages POST', () => {
         page0: {
           view: 'page0',
           fieldGatherModifiers: {
-            name: v => (v.fieldValue === 'Joe' ? 'Jim' : v.fieldValue),
+            name: (v) => (v.fieldValue === 'Joe' ? 'Jim' : v.fieldValue),
           },
           hooks: {
             pregather: (req, res, cb) => {
@@ -274,7 +274,7 @@ describe('Routes: pages POST', () => {
           view: 'page2',
           fieldValidators: {
             x: sf([
-              v => (v === 1 ? Promise.resolve() : Promise.reject(new Error('VALIDATION FAIL'))),
+              (v) => (v === 1 ? Promise.resolve() : Promise.reject(new Error('VALIDATION FAIL'))),
             ]),
           },
         },
@@ -282,7 +282,7 @@ describe('Routes: pages POST', () => {
           view: 'page3-view.html',
           fieldValidators: {
             y: sf([
-              v => (v === 1 ? Promise.resolve() : Promise.reject(new Error('VALIDATION FAIL'))),
+              (v) => (v === 1 ? Promise.resolve() : Promise.reject(new Error('VALIDATION FAIL'))),
             ]),
           },
         },
@@ -303,7 +303,7 @@ describe('Routes: pages POST', () => {
           view: 'page5',
           fieldValidators: {
             z: sf([
-              v => (v === 1 ? Promise.resolve() : Promise.reject(new Error('VALIDATION FAIL'))),
+              (v) => (v === 1 ? Promise.resolve() : Promise.reject(new Error('VALIDATION FAIL'))),
             ]),
           },
           hooks: {
@@ -315,11 +315,11 @@ describe('Routes: pages POST', () => {
         page6: {
           view: 'page6',
           fieldGatherModifiers: {
-            x: v => (v.fieldValue === 1 ? 100 : v.fieldValue),
+            x: (v) => (v.fieldValue === 1 ? 100 : v.fieldValue),
           },
           fieldValidators: {
             x: sf([
-              v => (v === 100 ? Promise.resolve() : Promise.reject(new Error('VALIDATION FAIL'))),
+              (v) => (v === 100 ? Promise.resolve() : Promise.reject(new Error('VALIDATION FAIL'))),
             ]),
           },
           hooks: {
@@ -331,11 +331,11 @@ describe('Routes: pages POST', () => {
         page7: {
           view: 'page7',
           fieldGatherModifiers: {
-            x: v => (v.fieldValue === 1 ? 100 : v.fieldValue),
+            x: (v) => (v.fieldValue === 1 ? 100 : v.fieldValue),
           },
           fieldValidators: {
             x: sf([
-              v => (v === 100 ? Promise.resolve() : Promise.reject(new Error('VALIDATION FAIL'))),
+              (v) => (v === 100 ? Promise.resolve() : Promise.reject(new Error('VALIDATION FAIL'))),
             ]),
           },
           hooks: {
@@ -380,7 +380,7 @@ describe('Routes: pages POST', () => {
         }),
       });
       reqMock.i18nTranslator = {
-        t: s => s,
+        t: (s) => s,
       };
 
       resMock = httpMocks.createResponse({

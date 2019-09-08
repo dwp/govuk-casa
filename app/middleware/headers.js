@@ -84,7 +84,7 @@ module.exports = function mwHeaders(app, cspConfig, disabledHeadersConfig) {
     });
 
     // Compile the CSP
-    cspDirectives = Object.keys(cspDirectives).map(directive => `${directive} ${cspDirectives[directive].join(' ')}`);
+    cspDirectives = Object.keys(cspDirectives).map((directive) => `${directive} ${cspDirectives[directive].join(' ')}`);
     headers['Content-Security-Policy'] = cspDirectives.join('; ');
 
     // Write headers

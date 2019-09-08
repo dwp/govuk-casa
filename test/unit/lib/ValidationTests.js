@@ -232,7 +232,7 @@ describe('Validation', () => {
         const p = Validation.processor(fieldValidators, context);
         expect(p instanceof Promise).to.be.true;
         queue.push(expect(p).to.be.rejected);
-        queue.push(expect(p.catch(err => Promise.reject(JSON.stringify(err)))).to.be.rejectedWith(/validation:rule\.required/i));
+        queue.push(expect(p.catch((err) => Promise.reject(JSON.stringify(err)))).to.be.rejectedWith(/validation:rule\.required/i));
 
         return Promise.all(queue);
       });
@@ -251,7 +251,7 @@ describe('Validation', () => {
         const p = Validation.processor(fieldValidators, context);
         expect(p instanceof Promise).to.be.true;
         queue.push(expect(p).to.be.rejected);
-        queue.push(expect(p.catch(err => Promise.reject(JSON.stringify(err)))).to.be.rejectedWith(/TEST_REQUIRED/i));
+        queue.push(expect(p.catch((err) => Promise.reject(JSON.stringify(err)))).to.be.rejectedWith(/TEST_REQUIRED/i));
 
         return Promise.all(queue);
       });
@@ -270,7 +270,7 @@ describe('Validation', () => {
         const p = Validation.processor(fieldValidators, context);
         expect(p instanceof Promise).to.be.true;
         queue.push(expect(p).to.be.rejected);
-        queue.push(expect(p.catch(err => Promise.reject(new Error(`LEN:${err.f1.length}`)))).to.be.rejectedWith(/LEN:5/i));
+        queue.push(expect(p.catch((err) => Promise.reject(new Error(`LEN:${err.f1.length}`)))).to.be.rejectedWith(/LEN:5/i));
 
         return Promise.all(queue);
       });

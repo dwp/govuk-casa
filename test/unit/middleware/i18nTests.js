@@ -56,7 +56,7 @@ describe('Middleware: i18n', () => {
           lang: 'en',
         },
         session: {
-          save: cb => cb(),
+          save: (cb) => cb(),
         },
       });
 
@@ -99,7 +99,7 @@ describe('Middleware: i18n', () => {
           lang: 'UNSUPPORTED',
         },
         session: {
-          save: cb => cb(),
+          save: (cb) => cb(),
         },
       });
 
@@ -121,7 +121,7 @@ describe('Middleware: i18n', () => {
       const req = httpMocks.createRequest({
         session: {
           language: 'stored-lang',
-          save: cb => cb(),
+          save: (cb) => cb(),
         },
       });
 
@@ -141,7 +141,7 @@ describe('Middleware: i18n', () => {
       const req = httpMocks.createRequest({
         session: {
           language: undefined,
-          save: cb => cb(),
+          save: (cb) => cb(),
         },
       });
 
@@ -161,7 +161,7 @@ describe('Middleware: i18n', () => {
   it('should continue the request lifecycle even if session save fails', (done) => {
     const req = httpMocks.createRequest({
       session: {
-        save: cb => cb(new Error('FAKE ERROR')),
+        save: (cb) => cb(new Error('FAKE ERROR')),
       },
     });
 

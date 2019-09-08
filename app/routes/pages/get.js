@@ -15,7 +15,7 @@ module.exports = function routePageGet(pages, journey) {
     throw new TypeError('Invalid type. Was expecting PageDirectory');
   }
   const journeys = Array.isArray(journey) ? journey : [journey];
-  if (!journeys.every(j => (j instanceof UserJourney.Map))) {
+  if (!journeys.every((j) => (j instanceof UserJourney.Map))) {
     throw new TypeError('journey must be a UserJourney.Map or an array of UserJourney.Map instances');
   }
 

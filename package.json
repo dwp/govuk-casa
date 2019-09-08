@@ -42,7 +42,7 @@
     "@commitlint/config-conventional": "8.1.0",
     "@commitlint/travis-cli": "8.1.0",
     "@dwp/commitlint-config-base": "1.1.0",
-    "@dwp/eslint-config-base": "2.1.0",
+    "@dwp/eslint-config-base": "4.0.0",
     "chai": "4.2.0",
     "chai-as-promised": "7.1.1",
     "chai-http": "4.3.0",

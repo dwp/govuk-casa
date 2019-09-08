@@ -55,7 +55,7 @@ module.exports = function routePages(
   // journey/page-waypoint combo
   const pageMetaKeys = pages.getAllPageIds();
   journeys.forEach((journey) => {
-    journey.allWaypoints().filter(w => pageMetaKeys.includes(w)).forEach((waypoint) => {
+    journey.allWaypoints().filter((w) => pageMetaKeys.includes(w)).forEach((waypoint) => {
       const routeUrl = `/${journey.guid || ''}/${waypoint}`.replace(/\/+/g, '/');
       router.get(routeUrl, csrfMiddleware, editModeHandler, getHandler);
       router.post(routeUrl, csrfMiddleware, editModeHandler, postHandler);

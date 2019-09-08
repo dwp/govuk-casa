@@ -260,7 +260,7 @@ describe('Middleware: headers', () => {
 
       expect(headers).to.have.property('content-security-policy');
       const csp = headers['content-security-policy'];
-      scriptHashes.forEach(hash => expect(csp).to.have.string(hash));
+      scriptHashes.forEach((hash) => expect(csp).to.have.string(hash));
     });
   });
 

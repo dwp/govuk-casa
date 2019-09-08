@@ -19,7 +19,7 @@ module.exports = function renderAsAttributes(attrsObject) {
   const attrsList = [];
   if (typeof attrsObject === 'object') {
     Object.keys(attrsObject).forEach((key) => {
-      const value = String(attrsObject[key]).replace(/[<>"'&]/g, m => ({
+      const value = String(attrsObject[key]).replace(/[<>"'&]/g, (m) => ({
         '<': '&lt;',
         '>': '&gt;',
         '"': '&quot;',
