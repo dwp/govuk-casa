@@ -14,7 +14,7 @@
         attributes: {
           id: 'continue-button'
         },
-        text: t('common:form.buttons.saveChanges.label') if params.inEditMode else t('common:form.buttons.continue.label'),
+        text: params.buttonText if params.buttonText else (t('common:form.buttons.saveChanges.label') if params.inEditMode else t('common:form.buttons.continue.label')),
         preventDoubleClick: true
       }) }}
 
