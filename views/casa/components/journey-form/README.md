@@ -53,3 +53,4 @@ Note that the submit button is configured to prevent double-clicks and avoid dup
 | `inEditMode` | boolean | No | Toggle edit-mode of the form (available to page templates using default GET/POST handlers via the local `inEditMode` variable) |
 | `editOriginUrl` | string | No | Absolute URL to the page from which the edit request came (defaults to `review`) (available to user's templates using default GET/POST handlers via the local `editOriginUrl` variable) |
 | `buttonBarHidden` | boolean | No | Toggle the rendering of the bar containing the "Continue" button and "Cancel" link.Useful if you want to render your own buttons |
+| `buttonText` | string | No | Overrides default button text i.e Save changes. If you need to retain the save changes switch you will need to add this logic |
