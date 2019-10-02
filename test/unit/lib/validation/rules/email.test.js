@@ -19,10 +19,9 @@ describe('Validation rule: email', () => {
 
   it('should reject for invalid emails', () => {
     const queue = [];
-
     queue.push(expect(email('invalid@domain@domain.net')).to.be.rejected);
     queue.push(expect(email('invalid')).to.be.rejected);
-
+    queue.push(expect(email('cats@cats.co.')).to.be.rejected);
     return Promise.all(queue);
   });
 
