@@ -7,7 +7,6 @@ chai.use(sinonChai);
 
 const { request, response } = require('../../helpers/express-mocks.js');
 const { data: journeyContext } = require('../../helpers/journey-mocks.js');
-const logger = require('../../helpers/logger-mock.js');
 const JourneyContext = require('../../../../lib/JourneyContext.js');
 
 const mwSkip = require('../../../../middleware/page/skip.js');
@@ -20,7 +19,6 @@ describe('Middleware: page/skip', () => {
   beforeEach(() => {
     stubRequest = request();
     stubRequest.casa = { journeyContext: journeyContext() };
-    stubRequest.log = logger();
     stubResponse = response();
     stubNext = sinon.stub();
   });
