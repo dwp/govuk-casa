@@ -15,7 +15,7 @@
  *  /current-waypoint?skipto=next-waypoint
  */
 
- const createLogger = require('../../lib/Logger.js');
+const createLogger = require('../../lib/Logger.js');
 
 module.exports = (mountUrl) => (req, res, next) => {
   const logger = createLogger('page.skip');
