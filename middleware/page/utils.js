@@ -1,4 +1,4 @@
-const { isObjectWithKeys } = require('../../lib/Util.js');
+const { isObjectWithKeys, normalizeHtmlObjectPath } = require('../../lib/Util.js');
 
 /**
 * Converts an array of functions to a nested callback, eg:
@@ -117,7 +117,10 @@ function extractSessionableData(logger, pageWaypointId, fieldValidators = {}, da
   // Prune data that does not have an associated field valdiator
   const prunedData = Object.create(null);
   Object.keys(fieldValidators).forEach((k) => {
-    if (typeof data[k] !== 'undefined') {
+    if (
+      typeof data[k] !== 'undefined'
+      && fieldValidators[k].condition(data, normalizeHtmlObjectPath(k))
+    ) {
       prunedData[k] = data[k];
     }
   });

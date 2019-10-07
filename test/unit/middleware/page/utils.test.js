@@ -10,6 +10,8 @@ chai.use(chaiAsPromised);
 
 const { nestHooks, executeHook } = require('../../../../middleware/page/utils.js');
 
+const SimpleField = require('../../../../lib/validation/SimpleField.js');
+
 const { request, response } = require('../../helpers/express-mocks.js');
 const logger = require('../../helpers/logger-mock.js');
 
@@ -74,7 +76,7 @@ describe('Middleware: page/utils', () => {
 
     it('should remove data keys that do not have field validators', () => {
       const extracted = extractSessionableData(logger(), 'test-waypoint', {
-        test: null,
+        test: SimpleField([]),
       }, {
         test: 1,
         removeme: true,
@@ -86,12 +88,24 @@ describe('Middleware: page/utils', () => {
 
     it('should not add extract fields that are not present in original data object', () => {
       const extracted = extractSessionableData(logger(), 'test-waypoint', {
-        test: null,
-        another: null,
+        test: SimpleField([]),
+        another: SimpleField([]),
       }, {
         another: 2,
       });
       expect(extracted).to.not.have.property('test');
+    });
+
+    it('should not extract fields if their field validator conditional returns false', () => {
+      const extracted = extractSessionableData(logger(), 'test-waypoint', {
+        test: SimpleField([], () => (true)),
+        another: SimpleField([], () => (false)),
+      }, {
+        test: 'some-data',
+        another: 'more-data',
+      });
+      expect(extracted).to.have.property('test');
+      expect(extracted).to.not.have.property('another');
     });
   });
 
