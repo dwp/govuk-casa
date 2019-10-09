@@ -106,6 +106,15 @@ describe('Middleware: session/expiry', () => {
     mockRequest.originalUrl = '/test-url?with=some&query[bits]=true';
     middlewareWithConfig(mockRequest, mockResponse, stubNext);
     expect(mockResponse.status).to.be.calledOnceWithExactly(302);
-    expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/session-timeout?referer=%2Ftest-url%3Fwith%3Dsome%26query%5Bbits%5D%3Dtrue');
+    expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/session-timeout?referer=%2Ftest-url%3Fwith%3Dsome%26query%5Bbits%5D%3Dtrue#');
+  });
+
+  it('should redirect again to session-timeout url and append original url (minus existing referer) as query string', () => {
+    const middlewareWithConfig = mwExpiry(mockLogger, '/test-mount/');
+    mockRequest.casaSessionExpired = 'trigger';
+    mockRequest.originalUrl = '/session-timeout?referer=%2Fsession-timeout';
+    middlewareWithConfig(mockRequest, mockResponse, stubNext);
+    expect(mockResponse.status).to.be.calledOnceWithExactly(302);
+    expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/session-timeout?referer=%2Fsession-timeout#');
   });
 });

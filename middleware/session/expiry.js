@@ -9,6 +9,7 @@
 
 const moment = require('moment');
 const qs = require('querystring');
+const url = require('url');
 
 module.exports = (logger, mountUrl = '/', sessionConfig = {}) => (req, res, next) => {
   if (typeof req.session === 'undefined') {
@@ -43,7 +44,31 @@ module.exports = (logger, mountUrl = '/', sessionConfig = {}) => (req, res, next
       secure: sessionConfig.secure,
       maxAge: null,
     });
-    const referer = req.originalUrl ? `?${qs.stringify({ referer: req.originalUrl })}` : '#';
-    res.status(302).redirect(`${mountUrl}session-timeout${referer}`);
+
+    // Default redirect path
+    let redirectPath = `${mountUrl}session-timeout#`;
+
+    // Add current path to redirect query
+    if (req.originalUrl) {
+      const currentUrl = url.parse(req.originalUrl, true);
+      const redirectUrl = url.parse(redirectPath, true);
+
+      // Remove existing referrer query
+      if (currentUrl.query.referer) {
+        delete currentUrl.query.referer;
+
+        // Rebuild or remove query string
+        currentUrl.search = currentUrl.query.length
+          ? `?${qs.stringify(currentUrl.query)}`
+          : null;
+      }
+
+      // Append referrer, rebuild path
+      redirectUrl.search = `?${qs.stringify({ referer: url.format(currentUrl) })}`;
+      redirectPath = url.format(redirectUrl);
+    }
+
+    // Redirect to session timeout
+    res.status(302).redirect(redirectPath);
   });
 }
