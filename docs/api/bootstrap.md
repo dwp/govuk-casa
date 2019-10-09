@@ -90,6 +90,17 @@ const casaApp = configure(expressAppInstance, {
   // Name of the service. Used by govuk-frontend templates.
   serviceName: 'My little CASA app',
 
+  // sessionExpiryController (Function; optional)
+  // This "session expiry controller" gives you a chance to handle your own
+  // session expiry redirect. For example, to bypass the default redirect to
+  // the `/session-timeout` route call `next()` here to skip it, or apply your
+  // own redirect via `res.redirect('/custom-route-here')` instead.
+  sessionExpiryController: (req, res, next) => {
+    if (req.originalUrl === '/') {
+      next();
+    }
+  },
+
   sessions: {
     // cookiePath (String; optional; default same as mountUrl)
     // Session cookie is set to be valid for this URL path.

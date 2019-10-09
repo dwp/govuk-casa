@@ -75,6 +75,7 @@ function mountCasaMiddleware(app, config, i18nUtility) {
   mwSession(
     app,
     config.mountUrl,
+    config.sessionExpiryController,
     {
       secure: config.sessions.secure,
       store: config.sessions.store,

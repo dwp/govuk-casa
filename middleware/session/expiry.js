@@ -11,7 +11,7 @@ const moment = require('moment');
 const qs = require('querystring');
 const url = require('url');
 
-module.exports = (logger, mountUrl = '/', sessionConfig = {}) => (req, res, next) => {
+module.exports = (logger, mountUrl = '/', sessionExpiryController, sessionConfig = {}) => (req, res, next) => {
   if (typeof req.session === 'undefined') {
     next();
     return;
@@ -32,18 +32,11 @@ module.exports = (logger, mountUrl = '/', sessionConfig = {}) => (req, res, next
     return;
   }
 
-  // Destroy session
-  logger.debug('Destroying expired session %s (tmp new ID %s)', oldSessionId, req.sessionID);
-  req.session.destroy((err) => {
-    if (err) {
-      logger.error('Failed to destory session. Error: %s', err.message);
+  // Optional redirect after destroy
+  function onAfterDestroy() {
+    if (res.headersSent) {
+      return;
     }
-    res.clearCookie(sessionConfig.name, {
-      path: sessionConfig.cookiePath,
-      httpOnly: true,
-      secure: sessionConfig.secure,
-      maxAge: null,
-    });
 
     // Default redirect path
     let redirectPath = `${mountUrl}session-timeout#`;
@@ -70,5 +63,28 @@ module.exports = (logger, mountUrl = '/', sessionConfig = {}) => (req, res, next
 
     // Redirect to session timeout
     res.status(302).redirect(redirectPath);
+  }
+
+  // Destroy session
+  logger.debug('Destroying expired session %s (tmp new ID %s)', oldSessionId, req.sessionID);
+  req.session.destroy((err) => {
+    if (err) {
+      logger.error('Failed to destory session. Error: %s', err.message);
+    }
+
+    // Always clear cookie
+    res.clearCookie(sessionConfig.name, {
+      path: sessionConfig.cookiePath,
+      httpOnly: true,
+      secure: sessionConfig.secure,
+      maxAge: null,
+    });
+
+    // Custom expiry controller
+    if (typeof sessionExpiryController === 'function') {
+      sessionExpiryController(req, res, next);
+    }
+
+    process.nextTick(onAfterDestroy);
   });
 }

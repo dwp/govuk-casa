@@ -27,13 +27,21 @@ const request = () => ({
 
 const response = () => {
   const res = {};
+
+  // Some stubs must mark headers as sent
+  function setHeadersSent() {
+    res.headersSent = true;
+    return res;
+  }
+
   res.clearCookie = sinon.stub().returns(res);
-  res.redirect = sinon.stub().returns(res);
+  res.redirect = sinon.stub().callsFake(setHeadersSent);
   res.render = sinon.stub().returns(res);
-  res.send = sinon.stub().returns(res);
+  res.send = sinon.stub().callsFake(setHeadersSent);
   res.setHeader = sinon.stub().returns(res);
   res.status = sinon.stub().returns(res);
   res.locals = {};
+
   return res;
 };
 

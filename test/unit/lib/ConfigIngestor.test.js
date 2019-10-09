@@ -23,6 +23,7 @@ const {
   validateMountUrl,
   validatePhase,
   validateServiceName,
+  validateSessionExpiryController,
   validateSessionsObject,
   validateSessionsCookiePath,
   validateSessionsName,
@@ -242,6 +243,32 @@ describe('ConfigIngestor', () => {
     it('should return a valid value', () => {
       const testLocales = ['en', 'cy'];
       expect(validateI18nLocales(testLocales)).to.equal(testLocales);
+    });
+  });
+
+  describe('validateSessionExpiryController()', () => {
+    it('should return undefined if passed nothing', () => (
+      expect(validateSessionExpiryController()).to.be.undefined
+    ));
+
+    it('should return a valid value (function)', () => {
+      const testFunction = function (req, res, next) {};
+      expect(validateSessionExpiryController(testFunction)).to.equal(testFunction);
+    });
+
+    it('should throw a TypeError if not a function', () => {
+      expect(() => validateSessionExpiryController('string')).to.throw(
+        TypeError,
+        'Custom session expiry controller must be a function',
+      );
+    });
+
+    it('should throw an error if function does not have 3 parameters', () => {
+      const testFunction = function (req, res) {};
+      expect(() => validateSessionExpiryController(testFunction)).to.throw(
+        Error,
+        'Custom session expiry controller must accept 3 arguments (req, res, next)',
+      );
     });
   });
 
