@@ -1,6 +1,6 @@
-// Cancel edit link
+// Cancel edit link wrapper
 // This adds some alignment so it sits next to the "Continue" button better
-.casa-cancel-review-link {
+.casa-cancel-review {
   margin: (govuk-spacing(2) - $govuk-border-width-form-element) govuk-spacing(2); // matches padding on `.govuk-button`
   display: inline-block;
 }

@@ -18,12 +18,18 @@
       </p>
     </div>
 
-    <p class="govuk-body">
+    <div class="casa-form-control-block">
       {{ govukButton({
-        text: t('submit:form.buttons.submit.label')
+        attributes: {
+          id: 'continue-button'
+        },
+        text: t('common:form.buttons.saveChanges.label') if params.inEditMode else t('common:form.buttons.submit.label'),
+        preventDoubleClick: true
       }) }}
 
-      <a href="{{ casa.mountUrl }}review" class="casa-cancel-review-link govuk-link--no-visited-state">{{ t('common:form.buttons.cancel.label') }}</a>
-    </p>
+      <p class="casa-cancel-review govuk-body">
+        <a href="{{ casa.mountUrl }}review" class="govuk-link--no-visited-state">{{ t('common:form.buttons.cancel.label') }}</a>
+      </p>
+    </div>
   </form>
 {% endblock %}
