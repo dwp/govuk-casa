@@ -58,9 +58,22 @@ module.exports = (mountUrl = '/', plan) => (req, res, next) => {
   // We're at the very first waypoint that is reachable from the given origin;
   // check if there is a "prev" route available that points to a different
   // origin, that we can use to generate a URL pointing to that waypoint.
-  const [previousRoute] = plan.getPrevOutwardRoutes(req.casa.journeyWaypointId).filter((r) => (
+  // First, attempt to traverse backwards; this will ensure the route conditions
+  // are taken into account during that traversal.
+  // If no valid route is found with that method, fallback to using the first
+  // `prev` route that we can find.
+  // let previousRoute = undefined;
+  let [previousRoute] = plan.traversePrevRoutes(req.casa.journeyContext, {
+    startWaypoint: req.casa.journeyWaypointId,
+  }).filter((r) => (
     r.label.targetOrigin !== undefined
   ));
+
+  if (!previousRoute) {
+    [previousRoute] = plan.getPrevOutwardRoutes(req.casa.journeyWaypointId).filter((r) => (
+      r.label.targetOrigin !== undefined
+    ));
+  }
 
   if (previousRoute) {
     res.locals.casa.journeyPreviousUrl = `${mountUrl}/${previousRoute.label.targetOrigin}/${previousRoute.target}`.replace(/\/+/g, '/');
