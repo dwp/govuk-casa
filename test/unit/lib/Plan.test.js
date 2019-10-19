@@ -146,7 +146,7 @@ describe('Plan', () => {
           sourceOrigin: undefined,
           targetOrigin: undefined,
         },
-      }])
+      }]);
     });
 
     it('should call all follow-condition functions on the discovered routes, passing context arguments', () => {
@@ -261,6 +261,29 @@ describe('Plan', () => {
           targetOrigin: undefined,
         },
       });
+    });
+
+    it('should stop traversing and return results if stopCondition is met', () => {
+      const stub_n0n1 = sinon.stub().returns(true);
+      const stub_n1n2 = sinon.stub().returns(true);
+      const stub_n2n3 = sinon.stub().returns(true);
+
+      plan.addOrigin('main', 'n0');
+      plan.setNextRoute('n0', 'n1', stub_n0n1);
+      plan.setNextRoute('n1', 'n2', stub_n1n2);
+      plan.setNextRoute('n2', 'n3', stub_n2n3);
+
+      const route_n0n1 = plan.getRoutes().filter(e => `${e.source}${e.target}${e.name}` === 'n0n1next')[0];
+      const route_n1n2 = plan.getRoutes().filter(e => `${e.source}${e.target}${e.name}` === 'n1n2next')[0];
+      const route_n2n3 = plan.getRoutes().filter(e => `${e.source}${e.target}${e.name}` === 'n2n3next')[0];
+
+      const output = plan.traverseRoutes(stubContext, {
+        startWaypoint: 'n0',
+        routeName: 'next',
+        stopCondition: (r) => (r.target === 'n2'),
+      });
+
+      expect(output).to.deep.eql([route_n0n1, route_n1n2]);
     });
   });
 });

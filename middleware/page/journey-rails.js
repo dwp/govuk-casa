@@ -62,17 +62,14 @@ module.exports = (mountUrl = '/', plan) => (req, res, next) => {
   // are taken into account during that traversal.
   // If no valid route is found with that method, fallback to using the first
   // `prev` route that we can find.
-  // let previousRoute = undefined;
+  const stopCondition = (r) => (r.label.targetOrigin !== undefined);
   let [previousRoute] = plan.traversePrevRoutes(req.casa.journeyContext, {
     startWaypoint: req.casa.journeyWaypointId,
-  }).filter((r) => (
-    r.label.targetOrigin !== undefined
-  ));
+    stopCondition,
+  }).filter(stopCondition);
 
   if (!previousRoute) {
-    [previousRoute] = plan.getPrevOutwardRoutes(req.casa.journeyWaypointId).filter((r) => (
-      r.label.targetOrigin !== undefined
-    ));
+    [previousRoute] = plan.getPrevOutwardRoutes(req.casa.journeyWaypointId).filter(stopCondition);
   }
 
   if (previousRoute) {
