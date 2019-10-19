@@ -1,6 +1,7 @@
 const bodyParser = require('body-parser');
 const createLogger = require('../../lib/Logger');
 const { executeHook, extractSessionableData, runGatherModifiers } = require('./utils.js');
+const rules = require('../../lib/validation/rules/index.js');
 
 // We want a body parser to gather the POSTed data into `req.body`
 const mwBodyParser = bodyParser.urlencoded({
@@ -44,7 +45,7 @@ module.exports = (pageMeta = {}) => [mwBodyParser, (req, res, next) => {
     .then(() => {
       // Only data that has matching validators defined in the page meta will be
       // gathered and stored in the session
-      const preparedData = extractSessionableData(
+      let preparedData = extractSessionableData(
         logger,
         pageId,
         pageMeta.fieldValidators,
@@ -63,22 +64,36 @@ module.exports = (pageMeta = {}) => [mwBodyParser, (req, res, next) => {
         });
       }
 
+      // In the case of field validators containing the `optional` rule, and no
+      // data being present on those fields, we must indicate that the gathering
+      // process has been completed.
+      //
+      // Throughout CASA, we determine if a waypoint has been "completed" with
+      // two conditions:
+      // 1. There is data held against that waypoint
+      // 2. There are no validation errors on that waypoint
+      //
+      // Therefore to satisfy the first condition (data stored against waypoint)
+      // in this scenario, we must inject some data into the object. We do this
+      // via the special `__gathered__` flag.
+      if (Object.keys(preparedData).length === 0) {
+        const hasOptionalFields = Object.keys(pageMeta.fieldValidators || {}).filter(
+          (k) => (pageMeta.fieldValidators[k].validators.includes(rules.optional)),
+        );
+        if (hasOptionalFields.length) {
+          preparedData = Object.create(null, {
+            __gathered__: {
+              value: true,
+              enumerable: true,
+            },
+          });
+        }
+      }
+
       // Store all modified data back to req.body so downstream handlers have
       // access to the modified data.
       req.body = Object.assign(Object.create(null), req.body, preparedData);
       return preparedData;
-
-      // // Modify and re-store data on req.body so downstream handlers have access
-      // // to the modified data.
-      // const modifiedData = doGatherDataModification(
-      //   logger,
-      //   pageId,
-      //   preparedData,
-      //   pageMeta,
-      // );
-      // req.body = Object.assign({}, req.body, modifiedData);
-
-      // return modifiedData;
     })
     .then((modifiedData) => (storeSessionData(modifiedData)))
     .then(() => {

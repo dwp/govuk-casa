@@ -16,7 +16,9 @@ describe('Casa Bootstrap', () => {
   let httpAgent;
   let config;
 
-  beforeEach(() => {
+  beforeEach(function () {
+    this.timeout(5000);
+
     expressApp = express();
     httpAgent = chai.request.agent(expressApp);
     config = {
