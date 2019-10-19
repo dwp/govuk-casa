@@ -16,7 +16,7 @@ exports = module.exports = (function() {
     },
   };
 
-  pages['contact/details'] = {
+  pages['contact-details'] = {
     view: 'pages/contact-details.njk',
     reviewBlockView: 'review-blocks/contact-details.njk',
     fieldValidators: require('./field-validators/contact-details'),
