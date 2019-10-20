@@ -38,4 +38,17 @@ describe('Validation rule: email', () => {
 
     return Promise.all(queue);
   });
+
+  it('should reject for non-string email', () => {
+    const queue = [];
+
+    queue.push(expect(email()).to.be.rejected);
+    queue.push(expect(email([])).to.be.rejected);
+    queue.push(expect(email({})).to.be.rejected);
+    queue.push(expect(email(1)).to.be.rejected);
+    queue.push(expect(email(false)).to.be.rejected);
+    queue.push(expect(email(() => {})).to.be.rejected);
+
+    return Promise.all(queue);
+  });
 });
