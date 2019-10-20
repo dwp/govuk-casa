@@ -99,24 +99,67 @@ describe('Middleware: page/journey-continue', () => {
       }, '/test-mount/');
       mockRequest = Object.assign(mockRequest, {
         inEditMode: true,
-        editOriginUrl: '/test-origin/',
+        editOriginUrl: '/test-edit-origin/',
       });
       await middlewareWithConfig(mockRequest, mockResponse, stubNext);
       expect(mockResponse.status).to.be.calledOnceWithExactly(302);
-      expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-origin/#');
+      expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-edit-origin/#');
     });
 
     it('should return to the first changed waypoint if the traversal is altered', async () => {
       const middlewareWithConfig = mwJourney({}, '/test-mount/');
       mockRequest = Object.assign(mockRequest, {
         inEditMode: true,
-        editOriginUrl: '/test-origin/',
+        editOriginUrl: '/test-edit-origin/',
       });
       mockRequest.casa.preGatherTraversalSnapshot = ['page0', 'page1', 'page2'];
-      mockRequest.casa.plan.traverse.returns(['page0', 'changeA', 'changeB']);
+      mockRequest.casa.plan.traverseNextRoutes.returns([{
+        source: 'page0',
+        target: 'changeA',
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }, {
+        source: 'changeA',
+        target: 'changeB',
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }, {
+        source: 'changeB',
+        target: null,
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }]);
       await middlewareWithConfig(mockRequest, mockResponse, stubNext);
       expect(mockResponse.status).to.be.calledOnceWithExactly(302);
       expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/changeA#');
+    });
+
+    it('should return to the first changed waypoint if the traversal is altered, and include any changes to the origin', async () => {
+      const middlewareWithConfig = mwJourney({}, '/test-mount/');
+      mockRequest = Object.assign(mockRequest, {
+        inEditMode: true,
+        editOriginUrl: '/test-edit-origin/',
+      });
+      mockRequest.casa.preGatherTraversalSnapshot = ['page0', 'page1', 'page2'];
+      mockRequest.casa.plan.traverseNextRoutes.returns([{
+        source: 'page0',
+        target: 'page1',
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }, {
+        source: 'page1',
+        target: 'changeA',
+        name: 'next',
+        label: { sourceOrigin: 'previous-origin', targetOrigin: 'changed-origin' }
+      }, {
+        source: 'changeA',
+        target: null,
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }]);
+      await middlewareWithConfig(mockRequest, mockResponse, stubNext);
+      expect(mockResponse.status).to.be.calledOnceWithExactly(302);
+      expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/changed-origin/changeA#');
     });
   });
 

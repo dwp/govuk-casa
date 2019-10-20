@@ -28,22 +28,30 @@ module.exports = (pageMeta = {}, mountUrl = '/') => (req, res, next) => {
       // the journey have changed. If the user hasn't yet reached the 'review'
       // step, the 'journey' middleware will ensure they are redirected back to
       // the correct next waypoint.
-      logger.trace('Comparing pre-gather traversal snapshot');
-      const waypointPrefix = `${mountUrl}/${journeyOrigin.originId || ''}/`.replace(/\/+/g, '/');
+      let nextOrigin = journeyOrigin.originId || '';
+      nextWaypoint = req.editOriginUrl || '';
+      logger.trace('Comparing pre-gather traversal snapshot (starting from origin %s)', nextOrigin);
+
       const { preGatherTraversalSnapshot = [] } = req.casa || Object.create(null);
-      const currentTraversalSnapshot = journey.traverse(req.casa.journeyContext, {
+      const currentTraversalSnapshot = journey.traverseNextRoutes(req.casa.journeyContext, {
         startWaypoint: journeyOrigin.waypoint,
       });
-      nextWaypoint = req.editOriginUrl || '';
+
       preGatherTraversalSnapshot.every((el, i) => {
         if (typeof currentTraversalSnapshot[i] === 'undefined') {
           return false;
         }
-        const same = el === currentTraversalSnapshot[i];
+
+        const same = el === currentTraversalSnapshot[i].source;
         if (!same) {
-          logger.trace('Journey altered (previous tip = %s, new tip = %s)', el, currentTraversalSnapshot[i]);
-          nextWaypoint = `${waypointPrefix}${currentTraversalSnapshot[i]}`;
+          logger.trace('Journey altered (previous tip = %s, new tip = %s, origin = %s)', el, currentTraversalSnapshot[i].source, nextOrigin);
+          nextWaypoint = `${mountUrl}/${nextOrigin}/${currentTraversalSnapshot[i].source}`;
         }
+
+        // Track a change in origin, and assume that all subsequent matches
+        // (until the next change of origin) are accessed from that origin.
+        nextOrigin = currentTraversalSnapshot[i].label.targetOrigin || nextOrigin;
+
         return same;
       });
     } else if (journey.containsWaypoint(pageId)) {
