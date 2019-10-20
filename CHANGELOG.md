@@ -1,3 +1,27 @@
+<a name="5.1.0-beta.1"></a>
+# [5.1.0-beta.1](https://github.com/dwp/govuk-casa/compare/5.0.1...5.1.0-beta.1) (2019-10-20)
+
+
+### Bug Fixes
+
+* Don’t use <footer> to wrap form buttons ([ca91fae](https://github.com/dwp/govuk-casa/commit/ca91fae))
+* Update e-mail validation ([28cd300](https://github.com/dwp/govuk-casa/commit/28cd300))
+* use correct logger in skip middleware ([66360a3](https://github.com/dwp/govuk-casa/commit/66360a3))
+* **gather:** ensure gathered state is set for solely optional forms ([039fb94](https://github.com/dwp/govuk-casa/commit/039fb94))
+* **plan:** take into account route conditions when calculating previous waypoint ([41e2208](https://github.com/dwp/govuk-casa/commit/41e2208))
+
+
+### Features
+
+* add functionality to convert from map to plan ([d98e055](https://github.com/dwp/govuk-casa/commit/d98e055))
+
+
+### Performance Improvements
+
+* **plan:** add option to stop traversal early when conditions are met ([c4ab26e](https://github.com/dwp/govuk-casa/commit/c4ab26e))
+
+
+
 <a name="5.0.1"></a>
 ## [5.0.1](https://github.com/dwp/govuk-casa/compare/5.0.0...5.0.1) (2019-09-08)
 
