@@ -71,13 +71,17 @@ git commit -sm 'chore: package <version>'
 git tag <version>
 git push --tags
 git push
+```
 
+At this point, wait for the internal CI pipeline to go green before continuing.
+
+```
 # Push to Github
 git push --tags git@github.com:dwp/govuk-casa.git master
 git push git@github.com:dwp/govuk-casa.git master
 ```
 
-Now publish to [npmjs.com](https://npmjs.com/):
+Wait for the travis CI job to go green, before then publishing to [npmjs.com](https://npmjs.com/):
 
 ```bash
 # Check if you're logged in, or login to npm
