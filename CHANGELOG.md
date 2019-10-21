@@ -1,3 +1,14 @@
+<a name="5.1.0-beta.2"></a>
+# [5.1.0-beta.2](https://github.com/dwp/govuk-casa/compare/5.1.0-beta.1...5.1.0-beta.2) (2019-10-21)
+
+
+### Bug Fixes
+
+* **traversal:** inject correct origin when calculating altered route after edit ([0c84170](https://github.com/dwp/govuk-casa/commit/0c84170))
+* **validator:** add type checking to email validator ([57de412](https://github.com/dwp/govuk-casa/commit/57de412))
+
+
+
 <a name="5.1.0-beta.1"></a>
 # [5.1.0-beta.1](https://github.com/dwp/govuk-casa/compare/5.0.1...5.1.0-beta.1) (2019-10-20)
 
