@@ -1,3 +1,18 @@
+<a name="5.1.0-beta.3"></a>
+# [5.1.0-beta.3](https://github.com/dwp/govuk-casa/compare/5.1.0-beta.2...5.1.0-beta.3) (2019-10-22)
+
+
+### Bug Fixes
+
+* Remove referer query before session timeout redirect ([31d54e8](https://github.com/dwp/govuk-casa/commit/31d54e8))
+
+
+### Features
+
+* **session:** add sessionExpiryController() config option ([c3edb27](https://github.com/dwp/govuk-casa/commit/c3edb27))
+
+
+
 <a name="5.1.0-beta.2"></a>
 # [5.1.0-beta.2](https://github.com/dwp/govuk-casa/compare/5.1.0-beta.1...5.1.0-beta.2) (2019-10-21)
 
