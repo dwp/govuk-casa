@@ -9,6 +9,7 @@ image: node:10.16.0-alpine@sha256:0b9999cc406d842543be109c0d9dcf6198a96cc3dacdf2
     - master
     - develop
     - tags
+    - maintain/4.x
 
 stages:
   - build
