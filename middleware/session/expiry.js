@@ -10,9 +10,13 @@
 const moment = require('moment');
 const qs = require('querystring');
 const url = require('url');
+const mwInit = require('./init.js');
 
 module.exports = (logger, mountUrl = '/', sessionExpiryController, sessionConfig = {}) => (req, res, next) => {
-  if (typeof req.session === 'undefined') {
+  let redirectPath = `${mountUrl}session-timeout`;
+
+  // Session already destroyed, or on timeout page
+  if (typeof req.session === 'undefined' || req.path === redirectPath) {
     next();
     return;
   }
@@ -34,12 +38,9 @@ module.exports = (logger, mountUrl = '/', sessionExpiryController, sessionConfig
 
   // Optional redirect after destroy
   function onAfterDestroy() {
-    if (res.headersSent) {
+    if (!redirectPath || res.headersSent) {
       return;
     }
-
-    // Default redirect path
-    let redirectPath = `${mountUrl}session-timeout#`;
 
     // Add current path to redirect query
     if (req.originalUrl) {
@@ -62,7 +63,7 @@ module.exports = (logger, mountUrl = '/', sessionExpiryController, sessionConfig
     }
 
     // Redirect to session timeout
-    res.status(302).redirect(redirectPath);
+    res.status(302).redirect(`${redirectPath}#`);
   }
 
   // Destroy session
@@ -82,7 +83,10 @@ module.exports = (logger, mountUrl = '/', sessionExpiryController, sessionConfig
 
     // Custom expiry controller
     if (typeof sessionExpiryController === 'function') {
-      sessionExpiryController(req, res, next);
+      sessionExpiryController(req, res, () => {
+        redirectPath = undefined;
+        mwInit(logger, sessionConfig)(req, res, next);
+      });
     }
 
     process.nextTick(onAfterDestroy);
