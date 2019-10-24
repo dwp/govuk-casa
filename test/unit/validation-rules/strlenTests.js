@@ -67,8 +67,8 @@ describe('Validation rule: strlen', () => {
       errorMsgMin: 'TEST MIN',
       errorMsgMax: 'TEST MAX',
     });
-    queue.push(expect(rule1('1234').catch(err => Promise.reject(JSON.stringify(err)))).to.be.rejectedWith(/TEST MIN/));
-    queue.push(expect(rule1('12345678901').catch(err => Promise.reject(JSON.stringify(err)))).to.be.rejectedWith(/TEST MAX/));
+    queue.push(expect(rule1('1234').catch((err) => Promise.reject(JSON.stringify(err)))).to.be.rejectedWith(/TEST MIN/));
+    queue.push(expect(rule1('12345678901').catch((err) => Promise.reject(JSON.stringify(err)))).to.be.rejectedWith(/TEST MAX/));
 
     return Promise.all(queue);
   });

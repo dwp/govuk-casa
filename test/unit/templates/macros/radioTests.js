@@ -12,13 +12,14 @@ describe('radio macro', () => {
    * @return {Object} DOM element (cheerio)
    */
   function buildDom(params) {
-    const p = Object.assign({
+    const p = {
       data: null,
       name: 'TEST',
       label: null,
       value: null,
       options: null,
-    }, params || {});
+      ...params || {},
+    };
     return helpers.renderTemplateFile(`${dirMacros}/radioTemplate.html`, p);
   }
 

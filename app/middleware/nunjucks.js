@@ -35,7 +35,7 @@ module.exports = function mwNunjucks(app, viewDirs, govukFrontendTemplate) {
     throw new TypeError('Expected GOVUK template on path template.njk');
   }
   // Resolve all application template search paths, and add CASA-specific dirs
-  const dirViews = (viewDirs || []).map(dir => npath.resolve(dir)).concat([
+  const dirViews = (viewDirs || []).map((dir) => npath.resolve(dir)).concat([
     npath.resolve(__dirname, '..', 'views'),
     npath.resolve(govukFrontendTemplate, '..'),
   ]);
@@ -79,7 +79,7 @@ module.exports = function mwNunjucks(app, viewDirs, govukFrontendTemplate) {
     // Customise the `render()` response method to use this specific Nunjucks
     // environment for the current request.
     res.render = function nunjucksRender(name, opts, callback) {
-      const mergedOpts = Object.assign({}, opts || {}, res.locals || {});
+      const mergedOpts = { ...opts || {}, ...res.locals || {} };
       env.render(name, mergedOpts, callback || ((err, data) => {
         if (err) {
           logger.error(`Nunjucks error during render of "${name}". ${err.message}`);

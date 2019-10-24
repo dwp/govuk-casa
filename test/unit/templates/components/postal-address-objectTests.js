@@ -12,11 +12,12 @@ describe('casaPostalAddressObject macro', () => {
    * @return {Object} DOM element (cheerio)
    */
   function buildDom(params = {}) {
-    const p = Object.assign({
+    const p = {
       namePrefix: null,
       casaValue: null,
       casaErrors: null,
-    }, params || {});
+      ...params || {},
+    };
     return helpers.renderTemplateFile(`${dirMacros}/postal-address-object.njk`, {
       params: p,
     });

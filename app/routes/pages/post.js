@@ -294,7 +294,7 @@ function doRender(logger, req, res, pageMeta, errors) {
       // the `id` attribute of each input field.
       // The first `focusSuffix` entry (if present) is appended to the
       // error link in order to highlight the specific input that is in error.
-      const govukErrors = Object.keys(errors || {}).map(k => ({
+      const govukErrors = Object.keys(errors || {}).map((k) => ({
         text: req.i18nTranslator.t(errors[k][0].summary),
         href: errors[k][0].fieldHref,
       }));

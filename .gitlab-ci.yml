@@ -23,7 +23,7 @@ npm:
   stage: build
   <<: *executor-docker
   script:
-    - npm i --no-save --no-optional
+    - npm ci
     - npm dedupe
   artifacts:
     expire_in: 20 mins

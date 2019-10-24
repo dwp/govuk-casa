@@ -8,7 +8,7 @@ describe('Middleware: variables', () => {
     const mi = middleware(
       {
         use: () => {},
-        get: s => (s === 'casaGovukFrontendVirtualUrl' ? 'test-prefix' : undefined),
+        get: (s) => (s === 'casaGovukFrontendVirtualUrl' ? 'test-prefix' : undefined),
       },
       '/testMountUrl',
       'TestPhase',
@@ -17,7 +17,7 @@ describe('Middleware: variables', () => {
 
     const req = httpMocks.createRequest();
     req.i18nTranslator = {
-      t: s => (`${s}-TRANSLATED`),
+      t: (s) => (`${s}-TRANSLATED`),
     };
     const res = httpMocks.createResponse();
     res.locals = {};

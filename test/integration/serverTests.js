@@ -89,7 +89,7 @@ describe('Server: Config', () => {
 
     describe('Without middleware configured', async () => {
       it('No headers added', async () => {
-        config.mountController = callback => callback();
+        config.mountController = (callback) => callback();
 
         casa(app, config);
         const response = await agent.get('/');

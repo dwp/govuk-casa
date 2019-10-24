@@ -25,7 +25,7 @@ module.exports = function reviewPageDefinition(app, pageDirectory, userJourney) 
             waypointId,
             reviewBlockView: meta.reviewBlockView,
           } : null;
-        }).filter(o => o !== null);
+        }).filter((o) => o !== null);
 
         // Run validation on all claim data so we can alert the user to anything
         // that needs fixing. This is a safety-net check really because by the

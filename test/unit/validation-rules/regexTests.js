@@ -42,7 +42,7 @@ describe('Validation rule: regex', () => {
       pattern: /^[0-9]{3}$/,
       errorMsg: 'REGEX_ERR',
     })
-    queue.push(expect(re1('1234').catch(err => Promise.reject(JSON.stringify(err)))).to.be.rejectedWith(/REGEX_ERR/));
+    queue.push(expect(re1('1234').catch((err) => Promise.reject(JSON.stringify(err)))).to.be.rejectedWith(/REGEX_ERR/));
 
     return Promise.all(queue);
   });

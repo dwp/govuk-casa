@@ -50,9 +50,7 @@ describe('Middleware: static', () => {
         mockExpressStatic,
         mountUrl,
         compiledAssetsDir,
-        Object.assign({}, npmPackages, {
-          govukCasa: npath.join(os.tmpdir(), `non-existent-path-${Math.round(Math.random() * 9999999)}`),
-        }),
+        { ...npmPackages, govukCasa: npath.join(os.tmpdir(), `non-existent-path-${Math.round(Math.random() * 9999999)}`) },
       );
     }).to.throw(Error, 'ENOENT');
   });

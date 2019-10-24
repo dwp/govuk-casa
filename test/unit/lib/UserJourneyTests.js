@@ -316,7 +316,7 @@ describe('UserJourney.Map', () => {
       const road5 = new UserJourney.Road();
 
       road1.addWaypoints(['point0', 'point1']);
-      road1.fork([road2, road3], roads => roads[0]);
+      road1.fork([road2, road3], (roads) => roads[0]);
       road2.addWaypoints(['point2', 'point3']);
       road3.addWaypoints(['point4', 'point5']);
       road4.addWaypoints(['point6', 'point7']);
@@ -398,7 +398,7 @@ describe('UserJourney.Map', () => {
       const map = new UserJourney.Map();
 
       const road1 = new UserJourney.Road();
-      road1.addWaypoints(['p0', 'p1', ['p2', c => c.p1.data === true], ['p3', c => c.p2.data === true], 'p4', 'p5']);
+      road1.addWaypoints(['p0', 'p1', ['p2', (c) => c.p1.data === true], ['p3', (c) => c.p2.data === true], 'p4', 'p5']);
 
       map.startAt(road1);
 
@@ -439,7 +439,7 @@ describe('UserJourney.Map', () => {
       road4.addWaypoints(['p9', 'p10', 'p11']);
 
       map.startAt(road1);
-      road1.fork([road2, road3], roads => roads[1]);
+      road1.fork([road2, road3], (roads) => roads[1]);
       road3.mergeWith(road4);
 
       const context = {
@@ -481,7 +481,7 @@ describe('UserJourney.Map', () => {
       road4.addWaypoints(['p9', 'p10', 'p11']);
 
       map.startAt(road1);
-      road1.fork([road2, road3], roads => roads[1]);
+      road1.fork([road2, road3], (roads) => roads[1]);
       road3.mergeWith(road4);
 
       const context = {
@@ -707,7 +707,7 @@ describe('UserJourney.Map', () => {
       const roadB = new UserJourney.Road();
 
       roadA.addWaypoints(['a', 'b', 'c']);
-      roadA.fork([roadA, roadB], roads => (roads[1]));
+      roadA.fork([roadA, roadB], (roads) => (roads[1]));
       roadB.addWaypoints(['d', 'e', 'f']);
       roadB.mergeWith(roadA);
 

@@ -55,7 +55,7 @@ function compileSassSources(
   const dstDir = npath.resolve(compiledAssetsDir, 'casa', 'css');
 
   const partialRegex = new RegExp(`\\${npath.sep}_[^\\${npath.sep}]+$`);
-  const files = recursiveReaddir(casaSassSrcDir).filter(f => !f.match(partialRegex));
+  const files = recursiveReaddir(casaSassSrcDir).filter((f) => !f.match(partialRegex));
 
   files.forEach((file) => {
     const fSrc = fs.readFileSync(file, { encoding: 'utf8' });
