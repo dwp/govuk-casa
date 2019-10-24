@@ -1,3 +1,8 @@
+<a name="4.0.7"></a>
+## [4.0.7](https://github.com/dwp/govuk-casa/compare/4.0.6...4.0.7) (2019-10-24)
+
+
+
 <a name="4.0.6"></a>
 ## [4.0.6](https://github.com/dwp/govuk-casa/compare/4.0.5...4.0.6) (2019-09-08)
 
