@@ -91,10 +91,10 @@ module.exports = (args) => {
   });
 
   logger.trace('Calling asset-versions');
-  app.use(mwVersions({
+  app.use(mwVersions(logger, {
     govukFrontend: path.resolve(govukFrontend, 'package.json'),
     govukTemplateJinja: path.resolve(govukTemplateJinja, 'package.json'),
-    casaMain: path.resolve(__dirname, '../../../package.json'),
+    casaMain: path.resolve(__dirname, '../../package.json'),
   }));
 }
 

@@ -7,17 +7,20 @@ const { expect } = chai;
 chai.use(sinonChai);
 
 const { app } = require('../../helpers/express-mocks.js');
+const logger = require('../../helpers/logger-mock.js');
 
 describe('Middleware: static/index', () => {
   let proxyStubs;
   let mwStatic;
   let mockApp;
+  const mockLogger = logger();
 
   beforeEach(() => {
     proxyStubs = {
       './prepare-assets.js': sinon.stub(),
       './serve-assets.js': sinon.stub(),
       './asset-versions.js': sinon.stub(),
+      '../../lib/Logger.js': () => mockLogger,
       fs: {
         accessSync: sinon.stub(),
       },
@@ -74,7 +77,7 @@ describe('Middleware: static/index', () => {
       mountUrl: '/test-mount/',
       compiledAssetsDir: 'test-dir',
     });
-    expect(proxyStubs['./asset-versions.js']).to.be.calledOnceWith(sinon.match((value) => {
+    expect(proxyStubs['./asset-versions.js']).to.be.calledOnceWith(mockLogger, sinon.match((value) => {
       const keys = Object.keys(value);
       return keys.includes('casaMain') && keys.includes('govukFrontend') && keys.includes('govukTemplateJinja');
     }))
