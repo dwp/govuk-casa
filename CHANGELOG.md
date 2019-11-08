@@ -1,3 +1,14 @@
+<a name="5.1.0"></a>
+# [5.1.0](https://github.com/dwp/govuk-casa/compare/5.1.0-beta.3...5.1.0) (2019-11-08)
+
+
+### Bug Fixes
+
+* pass logger to static middleware function ([62dff0e](https://github.com/dwp/govuk-casa/commit/62dff0e))
+* **session:** Ensure sessionExpiryController() has new session ([1a434a0](https://github.com/dwp/govuk-casa/commit/1a434a0))
+
+
+
 <a name="5.1.0-beta.3"></a>
 # [5.1.0-beta.3](https://github.com/dwp/govuk-casa/compare/5.1.0-beta.2...5.1.0-beta.3) (2019-10-22)
 
