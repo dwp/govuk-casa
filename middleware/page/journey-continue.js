@@ -29,7 +29,8 @@ module.exports = (pageMeta = {}, mountUrl = '/') => (req, res, next) => {
       // step, the 'journey' middleware will ensure they are redirected back to
       // the correct next waypoint.
       let nextOrigin = journeyOrigin.originId || '';
-      nextWaypoint = req.editOriginUrl || '';
+      const editOriginUrl = req.editOriginUrl || '';
+      nextWaypoint = editOriginUrl;
       logger.trace('Comparing pre-gather traversal snapshot (starting from origin %s)', nextOrigin);
 
       const { preGatherTraversalSnapshot = [] } = req.casa || Object.create(null);
@@ -42,8 +43,13 @@ module.exports = (pageMeta = {}, mountUrl = '/') => (req, res, next) => {
           return false;
         }
 
+        const waypointUrl = `${mountUrl}/${currentTraversalSnapshot[i].label.sourceOrigin || nextOrigin}/${currentTraversalSnapshot[i].source}`.replace(/\/+/g, '/');
         const same = el === currentTraversalSnapshot[i].source;
-        if (!same) {
+        const atEditOrigin = editOriginUrl.replace(/\/+$/g, '') === waypointUrl;
+
+        if (atEditOrigin) {
+          nextWaypoint = editOriginUrl;
+        } else if (!same) {
           logger.trace('Journey altered (previous tip = %s, new tip = %s, origin = %s)', el, currentTraversalSnapshot[i].source, nextOrigin);
           nextWaypoint = `${mountUrl}/${nextOrigin}/${currentTraversalSnapshot[i].source}`;
         }
@@ -52,7 +58,7 @@ module.exports = (pageMeta = {}, mountUrl = '/') => (req, res, next) => {
         // (until the next change of origin) are accessed from that origin.
         nextOrigin = currentTraversalSnapshot[i].label.targetOrigin || nextOrigin;
 
-        return same;
+        return same && !atEditOrigin;
       });
     } else if (journey.containsWaypoint(pageId)) {
       logger.trace('Check waypoint %s can be reached (journey guid = %s)', pageId, journeyOrigin.originId);

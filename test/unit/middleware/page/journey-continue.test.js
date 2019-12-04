@@ -134,6 +134,113 @@ describe('Middleware: page/journey-continue', () => {
       expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/changeA#');
     });
 
+    it('should return to the first changed waypoint if the traversal is altered, but not beyond the editorigin (adopt source origin)', async () => {
+      // We are also testing that the origin ID is changed correctly if it
+      // differs between the _current_ origin and the origin specified in editorigin
+      const middlewareWithConfig = mwJourney({}, '/test-mount/');
+      mockRequest = Object.assign(mockRequest, {
+        inEditMode: true,
+        editOriginUrl: '/test-mount/second-origin/page1',
+      });
+      mockRequest.casa.journeyOrigin.originId = 'first-origin';
+      mockRequest.casa.preGatherTraversalSnapshot = ['page0', 'page1', 'page2', 'page3'];
+      mockRequest.casa.plan.traverseNextRoutes.returns([{
+        source: 'page0',
+        target: 'page1',
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }, {
+        source: 'page1',
+        target: 'page2',
+        name: 'next',
+        label: { sourceOrigin: 'second-origin', targetOrigin: undefined }
+      }, {
+        source: 'page2',
+        target: 'page3b',
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }, {
+        source: 'page3b',
+        target: null,
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }]);
+      await middlewareWithConfig(mockRequest, mockResponse, stubNext);
+      expect(mockResponse.status).to.be.calledOnceWithExactly(302);
+      expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/second-origin/page1#');
+    });
+
+    it('should return to the first changed waypoint if the traversal is altered, but not beyond the editorigin (adopt target origin)', async () => {
+      // We are also testing that the origin ID is changed correctly if it
+      // differs between the _current_ origin and the origin specified in editorigin
+      const middlewareWithConfig = mwJourney({}, '/test-mount/');
+      mockRequest = Object.assign(mockRequest, {
+        inEditMode: true,
+        editOriginUrl: '/test-mount/second-origin/page1',
+      });
+      mockRequest.casa.journeyOrigin.originId = 'first-origin';
+      mockRequest.casa.preGatherTraversalSnapshot = ['page0', 'page1', 'page2', 'page3'];
+      mockRequest.casa.plan.traverseNextRoutes.returns([{
+        source: 'page0',
+        target: 'page1',
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: 'second-origin' }
+      }, {
+        source: 'page1',
+        target: 'page2',
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }, {
+        source: 'page2',
+        target: 'page3b',
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }, {
+        source: 'page3b',
+        target: null,
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }]);
+      await middlewareWithConfig(mockRequest, mockResponse, stubNext);
+      expect(mockResponse.status).to.be.calledOnceWithExactly(302);
+      expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/second-origin/page1#');
+    });
+
+    it('should return to the first changed waypoint if the traversal is altered, but not beyond the editorigin (no origins)', async () => {
+      // We are also testing that the origin ID is changed correctly if it
+      // differs between the _current_ origin and the origin specified in editorigin
+      const middlewareWithConfig = mwJourney({}, '/test-mount/');
+      mockRequest = Object.assign(mockRequest, {
+        inEditMode: true,
+        editOriginUrl: '/test-mount/page1',
+      });
+      mockRequest.casa.preGatherTraversalSnapshot = ['page0', 'page1', 'page2', 'page3'];
+      mockRequest.casa.plan.traverseNextRoutes.returns([{
+        source: 'page0',
+        target: 'page1',
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }, {
+        source: 'page1',
+        target: 'page2',
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }, {
+        source: 'page2',
+        target: 'page3b',
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }, {
+        source: 'page3b',
+        target: null,
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }]);
+      await middlewareWithConfig(mockRequest, mockResponse, stubNext);
+      expect(mockResponse.status).to.be.calledOnceWithExactly(302);
+      expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/page1#');
+    });
+
     it('should return to the first changed waypoint if the traversal is altered, and include any changes to the origin', async () => {
       const middlewareWithConfig = mwJourney({}, '/test-mount/');
       mockRequest = Object.assign(mockRequest, {
