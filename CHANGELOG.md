@@ -1,3 +1,13 @@
+<a name="5.2.0"></a>
+# [5.2.0](https://github.com/dwp/govuk-casa/compare/5.1.0...5.2.0) (2019-12-05)
+
+
+### Features
+
+* stop traversal beyond a given editorigin ([9228cb5](https://github.com/dwp/govuk-casa/commit/9228cb5))
+
+
+
 <a name="5.1.0"></a>
 # [5.1.0](https://github.com/dwp/govuk-casa/compare/5.1.0-beta.3...5.1.0) (2019-11-08)
 
