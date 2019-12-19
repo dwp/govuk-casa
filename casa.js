@@ -138,7 +138,7 @@ function CasaBootstrap(expressApp, config) {
 }
 
 /* eslint-disable global-require */
-module.exports = {
+const modules = {
   // Bootstrap
   configure: CasaBootstrap,
   ConfigIngestor: require('./lib/ConfigIngestor.js'),
@@ -162,6 +162,15 @@ module.exports = {
 
   // TODO: and all the rest ....
 };
+
+// Add test utilities
+// Here we're using lazy-loading as the test utils will only be needed during
+// development/build rather than runtime.
+Object.defineProperty(modules, 'testutils', {
+  get: () => (require('./test/utils/index.js')),
+});
+
+module.exports = modules;
 
 /* -------------------------------------------------------- Deprecated assets */
 
