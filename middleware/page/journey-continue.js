@@ -39,26 +39,26 @@ module.exports = (pageMeta = {}, mountUrl = '/') => (req, res, next) => {
       });
 
       preGatherTraversalSnapshot.every((el, i) => {
-        if (typeof currentTraversalSnapshot[i] === 'undefined') {
-          return false;
-        }
-
         const waypointUrl = `${mountUrl}/${currentTraversalSnapshot[i].label.sourceOrigin || nextOrigin}/${currentTraversalSnapshot[i].source}`.replace(/\/+/g, '/');
         const same = el === currentTraversalSnapshot[i].source;
         const atEditOrigin = editOriginUrl.replace(/\/+$/g, '') === waypointUrl;
 
         if (atEditOrigin) {
           nextWaypoint = editOriginUrl;
-        } else if (!same) {
+          return false;
+        }
+
+        if (!same || i === currentTraversalSnapshot.length - 1) {
           logger.trace('Journey altered (previous tip = %s, new tip = %s, origin = %s)', el, currentTraversalSnapshot[i].source, nextOrigin);
           nextWaypoint = `${mountUrl}/${nextOrigin}/${currentTraversalSnapshot[i].source}`;
+          return false;
         }
 
         // Track a change in origin, and assume that all subsequent matches
         // (until the next change of origin) are accessed from that origin.
         nextOrigin = currentTraversalSnapshot[i].label.targetOrigin || nextOrigin;
 
-        return same && !atEditOrigin;
+        return true;
       });
     } else if (journey.containsWaypoint(pageId)) {
       logger.trace('Check waypoint %s can be reached (journey guid = %s)', pageId, journeyOrigin.originId);

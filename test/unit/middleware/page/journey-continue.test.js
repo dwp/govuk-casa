@@ -134,6 +134,29 @@ describe('Middleware: page/journey-continue', () => {
       expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/changeA#');
     });
 
+    it('should return to the first matching waypoint if the traversal is shortened', async () => {
+      const middlewareWithConfig = mwJourney({}, '/test-mount/');
+      mockRequest = Object.assign(mockRequest, {
+        inEditMode: true,
+        editOriginUrl: '/test-edit-origin/',
+      });
+      mockRequest.casa.preGatherTraversalSnapshot = ['page0', 'page1', 'page2'];
+      mockRequest.casa.plan.traverseNextRoutes.returns([{
+        source: 'page0',
+        target: 'page1',
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }, {
+        source: 'page1',
+        target: undefined,
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }]);
+      await middlewareWithConfig(mockRequest, mockResponse, stubNext);
+      expect(mockResponse.status).to.be.calledOnceWithExactly(302);
+      expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/page1#');
+    });
+
     it('should return to the first changed waypoint if the traversal is altered, but not beyond the editorigin (adopt source origin)', async () => {
       // We are also testing that the origin ID is changed correctly if it
       // differs between the _current_ origin and the origin specified in editorigin
