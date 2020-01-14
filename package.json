@@ -16,7 +16,7 @@
     "!**/*/.gitkeep"
   ],
   "engines": {
-    "node": ">=10.0.0 <13.0.0"
+    "node": ">=10.18.1 <13.0.0"
   },
   "repository": {
     "type": "git",
@@ -61,7 +61,7 @@
     "express": "4.17.1",
     "express-session": "1.17.0",
     "husky": "4.0.6",
-    "jsdom": "16.0.0",
+    "jsdom": "15.2.1",
     "minimatch": "3.0.4",
     "mocha": "7.0.0",
     "node-mocks-http": "1.8.1",
