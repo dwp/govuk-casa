@@ -1,3 +1,13 @@
+<a name="5.2.1"></a>
+## [5.2.1](https://github.com/dwp/govuk-casa/compare/5.2.0...5.2.1) (2020-01-15)
+
+
+### Bug Fixes
+
+* traverse to correct page after edit if linear journey is shortened ([6d3beb2](https://github.com/dwp/govuk-casa/commit/6d3beb2))
+
+
+
 <a name="5.2.0"></a>
 # [5.2.0](https://github.com/dwp/govuk-casa/compare/5.1.0...5.2.0) (2019-12-05)
 
