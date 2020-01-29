@@ -18,12 +18,12 @@ module.exports = (pageMeta = {}) => (req, res, next) => {
     let result;
     if (pageMeta && pageMeta.fieldValidators) {
       logger.trace('Run validation for %s', pageId);
-      result = Validation.processor(
-        pageMeta.fieldValidators,
-        req.casa.journeyContext.getDataForPage(pageId), {
-          reduceErrors: true,
-        },
-      );
+      result = Validation.processor({
+        waypointId: pageId,
+        fieldValidators: pageMeta.fieldValidators,
+        journeyContext: req.casa.journeyContext,
+        reduceErrors: true,
+      });
     } else {
       result = Promise.resolve();
     }

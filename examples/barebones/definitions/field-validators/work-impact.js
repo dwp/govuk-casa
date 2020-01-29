@@ -19,7 +19,8 @@ const fieldValidators = {
       max: 10000,
       errorMsgMax: 'work-impact:maxLength'
     })
-  ], (formData) => {
+  ], ({ waypointId, journeyContext }) => {
+    const formData = journeyContext.getDataForPage(waypointId);
     return formData.moreDifficult === 'yes';
   }),
 
@@ -31,7 +32,8 @@ const fieldValidators = {
       source: ['yes', 'no'],
       errorMsg: 'work-impact:getAroundProblems.empty'
     })
-  ], (formData) => {
+  ], ({ waypointId, journeyContext }) => {
+    const formData = journeyContext.getDataForPage(waypointId);
     return formData.moreDifficult === 'yes';
   }),
 
@@ -43,7 +45,8 @@ const fieldValidators = {
       max: 10000,
       errorMsgMax: 'work-impact:maxLength'
     })
-  ], (formData) => {
+  ], ({ waypointId, journeyContext }) => {
+    const formData = journeyContext.getDataForPage(waypointId);
     return formData.moreDifficult === 'yes' && formData.getAroundProblems === 'yes';
   }),
 
@@ -55,7 +58,8 @@ const fieldValidators = {
       source: ['yes', 'no'],
       errorMsg: 'work-impact:knowWhatWouldHelp.empty'
     })
-  ], (formData) => {
+  ], ({ waypointId, journeyContext }) => {
+    const formData = journeyContext.getDataForPage(waypointId);
     return formData.moreDifficult === 'yes';
   }),
 
@@ -67,7 +71,8 @@ const fieldValidators = {
       max: 10000,
       errorMsgMax: 'work-impact:maxLength'
     })
-  ], (formData) => {
+  ], ({ waypointId, journeyContext }) => {
+    const formData = journeyContext.getDataForPage(waypointId);
     return formData.moreDifficult === 'yes' && formData.knowWhatWouldHelp === 'yes';
   })
 };

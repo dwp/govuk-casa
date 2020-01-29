@@ -89,8 +89,11 @@ describe('Middleware: page/validate', () => {
     });
     mockRequest.casa.journeyContext.getDataForPage.returns('test-journey-data');
     await middleware(mockRequest, mockResponse, stubNext);
-    expect(stubValidationProcessor).to.be.calledWithExactly('test-validators', 'test-journey-data', {
+    expect(stubValidationProcessor).to.be.calledWithExactly({
+      fieldValidators: 'test-validators',
+      journeyContext: mockRequest.casa.journeyContext,
       reduceErrors: true,
+      waypointId: 'test-id',
     });
   });
 

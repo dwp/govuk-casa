@@ -2,7 +2,7 @@
 
 Each form input you include in your page form can be validated against some preset rules, ensuring that the user provides valid data before they are allowed to progress through the service.
 
-If using [CASA's GOVUK Frontend macro wrappers](casa-template-macros.md), each input that fails validation will also be marked with some information about the failure. This is useful for capturing analytics.
+If using [CASA's GOVUK Frontend macro wrappers](casa-template-macros.md), each input that fails validation will also be marked with some information about the failure in a `data-validation` html attribute. This is useful for capturing analytics, for example.
 
 Before input is validated it can be manipulated by [Gather Modifier](gather-modifiers.md) functions.
 
@@ -121,7 +121,7 @@ theThing: SimpleField([
 
 ## Defining basic validation
 
-The object key should reference the `name` of the field you wish to validate and should not include any special characters.
+The object key should reference the name of the field you wish to validate and should not include any special characters (`a-z A-Z 0-9 - _ []` is fine).
 
 ```javascript
 // definitions/field-validators/personal-info.js
@@ -141,7 +141,7 @@ module.exports = {
 };
 ```
 
-And then we'd might pull this into the page meta object as so:
+And then we might pull this into the page meta object as so:
 
 ```javascript
 // definitions/pages.js
@@ -161,12 +161,13 @@ As rules are simply JavaScript functions, you can create custom rules very easil
 /**
  * `fieldValue` contains the data entered by the user
  * `dataContext` is an object containing some more context including:
+ *    `waypointId`: ID of the waypoint being validated
  *    `fieldName`: name of the field being validated; this should not contain any special characters
- *    `pageData`: all data from other fields in the same page (indexed by their field names)
+ *    `journeyContext`: all data/validation held in the current JourneyContext
  *
  * @return Promise
  */
-function myRule (fieldValue, dataContext) {
+function myRule (fieldValue, { waypointId, fieldName, journeyContext }) {
   return new Promise((resolve, reject) => {
     if (/*fieldValue is valid*/) {
       resolve();
@@ -199,21 +200,22 @@ module.exports = {
 
 In some scenarios you may not want to run the validation rules on a field. For example, if you have fields that are only made visible to the user when they select a particular radio option, you will only want to validate those fields if that option was selected.
 
-The `SimpleField` function takes an optional second argument which is a function that implements the signature:
+The `SimpleField` function takes an optional second argument which is a function that implements the following signature:
 
 ```javascript
 /**
- * `pageData` contains data from all fields on the page (indexed by field name)
+ * `waypointId` is the ID of the page currently being validated
  * `fieldName` is the name of the field being validated
+ * `journeyContext` contains the current request's JourneyContext instance.
  *
  * @return boolean
  */
-function (pageData, fieldName) {
-  //
+function ({ waypointId, fieldName, journeyContext }) {
+  // Return false if you do not want to run validation for this field
 }
 ```
 
-In this example, we will only validate the `emailConfrmation` input if the `email` input contains a value:
+In the following example, we will only validate the `emailConfrmation` input if the `email` input contains a value:
 
 ```javascript
 module.exports = {
@@ -229,8 +231,8 @@ module.exports = {
   emailConfirmation: SimpleField([
     rules.required,
     rules.email
-  ], (pageData, fieldName) => {
-    return pageData.email;
+  ], ({ waypointId, fieldName, journeyContext}) => {
+    return journeyContext.getDataForPage(waypointId).email;
   })
 };
 ```

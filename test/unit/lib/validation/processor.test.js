@@ -4,6 +4,8 @@ const chaiAsPromised = require('chai-as-promised');
 const { expect } = chai;
 chai.use(chaiAsPromised);
 
+const { data: JourneyContext } = require('../../helpers/journey-mocks.js');
+
 const {
   processor,
   SimpleField,
@@ -22,11 +24,14 @@ describe('Validation: processor', () => {
     it('should throw an error if a valid field type object has not been used', () => {
       expect(() => {
         processor({
-          f1: {
-            type: 'not-a-valid-type',
-            condition: () => (true),
-          },
-        }, {});
+          journeyContext: JourneyContext(),
+          fieldValidators: {
+            f1: {
+              type: 'not-a-valid-type',
+              condition: () => (true),
+            },
+          }
+        });
       }).to.throw(/Unknown or unspecified validator type/i);
     });
 
@@ -38,7 +43,10 @@ describe('Validation: processor', () => {
         ]),
       };
       try {
-        await processor(fieldValidators);
+        await processor({
+          journeyContext: JourneyContext(),
+          fieldValidators,
+        });
         throw new Error('unexpected-resolve');
       } catch (errors) {
         expect(errors).to.have.property('f1').with.length(2);
@@ -53,7 +61,9 @@ describe('Validation: processor', () => {
         ]),
       };
       try {
-        await processor(fieldValidators, {}, {
+        await processor({
+          journeyContext: JourneyContext(),
+          fieldValidators,
           reduceErrors: true,
         });
         throw new Error('unexpected-resolve');
@@ -69,7 +79,10 @@ describe('Validation: processor', () => {
             () => (Promise.resolve()),
           ]),
         };
-        const p = processor(fieldValidators);
+        const p = processor({
+          journeyContext: JourneyContext(),
+          fieldValidators,
+        });
         return expect(p).to.be.fulfilled;
       });
 
@@ -80,7 +93,10 @@ describe('Validation: processor', () => {
             () => (Promise.reject()), // Shouldn't get called, as it's optional
           ]),
         };
-        await expect(processor(fieldValidators)).to.be.fulfilled;
+        await expect(processor({
+          journeyContext: JourneyContext(),
+          fieldValidators,
+        })).to.be.fulfilled;
 
         const fieldValidators2 = {
           f1: SimpleField([
@@ -92,10 +108,14 @@ describe('Validation: processor', () => {
             () => (Promise.resolve()),
           ]),
         };
-        const context2 = {
+        const context2 = JourneyContext();
+        context2.getDataForPage.returns({
           f2: 'data',
-        };
-        await expect(processor(fieldValidators2, context2)).to.be.fulfilled;
+        });
+        await expect(processor({
+          journeyContext: context2,
+          fieldValidators: fieldValidators2,
+        })).to.be.fulfilled;
       });
 
       it('should resolve a Promise for valid data containing hyphenated field names', async () => {
@@ -104,10 +124,14 @@ describe('Validation: processor', () => {
             () => (Promise.resolve()),
           ]),
         };
-        const context = {
+        const context = JourneyContext();
+        context.getDataForPage.returns({
           'field-one-two': 'hello',
-        };
-        await expect(processor(fieldValidators, context)).to.be.fulfilled;
+        });
+        await expect(processor({
+          journeyContext: context,
+          fieldValidators,
+        })).to.be.fulfilled;
       });
 
       it('should skip validation if the field conditional is not met', async () => {
@@ -116,7 +140,10 @@ describe('Validation: processor', () => {
             () => (Promise.reject()),
           ], () => (false)),
         };
-        await expect(processor(fieldValidators)).to.be.fulfilled;
+        await expect(processor({
+          journeyContext: JourneyContext(),
+          fieldValidators,
+        })).to.be.fulfilled;
       });
 
       it('should reject a Promise for invalid data', async () => {
@@ -127,7 +154,10 @@ describe('Validation: processor', () => {
             },
           ]),
         };
-        const p = processor(fieldValidators);
+        const p = processor({
+          journeyContext: JourneyContext(),
+          fieldValidators,
+        });
         await expect(p).to.be.rejected;
         await expect(p.catch(err => Promise.reject(JSON.stringify(err)))).to.be.rejectedWith(/test-validator-fail/i);
       });
@@ -138,7 +168,10 @@ describe('Validation: processor', () => {
             () => (Promise.reject(['TEST_REQUIRED', 'ANOTHER_ERROR', ['SUB1', 'SUB2', { inline: 'E1', summary: 'E1' }]])),
           ]),
         };
-        const p = processor(fieldValidators, context);
+        const p = processor({
+          journeyContext: JourneyContext(),
+          fieldValidators,
+        });
         await expect(p).to.be.rejected;
         await expect(p.catch(err => Promise.reject(new Error(`LEN:${err.f1.length}`)))).to.be.rejectedWith(/LEN:5/i);
       });
@@ -161,7 +194,10 @@ describe('Validation: processor', () => {
             }),
           }),
         };
-        const p = processor(fieldValidators);
+        const p = processor({
+          journeyContext: JourneyContext(),
+          fieldValidators,
+        });
         await expect(p).to.be.fulfilled;
       });
 
@@ -181,7 +217,10 @@ describe('Validation: processor', () => {
             }),
           }),
         };
-        const p = processor(fieldValidators);
+        const p = processor({
+          journeyContext: JourneyContext(),
+          fieldValidators,
+        });
         await expect(p).to.be.rejected;
         await p.catch((errors) => {
           expect(errors).to.have.property('f1[subf3][subsubf1]').with.length(1);
@@ -206,7 +245,8 @@ describe('Validation: processor', () => {
             }),
           }),
         };
-        const p = processor(fieldValidators, {
+        const context = JourneyContext();
+        context.getDataForPage.returns({
           f1: [{
             subf1: undefined,
             subf2: undefined,
@@ -214,6 +254,10 @@ describe('Validation: processor', () => {
               subsubf1: undefined,
             },
           }],
+        });
+        const p = processor({
+          journeyContext: context,
+          fieldValidators,
         });
         await expect(p).to.be.fulfilled;
       });
@@ -234,8 +278,13 @@ describe('Validation: processor', () => {
             }),
           }),
         };
-        const p = processor(fieldValidators, {
+        const context = JourneyContext();
+        context.getDataForPage.returns({
           f1: {},
+        });
+        const p = processor({
+          journeyContext: context,
+          fieldValidators,
         });
         await expect(p).to.be.fulfilled;
       });
@@ -248,10 +297,15 @@ describe('Validation: processor', () => {
             ]),
           }),
         };
-        const p = processor(fieldValidators, {
+        const context = JourneyContext();
+        context.getDataForPage.returns({
           f1: [{
             subf1: null,
           }],
+        });
+        const p = processor({
+          journeyContext: context,
+          fieldValidators,
         });
         return expect(p).to.be.rejected;
       });

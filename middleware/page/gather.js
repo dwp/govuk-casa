@@ -50,6 +50,7 @@ module.exports = (pageMeta = {}) => [mwBodyParser, (req, res, next) => {
         pageId,
         pageMeta.fieldValidators,
         req.body,
+        req.casa.journeyContext,
       );
 
       // Run this page's "gather modifiers" against each prepared data item

@@ -14,6 +14,7 @@ const SimpleField = require('../../../../lib/validation/SimpleField.js');
 
 const { request, response } = require('../../helpers/express-mocks.js');
 const logger = require('../../helpers/logger-mock.js');
+const { data: JourneyContext } = require('../../helpers/journey-mocks.js');
 
 describe('Middleware: page/utils', () => {
   /* ----------------------------------------------- extractSessionableData() */
@@ -36,9 +37,9 @@ describe('Middleware: page/utils', () => {
       expect(() => {
         extractSessionableData(logger(), 'valid-waypoint', {
           valid: 'validators',
-        });
+        }, {}, JourneyContext());
       }).to.not.throw();
-    })
+    });
 
     it('should throw a TypeError if given incorrect logger type', () => {
       stubIsObjectWithKeys.withArgs('test-logger', ['warn']).returns(false);
@@ -80,7 +81,7 @@ describe('Middleware: page/utils', () => {
       }, {
         test: 1,
         removeme: true,
-      });
+      }, JourneyContext());
       expect(extracted).to.deep.equal({
         test: 1,
       });
@@ -92,7 +93,7 @@ describe('Middleware: page/utils', () => {
         another: SimpleField([]),
       }, {
         another: 2,
-      });
+      }, JourneyContext());
       expect(extracted).to.not.have.property('test');
     });
 
@@ -103,7 +104,7 @@ describe('Middleware: page/utils', () => {
       }, {
         test: 'some-data',
         another: 'more-data',
-      });
+      }, JourneyContext());
       expect(extracted).to.have.property('test');
       expect(extracted).to.not.have.property('another');
     });

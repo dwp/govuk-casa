@@ -1,4 +1,5 @@
 const { isObjectWithKeys, normalizeHtmlObjectPath } = require('../../lib/Util.js');
+const JourneyContext = require('../../lib/JourneyContext.js');
 
 /**
 * Converts an array of functions to a nested callback, eg:
@@ -86,10 +87,17 @@ function executeHook(logger, req = {}, res = {}, pageMeta = {}, hookName = '') {
  * @param {string} pageWaypointId Waypoint ID
  * @param {object} fieldValidators List of validators (indexed by field name)
  * @param {object} data Data to be pruned
+ * @param {JourneyContext} journeyContext Request's journey context
  * @returns {object} The pruned data
  * @throws {TypeError} When
  */
-function extractSessionableData(logger, pageWaypointId, fieldValidators = {}, data = {}) {
+function extractSessionableData(
+  logger,
+  pageWaypointId,
+  fieldValidators = {},
+  data = {},
+  journeyContext,
+) {
   if (!isObjectWithKeys(logger, ['warn'])) {
     throw new TypeError('Expected logger to be a configured logging object');
   }
@@ -114,12 +122,21 @@ function extractSessionableData(logger, pageWaypointId, fieldValidators = {}, da
     return Object.create(null);
   }
 
-  // Prune data that does not have an associated field valdiator
+  // Prune data that does not have an associated field valdiator.
+  // Conditional functions expect the gathered data to be available via a
+  // JourneyContext instance. Therefore we need to create a duplicate of the
+  // `journeyContext`, and bundle `data` into it.
+  const journeyContextWrapper = JourneyContext.fromObject(journeyContext.toObject());
+  journeyContextWrapper.setDataForPage(pageWaypointId, data);
   const prunedData = Object.create(null);
   Object.keys(fieldValidators).forEach((k) => {
     if (
       typeof data[k] !== 'undefined'
-      && fieldValidators[k].condition(data, normalizeHtmlObjectPath(k))
+      && fieldValidators[k].condition({
+        fieldName: normalizeHtmlObjectPath(k),
+        waypointId: pageWaypointId,
+        journeyContext: journeyContextWrapper,
+      })
     ) {
       prunedData[k] = data[k];
     }
