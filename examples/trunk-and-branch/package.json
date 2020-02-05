@@ -4,9 +4,9 @@
   "description": "Simple trunk-and-branch example CASA application",
   "main": "app.js",
   "dependencies": {
-    "@dwp/govuk-casa": "5.0.0-alpha.4",
+    "@dwp/govuk-casa": "5.2.1",
     "express": "4.17.1",
-    "express-session": "1.16.1",
+    "express-session": "1.17.0",
     "moment": "2.24.0"
   },
   "scripts": {
