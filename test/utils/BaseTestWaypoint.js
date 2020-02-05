@@ -15,17 +15,37 @@ class BaseTestWaypoint {
 
     // Lookup field selector and use that to find the field in the DOM. Where
     // there is no selector (null / undefined), we try to lookup the field by
-    // "name"
+    // "name".
+    // Where the selector ends with `:eq()`, we can use that to pick 1 element
+    // from multiple matching elements
     const fieldSelectors = this.constructor.fieldSelectors();
-    const $field = this.dom(fieldSelectors[fieldKey] || `[name="${fieldKey}"]`);
+    const fieldSelector = (fieldSelectors[fieldKey] || `[name="${fieldKey}"]`);
+
+    const eqRegex = /:eq\(([0-9]+)\)$/;
+    const eqMatch = fieldSelector.match(eqRegex);
+    const eqIndex = eqMatch ? eqMatch[1] : null;
+
+    let $field = this.dom(fieldSelector.replace(eqRegex, ''));
     if (!$field.length) {
       throw new ReferenceError(`Cannot find field with reference "${fieldKey}" on waypoint "${this.waypointId}". Do you need to define a custom class for this waypoint?`)
     }
+
+    // For results that contain more than one element, check if there's a custom
+    // `:eq(...)` selector in place
+    if ($field.length > 1) {
+      if (eqIndex === null) {
+        throw new ReferenceError(`Found more than one element (${$field.length}) matching selector "${fieldSelectors[fieldKey]}". You could try using the custom :eq() selector to pinpoint a specific element.`);
+      }
+      $field = $field.eq(eqIndex);
+    } else {
+      $field = $field.eq(0);
+    }
+
     return $field;
   }
 
   static clickField($field) {
-    switch ($field[0].name) {
+    switch ($field.get(0).tagName) {
     case 'input':
       $field.attr('checked', !$field.attr('checked') === true);
       break;
