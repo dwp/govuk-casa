@@ -155,6 +155,7 @@ const modules = {
   arrayObjectFieldValidation: require('./lib/validation/ArrayObjectField.js'),
   objectFieldValidation: require('./lib/validation/ObjectField.js'),
   simpleFieldValidation: require('./lib/validation/SimpleField.js'),
+  ValidationError: require('./lib/validation/ValidationError.js'),
 
   // User journey elements
   Plan: require('./lib/Plan.js'),

@@ -4,6 +4,7 @@ const chaiAsPromised = require('chai-as-promised');
 const { expect } = chai;
 chai.use(chaiAsPromised);
 
+const ValidationError = require('../../../../lib/validation/ValidationError.js');
 const { data: JourneyContext } = require('../../helpers/journey-mocks.js');
 
 const {
@@ -165,7 +166,15 @@ describe('Validation: processor', () => {
       it('should flatten a field\'s errors into a flat array (no nested objects)', async () => {
         const fieldValidators = {
           f1: SimpleField([
-            () => (Promise.reject(['TEST_REQUIRED', 'ANOTHER_ERROR', ['SUB1', 'SUB2', { inline: 'E1', summary: 'E1' }]])),
+            () => (Promise.reject([
+              ValidationError.make({ errorMsg: 'TEST_REQUIRED' }),
+              ValidationError.make({ errorMsg: 'ANOTHER_ERROR' }),
+              [
+                ValidationError.make({ errorMsg: 'SUB1' }),
+                ValidationError.make({ errorMsg: 'SUB2' }),
+                ValidationError.make({ errorMsg: { inline: 'E1', summary: 'E1' } }),
+              ]
+            ])),
           ]),
         };
         const p = processor({
@@ -212,7 +221,7 @@ describe('Validation: processor', () => {
             ]),
             subf3: ObjectField({
               subsubf1: SimpleField([
-                () => (Promise.reject()),
+                () => (Promise.reject(new ValidationError())),
               ]),
             }),
           }),

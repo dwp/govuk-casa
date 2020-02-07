@@ -47,7 +47,7 @@
     })
   ],
   errorMessage: {
-    text: t(params.casaErrors[params.namePrefix][0].inline)
+    text: t(params.casaErrors[params.namePrefix][0].inline, params.casaErrors[params.namePrefix][0].variables)
   } if params.casaErrors[params.namePrefix] else null
 }) %}
 

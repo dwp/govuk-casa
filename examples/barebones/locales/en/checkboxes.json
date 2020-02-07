@@ -13,8 +13,8 @@
   },
   "errors": {
     "min": {
-      "inline": "You must choose at least 3 items",
-      "summary": "Criteria not met"
+      "inline": "You must choose at least 3, but have only chosen ${count}",
+      "summary": "You must choose at least 3, but have only chosen ${count}"
     }
   }
 }

@@ -6,8 +6,13 @@ const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 
 const inArray = require('../../../../../lib/validation/rules/inArray.js');
+const ValidationError = require('../../../../../lib/validation/ValidationError.js');
 
 describe('Validation rule: inArray', () => {
+  it('should reject with a ValidationError', () => {
+    return expect(inArray('bad-args')).to.eventually.be.rejected.and.be.an.instanceOf(ValidationError);
+  });
+
   it('should resolve if value is contained within array', () => {
     const rule = inArray.bind({
       source: ['a', 'b', 'c'],

@@ -20,7 +20,7 @@
       },
       attributes: fieldAttributes,
       errorMessage: {
-        text: t(fieldAddress1Errors[0].inline)
+        text: t(fieldAddress1Errors[0].inline, fieldAddress1Errors[0].variables)
       } if fieldAddress1Errors else null
     }, params.address1 if params.address1 else {}, {
       id: 'f-' + params.name + '[address1]',
@@ -39,7 +39,7 @@
       },
       attributes: fieldAttributes,
       errorMessage: {
-        text: t(fieldAddress2Errors[0].inline)
+        text: t(fieldAddress2Errors[0].inline, fieldAddress2Errors[0].variables)
       } if fieldAddress2Errors else null
     }, params.address2 if params.address2 else {}, {
       id: 'f-' + params.name + '[address2]',
@@ -61,7 +61,7 @@
     },
     attributes: fieldAttributes,
     errorMessage: {
-      text: t(fieldErrors[0].inline)
+      text: t(fieldErrors[0].inline, fieldErrors[0].variables)
     } if fieldErrors else null
   }, params.address3 if params.address3 else {}, {
     id: 'f-' + params.name + '[address3]',
@@ -82,7 +82,7 @@
     },
     attributes: fieldAttributes,
     errorMessage: {
-      text: t(fieldErrors[0].inline)
+      text: t(fieldErrors[0].inline, fieldErrors[0].variables)
     } if fieldErrors else null
   }, params.address4 if params.address4 else {}, {
     id: 'f-' + params.name + '[address4]',
@@ -103,7 +103,7 @@
     },
     attributes: fieldAttributes,
     errorMessage: {
-      text: t(fieldErrors[0].inline)
+      text: t(fieldErrors[0].inline, fieldErrors[0].variables)
     } if fieldErrors else null
   }, params.postcode if params.postcode else {}, {
     id: 'f-' + params.name + '[postcode]',

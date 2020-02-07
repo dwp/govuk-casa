@@ -1,15 +1,19 @@
-const { validationRules: r, simpleFieldValidation: sf} = require('@dwp/govuk-casa');
+const { validationRules: r, simpleFieldValidation: sf, ValidationError } = require('@dwp/govuk-casa');
 
 const fieldValidators = {
   boxes: sf([
     r.required,
-    (value, context) => {
+    function boxCount (value, { waypointId, fieldName, journeyContext }) {
       // Must specify at least 3 options
       if (!Array.isArray(value) || value.length < 3) {
-        return Promise.reject({
+        const fieldValue = journeyContext.getDataForPage(waypointId)[fieldName];
+        return Promise.reject(new ValidationError({
           inline: 'checkboxes:errors.min.inline',
-          summary: 'checkboxes:errors.min.summary'
-        })
+          summary: 'checkboxes:errors.min.summary',
+          variables: {
+            count: fieldValue ? fieldValue.length : 0,
+          }
+        }));
       } else {
         return Promise.resolve();
       }

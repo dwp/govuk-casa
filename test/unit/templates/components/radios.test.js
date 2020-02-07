@@ -87,7 +87,10 @@ describe('casaGovukRadios macro', () => {
         name: 'errtest',
         casaValue: ['option1', 'option2'],
         casaErrors: {
-          errtest: [{ inline: 'Test Error Message' }],
+          errtest: [{
+            inline: 'Test Error Message ${var}',
+            variables: { var: 'TEST_VAR' },
+          }],
         },
         items: [{
           value: 'option0',
@@ -101,7 +104,7 @@ describe('casaGovukRadios macro', () => {
 
     it('should have a error message with correct id', () => expect($('.govuk-error-message').attr('id')).to.equal('f-errtest-error'));
 
-    it('should have correct error mesage', () => expect($('.govuk-error-message').text().trim()).to.equal('Error: Test Error Message'));
+    it('should have correct error mesage', () => expect($('.govuk-error-message').text().trim()).to.equal('Error: Test Error Message TEST_VAR'));
 
     it('should have a data-valdiation attribute on the wrapper', () => expect($('.govuk-radios').attr('data-validation')).to.equal('{"fn":"errtest"}'));
   });

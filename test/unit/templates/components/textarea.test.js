@@ -51,7 +51,8 @@ describe('casaGovukTextarea macro', () => {
         name: 'errtest',
         casaErrors: {
           errtest: [{
-            inline: 'Test Error Message',
+            inline: 'Test Error Message ${var}',
+            variables: { var: 'TEST_VAR' },
           }],
         },
       });
@@ -59,7 +60,7 @@ describe('casaGovukTextarea macro', () => {
 
     it('should have a error message with correct id', () => expect($('.govuk-error-message').attr('id')).to.equal('f-errtest-error'));
 
-    it('should have correct error mesage', () => expect($('.govuk-error-message').text().trim()).to.equal('Error: Test Error Message'));
+    it('should have correct error mesage', () => expect($('.govuk-error-message').text().trim()).to.equal('Error: Test Error Message TEST_VAR'));
 
     it('should have a data-valdiation attribute', () => expect($('textarea').attr('data-validation')).to.equal('{"fn":"errtest"}'));
   });

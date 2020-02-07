@@ -6,8 +6,13 @@ const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 
 const required = require('../../../../../lib/validation/rules/required.js');
+const ValidationError = require('../../../../../lib/validation/ValidationError.js');
 
 describe('Validation rule: required', () => {
+  it('should reject with a ValidationError', () => {
+    return expect(required(null)).to.eventually.be.rejected.and.be.an.instanceOf(ValidationError);
+  });
+
   it('should resolve non-empty values', () => {
     const queue = [];
 

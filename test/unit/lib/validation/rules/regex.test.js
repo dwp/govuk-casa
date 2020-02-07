@@ -6,8 +6,17 @@ const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 
 const regex = require('../../../../../lib/validation/rules/regex.js');
+const ValidationError = require('../../../../../lib/validation/ValidationError.js');
 
 describe('Validation rule: regex', () => {
+  it('should reject with a ValidationError', () => {
+    const re1 = regex.bind({
+      pattern: /^[0-9]$/,
+    })
+
+    return expect(re1('bad-args')).to.eventually.be.rejected.and.be.an.instanceOf(ValidationError);
+  });
+
   it('should resolve for matching regular expressions', () => {
     const queue = [];
 

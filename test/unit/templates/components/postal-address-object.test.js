@@ -189,19 +189,24 @@ describe('casaPostalAddressObject macro', () => {
         name: 'errtest',
         casaErrors: {
           'errtest[address1]': [{
-            inline: 'Test Error Message addr1',
+            inline: 'Test Error Message addr1 ${var}',
+            variables: { var: 'TEST_VAR' },
           }],
           'errtest[address2]': [{
-            inline: 'Test Error Message addr2',
+            inline: 'Test Error Message addr2 ${var}',
+            variables: { var: 'TEST_VAR' },
           }],
           'errtest[address3]': [{
-            inline: 'Test Error Message addr3',
+            inline: 'Test Error Message addr3 ${var}',
+            variables: { var: 'TEST_VAR' },
           }],
           'errtest[address4]': [{
-            inline: 'Test Error Message addr4',
+            inline: 'Test Error Message addr4 ${var}',
+            variables: { var: 'TEST_VAR' },
           }],
           'errtest[postcode]': [{
-            inline: 'Test Error Message postcode',
+            inline: 'Test Error Message postcode ${var}',
+            variables: { var: 'TEST_VAR' },
           }],
         },
       });
@@ -217,9 +222,9 @@ describe('casaPostalAddressObject macro', () => {
 
     it('should have correct error mesage', () => {
       for (let i = 1; i < 5; i++) {
-        expect($(`#f-errtest\\[address${i}\\]-error`).text().trim()).to.equal(`Error: Test Error Message addr${i}`);
+        expect($(`#f-errtest\\[address${i}\\]-error`).text().trim()).to.equal(`Error: Test Error Message addr${i} TEST_VAR`);
       }
-      expect($('#f-errtest\\[postcode\\]-error').text().trim()).to.equal('Error: Test Error Message postcode');
+      expect($('#f-errtest\\[postcode\\]-error').text().trim()).to.equal('Error: Test Error Message postcode TEST_VAR');
     });
 
     it('should have a data-validation attribute', () => {

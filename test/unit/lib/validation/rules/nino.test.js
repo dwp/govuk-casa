@@ -6,8 +6,13 @@ const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 
 const nino = require('../../../../../lib/validation/rules/nino.js');
+const ValidationError = require('../../../../../lib/validation/ValidationError.js');
 
 describe('Validation rule: nino', () => {
+  it('should reject with a ValidationError', () => {
+    return expect(nino('bad-args')).to.eventually.be.rejected.and.be.an.instanceOf(ValidationError);
+  });
+
   it('should resolve for valid NI numbers', () => {
     const queue = [];
 

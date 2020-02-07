@@ -23,8 +23,11 @@ const nunjucksEnv = new nunjucks.Environment(nunjucksLoader, {
 const viewFiltersDir = npath.resolve(__dirname, '../../../lib/view-filters');
 require(npath.resolve(viewFiltersDir, 'index.js'))(nunjucksEnv); // eslint-disable-line import/no-dynamic-require
 
-// Add stub translation function
-nunjucksEnv.addGlobal('t', k => k);
+// Add stub translation function. This must provide the string interpolation
+// feature to test macros are calling it correctly.
+nunjucksEnv.addGlobal('t', (k, vars = {}) => k.replace(/\$\{([^\}]+)\}/g, (o, m) => {
+  return m && vars[m] ? vars[m] : o;
+}));
 
 /**
  * Generate a cheerio instance from the specified template source.

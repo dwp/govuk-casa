@@ -2,6 +2,7 @@
 
 The following changes are **mandatory**:
 - [Change custom field validator functions, and validator conditionals](#field-validation)
+- [Field validators must reject with a `ValdiationError` (or array of `ValidationError`s)](#validation-rejection-class)
 
 --------------------------------------------------------------------------------
 
@@ -54,3 +55,46 @@ const fieldValidators = {
   }),
 };
 ```
+
+### Reject with `ValidationError`s
+
+All validator functions must now reject with an instance of the `ValidationError` class (or an array of these instances), rather than the primitive object that was previously used.
+
+Where you may have had this previously:
+
+```javascript
+function myValidator(value, dataContext) {
+  // ... do some checks ...
+  Promise.reject({
+    errorMsg: {
+      summary: 'message key',
+    }
+  });
+}
+```
+
+A convenient `ValidationError.make()` static method is available to convert primitive objects into a `ValidationError`, so you would now do this:
+
+```javascript
+function myValidator(value, dataContext) {
+  // ... do some checks ...
+  Promise.reject(ValidationError.make({
+    errorMsg: {
+      summary: 'message key',
+    }
+  }));
+}
+```
+
+Or, without the `.make()` method, you could do this:
+
+```javascript
+function myValidator(value, dataContext) {
+  // ... do some checks ...
+  Promise.reject(new ValidationError({
+    summary: 'message key',
+  }));
+}
+```
+
+For more details, review the updated [field validation documentation](field-validation.md).

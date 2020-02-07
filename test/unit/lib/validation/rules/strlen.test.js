@@ -6,8 +6,16 @@ const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 
 const strlen = require('../../../../../lib/validation/rules/strlen.js');
+const ValidationError = require('../../../../../lib/validation/ValidationError.js');
 
 describe('Validation rule: strlen', () => {
+  it('should reject with a ValidationError', () => {
+    const rule1 = strlen.bind({
+      min: 5,
+    });
+    return expect(rule1('bad')).to.eventually.be.rejected.and.be.an.instanceOf(ValidationError);
+  });
+
   it('should resolve for strings falling within the defined length parameters', () => {
     const queue = [];
 

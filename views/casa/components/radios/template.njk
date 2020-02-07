@@ -25,7 +25,7 @@
   attributes: mergedAttributes,
   items: mergedItems,
   errorMessage: {
-    text: t(params.casaErrors[params.name][0].inline)
+    text: t(params.casaErrors[params.name][0].inline, params.casaErrors[params.name][0].variables)
   } if params.casaErrors[params.name].length
 }) %}
 

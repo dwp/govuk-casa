@@ -5,6 +5,7 @@ chai.use(chaiAsPromised);
 const { expect } = chai;
 
 const postalAddressObject = require('../../../../../lib/validation/rules/postalAddressObject.js');
+const ValidationError = require('../../../../../lib/validation/ValidationError.js');
 
 describe('Validation rule: postalAddressObject', () => {
   const errorInlineDefault = 'validation:rule.postalAddressObject.group.inline';
@@ -14,6 +15,12 @@ describe('Validation rule: postalAddressObject', () => {
   const errorInlineAddress4 = 'validation:rule.postalAddressObject.address4.inline';
   // const errorInlineAddressRegex = /validation:rule\.postalAddressObject\.address[0-9]+\.inline/;
   const errorInlinePostcode = 'validation:rule.postalAddressObject.postcode.inline';
+
+  it('should reject with an Array of ValidationError objects', () => {
+    return expect(postalAddressObject('bad-args')).to.eventually.be.rejected.and.satisfy((result) => {
+      return Array.isArray(result) && result.every((r) => (r instanceof ValidationError));
+    });
+  });
 
   it('should resolve for valid address objects', () => {
     const queue = [];

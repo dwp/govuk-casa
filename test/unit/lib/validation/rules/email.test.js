@@ -6,6 +6,7 @@ const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 
 const email = require('../../../../../lib/validation/rules/email.js');
+const ValidationError = require('../../../../../lib/validation/ValidationError.js');
 
 describe('Validation rule: email', () => {
   it('should resolve for valid emails', () => {
@@ -15,6 +16,10 @@ describe('Validation rule: email', () => {
     queue.push(expect(email('user+category@domain.co.uk')).to.be.fulfilled);
 
     return Promise.all(queue);
+  });
+
+  it('should reject with a ValidationError', () => {
+    return expect(email('bad-args')).to.eventually.be.rejected.and.be.an.instanceOf(ValidationError);
   });
 
   it('should reject for invalid emails', () => {

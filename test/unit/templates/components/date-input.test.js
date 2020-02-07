@@ -122,7 +122,8 @@ describe('casaGovukDateInput macro', () => {
         namePrefix: 'errtest',
         casaErrors: {
           errtest: [{
-            inline: 'Test Error Message',
+            inline: 'Test Error Message ${var}',
+            variables: { var: 'TEST_VAR' },
           }],
         },
       });
@@ -133,7 +134,7 @@ describe('casaGovukDateInput macro', () => {
     });
 
     it('should have correct error mesage', () => {
-      expect($('.govuk-error-message').text().trim()).to.equal('Error: Test Error Message');
+      expect($('.govuk-error-message').text().trim()).to.equal('Error: Test Error Message TEST_VAR');
     });
 
     it('should have a data-validation attribute', () => {

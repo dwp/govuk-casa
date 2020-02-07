@@ -14,7 +14,7 @@
   id: params.id if params.id else 'f-' + params.name,
   attributes: mergedAttributes,
   errorMessage: {
-    text: t(params.casaErrors[params.name][0].inline)
+    text: t(params.casaErrors[params.name][0].inline, params.casaErrors[params.name][0].variables)
   } if params.casaErrors[params.name].length
 }) %}
 

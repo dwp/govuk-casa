@@ -33,7 +33,7 @@ module.exports = (pageMeta = {}) => (req, res, next) => {
     // requires the errors be in a particular format, so here we provide our
     // errors in that format.
     const govukErrors = Object.keys(errors).map((k) => ({
-      text: req.i18nTranslator.t(errors[k][0].summary),
+      text: req.i18nTranslator.t(errors[k][0].summary, errors[k][0].variables),
       href: errors[k][0].fieldHref,
     }));
 

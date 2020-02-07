@@ -6,11 +6,16 @@ chai.use(chaiAsPromised);
 const { expect } = chai;
 
 const dateObject = require('../../../../../lib/validation/rules/dateObject.js');
+const ValidationError = require('../../../../../lib/validation/ValidationError.js');
 
 describe('Validation rule: dateObject', () => {
   const errorInlineDefault = 'validation:rule.dateObject.inline';
   const errorInlineAfterOffset = 'validation:rule.dateObject.afterOffset.inline';
   const errorInlineBeforeOffset = 'validation:rule.dateObject.beforeOffset.inline';
+
+  it('should reject with a ValidationError', () => {
+    return expect(dateObject('bad-args')).to.eventually.be.rejected.and.be.an.instanceOf(ValidationError);
+  });
 
   it('should resolve for valid date objects', () => {
     const queue = [];

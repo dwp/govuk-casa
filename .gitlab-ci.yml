@@ -7,7 +7,6 @@ image: node:12-alpine@sha256:53f3ac17d2b5084361606457acc8e16ebea3fd5536dc79b3747
 .not-branches: &not-branches
   only:
     - master
-    - next-5.x
     - tags
 
 stages:
