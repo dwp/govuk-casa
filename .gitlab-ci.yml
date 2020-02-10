@@ -1,4 +1,4 @@
-image: node:10.18.1-alpine@sha256:60f531bebdb8023a1ecdcbb4ea5658eb499c1c71b4255ccbddf2d0277c947f93
+image: node:12-alpine@sha256:53f3ac17d2b5084361606457acc8e16ebea3fd5536dc79b374774e8b99ee62ff
 
 .executor-docker: &executor-docker
   tags:
@@ -118,7 +118,7 @@ zap:
     - export NO_PROXY="$NO_PROXY,docker"
   script:
     - docker network create --internal test
-    - docker run -d -v $(pwd):/package/:rw --name $HOSTNAME --net test --hostname $HOSTNAME -p 4000:4000 node:10.10.0-alpine /bin/sh -c "cd /package && npm run start-pen-test-service"
+    - docker run -d -v $(pwd):/package/:rw --name $HOSTNAME --net test --hostname $HOSTNAME -p 4000:4000 node:12-alpine /bin/sh -c "cd /package && npm run start-pen-test-service"
     - docker run -t -v $(pwd):/zapout/:rw --name zap --net test -e PENTEST_SERVICE_URL:$PENTEST_SERVICE_URL -e LC_ALL=C.UTF-8 -e LANG=C.UTF-8 owasp/zap2docker-stable /bin/sh -c "export LC_ALL LANG; zap-cli -v start -o '-config api.disablekey=true' && zap-cli -v open-url '$PENTEST_SERVICE_URL' && zap-cli -v spider '$PENTEST_SERVICE_URL' && zap-cli -v quick-scan -s all -f json -r '$PENTEST_SERVICE_URL'; SCAN_EXIT=\$?; echo "\$SCAN_EXIT"; zap-cli -v report -f html -o /zapout/zap-report.html && zap-cli -v shutdown && exit \$SCAN_EXIT"
   artifacts:
     when: always

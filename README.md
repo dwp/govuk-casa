@@ -22,7 +22,7 @@ If you'd like to contribute any changes, enhancements or report issues, please t
 
 ## Getting started
 
-CASA aims to maintain support for the **latest CURRENT even version** and the **previous LTS version** of NodeJS (currently `12` and `10` respectively as of May 2019), and requires at least version `6.4.0` of npm. See the [NodeJS release schedule](https://nodejs.org/en/about/releases/) for more information.
+CASA aims to maintain support for the **latest CURRENT even version** and the **previous LTS version** of NodeJS (currently `13` and `12` respectively as of Feb 2020), and requires at least version `6.4.0` of npm. See the [NodeJS release schedule](https://nodejs.org/en/about/releases/) for more information.
 
 Prepare your new project and install dependencies:
 ```bash
