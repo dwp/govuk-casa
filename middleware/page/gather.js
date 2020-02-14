@@ -1,7 +1,6 @@
 const bodyParser = require('body-parser');
 const createLogger = require('../../lib/Logger');
 const { executeHook, extractSessionableData, runGatherModifiers } = require('./utils.js');
-const rules = require('../../lib/validation/rules/index.js');
 
 // We want a body parser to gather the POSTed data into `req.body`
 const mwBodyParser = bodyParser.urlencoded({
@@ -32,11 +31,13 @@ module.exports = (pageMeta = {}) => [mwBodyParser, (req, res, next) => {
    * @returns {void}
    */
   function storeSessionData(data) {
-    // Store gathered journey data, and reset any cached validation errors for
-    // the page
+    // Store gathered journey data, and clear any cached validation state for
+    // the page. Removing the validation state will prevent onward traversal
+    // from this page unil its new content has been validated (by the next
+    // middleware in the chain).
     logger.trace('Storing session data for %s', pageId);
-    req.casa.journeyContext.setDataForPage(pageId, data);
-    req.casa.journeyContext.clearValidationErrorsForPage(pageId);
+    req.casa.journeyContext.setDataForPage(pageMeta, data);
+    req.casa.journeyContext.removeValidationStateForPage(pageId);
     req.session.journeyContext = req.casa.journeyContext.toObject();
   }
 
@@ -45,10 +46,9 @@ module.exports = (pageMeta = {}) => [mwBodyParser, (req, res, next) => {
     .then(() => {
       // Only data that has matching validators defined in the page meta will be
       // gathered and stored in the session
-      let preparedData = extractSessionableData(
+      const preparedData = extractSessionableData(
         logger,
-        pageId,
-        pageMeta.fieldValidators,
+        pageMeta,
         req.body,
         req.casa.journeyContext,
       );
@@ -63,32 +63,6 @@ module.exports = (pageMeta = {}) => [mwBodyParser, (req, res, next) => {
           );
           preparedData[fieldName] = modifiedValue;
         });
-      }
-
-      // In the case of field validators containing the `optional` rule, and no
-      // data being present on those fields, we must indicate that the gathering
-      // process has been completed.
-      //
-      // Throughout CASA, we determine if a waypoint has been "completed" with
-      // two conditions:
-      // 1. There is data held against that waypoint
-      // 2. There are no validation errors on that waypoint
-      //
-      // Therefore to satisfy the first condition (data stored against waypoint)
-      // in this scenario, we must inject some data into the object. We do this
-      // via the special `__gathered__` flag.
-      if (Object.keys(preparedData).length === 0) {
-        const hasOptionalFields = Object.keys(pageMeta.fieldValidators || {}).filter(
-          (k) => (pageMeta.fieldValidators[k].validators.includes(rules.optional)),
-        );
-        if (hasOptionalFields.length) {
-          preparedData = Object.create(null, {
-            __gathered__: {
-              value: true,
-              enumerable: true,
-            },
-          });
-        }
       }
 
       // Store all modified data back to req.body so downstream handlers have

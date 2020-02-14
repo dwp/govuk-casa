@@ -34,10 +34,12 @@ describe('Middleware: page/utils', () => {
     });
 
     it('should not throw given valid arguments', () => {
+      const pageMeta = {
+        id: 'valid-waypoint',
+        fieldValidators: { valid: 'validators' },
+      };
       expect(() => {
-        extractSessionableData(logger(), 'valid-waypoint', {
-          valid: 'validators',
-        }, {}, JourneyContext());
+        extractSessionableData(logger(), pageMeta, {}, JourneyContext());
       }).to.not.throw();
     });
 
@@ -48,37 +50,46 @@ describe('Middleware: page/utils', () => {
       }).to.throw(TypeError, 'Expected logger to be a configured logging object');
     });
 
-    it('should throw a TypeError if given incorrect pageWaypointId type', () => {
+    it('should throw a TypeError if given incorrect pageMeta type', () => {
+      stubIsObjectWithKeys.withArgs('test-data').returns(false);
       expect(() => {
-        extractSessionableData('test-logger', false);
-      }).to.throw(TypeError, 'Expected pageWaypointId to be a string');
+        extractSessionableData('test-logger', 'test-page-meta');
+      }).to.throw(TypeError, 'Expected pageMeta to be an object');
     });
 
     it('should throw a TypeError if given incorrect fieldValidators type', () => {
       stubIsObjectWithKeys.withArgs('test-validators').returns(false);
       expect(() => {
-        extractSessionableData('test-logger', 'test-waypoint', 'test-validators');
-      }).to.throw(TypeError, 'Expected fieldValidators to be an object');
+        extractSessionableData('test-logger', { fieldValidators: 'test-validators' });
+      }).to.throw(TypeError, 'Expected pageMeta.fieldValidators to be an object');
     });
 
     it('should throw a TypeError if given incorrect data type', () => {
       stubIsObjectWithKeys.withArgs('test-data').returns(false);
       expect(() => {
-        extractSessionableData('test-logger', 'test-waypoint', 'test-validators', 'test-data');
+        extractSessionableData('test-logger', {}, 'test-data');
       }).to.throw(TypeError, 'Expected data to be an object');
     });
 
     it('should return an empty object if no fieldValidators present', () => {
       const stubLogger = logger();
-      const output = extractSessionableData(stubLogger, 'test-waypoint', {});
+      const pageMeta = {
+        id: 'test-waypoint',
+        fieldValidators: {},
+      };
+      const output = extractSessionableData(stubLogger, pageMeta);
       expect(stubLogger.warn).to.be.calledOnceWithExactly('No field validators defined for "%s" waypoint. Will use an empty object.', 'test-waypoint');
       expect(output).to.eql({});
     });
 
     it('should remove data keys that do not have field validators', () => {
-      const extracted = extractSessionableData(logger(), 'test-waypoint', {
-        test: SimpleField([]),
-      }, {
+      const pageMeta = {
+        id: 'test-waypoint',
+        fieldValidators: {
+          test: SimpleField([]),
+        },
+      };
+      const extracted = extractSessionableData(logger(), pageMeta, {
         test: 1,
         removeme: true,
       }, JourneyContext());
@@ -88,20 +99,28 @@ describe('Middleware: page/utils', () => {
     });
 
     it('should not add extract fields that are not present in original data object', () => {
-      const extracted = extractSessionableData(logger(), 'test-waypoint', {
-        test: SimpleField([]),
-        another: SimpleField([]),
-      }, {
+      const pageMeta = {
+        id: 'test-waypoint',
+        fieldValidators: {
+          test: SimpleField([]),
+          another: SimpleField([]),
+        },
+      };
+      const extracted = extractSessionableData(logger(), pageMeta, {
         another: 2,
       }, JourneyContext());
       expect(extracted).to.not.have.property('test');
     });
 
     it('should not extract fields if their field validator conditional returns false', () => {
-      const extracted = extractSessionableData(logger(), 'test-waypoint', {
-        test: SimpleField([], () => (true)),
-        another: SimpleField([], () => (false)),
-      }, {
+      const pageMeta = {
+        id: 'test-waypoint',
+        fieldValidators: {
+          test: SimpleField([], () => (true)),
+          another: SimpleField([], () => (false)),
+        },
+      };
+      const extracted = extractSessionableData(logger(), pageMeta, {
         test: 'some-data',
         another: 'more-data',
       }, JourneyContext());

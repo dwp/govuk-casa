@@ -11,6 +11,7 @@ const { request, response } = require('../../helpers/express-mocks.js');
 const { data: journeyContext } = require('../../helpers/journey-mocks.js');
 const { processor } = require('../../helpers/validation-mocks.js');
 const JourneyContext = require('../../../../lib/JourneyContext.js');
+const ValidationError = require('../../../../lib/validation/ValidationError.js');
 
 describe('Middleware: page/validate', () => {
   let mwValidate;
@@ -83,31 +84,38 @@ describe('Middleware: page/validate', () => {
   });
 
   it('should pass validators and page data to the validation processor, and reduce errors', async () => {
-    const middleware = mwValidate({
+    const pageMeta = {
       id: 'test-id',
       fieldValidators: 'test-validators',
-    });
+    };
+    const middleware = mwValidate(pageMeta);
     mockRequest.casa.journeyContext.getDataForPage.returns('test-journey-data');
     await middleware(mockRequest, mockResponse, stubNext);
     expect(stubValidationProcessor).to.be.calledWithExactly({
-      fieldValidators: 'test-validators',
+      waypointId: 'test-id',
+      pageMeta,
       journeyContext: mockRequest.casa.journeyContext,
       reduceErrors: true,
-      waypointId: 'test-id',
     });
   });
 
   it('should clear validation errors from journeyContext on successful validation', async () => {
     const middleware = mwValidate({
-      id: 'test-id',
+      id: 'test-waypoint-id',
     });
-    mockRequest.casa.journeyContext = new JourneyContext({}, { 'test-id': { test: 'data' } });
+    mockRequest.casa.journeyContext = new JourneyContext({}, {
+      'test-waypoint-id': {
+        'test-field' : [ ValidationError.make({ errorMsg: 'test-error' }) ],
+      },
+    });
     mockRequest.session.journeyContext = mockRequest.casa.journeyContext.toObject();
     const spy = sinon.spy(mockRequest.casa.journeyContext, 'clearValidationErrorsForPage');
 
     await middleware(mockRequest, mockResponse, stubNext);
-    expect(spy).to.be.calledOnceWithExactly('test-id');
-    expect(mockRequest.session.journeyContext.validation).to.eql({});
+    expect(spy).to.be.calledOnceWithExactly('test-waypoint-id');
+    expect(mockRequest.session.journeyContext.validation).to.eql({
+      'test-waypoint-id': null,
+    });
   });
 
   it('should pass system errors through to next middleware', async () => {

@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "checkJs": true
+  },
+  "exclude": ["node_modules", "**/node_modules/*"],
+  "include": ["**/*.js"]
+}

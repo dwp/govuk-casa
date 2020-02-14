@@ -19,7 +19,7 @@ module.exports = (pageMeta = {}) => (req, res, next) => {
 
   function renderGET() {
     res.render(pageMeta.view, {
-      formData: req.casa.journeyContext.getDataForPage(pageId),
+      formData: req.casa.journeyContext.getDataForPage(pageMeta),
       inEditMode: req.inEditMode,
       editOriginUrl: req.editOriginUrl,
     }, renderErrorCallback);

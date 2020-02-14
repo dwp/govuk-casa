@@ -160,8 +160,6 @@ const modules = {
   // User journey elements
   Plan: require('./lib/Plan.js'),
   JourneyContext: require('./lib/JourneyContext.js'),
-
-  // TODO: and all the rest ....
 };
 
 // Add test utilities

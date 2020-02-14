@@ -25,13 +25,16 @@ describe('Validation: processor', () => {
     it('should throw an error if a valid field type object has not been used', () => {
       expect(() => {
         processor({
+          waypointId: 'test-waypoint',
+          pageMeta: {
+            fieldValidators: {
+              f1: {
+                type: 'not-a-valid-type',
+                condition: () => (true),
+              },
+            }
+          },
           journeyContext: JourneyContext(),
-          fieldValidators: {
-            f1: {
-              type: 'not-a-valid-type',
-              condition: () => (true),
-            },
-          }
         });
       }).to.throw(/Unknown or unspecified validator type/i);
     });
@@ -45,8 +48,9 @@ describe('Validation: processor', () => {
       };
       try {
         await processor({
+          waypointId: 'test-waypoint',
+          pageMeta: { fieldValidators },
           journeyContext: JourneyContext(),
-          fieldValidators,
         });
         throw new Error('unexpected-resolve');
       } catch (errors) {
@@ -63,8 +67,9 @@ describe('Validation: processor', () => {
       };
       try {
         await processor({
+          waypointId: 'test-waypoint',
+          pageMeta: { fieldValidators },
           journeyContext: JourneyContext(),
-          fieldValidators,
           reduceErrors: true,
         });
         throw new Error('unexpected-resolve');
@@ -81,6 +86,8 @@ describe('Validation: processor', () => {
           ]),
         };
         const p = processor({
+          waypointId: 'test-waypoint',
+          pageMeta: { fieldValidators },
           journeyContext: JourneyContext(),
           fieldValidators,
         });
@@ -95,8 +102,9 @@ describe('Validation: processor', () => {
           ]),
         };
         await expect(processor({
+          waypointId: 'test-waypoint',
+          pageMeta: { fieldValidators },
           journeyContext: JourneyContext(),
-          fieldValidators,
         })).to.be.fulfilled;
 
         const fieldValidators2 = {
@@ -114,8 +122,9 @@ describe('Validation: processor', () => {
           f2: 'data',
         });
         await expect(processor({
+          waypointId: 'test-waypoint',
+          pageMeta: { fieldValidators: fieldValidators2 },
           journeyContext: context2,
-          fieldValidators: fieldValidators2,
         })).to.be.fulfilled;
       });
 
@@ -130,6 +139,8 @@ describe('Validation: processor', () => {
           'field-one-two': 'hello',
         });
         await expect(processor({
+          waypointId: 'test-waypoint',
+          pageMeta: { fieldValidators },
           journeyContext: context,
           fieldValidators,
         })).to.be.fulfilled;
@@ -142,6 +153,8 @@ describe('Validation: processor', () => {
           ], () => (false)),
         };
         await expect(processor({
+          waypointId: 'test-waypoint',
+          pageMeta: { fieldValidators },
           journeyContext: JourneyContext(),
           fieldValidators,
         })).to.be.fulfilled;
@@ -156,6 +169,8 @@ describe('Validation: processor', () => {
           ]),
         };
         const p = processor({
+          waypointId: 'test-waypoint',
+          pageMeta: { fieldValidators },
           journeyContext: JourneyContext(),
           fieldValidators,
         });
@@ -178,6 +193,8 @@ describe('Validation: processor', () => {
           ]),
         };
         const p = processor({
+          waypointId: 'test-waypoint',
+          pageMeta: { fieldValidators },
           journeyContext: JourneyContext(),
           fieldValidators,
         });
@@ -204,6 +221,8 @@ describe('Validation: processor', () => {
           }),
         };
         const p = processor({
+          waypointId: 'test-waypoint',
+          pageMeta: { fieldValidators },
           journeyContext: JourneyContext(),
           fieldValidators,
         });
@@ -227,6 +246,8 @@ describe('Validation: processor', () => {
           }),
         };
         const p = processor({
+          waypointId: 'test-waypoint',
+          pageMeta: { fieldValidators },
           journeyContext: JourneyContext(),
           fieldValidators,
         });
@@ -265,6 +286,8 @@ describe('Validation: processor', () => {
           }],
         });
         const p = processor({
+          waypointId: 'test-waypoint',
+          pageMeta: { fieldValidators },
           journeyContext: context,
           fieldValidators,
         });
@@ -292,6 +315,8 @@ describe('Validation: processor', () => {
           f1: {},
         });
         const p = processor({
+          waypointId: 'test-waypoint',
+          pageMeta: { fieldValidators },
           journeyContext: context,
           fieldValidators,
         });
@@ -313,6 +338,8 @@ describe('Validation: processor', () => {
           }],
         });
         const p = processor({
+          waypointId: 'test-waypoint',
+          pageMeta: { fieldValidators },
           journeyContext: context,
           fieldValidators,
         });

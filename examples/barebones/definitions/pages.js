@@ -14,6 +14,13 @@ exports = module.exports = (function() {
     fieldGatherModifiers: {
       title: (v) => (`${v.fieldValue}-mod`.replace(/(-mod)+$/g, '-mod')),
     },
+    fieldWriter: ({ formData, contextData }) => {
+      contextData.person = formData;
+      return contextData;
+    },
+    fieldReader: ({ contextData }) => {
+      return contextData.person;
+    }
   };
 
   pages['contact-details'] = {

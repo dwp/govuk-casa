@@ -1,4 +1,4 @@
-const { isObjectWithKeys, normalizeHtmlObjectPath } = require('../../lib/Util.js');
+const { isObjectWithKeys, isObjectType, normalizeHtmlObjectPath } = require('../../lib/Util.js');
 const JourneyContext = require('../../lib/JourneyContext.js');
 
 /**
@@ -84,17 +84,17 @@ function executeHook(logger, req = {}, res = {}, pageMeta = {}, hookName = '') {
  * nothing in the session.
  *
  * @param {Logger} logger Request-specific logger instance
- * @param {string} pageWaypointId Waypoint ID
- * @param {object} fieldValidators List of validators (indexed by field name)
+ * @param {object} pageMeta Page meta object
  * @param {object} data Data to be pruned
  * @param {JourneyContext} journeyContext Request's journey context
  * @returns {object} The pruned data
- * @throws {TypeError} When
+ * @throws {TypeError} When given invalid argument types
  */
 function extractSessionableData(
   logger,
-  pageWaypointId,
-  fieldValidators = {},
+  // pageWaypointId,
+  // fieldValidators = {},
+  pageMeta,
   data = {},
   journeyContext,
 ) {
@@ -102,12 +102,13 @@ function extractSessionableData(
     throw new TypeError('Expected logger to be a configured logging object');
   }
 
-  if (typeof pageWaypointId !== 'string') {
-    throw new TypeError('Expected pageWaypointId to be a string');
+  if (!isObjectType(pageMeta)) {
+    throw new TypeError('Expected pageMeta to be an object');
   }
 
+  const { fieldValidators } = pageMeta;
   if (!isObjectWithKeys(fieldValidators)) {
-    throw new TypeError('Expected fieldValidators to be an object');
+    throw new TypeError('Expected pageMeta.fieldValidators to be an object');
   }
 
   if (!isObjectWithKeys(data)) {
@@ -117,7 +118,7 @@ function extractSessionableData(
   if (Object.keys(fieldValidators).length === 0) {
     logger.warn(
       'No field validators defined for "%s" waypoint. Will use an empty object.',
-      pageWaypointId,
+      pageMeta.id,
     );
     return Object.create(null);
   }
@@ -127,14 +128,14 @@ function extractSessionableData(
   // JourneyContext instance. Therefore we need to create a duplicate of the
   // `journeyContext`, and bundle `data` into it.
   const journeyContextWrapper = JourneyContext.fromObject(journeyContext.toObject());
-  journeyContextWrapper.setDataForPage(pageWaypointId, data);
+  journeyContextWrapper.setDataForPage(pageMeta, data);
   const prunedData = Object.create(null);
   Object.keys(fieldValidators).forEach((k) => {
     if (
       typeof data[k] !== 'undefined'
       && fieldValidators[k].condition({
         fieldName: normalizeHtmlObjectPath(k),
-        waypointId: pageWaypointId,
+        waypointId: pageMeta.id,
         journeyContext: journeyContextWrapper,
       })
     ) {

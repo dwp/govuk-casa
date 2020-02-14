@@ -6,6 +6,11 @@ const SimpleField = require('../../../../../lib/validation/SimpleField.js');
 const { data } = require('../../../helpers/journey-mocks.js');
 
 describe('Validation processor: queueSimpleValidator()', () => {
+  const stubPageMeta = {
+    id: 'stub-page-meta',
+    view: 'stub-view',
+  };
+
   it('should not queue any Promises if field is marked as optional, and value is empty', () => {
     const validator = SimpleField([
       rules.optional,
@@ -16,7 +21,7 @@ describe('Validation processor: queueSimpleValidator()', () => {
     journeyContext.getDataForPage.returns({});
 
     const queue = [];
-    const result = queueSimpleValidator(queue, 'test-waypoint', journeyContext, 'f1', validator);
+    const result = queueSimpleValidator(queue, 'test-waypoint', stubPageMeta, journeyContext, 'f1', validator);
 
     expect(queue).to.be.empty;
     expect(result).to.be.undefined;
@@ -30,7 +35,7 @@ describe('Validation processor: queueSimpleValidator()', () => {
     const journeyContext = data();
 
     expect(() => {
-      queueSimpleValidator([], 'test-waypoint', journeyContext, 'test-field', validator);
+      queueSimpleValidator([], 'test-waypoint', stubPageMeta, journeyContext, 'test-field', validator);
     }).to.throw(Error, 'Validator defined on \'test-field\'\' is not a function');
   });
 
@@ -43,7 +48,7 @@ describe('Validation processor: queueSimpleValidator()', () => {
     const journeyContext = data();
 
     const queue = [];
-    queueSimpleValidator(queue, 'test-waypoint', journeyContext, 'f1', validator);
+    queueSimpleValidator(queue, 'test-waypoint', stubPageMeta, journeyContext, 'f1', validator);
     const results = await Promise.all(queue);
 
     expect(queue).to.have.length(2);
@@ -58,7 +63,7 @@ describe('Validation processor: queueSimpleValidator()', () => {
     const journeyContext = data();
 
     const queue = [];
-    queueSimpleValidator(queue, 'test-waypoint', journeyContext, 'f1', validator);
+    queueSimpleValidator(queue, 'test-waypoint', stubPageMeta, journeyContext, 'f1', validator);
     const results = await Promise.all(queue);
 
     expect(queue).to.have.length(1);
@@ -76,7 +81,7 @@ describe('Validation processor: queueSimpleValidator()', () => {
     const journeyContext = data();
 
     const queue = [];
-    queueSimpleValidator(queue, 'test-waypoint', journeyContext, 'f1', validator);
+    queueSimpleValidator(queue, 'test-waypoint', stubPageMeta, journeyContext, 'f1', validator);
     const results = await Promise.all(queue);
 
     expect(queue).to.have.length(1);
@@ -96,7 +101,7 @@ describe('Validation processor: queueSimpleValidator()', () => {
     const journeyContext = data();
 
     const queue = [];
-    queueSimpleValidator(queue, 'test-waypoint', journeyContext, 'f1', validator);
+    queueSimpleValidator(queue, 'test-waypoint', stubPageMeta, journeyContext, 'f1', validator);
     const results = await Promise.all(queue);
 
     expect(queue).to.have.length(1);
@@ -115,7 +120,7 @@ describe('Validation processor: queueSimpleValidator()', () => {
     const journeyContext = data();
 
     const queue = [];
-    queueSimpleValidator(queue, 'test-waypoint', journeyContext, 'f1', validator);
+    queueSimpleValidator(queue, 'test-waypoint', stubPageMeta, journeyContext, 'f1', validator);
     const results = await Promise.all(queue);
 
     expect(queue).to.have.length(1);

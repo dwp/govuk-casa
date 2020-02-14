@@ -20,7 +20,8 @@ module.exports = (pageMeta = {}) => (req, res, next) => {
       logger.trace('Run validation for %s', pageId);
       result = Validation.processor({
         waypointId: pageId,
-        fieldValidators: pageMeta.fieldValidators,
+        pageMeta,
+        // fieldValidators: pageMeta.fieldValidators,
         journeyContext: req.casa.journeyContext,
         reduceErrors: true,
       });

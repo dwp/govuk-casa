@@ -67,6 +67,40 @@ describe('JourneyContext', () => {
       data3.setDataForPage('pageA', swapset);
       expect(JSON.stringify(data3.getDataForPage('pageA'))).to.equal(JSON.stringify(swapset));
     });
+
+    it('should transform data when passed a PageMeta `fieldWriter()` function', () => {
+      const c = new JourneyContext();
+      const pageMeta = {
+        view: 'view',
+        fieldWriter: ({ formData }) => ({ transformed: `${formData.field0}_x` }),
+      };
+      c.setDataForPage(pageMeta, { field0: 'value0' });
+      expect(c.data).to.deep.equal({ transformed: 'value0_x' });
+    });
+
+    it('should transform data when passed a PageMeta `fieldReader()` function', () => {
+      const c = new JourneyContext({ firstName: 'Joe', lastName: 'Bloggs' });
+      const pageMeta = {
+        view: 'view',
+        fieldReader: ({ contextData }) => ({ full_name: `${contextData.firstName} ${contextData.lastName}` }),
+      };
+      const formData = c.getDataForPage(pageMeta);
+      expect(formData).to.deep.equal({ full_name: 'Joe Bloggs' });
+    });
+
+    it('should throw a TypeError when getDataForPage() is passed an incorrectly typed argument', () => {
+      const c = new JourneyContext();
+      expect(() => {
+        return c.getDataForPage(undefined);
+      }).to.throw(TypeError, 'page must be a string or PageMeta object. Got undefined');
+    });
+
+    it('should throw a TypeError when setDataForPage() is passed an incorrectly typed argument', () => {
+      const c = new JourneyContext();
+      expect(() => {
+        return c.setDataForPage(undefined, {});
+      }).to.throw(TypeError, 'page must be a string or PageMeta object. Got undefined');
+    });
   });
 
   describe('set/getValidationErrors*()', () => {
@@ -103,6 +137,18 @@ describe('JourneyContext', () => {
         p1: { f0: [] },
       });
       data1.clearValidationErrorsForPage('p0');
+      expect(data1.getValidationErrors()).to.eql({
+        p0: null,
+        p1: { f0: [] },
+      });
+    });
+
+    it('should remove validation state', () => {
+      const data1 = new JourneyContext({}, {
+        p0: { f0: [] },
+        p1: { f0: [] },
+      });
+      data1.removeValidationStateForPage('p0');
       expect(data1.getValidationErrors()).to.eql({
         p1: { f0: [] },
       });

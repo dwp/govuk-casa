@@ -77,6 +77,9 @@ const {
   // Simple field validator
   simpleFieldValidation,
 
+  // ValidationError class
+  ValidtionError,
+
   // Class for describing a user journey Plan
   Plan,
 

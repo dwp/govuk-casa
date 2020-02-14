@@ -15,8 +15,8 @@ exports = module.exports = (function MyAppUserJourney() {
     'contact-details',
   );
 
-  plan.setRoute('contact-details', 'secret-agent', (e, c) => c.data['contact-details'].tel === '007');
-  plan.setRoute('contact-details', 'work-impact', (e, c) => c.data['contact-details'].tel !== '007');
+  plan.setRoute('contact-details', 'secret-agent', (e, c) => c.isPageValid('contact-details') && c.data['contact-details'].tel === '007');
+  plan.setRoute('contact-details', 'work-impact', (e, c) => c.isPageValid('contact-details') &&  c.data['contact-details'].tel !== '007');
 
   plan.setRoute('secret-agent', 'work-impact');
 

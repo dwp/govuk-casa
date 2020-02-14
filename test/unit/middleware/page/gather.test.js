@@ -114,9 +114,8 @@ describe('Middleware: page/gather', () => {
   });
 
   it('should only save saveable data', async () => {
-    const middleware = mwGather({
-      id: 'test-id',
-    })[1];
+    const pageMeta = { id: 'test-id' };
+    const middleware = mwGather(pageMeta)[1];
     mockRequest.body = {
       test: 'data',
       more: 'data',
@@ -126,54 +125,8 @@ describe('Middleware: page/gather', () => {
       data: 'test-item',
     });
     await middleware(mockRequest, mockResponse, stubNext);
-    expect(mockRequest.casa.journeyContext.setDataForPage).to.be.calledOnceWithExactly('test-id', sinon.match({
+    expect(mockRequest.casa.journeyContext.setDataForPage).to.be.calledOnceWithExactly(pageMeta, sinon.match({
       data: 'test-item',
     }));
-  });
-
-  it('should include a special __gathered__ flag when gathered data contain only empty, optional fields', async () => {
-    const middleware = mwGather({
-      id: 'test-id',
-      fieldValidators: {
-        optionalField: SimpleFieldValidator([
-          validationRules.optional,
-        ]),
-      },
-    })[1];
-    mockRequest.casa.journeyOrigin = { originId: '', waypoint: '' };
-    stubExtractSessionableData.returns({});
-    await middleware(mockRequest, mockResponse, stubNext);
-    expect(mockRequest.casa.journeyContext.setDataForPage).to.be.calledOnceWithExactly('test-id', {
-      __gathered__: true,
-    });
-  });
-
-  it('should not include a __gathered__ flag when there is other extractable present', async () => {
-    const middleware = mwGather({
-      id: 'test-id',
-      fieldValidators: {
-        optionalField: SimpleFieldValidator([
-          validationRules.optional,
-        ]),
-      },
-    })[1];
-    mockRequest.casa.journeyOrigin = { originId: '', waypoint: '' };
-    stubExtractSessionableData.returns({
-      testField: '1',
-    });
-    await middleware(mockRequest, mockResponse, stubNext);
-    expect(mockRequest.casa.journeyContext.setDataForPage).to.be.calledOnceWithExactly('test-id', {
-      testField: '1',
-    });
-  });
-
-  it('should not include a __gathered__ flag when there is no extractable data and no optional fields', async () => {
-    const middleware = mwGather({
-      id: 'test-id',
-    })[1];
-    mockRequest.casa.journeyOrigin = { originId: '', waypoint: '' };
-    stubExtractSessionableData.returns({});
-    await middleware(mockRequest, mockResponse, stubNext);
-    expect(mockRequest.casa.journeyContext.setDataForPage).to.be.calledOnceWithExactly('test-id', {});
   });
 });
