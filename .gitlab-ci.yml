@@ -118,7 +118,7 @@ zap:
   script:
     - docker network create --internal test
     - docker run -d -v $(pwd):/package/:rw --name $HOSTNAME --net test --hostname $HOSTNAME -p 4000:4000 node:10.10.0-alpine /bin/sh -c "cd /package && npm run start-pen-test-service"
-    - docker run -t -v $(pwd):/zapout/:rw --name zap --net test -e PENTEST_SERVICE_URL:$PENTEST_SERVICE_URL owasp/zap2docker-stable /bin/sh -c "zap-cli -v start -o '-config api.disablekey=true' && zap-cli -v open-url '$PENTEST_SERVICE_URL' && zap-cli -v spider '$PENTEST_SERVICE_URL' && zap-cli -v quick-scan -s all -f json -r '$PENTEST_SERVICE_URL'; SCAN_EXIT=\$?; echo "\$SCAN_EXIT"; zap-cli -v report -f html -o /zapout/zap-report.html && zap-cli -v shutdown && exit \$SCAN_EXIT"
+    - docker run -t -v $(pwd):/zapout/:rw --name zap --net test -e PENTEST_SERVICE_URL:$PENTEST_SERVICE_URL -e LC_ALL=C.UTF-8 -e LANG=C.UTF-8 owasp/zap2docker-stable /bin/sh -c "export LC_ALL LANG; zap-cli -v start -o '-config api.disablekey=true' && zap-cli -v open-url '$PENTEST_SERVICE_URL' && zap-cli -v spider '$PENTEST_SERVICE_URL' && zap-cli -v quick-scan -s all -f json -r '$PENTEST_SERVICE_URL'; SCAN_EXIT=\$?; echo "\$SCAN_EXIT"; zap-cli -v report -f html -o /zapout/zap-report.html && zap-cli -v shutdown && exit \$SCAN_EXIT"
   artifacts:
     when: always
     expire_in: 20 mins
