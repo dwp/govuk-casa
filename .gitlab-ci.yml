@@ -113,7 +113,7 @@ zap:
     PENTEST_SERVICE_URL: http://$HOSTNAME:4000/
   image: docker:18.09@sha256:7215e8e09ea282e517aa350fc5380c1773c117b1867316fb59076d901e252d15
   services:
-    - docker:18.09-dind@sha256:26342d8e4efe27dd0e7a66def70fb3e2dd70e8c6fd8ffe5734c527ea3a41d047
+    - docker:18.09-dind@sha256:da86d052a9c32ceb60b3f73a28a3acec053f4265e5e0f09924df05bd585fa88e
   before_script:
     - export NO_PROXY="$NO_PROXY,docker"
   script:
