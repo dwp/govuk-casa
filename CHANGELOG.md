@@ -1,3 +1,13 @@
+<a name="5.2.2"></a>
+## [5.2.2](https://github.com/dwp/govuk-casa/compare/5.2.1...5.2.2) (2020-03-16)
+
+
+### Bug Fixes
+
+* **ci:** include locale specifically when running zap ([677a575](https://github.com/dwp/govuk-casa/commit/677a575))
+
+
+
 <a name="5.2.1"></a>
 ## [5.2.1](https://github.com/dwp/govuk-casa/compare/5.2.0...5.2.1) (2020-01-15)
 
