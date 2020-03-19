@@ -89,7 +89,7 @@ For example:
 // Given a page meta object like this ...
 const pageMeta = {
   view: 'personal-details.njk',
-  fieldWriter: ({ formData, contextData }) => {
+  fieldWriter: ({ waypointId, formData, contextData }) => {
     const [ firstName, lastName ] = formData['fullName'].split(' ');
     contextData.firstName = firstName;
     contextData.lastName = lastName;
@@ -117,13 +117,13 @@ On the flip side, you can also specify a `fieldReader()` method to extract data 
 // Given a page meta object like this ...
 const pageMeta = {
   view: 'personal-details.njk',
-  fieldWriter: ({ formData, contextData }) => {
+  fieldWriter: ({ waypointId, formData, contextData }) => {
     const [ firstName, lastName ] = formData['fullName'].split(' ');
     contextData.firstName = firstName;
     contextData.lastName = lastName;
     return contextData;
   },
-  fieldReader: ({ contextData }) => ({
+  fieldReader: ({ waypointId, contextData }) => ({
     fullName: `${contextData.firstName} ${contextData.lastName}`,
   }),
 };
@@ -138,6 +138,19 @@ const formData = req.casa.journeyContext.getDataForPage(pageMeta);
 ```
 
 Generally, the output of `fieldReader()` should always match the input to `fieldWriter()` - they are mirrors of one another.
+
+If you want to understand the default behaviour of CASA (storing field data against the waypoint ID), here's the equivalent config:
+
+```javascript
+const pageMeta = {
+  view: 'personal-details.njk',
+  fieldWriter: ({ waypointId, formData, contextData }) => {
+    contextData[waypointId] = formData;
+    return contextData;
+  },
+  fieldReader: ({ waypointId, contextData }) => contextData[waypointId],
+};
+```
 
 ## Persisting changes to the session store
 

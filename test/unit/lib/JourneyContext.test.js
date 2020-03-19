@@ -1,4 +1,6 @@
 const { expect } = require('chai');
+const sinon = require('sinon');
+
 const JourneyContext = require('../../../lib/JourneyContext.js');
 
 describe('JourneyContext', () => {
@@ -71,20 +73,31 @@ describe('JourneyContext', () => {
     it('should transform data when passed a PageMeta `fieldWriter()` function', () => {
       const c = new JourneyContext();
       const pageMeta = {
+        id: 'my-page',
         view: 'view',
-        fieldWriter: ({ formData }) => ({ transformed: `${formData.field0}_x` }),
+        fieldWriter: sinon.stub().callsFake(({ formData }) => ({ transformed: `${formData.field0}_x` })),
       };
       c.setDataForPage(pageMeta, { field0: 'value0' });
+      expect(pageMeta.fieldWriter).to.have.been.calledWithExactly({
+        waypointId: 'my-page',
+        formData: { field0: 'value0' },
+        contextData: {},
+      });
       expect(c.data).to.deep.equal({ transformed: 'value0_x' });
     });
 
     it('should transform data when passed a PageMeta `fieldReader()` function', () => {
       const c = new JourneyContext({ firstName: 'Joe', lastName: 'Bloggs' });
       const pageMeta = {
+        id: 'my-page',
         view: 'view',
-        fieldReader: ({ contextData }) => ({ full_name: `${contextData.firstName} ${contextData.lastName}` }),
+        fieldReader: sinon.stub().callsFake(({ contextData }) => ({ full_name: `${contextData.firstName} ${contextData.lastName}` })),
       };
       const formData = c.getDataForPage(pageMeta);
+      expect(pageMeta.fieldReader).to.have.been.calledWithExactly({
+        waypointId: 'my-page',
+        contextData: { firstName: 'Joe', lastName: 'Bloggs' },
+      });
       expect(formData).to.deep.equal({ full_name: 'Joe Bloggs' });
     });
 

@@ -36,11 +36,11 @@ interface PageMetaHook {
 }
 
 // Function that returns object that will wholly overwrite CDO.
-type PageMetaDataWriter = (args:{ formData: { [key: string]: any }, contextData: object }) => object;
+type PageMetaDataWriter = (args:{ waypointId: string, formData: { [key: string]: any }, contextData: object }) => object;
 
 // Function that returns an object that maps form fields to values; suitable for
 // HTML forms
-type PageMetaDataReader = (args:{ contextData: object }) => object;
+type PageMetaDataReader = (args:{ waypointId: string, contextData: object }) => object;
 
 /* --------------------------------------------------------------- Validators */
 
