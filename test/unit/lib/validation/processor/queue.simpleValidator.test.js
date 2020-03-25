@@ -1,5 +1,6 @@
 const { expect } = require('chai');
-const  { queueSimpleValidator } = require('../../../../../lib/validation/processor/queue.js');
+const sinon = require('sinon');
+const { queueSimpleValidator } = require('../../../../../lib/validation/processor/queue.js');
 const ValidationError = require('../../../../../lib/validation/ValidationError.js');
 const rules = require('../../../../../lib/validation/rules/index.js');
 const SimpleField = require('../../../../../lib/validation/SimpleField.js');
@@ -37,6 +38,49 @@ describe('Validation processor: queueSimpleValidator()', () => {
     expect(() => {
       queueSimpleValidator([], 'test-waypoint', stubPageMeta, journeyContext, 'test-field', validator);
     }).to.throw(Error, 'Validator defined on \'test-field\'\' is not a function');
+  });
+
+  it('should inject the waypointId into pageMeta if pageMeta.id is undefined', async () => {
+    const validator = SimpleField([
+      () => (Promise.resolve()),
+    ]);
+
+    const journeyContext = data();
+
+    const pageMeta = {
+      view: 'stub-view',
+    };
+
+    const queue = [];
+    queueSimpleValidator(queue, 'test-waypoint', pageMeta, journeyContext, 'f1', validator);
+    await Promise.all(queue);
+
+    expect(journeyContext.getDataForPage).to.have.been.calledOnceWithExactly({
+      id: 'test-waypoint',
+      view: 'stub-view',
+    });
+  });
+
+  it('should not inject the waypointId into pageMeta if pageMeta.id is defined', async () => {
+    const validator = SimpleField([
+      () => (Promise.resolve()),
+    ]);
+
+    const journeyContext = data();
+
+    const pageMeta = {
+      id: 'already-defined',
+      view: 'stub-view',
+    };
+
+    const queue = [];
+    queueSimpleValidator(queue, 'test-waypoint', pageMeta, journeyContext, 'f1', validator);
+    await Promise.all(queue);
+
+    expect(journeyContext.getDataForPage).to.have.been.calledOnceWithExactly({
+      id: 'already-defined',
+      view: 'stub-view',
+    });
   });
 
   it('should queue resolved Promises if all validators pass', async () => {
