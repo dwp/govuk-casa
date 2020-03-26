@@ -1,3 +1,35 @@
+<a name="6.0.0"></a>
+# [6.0.0](https://github.com/dwp/govuk-casa/compare/5.2.2...6.0.0) (2020-03-26)
+
+
+### Code Refactoring
+
+* chqnge minimum NodeJS version to 12 ([6e362e1](https://github.com/dwp/govuk-casa/commit/6e362e1))
+
+
+### Features
+
+* add support for custom data model ([a8ffac5](https://github.com/dwp/govuk-casa/commit/a8ffac5)), closes [#107](https://github.com/dwp/govuk-casa/issues/107)
+* add support for string interpolation in validation error messages ([e015c5c](https://github.com/dwp/govuk-casa/commit/e015c5c)), closes [#54](https://github.com/dwp/govuk-casa/issues/54)
+* Adding ability to set the text of a button in a journey ([340a238](https://github.com/dwp/govuk-casa/commit/340a238))
+* **test:** add utility for testing Plan traversals. ([4e69673](https://github.com/dwp/govuk-casa/commit/4e69673))
+* **validation:** pass full journey context to validators and conditionals ([bc12325](https://github.com/dwp/govuk-casa/commit/bc12325)), closes [#89](https://github.com/dwp/govuk-casa/issues/89)
+
+
+### BREAKING CHANGES
+
+* All validator functions must reject with an instance of
+`ValidationError`, rather than the basic object as previously. See
+`docs/MIGRATION-5.x-6.x.md` for more details.
+* A minimum of NodeJS 12.0.0 is now required to use
+CASA.
+* **validation:** The apis for field validator functions, field validator conditionals
+and the Validation.processor() function, have all changed and existing codebases
+will need to be modified to continue working as expected. See MIGRATING-5.x-6.x.md
+for details on these changes.
+
+
+
 <a name="5.2.2"></a>
 ## [5.2.2](https://github.com/dwp/govuk-casa/compare/5.2.1...5.2.2) (2020-03-16)
 
