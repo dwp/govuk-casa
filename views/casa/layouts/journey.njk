@@ -2,10 +2,8 @@
 
 {% from "components/back-link/macro.njk" import govukBackLink %}
 
-{# When back link is not needed, add `main.govuk-main-wrapper--l` class to retain padding #}
-{% if inEditMode or not casa.journeyPreviousUrl %}
-  {% set mainClasses %}{{ mainClasses }} govuk-main-wrapper--l{% endset %}
-{% endif %}
+{# Automatically apply padding with/without back link #}
+{% set mainClasses %}{{ mainClasses }} govuk-main-wrapper--auto-spacing{% endset %}
 
 
 {% block beforeContent %}

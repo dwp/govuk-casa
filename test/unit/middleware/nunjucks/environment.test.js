@@ -39,12 +39,12 @@ describe('Middleware: nunjucks/index', () => {
 
   it('should create a template file loader with directories resolved to full paths, in correct order', () => {
     const cwd = process.cwd();
-    mwNunjucks(mockLogger, mockApp, ['a', 'b'], 'c');
+    mwNunjucks(mockLogger, mockApp, ['a', 'b'], 'govuk-frontend');
     expect(stubNunjucks.FileSystemLoader).to.be.calledOnceWith([
       `${cwd}/a`,
       `${cwd}/b`,
       `${cwd}/views`,
-      `${cwd}/c`,
+      `${cwd}/govuk-frontend/govuk`,
     ]);
   });
 

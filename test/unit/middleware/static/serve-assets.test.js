@@ -33,10 +33,10 @@ describe('Middleware: static/serve-assets', () => {
       path: '/test/assets/dir/casa',
     }, {
       url: '/govuk/virtual/js/all.js',
-      path: '/govuk/frontend/dir/all.js',
+      path: '/govuk/frontend/dir/govuk/all.js',
     }, {
       url: '/govuk/virtual/assets',
-      path: '/govuk/frontend/dir/assets',
+      path: '/govuk/frontend/dir/govuk/assets',
     }, {
       url: '/govuk/virtual/js/govuk-template.js',
       path: '/govuk/jinja/dir/assets/javascripts/govuk-template.js',

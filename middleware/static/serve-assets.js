@@ -29,10 +29,10 @@ module.exports = (args) => {
     path: path.resolve(compiledAssetsDir, 'casa'),
   }, {
     url: `${govukFrontendVirtualUrl}/js/all.js`,
-    path: `${npmGovukFrontend}/all.js`,
+    path: `${npmGovukFrontend}/govuk/all.js`,
   }, {
     url: `${govukFrontendVirtualUrl}/assets`,
-    path: `${npmGovukFrontend}/assets`,
+    path: `${npmGovukFrontend}/govuk/assets`,
   }, {
     url: `${govukFrontendVirtualUrl}/js/govuk-template.js`,
     path: `${npmGovukTemplateJinja}/assets/javascripts/govuk-template.js`,
