@@ -74,7 +74,7 @@ describe('Middleware: static/index', () => {
       mountUrl: '/test-mount/',
       compiledAssetsDir: 'test-dir',
     });
-    expect(proxyStubs['./asset-versions.js']).to.be.calledOnceWith(sinon.match((value) => {
+    expect(proxyStubs['./asset-versions.js']).to.be.calledOnceWith(sinon.match.any, sinon.match((value) => {
       const keys = Object.keys(value);
       return keys.includes('casaMain') && keys.includes('govukFrontend') && keys.includes('govukTemplateJinja');
     }))
