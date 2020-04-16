@@ -1,3 +1,13 @@
+<a name="4.0.9"></a>
+## [4.0.9](https://github.com/dwp/govuk-casa/compare/4.0.8...4.0.9) (2020-04-16)
+
+
+### Bug Fixes
+
+* collect package versions for static assets correctly ([ba36cbc](https://github.com/dwp/govuk-casa/commit/ba36cbc))
+
+
+
 <a name="4.0.8"></a>
 ## [4.0.8](https://github.com/dwp/govuk-casa/compare/4.0.7...4.0.8) (2020-04-09)
 
