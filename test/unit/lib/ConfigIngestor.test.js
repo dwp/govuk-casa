@@ -320,6 +320,10 @@ describe('ConfigIngestor', () => {
     it('should return a valid value', () => {
       expect(validateMountUrl('/this-is/my/mount-url/')).to.equal('/this-is/my/mount-url/');
     });
+
+    it('should include a custom name in the error message', () => {
+      expect(() => validateMountUrl('/missing-trailing-slash', 'CUSTOM')).to.throw(Error, 'CUSTOM must include a trailing slash (/)');
+    });
   });
 
   describe('validatePhase()', () => {

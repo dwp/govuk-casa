@@ -81,6 +81,11 @@ const casaApp = configure(expressAppInstance, {
   // Base URL path from which the user journey will be served
   mountUrl: '/',
 
+  // If a proxy server sits between the browser and your app, and uses a context
+  // path to route requests to your app, you may need to use this setting.
+  // Defaults to match `mountUrl`
+  proxyMountUrl: '/',
+
   // phase (String; optional; default live)
   // Controls the "phase" banner shown at the top of the screen.
   // Accepted values: alpha | beta | live

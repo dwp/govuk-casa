@@ -123,10 +123,10 @@ function CasaBootstrap(expressApp, config) {
     mountCallback();
   }
 
-  // Mount the router onto the path defined in `mountUrl`.
+  // Mount the router onto the path defined in `proxyMountUrl`.
   // This must be done after all CASA middleware has been mounted.
-  expressApp.use(validatedConfig.mountUrl, expressRouter);
-  logger.info('Routes mounted onto %s', validatedConfig.mountUrl);
+  expressApp.use(validatedConfig.proxyMountUrl, expressRouter);
+  logger.info('Routes mounted onto %s', validatedConfig.proxyMountUrl);
 
   return {
     config: validatedConfig,
