@@ -123,6 +123,7 @@ describe('casaGovukRadios macro', () => {
         },
         name: 'tmtest',
         casaValue: ['option1'],
+        casaWithAnalytics: true,
         items: [{
           value: 'option0',
           text: 'Option Zero',
@@ -165,6 +166,7 @@ describe('casaGovukRadios macro', () => {
         },
         name: 'tmtest',
         casaValue: ['option1'],
+        casaWithAnalytics: true,
         items: [{
           value: 'option0',
           text: 'Option Zero',
@@ -175,6 +177,27 @@ describe('casaGovukRadios macro', () => {
       });
 
       expect($($('input').get()[0]).attr('data-ga-question')).to.equal('<b>TEST LEGEND</b>');
+    });
+
+    it('should not include "data-ga-*" attributes if not enabled', () => {
+      $ = buildDom({
+        fieldset: {
+          legend: {
+            html: '<b>TEST LEGEND</b>'
+          },
+        },
+        name: 'tmtest',
+        casaValue: ['option1'],
+        items: [{
+          value: 'option0',
+          text: 'Option Zero',
+          attributes: {
+            'data-test': '123',
+          }
+        }],
+      });
+
+      expect($($('input').get()[0]).attr('data-ga-question')).to.be.undefined
     });
   });
 });

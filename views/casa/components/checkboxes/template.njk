@@ -24,7 +24,7 @@
       'data-ga-question': params.fieldset.legend.text or params.fieldset.legend.html,
       'data-ga-answer': item.text or item.html
     }
-  }, item, {
+  } if params.casaWithAnalytics else {}, item, {
     checked: true if item.checked or includes(params.casaValue, item.value) else null
   }) %}
   {% set mergedItems = (mergedItems.push(item), mergedItems) %}

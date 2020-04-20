@@ -6,6 +6,7 @@ Custom parameters:
 
 * `casaValue` - the value of the chosen radio button. This is a convenience for toggling the `checked` flag on the appropriate `item`, but you can also manually set `checked` on each item if you need to use more specific logic for determining checked state.
 * `casaErrors` - form errors (just pass `formErrors`)
+* `casaWithAnalytics` - enable DWP's conventional Google Analytics attributes (`data-ga-question` and `data-ga-answer`) - `false` by default; **IMPORTANT: DO NOT ENABLE this option if the question or answer may contain personally-identifiable information as values will be pushed to Google**
 
 ## Example usage
 
@@ -62,7 +63,11 @@ The error summary link must set focus on the first radio in the group. Unless yo
 
 ## Google Tag Manager
 
-The following attributes will be attached to each `<input>` option by default:
+The following attributes will be attached to each `<input>` option if `casaWithAnalytics` is `true`:
 
 * `data-ga-question`: Holds the fieldset legend's content
 * `data-ga-answer`: Holds the specific answer's text/html value
+
+These are the conventions used by DWP.
+
+**IMPORTANT: DO NOT ENABLE this option if the question or answer may contain personally-identifiable information as values will be pushed to Google**
