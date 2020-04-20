@@ -13,7 +13,12 @@
 {# Add checked flag to chosen input #}
 {% set mergedItems = [] %}
 {% for item in params.items %}
-  {% set item = mergeObjects(item, {
+  {% set item = mergeObjects({
+    attributes: {
+      'data-ga-question': params.fieldset.legend.text or params.fieldset.legend.html,
+      'data-ga-answer': item.text or item.html
+    }
+  }, item, {
     checked: true if item.checked or item.value == params.casaValue else false
   }) %}
   {% set mergedItems = (mergedItems.push(item), mergedItems) %}

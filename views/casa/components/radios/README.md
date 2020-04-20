@@ -59,3 +59,10 @@ If you want one of the radio items to toggle the display of an element:
 ref: https://design-system.service.gov.uk/components/error-summary/
 
 The error summary link must set focus on the first radio in the group. Unless you have specified an explicit `id` for the first item in the list, this macro will explicitly set that `id` to `f-<name>`, e.g. `f-preferences` in order for links from the error summary to work as expected.
+
+## Google Tag Manager
+
+The following attributes will be attached to each `<input>` option by default:
+
+* `data-ga-question`: Holds the fieldset legend's content
+* `data-ga-answer`: Holds the specific answer's text/html value

@@ -108,4 +108,73 @@ describe('casaGovukRadios macro', () => {
 
     it('should have a data-valdiation attribute on the wrapper', () => expect($('.govuk-radios').attr('data-validation')).to.equal('{"fn":"errtest"}'));
   });
+
+  /* ----------------------------------------------------- Google Tag Manager */
+
+  describe('Google Tag Manager', () => {
+    let $;
+
+    before(() => {
+      $ = buildDom({
+        fieldset: {
+          legend: {
+            text: 'TEST LEGEND'
+          },
+        },
+        name: 'tmtest',
+        casaValue: ['option1'],
+        items: [{
+          value: 'option0',
+          text: 'Option Zero',
+          attributes: {
+            'data-test': '123',
+          }
+        }, {
+          value: 'option1',
+          html: '<b>Option One</b>',
+        }, {
+          value: 'option2',
+          text: 'Option Two',
+          attributes: {
+            'data-ga-question': 'custom question',
+            'data-ga-answer': 'custom answer',
+          }
+        }],
+      });
+    });
+
+    it('should include custom item "attributes"', () => expect($($('input').get()[0]).attr('data-test')).to.equal('123'));
+
+    it('should include "data-ga-question" matching legend text', () => expect($($('input').get()[0]).attr('data-ga-question')).to.equal('TEST LEGEND'));
+
+    it('should include "data-ga-answer" matching item text', () => expect($($('input').get()[0]).attr('data-ga-answer')).to.equal('Option Zero'));
+
+    it('should include "data-ga-answer" matching item html', () => expect($($('input').get()[1]).attr('data-ga-answer')).to.equal('<b>Option One</b>'));
+
+    it('should include custom "data-ga-*" attributes', () => {
+      expect($($('input').get()[2]).attr('data-ga-question')).to.equal('custom question');
+      expect($($('input').get()[2]).attr('data-ga-answer')).to.equal('custom answer');
+    });
+
+    it('should include "data-ga-question" matching legend html', () => {
+      $ = buildDom({
+        fieldset: {
+          legend: {
+            html: '<b>TEST LEGEND</b>'
+          },
+        },
+        name: 'tmtest',
+        casaValue: ['option1'],
+        items: [{
+          value: 'option0',
+          text: 'Option Zero',
+          attributes: {
+            'data-test': '123',
+          }
+        }],
+      });
+
+      expect($($('input').get()[0]).attr('data-ga-question')).to.equal('<b>TEST LEGEND</b>');
+    });
+  });
 });
