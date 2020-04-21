@@ -137,3 +137,26 @@ Now, a user can visit the following URLs to start traversing from that origin's 
 
 TODO: Explain how to possibly use hooks to clear session data prior to sending user back to a waypoint to complete/restart a loop.
 
+## Visualising the Plan
+
+The Plan is described by a directed graph data structure under the hood, which can be used to a generate simple visualisation, using [Graphviz](https://www.graphviz.org/), for example.
+
+You can get hold of this raw graph structure by using the `plan.getGraphStructure()` method. Here's a very simplistic example of how to convert the graph into a DOT language representation, which can then be fed into Graphviz:
+
+```javascript
+const graphlib = require('graphlib');
+const dot = require('graphlib-dot');
+const { Plan } = require('@dwp/govuk-casa');
+
+const plan = new Plan();
+plan.addSequence('a', 'b', 'c');
+plan.addSequence('name', 'age', 'dob');
+
+// JSON serialisation is needed to remove any undefined labels, which can trip
+// up graphlib-dot
+const graph = plan.getGraphStructure();
+const json = JSON.stringify(graphlib.json.write(graph));
+const graphcopy = graphlib.json.read(JSON.parse(json));
+
+process.stdout.write(dot.write(graphcopy));
+```
