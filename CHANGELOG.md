@@ -1,3 +1,14 @@
+<a name="6.1.0"></a>
+# [6.1.0](https://github.com/dwp/govuk-casa/compare/6.0.0...6.1.0) (2020-04-21)
+
+
+### Features
+
+* add proxyMountUrl to support proxying servers ([f8ce731](https://github.com/dwp/govuk-casa/commit/f8ce731))
+* **templates:** add Google Tag Manager attributes to radio/checkboxes ([7d36f9b](https://github.com/dwp/govuk-casa/commit/7d36f9b)), closes [#116](https://github.com/dwp/govuk-casa/issues/116)
+
+
+
 <a name="6.0.0"></a>
 # [6.0.0](https://github.com/dwp/govuk-casa/compare/5.2.2...6.0.0) (2020-03-26)
 
