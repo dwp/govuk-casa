@@ -1,3 +1,18 @@
+<a name="6.2.0"></a>
+# [6.2.0](https://github.com/dwp/govuk-casa/compare/6.1.0...6.2.0) (2020-04-22)
+
+
+### Bug Fixes
+
+* mount static handlers on the proxy url ([eaf8062](https://github.com/dwp/govuk-casa/commit/eaf8062))
+
+
+### Features
+
+* add means to access Plan's raw graph structure ([650a0a7](https://github.com/dwp/govuk-casa/commit/650a0a7))
+
+
+
 <a name="6.1.0"></a>
 # [6.1.0](https://github.com/dwp/govuk-casa/compare/6.0.0...6.1.0) (2020-04-21)
 
