@@ -49,7 +49,7 @@ describe('Middleware: static/serve-assets', () => {
           app: mockApp,
           compiledAssetsDir: '/test/assets/dir',
           prefixCasa: '/test/casa/url',
-          govukFrontendVirtualUrl: '/govuk/virtual',
+          govukFrontendVirtualUrlProxy: '/govuk/virtual',
           npmGovukFrontend: '/govuk/frontend/dir',
           npmGovukTemplateJinja: '/govuk/jinja/dir',
           maxAge: 100,

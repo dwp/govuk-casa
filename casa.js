@@ -68,6 +68,7 @@ function mountCasaMiddleware(app, config, i18nUtility) {
   mwStatic({
     app,
     mountUrl: config.mountUrl,
+    proxyMountUrl: config.proxyMountUrl,
     compiledAssetsDir: config.compiledAssetsDir,
     npmPackages: staticModulePaths,
   });

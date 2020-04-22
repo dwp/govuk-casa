@@ -71,6 +71,28 @@ describe('Middleware: static/index', () => {
     }));
   });
 
+  it('should configure serving CASA assets on the correct url when proxy is specified', () => {
+    mwStatic({
+      app: mockApp,
+      mountUrl: '/test-mount/',
+      proxyMountUrl: '/a-proxy/',
+      compiledAssetsDir: 'test-dir',
+    });
+    expect(proxyStubs['./serve-assets.js']).to.be.calledOnceWith(sinon.match({
+      prefixCasa: '/a-proxy/govuk/casa',
+    }));
+  });
+
+  it('should configure serving CASA assets on the correct url when neither mount or proxy url is specified', () => {
+    mwStatic({
+      app: mockApp,
+      compiledAssetsDir: 'test-dir',
+    });
+    expect(proxyStubs['./serve-assets.js']).to.be.calledOnceWith(sinon.match({
+      prefixCasa: '/govuk/casa',
+    }));
+  });
+
   it('should pass the correct npm packages for versioning', () => {
     mwStatic({
       app: mockApp,

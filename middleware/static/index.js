@@ -33,6 +33,7 @@ const onehour = 3600000;
  * Arguments object:
  *  app: Express app instance <Express.App>
  *  mountUrl: CASA application mount url <string>
+ *  proxyMountUrl: CASA application proxy mount url <string>
  *  compiledAssetsDir: Absolute path to diretory that will contain static
  *  npmPackages: List of paths to npm packages <object>
  *    govukFrontend: govuk-frontend npm package path <string>,
@@ -46,6 +47,7 @@ module.exports = (args) => {
   const {
     app,
     mountUrl = '/',
+    proxyMountUrl = mountUrl,
     compiledAssetsDir: cAssetsDir,
     npmPackages: {
       govukFrontend = '',
@@ -67,8 +69,9 @@ module.exports = (args) => {
   // is the URL from which all GOVUK Frontend client-side assets are served.
   const govukFrontendVirtualUrl = `${mountUrl}/govuk/frontend`.replace(/\/+/g, '/');
   app.set('casaGovukFrontendVirtualUrl', govukFrontendVirtualUrl);
+  const govukFrontendVirtualUrlProxy = `${proxyMountUrl}/govuk/frontend`.replace(/\/+/g, '/');
 
-  const prefixCasa = `${mountUrl}/govuk/casa`.replace(/\/+/g, '/');
+  const prefixCasa = `${proxyMountUrl}/govuk/casa`.replace(/\/+/g, '/');
 
   logger.trace('Calling prepare-assets');
   mwPrepareAssets({
@@ -84,7 +87,7 @@ module.exports = (args) => {
     app,
     compiledAssetsDir,
     prefixCasa,
-    govukFrontendVirtualUrl,
+    govukFrontendVirtualUrlProxy,
     npmGovukFrontend: govukFrontend,
     npmGovukTemplateJinja: govukTemplateJinja,
     maxAge: onehour,

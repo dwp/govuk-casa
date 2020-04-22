@@ -18,7 +18,7 @@ module.exports = (args) => {
     app,
     compiledAssetsDir,
     prefixCasa,
-    govukFrontendVirtualUrl,
+    govukFrontendVirtualUrlProxy,
     npmGovukFrontend,
     npmGovukTemplateJinja,
     maxAge = 3600000,
@@ -28,13 +28,13 @@ module.exports = (args) => {
     url: prefixCasa,
     path: path.resolve(compiledAssetsDir, 'casa'),
   }, {
-    url: `${govukFrontendVirtualUrl}/js/all.js`,
+    url: `${govukFrontendVirtualUrlProxy}/js/all.js`,
     path: `${npmGovukFrontend}/govuk/all.js`,
   }, {
-    url: `${govukFrontendVirtualUrl}/assets`,
+    url: `${govukFrontendVirtualUrlProxy}/assets`,
     path: `${npmGovukFrontend}/govuk/assets`,
   }, {
-    url: `${govukFrontendVirtualUrl}/js/govuk-template.js`,
+    url: `${govukFrontendVirtualUrlProxy}/js/govuk-template.js`,
     path: `${npmGovukTemplateJinja}/assets/javascripts/govuk-template.js`,
   }];
 
@@ -43,7 +43,7 @@ module.exports = (args) => {
     app.use(m.url, expStatic(m.path, {
       etag: true,
       lastModified: false,
-      maxage: maxAge,
+      maxAge,
     }));
   });
 }
