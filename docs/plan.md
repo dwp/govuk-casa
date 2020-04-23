@@ -66,7 +66,7 @@ plan.addOrigin('main', 'a');
 
 ## Route conditions
 
-You can attach conditions against routes to control how the user traverses through them. By default, there are conditions attached to each route that will prevent them being traversed unless the "source" waypoint satisfys two conditions:
+You can attach conditions against routes to control how the user traverses through them. By default, there are conditions attached to each route that will prevent them being traversed unless the "source" waypoint satisfies two conditions:
 
 * The user has provided some data to store against that waypoint (i.e. they've submitted a non-empty form)
 * There are no validation errors on that data
@@ -159,4 +159,58 @@ const json = JSON.stringify(graphlib.json.write(graph));
 const graphcopy = graphlib.json.read(JSON.parse(json));
 
 process.stdout.write(dot.write(graphcopy));
+```
+
+### Labelling graph edges
+
+Graph edges (routes) will be labelled with the name of the routing function.
+For example:
+
+```javascript
+plan.setRoute('start', 'forest', function goNorth(r, c) {
+  return c.data.a.direction === 'north';
+});
+```
+
+The edge will be labelled `start <-- goNorth --> forest`.
+
+Arrow functions assume the names of the variables they were initially assigned to,
+anonymous functions will have blank labels:
+
+```javascript
+// `start <-- goEast --> cave`
+const goEast = (r, c) => c.data.start.direction === 'east';
+plan.setRoute('start', 'east', goEast);
+
+// `start <-----> castle`
+plan.setRoute('start', 'south', (r, c) => c.data.start.direction === 'south');
+plan.setRoute('start', 'south', function (r, c) {
+  return c.data.start.direction === 'south';
+});
+```
+
+If you are using a higher order function to produce routing conditions you can dynamically
+assign function names (and therefore route labels):
+
+```javascript
+// Field in source waypoint is equal to value
+const isEqualTo = (field, value) => {
+  const name = `"${field}" equals "${value}"`;
+  // This arrow function will assume the name of the object property it is
+  // assigned to, we can use this to set it dynamically based on input. It will
+  // retain this name after it is returned even if it is not assigned to a variable.
+  return { [name]: (r, c) => c.data[r.source][field] === value }[name];
+};
+
+// `start <-- "direction" equals "west" --> field`
+plan.setRoute('start', 'field', isEqualTo('direction', 'west'));
+```
+
+The original name will be retained even if nested further:
+
+```javascript
+const walkTo = direction => isEqualTo('direction', direction);
+
+// `start <-- "direction" equals "west" --> field`
+plan.setRoute('start', 'field', walkTo('west'));
 ```
