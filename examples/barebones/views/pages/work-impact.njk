@@ -2,6 +2,7 @@
 
 {% from "casa/components/radios/macro.njk" import casaGovukRadios with context %}
 {% from "casa/components/textarea/macro.njk" import casaGovukTextarea with context %}
+{% from "casa/components/character-count/macro.njk" import casaGovukCharacterCount with context %}
 
 {% block casaPageTitle %}
   {{ t('work-impact:pageTitle') }}
@@ -38,9 +39,10 @@
   }) }}
 
   <div class="panel panel-border-narrow js-hidden" id="harder-how">
-    {{ casaGovukTextarea({
+    {{ casaGovukCharacterCount({
       name: 'harderHow',
       value: formData.harderHow,
+      maxlength: 100,
       label: {
         text: t('work-impact:harderHow.label'),
         classes: 'govuk-label--m'
