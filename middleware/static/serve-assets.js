@@ -44,6 +44,6 @@ module.exports = (args) => {
       etag: true,
       lastModified: false,
       maxAge,
-    }));
+    }), (req, res) => res.status(404).send('Not found'));
   });
 }
