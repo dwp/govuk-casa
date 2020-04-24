@@ -13,6 +13,7 @@
     "views/**/*",
     "index.js",
     "casa.js",
+    "**/*.d.ts",
     "!**/*/.DS_Store",
     "!**/*/.gitkeep"
   ],
