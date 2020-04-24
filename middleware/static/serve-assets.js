@@ -44,6 +44,11 @@ module.exports = (args) => {
       etag: true,
       lastModified: false,
       maxAge,
-    }), (req, res) => res.status(404).send('Not found'));
+    }));
+  });
+
+  // Catch-all 404s
+  [prefixCasa, govukFrontendVirtualUrlProxy].forEach((root) => {
+    app.use(root, (req, res) => res.status(404).send('Not found'));
   });
 }
