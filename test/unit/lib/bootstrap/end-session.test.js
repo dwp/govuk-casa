@@ -21,9 +21,8 @@ describe('lib/bootstrap/end-session', () => {
   it('should call to regenerate a new session identifier', () => {
     const reqStub = {
       session: {
-        regenerate: sinon.stub().callsFake((cb) => {
-          cb()
-        }),
+        regenerate: sinon.stub().callsFake((cb) => cb()),
+        save: sinon.stub().callsFake((cb) => cb()),
       },
     };
     return endSession(reqStub)
@@ -33,9 +32,8 @@ describe('lib/bootstrap/end-session', () => {
   it('should resolve if session regenerates successfully', () => {
     const reqStub = {
       session: {
-        regenerate: sinon.stub().callsFake((cb) => {
-          cb()
-        }),
+        regenerate: sinon.stub().callsFake(cb => cb()),
+        save: sinon.stub().callsFake(cb => cb()),
       },
     };
     return expect(endSession(reqStub)).to.be.fulfilled;
@@ -56,9 +54,8 @@ describe('lib/bootstrap/end-session', () => {
     const reqStub = {
       session: {
         language: 'TEST_LANG',
-        regenerate: sinon.stub().callsFake((cb) => {
-          cb()
-        }),
+        regenerate: sinon.stub().callsFake(cb => cb()),
+        save: sinon.stub().callsFake(cb => cb()),
       },
     };
     return endSession(reqStub)
