@@ -1,3 +1,13 @@
+<a name="6.3.1"></a>
+## [6.3.1](https://github.com/dwp/govuk-casa/compare/6.3.0...6.3.1) (2020-04-24)
+
+
+### Bug Fixes
+
+* changelog typo ([9f3103a](https://github.com/dwp/govuk-casa/commit/9f3103a))
+
+
+
 <a name="6.3.0"></a>
 # [6.3.0](https://github.com/dwp/govuk-casa/compare/6.2.0...6.3.0) (2020-04-24)
 
