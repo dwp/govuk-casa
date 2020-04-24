@@ -46,7 +46,7 @@
 
 ### Code Refactoring
 
-* chqnge minimum NodeJS version to 12 ([6e362e1](https://github.com/dwp/govuk-casa/commit/6e362e1))
+* change minimum NodeJS version to 12 ([6e362e1](https://github.com/dwp/govuk-casa/commit/6e362e1))
 
 
 ### Features
