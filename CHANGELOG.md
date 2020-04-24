@@ -1,3 +1,19 @@
+<a name="6.3.0"></a>
+# [6.3.0](https://github.com/dwp/govuk-casa/compare/6.2.0...6.3.0) (2020-04-24)
+
+
+### Bug Fixes
+
+* Welsh local for date macro had incorrect keys ([588c17b](https://github.com/dwp/govuk-casa/commit/588c17b))
+
+
+### Features
+
+* label graph edges with routing function name ([ddba1ba](https://github.com/dwp/govuk-casa/commit/ddba1ba))
+* **components:** add wrapper for govukCharacterCount component ([0f4d54a](https://github.com/dwp/govuk-casa/commit/0f4d54a))
+
+
+
 <a name="6.2.0"></a>
 # [6.2.0](https://github.com/dwp/govuk-casa/compare/6.1.0...6.2.0) (2020-04-22)
 
