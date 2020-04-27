@@ -66,7 +66,7 @@
     "husky": "4.2.5",
     "jsdom": "16.2.2",
     "minimatch": "3.0.4",
-    "mocha": "7.1.1",
+    "mocha": "7.1.2",
     "node-mocks-http": "1.8.1",
     "npm-audit-resolver": "2.2.0",
     "nyc": "15.0.1",
