@@ -98,4 +98,16 @@ describe('Middleware: page/skip', () => {
     expect(stubResponse.status).to.be.calledOnceWithExactly(302);
     expect(stubResponse.redirect).to.be.calledOnceWithExactly('/test-mount/test-origin/target-waypoint');
   });
+
+  it('should call next with an error if session fails to save', () => {
+    const middleware = mwSkip('/test-mount/');
+    stubRequest.casa.journeyWaypointId = 'source-waypoint';
+    stubRequest.query.skipto = 'target-waypoint';
+    stubRequest.casa.journeyOrigin = { originId: 'test-origin' };
+    const error = new Error('TEST_ERROR');
+    stubRequest.session.save = sinon.stub().callsFake(cb => cb(error));
+    middleware(stubRequest, stubResponse, stubNext);
+
+    expect(stubNext).to.be.calledOnceWithExactly(error);
+  });
 });

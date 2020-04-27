@@ -55,7 +55,7 @@ describe('Middleware: errors/catch-all', () => {
 
     it('should create an error log', () => {
       middleware(mockError, mockRequest, mockResponse);
-      expect(mockLogger.error).to.have.been.calledOnceWith('[500] Internal Server Error - %s - %s', 'Test Error');
+      expect(mockLogger.error).to.have.been.calledOnceWith('[500] Internal Server Error (rendered page) - %s - %s', 'Test Error');
     });
 
     it('should set HTTP status to 500', () => {
@@ -66,6 +66,12 @@ describe('Middleware: errors/catch-all', () => {
     it('should render the casa/errors/500.njk template', () => {
       middleware(mockError, mockRequest, mockResponse);
       expect(mockResponse.render).to.have.been.calledOnceWithExactly('casa/errors/500.njk');
+    });
+
+    it('should not try to render another page if headers have already been set', () => {
+      mockResponse.headersSent = true;
+      middleware(mockError, mockRequest, mockResponse);
+      expect(mockLogger.error).to.have.been.calledOnceWith('[500] Internal Server Error (unrendered; headers already sent) - %s - %s', 'Test Error');
     });
   });
 });

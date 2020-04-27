@@ -92,7 +92,7 @@ module.exports = (pageMeta = {}, mountUrl = '/') => (req, res, next) => {
     req.session.save((err) => {
       if (err) {
         logger.error('Failed to save session prior to redirect. %s', err.message);
-        res.status(500).send('500 Internal Server Error (session unsaved)');
+        next(err);
       } else {
         logger.trace('Redirect: %s -> %s', pageId, url);
         res.status(302).redirect(`${url}#`);

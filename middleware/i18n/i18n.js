@@ -39,7 +39,7 @@ module.exports = (logger, supportedLocales = [], translatorFactory) => (req, res
       if (err) {
         logger.error('Failed to save language to session. Error: %s', err.message);
       }
-      next();
+      next(err);
     });
   } else {
     next();

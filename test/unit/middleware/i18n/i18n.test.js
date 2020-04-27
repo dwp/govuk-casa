@@ -86,6 +86,16 @@ describe('Middleware: i18n/i18n', () => {
     mockRequest.session.language = 'en';
     middleware(mockRequest, mockResponse, stubNext);
     expect(mockRequest.session.save).to.have.been.calledOnce; /* eslint-disable-line */
-    expect(stubNext).to.have.been.calledOnceWithExactly();
+    expect(stubNext).to.have.been.calledOnceWithExactly(undefined);
+  });
+
+  it('should call next with an error if session fails to save', () => {
+    const error = new Error('TEST ERROR');
+    mockRequest.session.save = sinon.stub().callsFake(cb => cb(error));
+    mockRequest.query.lang = 'cy';
+    mockRequest.session.language = 'en';
+    middleware(mockRequest, mockResponse, stubNext);
+    expect(mockRequest.session.save).to.have.been.calledOnce; /* eslint-disable-line */
+    expect(stubNext).to.have.been.calledOnceWithExactly(error);
   });
 });

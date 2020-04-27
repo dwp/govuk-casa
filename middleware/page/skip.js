@@ -52,7 +52,9 @@ module.exports = (mountUrl) => (req, res, next) => {
   req.session.save((err) => {
     if (err) {
       logger.error(err);
+      next(err);
+    } else {
+      res.status(302).redirect(`${mountUrl}/${journeyOrigin.originId || ''}/${skipto}`.replace(/\/+/g, '/'));
     }
-    res.status(302).redirect(`${mountUrl}/${journeyOrigin.originId || ''}/${skipto}`.replace(/\/+/g, '/'));
   });
 };
