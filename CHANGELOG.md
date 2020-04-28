@@ -1,3 +1,8 @@
+<a name="6.3.2"></a>
+## [6.3.2](https://github.com/dwp/govuk-casa/compare/6.3.1...6.3.2) (2020-04-28)
+
+
+
 <a name="6.3.1"></a>
 ## [6.3.1](https://github.com/dwp/govuk-casa/compare/6.3.0...6.3.1) (2020-04-24)
 
