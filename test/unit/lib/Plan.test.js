@@ -21,6 +21,21 @@ describe('Plan', () => {
     it('should create a __origin__ waypoint', () => {
       expect(plan.getWaypoints()).to.contain('__origin__');
     });
+
+    it('should alloe overriding of default options', () => {
+      const myPlan = new Plan({
+        validateBeforeRouteCondition: true,
+      })
+      expect(myPlan.getOptions()).to.have.property('validateBeforeRouteCondition').that.equals(true);
+    });
+  });
+
+  describe('getOptions', () => {
+    it('should create default options', () => {
+      expect(plan.getOptions()).to.deep.equal({
+        validateBeforeRouteCondition: false,
+      });
+    });
   });
 
   describe('setNamedRoute', () => {
@@ -138,7 +153,7 @@ describe('Plan', () => {
 
     it('should return only the origin waypoint when no routes match the route name', () => {
       plan.addOrigin('main', 'origin-waypoint');
-      expect(plan.traverseRoutes(stubContext, { startWaypoint: 'origin-waypoint', routeName: 'next' })).to.deep.eql([{
+      expect(plan.traverseRoutes(stubContext, { startWaypoint: 'origin-waypoint', routeName: 'next' })).to.deep.equal([{
         source: 'origin-waypoint',
         target: null,
         name: 'next',
@@ -152,7 +167,7 @@ describe('Plan', () => {
     it('should call all follow-condition functions on the discovered routes, passing context arguments', () => {
       const stub_n0n1 = sinon.stub().returns(true);
       const stub_n1n2 = sinon.stub().returns(true);
-      const context = new JourneyContext({ d: 'test-data' }, { v: 'test-val' }, { n: 'test-nav' });
+      const context = new JourneyContext({ d: 'test-data' }, { n0: null }, { n: 'test-nav' });
 
       plan.addOrigin('main', 'n0');
       plan.setNextRoute('n0', 'n1', stub_n0n1);
@@ -164,6 +179,23 @@ describe('Plan', () => {
       plan.traverseRoutes(context, { startWaypoint: 'n0', routeName: 'next' });
       expect(stub_n0n1).to.be.calledOnceWithExactly(route_n0n1, context);
       expect(stub_n1n2).to.be.calledOnceWithExactly(route_n1n2, context);
+    });
+
+    it('should not evaluate route condition with invalidated source, and validateBeforeRouteCondition == true', () => {
+      const stub_n0n1 = sinon.stub().returns(true);
+      const stub_n1n2 = sinon.stub().returns(true);
+      const context = new JourneyContext({ d: 'test-data' }, { n0: null, n1: undefined }, { n: 'test-nav' });
+
+      const planB = new Plan({ validateBeforeRouteCondition: true });
+      planB.addOrigin('main', 'n0');
+      planB.setNextRoute('n0', 'n1', stub_n0n1);
+      planB.setNextRoute('n1', 'n2', stub_n1n2);
+
+      const route_n0n1 = planB.getRoutes().filter(e => `${e.source}${e.target}${e.name}` === 'n0n1next')[0];
+
+      planB.traverseRoutes(context, { startWaypoint: 'n0', routeName: 'next' });
+      expect(stub_n0n1).to.be.calledOnceWithExactly(route_n0n1, context);
+      expect(stub_n1n2).not.to.be.called;
     });
 
     it('should log exceptions in follow-condition functions, and exclude them from the result', () => {

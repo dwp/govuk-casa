@@ -105,6 +105,16 @@ When `ticked` is `false` the traversal sequence will be: `a <--> c`
 
 ![conditional route][building-blocks-route-condition]
 
+**NOTE:** When you define a cutom route condition, CASA will no longer check the validation state of the source waypoint when evaluating the route condition. You can change this behaviour globally by toggling the `validateBeforeRouteCondition` flag, e.g:
+
+```javascript
+const plan = new Plan({
+  validateBeforeRouteCondition: true,
+});
+```
+
+> **This default behaviour is likely to change in upcoming versions, so it is recommended that you enable this flag now**
+
 ## Multiple origins
 
 Origins are a useful tool to effectively segment a user's journey through your service into separate chunks.
