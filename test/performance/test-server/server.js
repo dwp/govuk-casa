@@ -1,11 +1,11 @@
 const express = require('express');
 const path = require('path');
 const os = require('os');
-const uuid = require('uuid/v1');
+const { v1: uuidv1 } = require('uuid');
 const fs = require('fs');
 const { configure } = require('../../../casa.js');
 
-const STATIC_DIR = path.join(os.tmpdir(), uuid(), 'static');
+const STATIC_DIR = path.join(os.tmpdir(), uuidv1(), 'static');
 fs.mkdirSync(STATIC_DIR, {
   recursive: true,
 });
