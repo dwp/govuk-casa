@@ -1,3 +1,13 @@
+<a name="6.4.0"></a>
+# [6.4.0](https://github.com/dwp/govuk-casa/compare/6.3.2...6.4.0) (2020-05-04)
+
+
+### Features
+
+* add option to check validation state during traversal ([210dfb0](https://github.com/dwp/govuk-casa/commit/210dfb0)), closes [#118](https://github.com/dwp/govuk-casa/issues/118)
+
+
+
 <a name="6.3.2"></a>
 ## [6.3.2](https://github.com/dwp/govuk-casa/compare/6.3.1...6.3.2) (2020-04-28)
 
