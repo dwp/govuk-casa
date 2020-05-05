@@ -86,19 +86,24 @@ describe('JourneyContext', () => {
       expect(c.data).to.deep.equal({ transformed: 'value0_x' });
     });
 
-    it('should transform data when passed a PageMeta `fieldReader()` function', () => {
+    it('should transform data when passed a PageMeta `fieldReader()` function, and not mutate data', () => {
       const c = new JourneyContext({ firstName: 'Joe', lastName: 'Bloggs' });
       const pageMeta = {
         id: 'my-page',
         view: 'view',
-        fieldReader: sinon.stub().callsFake(({ contextData }) => ({ full_name: `${contextData.firstName} ${contextData.lastName}` })),
+        fieldReader: ({ contextData }) => {
+          contextData.mutated = true;
+          return { full_name: `${contextData.firstName} ${contextData.lastName}` };
+        },
       };
+      const spy = sinon.spy(pageMeta, 'fieldReader');
       const formData = c.getDataForPage(pageMeta);
-      expect(pageMeta.fieldReader).to.have.been.calledWithExactly({
+      expect(spy).to.have.been.calledWithExactly({
         waypointId: 'my-page',
-        contextData: { firstName: 'Joe', lastName: 'Bloggs' },
+        contextData: { firstName: 'Joe', lastName: 'Bloggs', mutated: true }, // mutated our stub
       });
       expect(formData).to.deep.equal({ full_name: 'Joe Bloggs' });
+      expect(c.data).to.deep.equal({ firstName: 'Joe', lastName: 'Bloggs' }); // no mutation
     });
 
     it('should throw a TypeError when getDataForPage() is passed an incorrectly typed argument', () => {
