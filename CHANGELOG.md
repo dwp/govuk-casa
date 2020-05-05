@@ -1,3 +1,13 @@
+<a name="6.4.1"></a>
+## [6.4.1](https://github.com/dwp/govuk-casa/compare/6.4.0...6.4.1) (2020-05-05)
+
+
+### Performance Improvements
+
+* user faster clone when reading page data ([45ba9e4](https://github.com/dwp/govuk-casa/commit/45ba9e4))
+
+
+
 <a name="6.4.0"></a>
 # [6.4.0](https://github.com/dwp/govuk-casa/compare/6.3.2...6.4.0) (2020-05-04)
 
