@@ -22,6 +22,7 @@ module.exports = (args) => {
     npmGovukFrontend,
     npmGovukTemplateJinja,
     maxAge = 3600000,
+    proxyMountUrl = '/',
   } = args;
 
   const mounts = [{
@@ -36,6 +37,12 @@ module.exports = (args) => {
   }, {
     url: `${govukFrontendVirtualUrlProxy}/js/govuk-template.js`,
     path: `${npmGovukTemplateJinja}/assets/javascripts/govuk-template.js`,
+  }, {
+    url: `${proxyMountUrl}browserconfig.xml`,
+    path: path.resolve(__dirname, '../../src/browserconfig.xml'),
+  }, {
+    url: `${proxyMountUrl}robots.txt`,
+    path: path.resolve(__dirname, '../../src/robots.txt'),
   }];
 
   mounts.forEach((m) => {

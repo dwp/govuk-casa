@@ -1,3 +1,4 @@
+const path = require('path');
 const proxyquire = require('proxyquire');
 const chai = require('chai');
 const sinon = require('sinon');
@@ -28,6 +29,8 @@ describe('Middleware: static/serve-assets', () => {
   });
 
   describe('should mount static route handlers', () => {
+    const srcPath = path.resolve(__dirname, '../../../../src');
+
     const mounts = [{
       url: '/test/casa/url',
       path: '/test/assets/dir/casa',
@@ -40,6 +43,12 @@ describe('Middleware: static/serve-assets', () => {
     }, {
       url: '/govuk/virtual/js/govuk-template.js',
       path: '/govuk/jinja/dir/assets/javascripts/govuk-template.js',
+    }, {
+      url: '/test-proxy-url/browserconfig.xml',
+      path: `${srcPath}/browserconfig.xml`,
+    }, {
+      url: '/test-proxy-url/robots.txt',
+      path: `${srcPath}/robots.txt`,
     }];
 
     mounts.forEach((m) => {
@@ -53,6 +62,7 @@ describe('Middleware: static/serve-assets', () => {
           npmGovukFrontend: '/govuk/frontend/dir',
           npmGovukTemplateJinja: '/govuk/jinja/dir',
           maxAge: 100,
+          proxyMountUrl: '/test-proxy-url/',
         });
 
         expect(mockApp.use).to.be.calledWith(m.url);

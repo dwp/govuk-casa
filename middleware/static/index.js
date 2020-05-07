@@ -91,6 +91,7 @@ module.exports = (args) => {
     npmGovukFrontend: govukFrontend,
     npmGovukTemplateJinja: govukTemplateJinja,
     maxAge: onehour,
+    proxyMountUrl,
   });
 
   logger.trace('Calling asset-versions');
