@@ -4,10 +4,10 @@
   "description": "Simple barebones example CASA application",
   "main": "app.js",
   "dependencies": {
-    "@dwp/govuk-casa": "6.0.0",
+    "@dwp/govuk-casa": "6.4.1",
     "express": "4.17.1",
-    "express-session": "1.17.0",
-    "moment": "2.24.0"
+    "express-session": "1.17.1",
+    "moment": "2.25.3"
   },
   "scripts": {
     "start": "node app.js"
