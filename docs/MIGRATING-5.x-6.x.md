@@ -56,6 +56,27 @@ const fieldValidators = {
 };
 ```
 
+There has also been a change that requires all pages in a CASA journey to have a `fieldValidators` object assigned to it.
+Previously the following would have been acceptable:
+```
+const pages = {
+  'personal-details': {
+    view: 'common/check-and-change.njk',
+  },
+};
+```
+
+However, it now requires a `fieldValidators` object assigned to it like the following example shows:
+```
+const pages = {
+  'personal-details': {
+    view: 'common/check-and-change.njk',
+    fieldValidators: {},
+  },
+};
+```
+
+
 ### Reject with `ValidationError`s
 
 All validator functions must now reject with an instance of the `ValidationError` class (or an array of these instances), rather than the primitive object that was previously used.
