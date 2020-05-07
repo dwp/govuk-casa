@@ -14,6 +14,7 @@ global.GOVUK_CASA_DIR = __dirname;
 
 // Deps
 const expressJs = require('express');
+const favicon = require('serve-favicon');
 const path = require('path');
 const nutil = require('util');
 
@@ -62,6 +63,9 @@ function mountCasaMiddleware(app, config, i18nUtility) {
     govukTemplateJinja: Util.resolveModulePath('govuk_template_jinja', module.paths),
     govukCasa: __dirname,
   };
+
+  // Serve default, implicit favicon
+  app.use(config.proxyMountUrl, favicon(require.resolve('govuk-frontend/govuk/assets/images/favicon.ico')));
 
   mwHeaders(app, config.csp, config.headers.disabled);
   mwMount(app, config.mountUrl);
