@@ -99,7 +99,6 @@
     "security:vulnerable-packages": "check-audit --registry=https://registry.npmjs.org --json | node -e 'a=JSON.parse(fs.readFileSync(\"/dev/stdin\",\"utf-8\")).metadata.vulnerabilities;process.exit(a.high+a.critical);'",
     "package:changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "start-pen-test-service": "PORT=4000 node ./test/penetration/server.js",
-    "start-perf-test-service": "PORT=4010 node ./test/performance/test-server/server.js",
     "compile-static-assets": "node ./scripts/compile-sass.js && node ./scripts/compile-js.js",
     "prepare": "npm run compile-static-assets --silent",
     "upgrade-deps": "OD=$(npm outdated --long --parseable); echo \"$OD\" | grep ':devDependencies:' | awk -F: '{ print $4 }' | xargs npm i -DE; echo \"$OD\" | grep ':dependencies:' | awk -F: '{ print $4 }' | xargs npm i -E"
