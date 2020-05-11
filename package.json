@@ -91,7 +91,7 @@
     "test": "npm run test:unit --silent && npm run test:integration --silent",
     "test:unit": "mocha -R spec \"./test/unit/**/*.test.js\"",
     "test:integration": "mocha -R spec \"./test/integration/**/*.test.js\"",
-    "test:performance": "mocha -R spec \"./test/performance/**/*.test.js\"",
+    "test:performance": "node ./test/performance/plan.test.js",
     "quality": "npm run quality:coverage",
     "quality:coverage": "nyc npm test",
     "quality:mutation": "stryker run",
