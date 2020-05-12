@@ -109,7 +109,7 @@ function testTraversalModerateLongPlan() {
   }
   const e = process.hrtime.bigint();
 
-  addResult('Traversal: moderately complex, short', ms(s, e));
+  addResult('Traversal: moderately complex, long', ms(s, e));
 }
 
 /* ------------------------------------------------------------------ execute */
