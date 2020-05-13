@@ -1,3 +1,24 @@
+<a name="6.5.0"></a>
+# [6.5.0](https://github.com/dwp/govuk-casa/compare/6.4.1...6.5.0) (2020-05-13)
+
+
+### Features
+
+* add a default robots.txt file ([1ad9ed8](https://github.com/dwp/govuk-casa/commit/1ad9ed8))
+* serve default, implicit favicon to browsers on root path ([58f9294](https://github.com/dwp/govuk-casa/commit/58f9294))
+
+
+### Performance Improvements
+
+* array concat is really slow, assign instead ([63f3ae6](https://github.com/dwp/govuk-casa/commit/63f3ae6))
+* implement minor performance improvements in traversal methods ([e55fd70](https://github.com/dwp/govuk-casa/commit/e55fd70))
+* might be faster to filter once rather than twice? Not measurable ([5177c4a](https://github.com/dwp/govuk-casa/commit/5177c4a))
+* unnecessary reassign ([4db320a](https://github.com/dwp/govuk-casa/commit/4db320a))
+* unnecessary spread ([b1565ed](https://github.com/dwp/govuk-casa/commit/b1565ed))
+* wrap main code to avoid validating options every on every call ([9dfbcde](https://github.com/dwp/govuk-casa/commit/9dfbcde))
+
+
+
 <a name="6.4.1"></a>
 ## [6.4.1](https://github.com/dwp/govuk-casa/compare/6.4.0...6.4.1) (2020-05-05)
 
