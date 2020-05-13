@@ -7,7 +7,6 @@
 // attribute in the session to forcefully destroy server-side sessions after
 // a defined amount of time.
 
-const moment = require('moment');
 const qs = require('querystring');
 const url = require('url');
 const mwInit = require('./init.js');
@@ -27,11 +26,12 @@ module.exports = (logger, mountUrl = '/', sessionExpiryController, sessionConfig
     logger.debug('Auto-removed session %s will be cleared up', req.casaSessionExpired);
     oldSessionId = req.casaSessionExpired;
     delete req.casaSessionExpired;
-  } else if (req.session.dateExpire && moment().isSameOrAfter(req.session.dateExpire)) {
+  } else if (req.session.dateExpire && new Date(req.session.dateExpire).getTime() <= Date.now()) {
     logger.debug('Expired session %s will be destroyed', req.sessionID);
     oldSessionId = req.sessionID;
   } else {
-    req.session.dateExpire = moment().add(sessionConfig.ttl, 's').toISOString();
+    const ttlMilliseconds = sessionConfig.ttl ? parseInt(sessionConfig.ttl, 10) * 1000 : 0;
+    req.session.dateExpire = new Date(Date.now() + ttlMilliseconds).toISOString();
     next();
     return;
   }
