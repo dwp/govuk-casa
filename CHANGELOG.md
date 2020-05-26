@@ -1,3 +1,13 @@
+<a name="6.6.0"></a>
+# [6.6.0](https://github.com/dwp/govuk-casa/compare/6.5.0...6.6.0) (2020-05-26)
+
+
+### Features
+
+* add current language to journey context ([5b3e682](https://github.com/dwp/govuk-casa/commit/5b3e682))
+
+
+
 <a name="6.5.0"></a>
 # [6.5.0](https://github.com/dwp/govuk-casa/compare/6.4.1...6.5.0) (2020-05-13)
 
