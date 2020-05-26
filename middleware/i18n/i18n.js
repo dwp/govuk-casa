@@ -10,6 +10,9 @@
 *
 * Enhances `req.session` with:
 *   string language = The language code to use (ISO 639-1)
+*
+* Enhances `req.casa.journeyContext.nav` with
+*   string language = The language code to use (ISO 639-1)
 */
 
 module.exports = (logger, supportedLocales = [], translatorFactory) => (req, res, next) => {
@@ -21,6 +24,11 @@ module.exports = (logger, supportedLocales = [], translatorFactory) => (req, res
     [language] = supportedLocales;
   }
   req.language = language;
+
+  // Update the journey context
+  if (req.casa && req.casa.journeyContext) {
+    req.casa.journeyContext.setNavigationLanguage(req.language);
+  }
 
   // Create usable references to the translation function
   req.i18nTranslator = translatorFactory(req.language);

@@ -13,6 +13,8 @@ declare class JourneyContext {
 
   public validation: object;
 
+  public nav: JourneyContextNavObject;
+
   getData(): object;
 
   getDataForPage(pageId: string | PageMeta): object;
@@ -33,6 +35,10 @@ declare class JourneyContext {
 
   hasValidationErrorsForPage(pageId: string): boolean;
 
+  getNavigation(): JourneyContextNavObject;
+
+  setNavigationLanguage(language: string): JourneyContext;
+
   isPageValid(pageId: string): boolean;
 }
 
@@ -44,4 +50,8 @@ interface JourneyContextObject {
 
 interface JourneyContextPageValidation {
   [key: string]: Array<ValidationError>
+}
+
+interface JourneyContextNavObject {
+  language?: string;
 }

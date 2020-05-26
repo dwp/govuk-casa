@@ -172,4 +172,22 @@ describe('JourneyContext', () => {
       });
     });
   });
+
+  describe('get/set navigation language', () => {
+    it('should not have a language by default', () => {
+      const data1 = new JourneyContext();
+      expect(data1.nav).to.be.an('object').to.not.have.property('language');
+    });
+
+    it('should set language from constructor', () => {
+      const data1 = new JourneyContext(null, null, { language: 'cy' });
+      expect(data1.nav).to.have.property('language').that.equals('cy');
+    });
+
+    it('should set language from setNavigationLanguage()', () => {
+      const data1 = new JourneyContext();
+      data1.setNavigationLanguage('fr');
+      expect(data1.nav).to.have.property('language').that.equals('fr');
+    });
+  });
 });

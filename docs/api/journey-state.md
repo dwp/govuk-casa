@@ -2,7 +2,7 @@
 
 The [`middleware/session/`](../../middleware/session/) middleware is responsible for making available the `req.casa.journeyContext` object for every incoming request, which is an instance of the [`JourneyContext`](../../lib/JourneyContext.js) class.
 
-This object holds all gathered data, and information about any valiation errors arising from that data.
+This object holds all gathered data, information about any validation errors arising from that data, and some information about the navigation state (currently just the the language in which the user is navigating the service).
 
 ## Basic usage
 
@@ -75,6 +75,16 @@ req.casa.journeyContext.removeValidationStateForPage('my-page');
 // You can also use the `validation` getter for a slightly simpler syntax
 req.casa.journeyContext.validation;
 req.casa.journeyContext.validation['my-page'];
+```
+
+```javascript
+// Store information about the navigation language.
+// CASA does this for you in the `i18n` middleware, at the point of capturing
+// any changes to the language.
+req.casa.journeyContext.setNavigationLanguage('cy');
+
+// Get the navigation language
+req.casa.journeyContext.nav.language;
 ```
 
 ## Customising the data model
