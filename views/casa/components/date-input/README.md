@@ -80,3 +80,23 @@ module.exports = {
   ]),
 };
 ```
+
+## Companion template formatter
+
+The `formatDateObject()` Nunjucks filter will take a date object captured with this macro, and display it in a human readable format.
+
+```nunjucks
+{{ myDate | formatDateObject }}
+```
+```
+1 January 1980
+```
+
+You can also pass a locale:
+
+```nunjucks
+{{ myDate | formatDateObject({ locale: 'cy' }) }}
+```
+```
+1 Ionawr 1980
+```

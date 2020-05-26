@@ -25,6 +25,7 @@ module.exports = (logger, supportedLocales = [], translatorFactory) => (req, res
   // Create usable references to the translation function
   req.i18nTranslator = translatorFactory(req.language);
   res.locals.t = req.i18nTranslator.t.bind(req.i18nTranslator);
+  res.locals.locale = req.language;
 
   // This is used by the GOVUK layout template
   res.locals.htmlLang = req.language;

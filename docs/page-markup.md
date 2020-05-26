@@ -29,13 +29,14 @@ The following global variables are available to your templates:
 * `casa.journeyPreviousUrl` (`string`) - the URL to the previous page in the current user journey
 * `govuk.*` (`object`) - various data related to the GOVUK Frontend layout template; see [`middleware/variables/index.js`](../middleware/variables/index.js) for a full list of data in this object
 
-The following global functions are available to your templates:
+The following global functions and variables are available to your templates:
 
-* `formatDateObject(object dateObject)` - formats a date object (`{dd:"", mm:"", yyyy:""}`) into a string
+* `formatDateObject(object dateObject, { string locale = 'en' })` - formats a date object (`{dd:"", mm:"", yyyy:""}`) into a locale-aware string
 * `includes(array source, mixed element)` - tests if `source` contains `element`
 * `mergeObjectsDeep(object obj...)` - recursively deep-merges any number of objects into one final object (an alias of `mergeObjects()` is also available)
 * `renderAsAttributes(object attrs)` - generates a string of `key=value` HTML element attributes from the given object
 * `t(string key, mixed substitutions...)` - translate the lookup `key` to the currently chosen language. See **[Internationalisation](i18n.md)** for more information.
+* `locale` - the current locale/language chosen by the user (ISO 639-1 two-letter code)
 
 ## Creating a basic page
 

@@ -23,7 +23,7 @@ describe('View filter: formatDateObject', () => {
   });
 
   it('should enforce a numerical lower boundary on each date component', () => {
-    const stubMoment = sinon.stub().returns({ format: NOOP });
+    const stubMoment = sinon.stub().returns({ format: NOOP, locale: () => ({ format: NOOP }) });
     const formatDateObjectProxy = proxyquire(UNIT_SRC, {
       moment: stubMoment,
     });
@@ -51,5 +51,16 @@ describe('View filter: formatDateObject', () => {
       yyyy: 1998,
     });
     expect(output).to.equal('11 October 1998');
+  });
+
+  it('should output a string date in the excpected locale', () => {
+    const output = formatDateObject({
+      dd: 11,
+      mm: 1,
+      yyyy: 1998,
+    }, {
+      locale: 'cy',
+    });
+    expect(output).to.equal('11 Ionawr 1998');
   });
 });
