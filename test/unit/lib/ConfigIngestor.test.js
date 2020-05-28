@@ -26,6 +26,7 @@ const {
   validateSessionExpiryController,
   validateSessionsObject,
   validateSessionsCookiePath,
+  validateSessionsCookieSameSite,
   validateSessionsName,
   validateSessionsSecret,
   validateSessionsSecure,
@@ -374,6 +375,18 @@ describe('ConfigIngestor', () => {
 
     it('should return a valid value', () => {
       expect(validateSessionsCookiePath('test-path')).to.equal('test-path');
+    });
+  });
+
+  describe('validateSessionsCookieSameSite()', () => {
+    it('should the default value if no value is specified', () => {
+      expect(validateSessionsCookieSameSite(undefined, false)).to.equal(false);
+      expect(validateSessionsCookieSameSite(undefined, true)).to.equal(true);
+    });
+
+    it('should return a valid value', () => {
+      expect(validateSessionsCookieSameSite('test-path')).to.equal(true);
+      expect(validateSessionsCookieSameSite('')).to.equal(false);
     });
   });
 

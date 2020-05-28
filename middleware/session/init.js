@@ -17,6 +17,7 @@ module.exports = (logger, config) => expressSession({
     httpOnly: true,
     path: config.cookiePath,
     maxAge: null,
+    sameSite: config.cookieSameSite,
   },
   name: config.name,
   unset: 'destroy',

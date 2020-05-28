@@ -115,6 +115,10 @@ const casaApp = configure(expressAppInstance, {
     // reopen browser, or clear all cookies manually.
     cookiePath: '/',
 
+    // cookieSameSite (boolean; optional; default true)
+    // Sets the "sameSite" flag on the session cookie to "Strict"
+    cookieSameSite: true,
+
     // name (String; required)
     // Name of the session cookie
     name: 'casa-session-id',

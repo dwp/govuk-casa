@@ -31,6 +31,7 @@ describe('Middleware: session/init', () => {
       secret: 'test-secret',
       secure: 'test-secure',
       cookiePath: 'test-cookie-path',
+      cookieSameSite: true,
       name: 'test-name',
     });
     expect(stubExpressSession).to.be.calledOnceWith(sinon.match({
@@ -43,6 +44,7 @@ describe('Middleware: session/init', () => {
         httpOnly: true,
         path: 'test-cookie-path',
         maxAge: null,
+        sameSite: true,
       },
       name: 'test-name',
       unset: 'destroy',

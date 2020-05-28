@@ -87,6 +87,7 @@ function mountCasaMiddleware(app, config, i18nUtility) {
       name: config.sessions.name,
       secret: config.sessions.secret,
       cookiePath: config.sessions.cookiePath,
+      cookieSameSite: config.sessions.cookieSameSite,
       ttl: config.sessions.ttl,
     },
   );

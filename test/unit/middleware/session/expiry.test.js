@@ -82,12 +82,14 @@ describe('Middleware: session/expiry', () => {
     const middlewareWithConfig = mwExpiry(mockLogger, '/', mockSessionExpiryController, {
       name: 'test-session-name',
       cookiePath: 'test-cookie-path',
+      cookieSameSite: true,
       secure: true,
     });
     mockRequest.casaSessionExpired = 'trigger';
     middlewareWithConfig(mockRequest, mockResponse, stubNext);
     expect(mockResponse.clearCookie).to.be.calledOnceWithExactly('test-session-name', {
       path: 'test-cookie-path',
+      sameSite: true,
       httpOnly: true,
       secure: true,
       maxAge: null,

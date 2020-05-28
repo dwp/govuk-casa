@@ -76,6 +76,7 @@ module.exports = (logger, mountUrl = '/', sessionExpiryController, sessionConfig
     // Always clear cookie
     res.clearCookie(sessionConfig.name, {
       path: sessionConfig.cookiePath,
+      sameSite: sessionConfig.cookieSameSite,
       httpOnly: true,
       secure: sessionConfig.secure,
       maxAge: null,
