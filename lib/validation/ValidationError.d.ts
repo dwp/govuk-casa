@@ -1,3 +1,5 @@
+import { ValidationErrorObject, ValidatorErrorObjectGenerator, ValidatorContext } from '../../index';
+
 export = ValidationError;
 
 declare class ValidationError {

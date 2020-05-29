@@ -1,4 +1,5 @@
 import ValidationError = require("./validation/ValidationError");
+import PageMeta from '../index';
 
 export = JourneyContext;
 
@@ -17,11 +18,11 @@ declare class JourneyContext {
 
   getData(): object;
 
-  getDataForPage(pageId: string | PageMeta): object;
+  getDataForPage(pageId: string | typeof PageMeta): object;
 
   setData(data: object): JourneyContext;
 
-  setDataForPage(page: string | PageMeta, data: object): JourneyContext;
+  setDataForPage(page: string | typeof PageMeta, data: object): JourneyContext;
 
   getValidationErrors(): { [key: string]: JourneyContextPageValidation };
 
@@ -44,7 +45,7 @@ declare class JourneyContext {
 
 interface JourneyContextObject {
   data: object;
-  validation: JourneyContextValidation;
+  validation: JourneyContextPageValidation;
   nav: object;
 }
 

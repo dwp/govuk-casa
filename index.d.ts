@@ -1,3 +1,7 @@
+import SimpleField from './lib/validation/SimpleField';
+import JourneyContext = require('./lib/JourneyContext');
+import ValidationError from './lib/validation/ValidationError';
+// import Plan from './lib/Plan';
 /**
  * Place all global-scope types/interfaces here, and they should be picked up
  * automatically by IDE intellisense.
@@ -17,7 +21,7 @@ declare interface PageMeta {
 }
 
 type PageMetaFieldValidatorMap = {
-  [key: string]: SimpleField;
+  [key: string]: typeof SimpleField;
 };
 
 type PageMetaGatherModifiersMap = {
@@ -46,11 +50,11 @@ type PageMetaDataReader = (args:{ waypointId: string, contextData: object }) => 
 
 // The resolved Promise must return undefined
 // The rejected Promise must return a ValidationError or Array<ValidationError>
-type ValidatorFunction = (fieldValue: any, context: ValidatorContext) => Promise;
+export type ValidatorFunction = (fieldValue: any, context: ValidatorContext) => Promise<undefined>;
 
-type ValidatorConditionFunction = (context: ValidatorContext) => boolean;
+export type ValidatorConditionFunction = (context: ValidatorContext) => boolean;
 
-interface ValidatorContext {
+export interface ValidatorContext {
   // Field under validation
   fieldName?: string;
 
@@ -62,9 +66,9 @@ interface ValidatorContext {
 
   // Validator name
   validator?: string;
-};
+}
 
-interface ValidationErrorObject {
+export interface ValidationErrorObject {
   summary: string;
   message?: string;
   inline?: string;
@@ -77,4 +81,20 @@ interface ValidationErrorObject {
   }
 }
 
-type ValidatorErrorObjectGenerator = (context: ValidatorContext) => ValidationErrorObject;
+export type ValidatorErrorObjectGenerator = (context: ValidatorContext) => ValidationErrorObject;
+
+export declare class Plan {
+  addSequence(...args: string[]): void;
+  setRoute(start: string, end: string): void;
+  setRoute(start: string, end: string, routeFunction: (r: any, c: any) => boolean): void;
+  addOrigin(start: string, end: string): void;
+}
+
+export interface CasaApp {
+  loadDefinitions(pages: object, plan: object): Promise<ValidationError>;
+  router: object;
+}
+export function configure(app: object, config: object): CasaApp;
+
+export { ValidationRules as validationRules } from './lib/validation/rules/ValidationRules';
+export function simpleFieldValidation([]): void;
