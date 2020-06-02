@@ -1,3 +1,13 @@
+<a name="6.6.1"></a>
+## [6.6.1](https://github.com/dwp/govuk-casa/compare/6.6.0...6.6.1) (2020-06-02)
+
+
+### Performance Improvements
+
+* moment is slow so removing from session expiry which is a hot path ([8c63f8d](https://github.com/dwp/govuk-casa/commit/8c63f8d))
+
+
+
 <a name="6.6.0"></a>
 # [6.6.0](https://github.com/dwp/govuk-casa/compare/6.5.0...6.6.0) (2020-05-26)
 
