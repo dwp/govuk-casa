@@ -12,6 +12,7 @@ chai.use(sinonChai);
 const {
   ingest,
   validateAllowPageEdit,
+  validateUseStickyEdit,
   validateCompiledAssetsDir,
   validateContentSecurityPolicies,
   validateHeadersObject,
@@ -93,6 +94,24 @@ describe('ConfigIngestor', () => {
 
     it('should return the passed value', () => (
       expect(validateAllowPageEdit(true)).to.be.true
+    ));
+  });
+
+  describe('validateUseStickyEdit', () => {
+    it('should throw a TypeError when not given a boolean', () => {
+      expect(() => validateUseStickyEdit([])).to.throw(TypeError, 'Use sticky edit flag must be a boolean (useStickyEdit)');
+    });
+
+    it('should not throw when argument is a boolean', () => {
+      expect(() => validateUseStickyEdit(true)).to.not.throw();
+    });
+
+    it('should default to false', () => (
+      expect(validateUseStickyEdit()).to.be.false
+    ));
+
+    it('should return the passed value', () => (
+      expect(validateUseStickyEdit(true)).to.be.true
     ));
   });
 

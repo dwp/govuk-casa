@@ -103,10 +103,10 @@ describe('Middleware: page/edit-mode', () => {
         query: {
           edit: true,
         },
-        originalUrl: '/TEST-URL',
+        originalUrl: '/test-url',
       };
       handler(stubReq, null, () => {});
-      expect(stubReq).to.have.property('editOriginUrl').that.equals('/TEST-URL');
+      expect(stubReq).to.have.property('editOriginUrl').that.equals('/test-url');
     });
 
     it('should default to current page when not defined in POST body', () => {
@@ -116,10 +116,10 @@ describe('Middleware: page/edit-mode', () => {
         body: {
           edit: true,
         },
-        originalUrl: '/TEST-URL',
+        originalUrl: '/test-url',
       };
       handler(stubReq, null, () => {});
-      expect(stubReq).to.have.property('editOriginUrl').that.equals('/TEST-URL');
+      expect(stubReq).to.have.property('editOriginUrl').that.equals('/test-url');
     });
 
     it('should default to empty string when defined in GET query, but global setting disabled', () => {
@@ -158,7 +158,7 @@ describe('Middleware: page/edit-mode', () => {
         },
       };
       handler(stubReq, null, () => {});
-      expect(stubReq).to.have.property('editOriginUrl').that.equals('/%EF%B9%92%EF%BC%8E!@%C2%A3$%^&*()_+%E2%82%AC=/%C4%80%C3%BF%20/this/');
+      expect(stubReq).to.have.property('editOriginUrl').that.equals('/this/is-a/valid/p4rt');
     });
 
     it('should escape all non-valid characters when defined in POST body', () => {
@@ -171,75 +171,7 @@ describe('Middleware: page/edit-mode', () => {
         },
       };
       handler(stubReq, null, () => {});
-      expect(stubReq).to.have.property('editOriginUrl').that.equals('/%EF%B9%92%EF%BC%8E!@%C2%A3$%^&*()_+%E2%82%AC=/%C4%80%C3%BF%20/this/');
-    });
-
-    it('should only include the pathname when editorigin includes domain in POST body', () => {
-      const handler = mwEditMode(true);
-
-      let stubReq = {
-        method: 'POST',
-        body: {
-          edit: true,
-          editorigin: 'http://somewhere.test/path/name/here?p=1#x',
-        },
-      };
-      handler(stubReq, null, () => {});
-      expect(stubReq).to.have.property('editOriginUrl').that.equals('/path/name/here');
-
-      stubReq = {
-        method: 'POST',
-        body: {
-          edit: true,
-          editorigin: 'http://somewhere.test//path/name/here?p=1#x',
-        },
-      };
-      handler(stubReq, null, () => {});
-      expect(stubReq).to.have.property('editOriginUrl').that.equals('/path/name/here');
-
-      stubReq = {
-        method: 'POST',
-        body: {
-          edit: true,
-          editorigin: 'http://somewhere.test/\uFEFF/path/name/here?p=1#x',
-        },
-      };
-      handler(stubReq, null, () => {});
-      expect(stubReq).to.have.property('editOriginUrl').that.equals('/%EF%BB%BF/path/name/here');
-
-      stubReq = {
-        method: 'POST',
-        body: {
-          edit: true,
-          editorigin: 'http://somewhere.test/\u2215/path/name/here?p=1#x',
-        },
-      };
-      handler(stubReq, null, () => {});
-      expect(stubReq).to.have.property('editOriginUrl').that.equals('/%E2%88%95/path/name/here');
-    });
-
-    it('should only include the pathname when editorigin includes domain in GET body', () => {
-      const handler = mwEditMode(true);
-
-      let stubReq = {
-        method: 'GET',
-        query: {
-          edit: true,
-          editorigin: 'http://somewhere.test/path/name/here?p=1#x',
-        },
-      };
-      handler(stubReq, null, () => {});
-      expect(stubReq).to.have.property('editOriginUrl').that.equals('/path/name/here');
-
-      stubReq = {
-        method: 'GET',
-        query: {
-          edit: true,
-          editorigin: 'http://somewhere.test//path/name/here?p=1#x',
-        },
-      };
-      handler(stubReq, null, () => {});
-      expect(stubReq).to.have.property('editOriginUrl').that.equals('/path/name/here');
+      expect(stubReq).to.have.property('editOriginUrl').that.equals('/this/is-a/valid/p4rt');
     });
 
     it('should remove the editorigin parameter from request query and body', () => {
@@ -256,6 +188,54 @@ describe('Middleware: page/edit-mode', () => {
       handler(stubReq, null, () => {});
       expect(stubReq.body).to.not.have.property('editorigin');
       expect(stubReq.query).to.not.have.property('editorigin');
+    });
+  });
+
+  describe('Edit search params', () => {
+    it('should default to a blank string if not in edit mode', () => {
+      const handler = mwEditMode(true);
+      const stubReq = {
+        method: 'GET',
+        originalUrl: '/test-url',
+      };
+      handler(stubReq, null, () => {});
+      expect(stubReq).to.have.property('editSearchParams').that.equals('');
+    });
+
+    it('should contain edit flag and edit origin when in edit mode', () => {
+      const handler = mwEditMode(true);
+      const stubReq = {
+        method: 'GET',
+        query: { edit: true, editorigin: 'test-abc/cde' },
+        originalUrl: '/test-url',
+      };
+      handler(stubReq, null, () => {});
+      expect(stubReq).to.have.property('editSearchParams').that.equals('&edit&editorigin=%2Ftest-abc%2Fcde');
+    });
+
+    it('should use an origin matching the original URL string if no edit origin is defined', () => {
+      const handler = mwEditMode(true);
+      const stubReq = {
+        method: 'GET',
+        query: { edit: true },
+        originalUrl: '/test-url',
+      };
+      handler(stubReq, null, () => {});
+      expect(stubReq).to.have.property('editSearchParams').that.equals('&edit&editorigin=%2Ftest-url');
+    });
+
+    it('should match the given edit origin', () => {
+      const handler = mwEditMode(true);
+      const stubReq = {
+        method: 'GET',
+        query: {
+          edit: true,
+          editorigin: '/path/name/here',
+        },
+        originalUrl: '/TEST-URL',
+      };
+      handler(stubReq, null, () => {});
+      expect(stubReq).to.have.property('editSearchParams').that.equals(`&edit&editorigin=%2Fpath%2Fname%2Fhere`);
     });
   });
 });

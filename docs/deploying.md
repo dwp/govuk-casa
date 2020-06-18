@@ -433,7 +433,8 @@ const casaApp = configure(app, {
     dirs: [path.resolve(__dirname, 'locales')],
     locales: ['en']
   },
-  allowPageEdit: false
+  allowPageEdit: false,
+  useStickyEdit: false,
 });
 
 // Custom, non-journey routes handlers.

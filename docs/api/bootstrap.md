@@ -21,6 +21,13 @@ const casaApp = configure(expressAppInstance, {
   // mode for that page.
   allowPageEdit: true,
 
+  // useStickyEdit (Boolean; optional; default false)
+  // If true then CASA will attempt to keep the user in edit mode until their
+  // onward journey "reconnects" with the edit origin waypoint
+  // If your service uses any `skipto` links, be sure to read through the
+  // documentation related to this at docs/page-markup.md#skipping-a-page
+  useStickyEdit: false,
+
   // compiledAssetsDir (String; required)
   // Directory to which CASA's compiled JS/CSS templates will be saved at runtime
   compiledAssetsDir: './static/',

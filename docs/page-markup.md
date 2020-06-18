@@ -36,6 +36,7 @@ The following global functions and variables are available to your templates:
 * `mergeObjectsDeep(object obj...)` - recursively deep-merges any number of objects into one final object (an alias of `mergeObjects()` is also available)
 * `renderAsAttributes(object attrs)` - generates a string of `key=value` HTML element attributes from the given object
 * `t(string key, mixed substitutions...)` - translate the lookup `key` to the currently chosen language. See **[Internationalisation](i18n.md)** for more information.
+* `makeEditLink({ string waypoint, string origin })` - create a waypoint editing link (see [`utils/makeEditLink.js`](../lib/utils/makeEditLink.js))
 * `locale` - the current locale/language chosen by the user (ISO 639-1 two-letter code)
 
 ## Creating a basic page
@@ -83,6 +84,7 @@ Such pages will receive the following variables:
 * `formErrorsGovukArray` (`array`) - equivalent of `formErrors`, but in a format suitable for the `govukErrorSummary()` macro
 * `inEditMode` (`boolean`) - whether the current journey form should be displayed in "edit mode"
 * `editOriginUrl` (`string`) - the URL to which a user should be returned after editing a page
+* `editSearchParams` (`string`) - a convenient copy of the edit flag and origin for use in custom urls,. e.g. `&edit&editorigin=my-waypoint`
 
 Here we'll create a page for the `personal-info` waypoint; save this to `view/pages/personal-info.njk`:
 
@@ -131,6 +133,22 @@ Here we'll create a page for the `personal-info` waypoint; save this to `view/pa
     }) }}
   {% endcall %}
 {% endblock %}
+```
+
+## Skipping a page
+
+If you want to give the user the option to skip over the current page in the journey, you can provide them with a special `skipto` link, e.g.
+
+```nunjucks
+<a href="?skipto=address-entry">Skip to the Address Entry page</a>
+```
+
+This will only skip over the _current_ waypoint, so the target waypoint must be reachable from the current one.
+
+If you want to support "sticky edit" mode in this skip link (i.e. you want the user to remain in edit mode when they skip to that waypoint), then you'll also need to include the edit URL parameters, e.g.
+
+```nunjuck
+<a href="?skipto=address-entry{{ editSearchParams }}">Skip to the Address Entry page</a>
 ```
 
 ## Adding custom stylesheets and JavaScript

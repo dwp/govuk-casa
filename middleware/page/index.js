@@ -54,6 +54,7 @@ module.exports = function routePages(
   pages,
   plan,
   allowPageEdit,
+  useStickyEdit,
 ) {
   const pageMetaKeys = pages.getAllPageIds();
   const origins = plan.getOrigins();
@@ -74,10 +75,10 @@ module.exports = function routePages(
     router.get(
       routeUrl,
       mwPrepare(plan),
-      mwJourneyRails(mountUrl, plan),
-      mwSkip(mountUrl, plan),
       mwCsrfProtection,
       mwDetectEditMode(allowPageEdit),
+      mwJourneyRails(mountUrl, plan),
+      mwSkip(mountUrl),
       // TODO: Maybe put the hook executions at this level? e.g.
       // mwExecutePageHooks(pageMeta, 'prerender')
       // because then custom routes could choose to include them or not
@@ -87,12 +88,12 @@ module.exports = function routePages(
     router.post(
       routeUrl,
       mwPrepare(plan),
-      mwJourneyRails(mountUrl, plan),
       mwCsrfProtection,
       mwDetectEditMode(allowPageEdit),
+      mwJourneyRails(mountUrl, plan),
       mwGatherData(pageMeta),
       mwValidateData(pageMeta),
-      mwJourneyContinue(pageMeta, mountUrl),
+      mwJourneyContinue(pageMeta, mountUrl, useStickyEdit),
       mwRenderPage(pageMeta),
     );
   });

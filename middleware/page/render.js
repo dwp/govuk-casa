@@ -22,6 +22,7 @@ module.exports = (pageMeta = {}) => (req, res, next) => {
       formData: req.casa.journeyContext.getDataForPage(pageMeta),
       inEditMode: req.inEditMode,
       editOriginUrl: req.editOriginUrl,
+      editSearchParams: req.editSearchParams,
     }, renderErrorCallback);
   }
 
@@ -46,6 +47,7 @@ module.exports = (pageMeta = {}) => (req, res, next) => {
       formErrorsGovukArray: govukErrors.length ? govukErrors : null,
       inEditMode: req.inEditMode,
       editOriginUrl: req.editOriginUrl,
+      editSearchParams: req.editSearchParams,
     }, renderErrorCallback);
   }
 

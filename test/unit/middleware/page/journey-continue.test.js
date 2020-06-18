@@ -90,7 +90,7 @@ describe('Middleware: page/journey-continue', () => {
     expect(stubNext).to.be.calledOnceWithExactly(error);
   });
 
-  describe('in edit mode', () => {
+  describe('in edit mode (non-sticky mode)', () => {
     it('should return to the edit origin url if the traversal is unaltered', async () => {
       const middlewareWithConfig = mwJourney({
         page0: {},
@@ -290,6 +290,87 @@ describe('Middleware: page/journey-continue', () => {
       await middlewareWithConfig(mockRequest, mockResponse, stubNext);
       expect(mockResponse.status).to.be.calledOnceWithExactly(302);
       expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/changed-origin/changeA#');
+    });
+  });
+
+  describe('in edit mode (sticky mode)', () => {
+    it('should return to the first changed waypoint if the traversal is altered', async () => {
+      const middlewareWithConfig = mwJourney({}, '/test-mount/', true);
+      mockRequest = Object.assign(mockRequest, {
+        inEditMode: true,
+        editOriginUrl: '/test-edit-origin/',
+      });
+      mockRequest.casa.preGatherTraversalSnapshot = ['page0', 'page1', 'page2'];
+      mockRequest.casa.plan.traverseNextRoutes.returns([{
+        source: 'page0',
+        target: 'changeA',
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }, {
+        source: 'changeA',
+        target: 'changeB',
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }, {
+        source: 'changeB',
+        target: null,
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }]);
+      await middlewareWithConfig(mockRequest, mockResponse, stubNext);
+      expect(mockResponse.status).to.be.calledOnceWithExactly(302);
+      expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/changeA?edit=&editorigin=%2Ftest-edit-origin%2F#');
+    });
+
+    it('should return to the first matching waypoint if the traversal is shortened', async () => {
+      const middlewareWithConfig = mwJourney({}, '/test-mount/', true);
+      mockRequest = Object.assign(mockRequest, {
+        inEditMode: true,
+        editOriginUrl: '/test-edit-origin/',
+      });
+      mockRequest.casa.preGatherTraversalSnapshot = ['page0', 'page1', 'page2'];
+      mockRequest.casa.plan.traverseNextRoutes.returns([{
+        source: 'page0',
+        target: 'page1',
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }, {
+        source: 'page1',
+        target: undefined,
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }]);
+      await middlewareWithConfig(mockRequest, mockResponse, stubNext);
+      expect(mockResponse.status).to.be.calledOnceWithExactly(302);
+      expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/page1?edit=&editorigin=%2Ftest-edit-origin%2F#');
+    });
+
+    it('should return to the first changed waypoint if the traversal is altered, and include any changes to the origin', async () => {
+      const middlewareWithConfig = mwJourney({}, '/test-mount/', true);
+      mockRequest = Object.assign(mockRequest, {
+        inEditMode: true,
+        editOriginUrl: '/test-edit-origin/',
+      });
+      mockRequest.casa.preGatherTraversalSnapshot = ['page0', 'page1', 'page2'];
+      mockRequest.casa.plan.traverseNextRoutes.returns([{
+        source: 'page0',
+        target: 'page1',
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }, {
+        source: 'page1',
+        target: 'changeA',
+        name: 'next',
+        label: { sourceOrigin: 'previous-origin', targetOrigin: 'changed-origin' }
+      }, {
+        source: 'changeA',
+        target: null,
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }]);
+      await middlewareWithConfig(mockRequest, mockResponse, stubNext);
+      expect(mockResponse.status).to.be.calledOnceWithExactly(302);
+      expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/changed-origin/changeA?edit=&editorigin=%2Ftest-edit-origin%2F#');
     });
   });
 

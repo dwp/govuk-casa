@@ -115,6 +115,21 @@ const plan = new Plan({
 
 > **This default behaviour is likely to change in upcoming versions, so it is recommended that you enable this flag now**
 
+### How changing answers effects the user's journey
+
+If a user goes back to modify any of their answers, this may well alter how their onward journey unfolds.
+
+Internally, CASA takes a snapshot of their journey both before and after submitting their changes, then compares the two to determine where to send the user next.
+
+The rules that govern how a user is redirected are outlined below:
+
+| "Before" | "After" | Rules |
+|----------|---------|-------|
+| `a, b, c` | `a, b, x, c` | A new waypoint `x` has been inserted, so the user will stop at `x` |
+| `a, b, c, d` | `a, b, d` | Waypoint `c` has been removed from the middle of a journey, so the user will stop at the last incomplete waypoint, `d` |
+| `a, b, c, d` | `a, c, d` | _(as above)_ |
+| `a, b, c` | `a, c, d` | Waypoint `b` has been removed, and `d` has been added to the end; user will stop at the new waypoint, `d` |
+
 ## Multiple origins
 
 Origins are a useful tool to effectively segment a user's journey through your service into separate chunks.

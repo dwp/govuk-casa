@@ -76,7 +76,7 @@ function mountCasaMiddleware(app, config, i18nUtility) {
     compiledAssetsDir: config.compiledAssetsDir,
     npmPackages: staticModulePaths,
   });
-  mwNunjucks(app, config.views.dirs, staticModulePaths.govukFrontend);
+  mwNunjucks(app, config.views.dirs, staticModulePaths.govukFrontend, config.mountUrl);
   mwSession(
     app,
     config.mountUrl,
@@ -166,6 +166,9 @@ const modules = {
   // User journey elements
   Plan: require('./lib/Plan.js'),
   JourneyContext: require('./lib/JourneyContext.js'),
+
+  // Utilities
+  utils: require('./lib/utils/index.js'),
 };
 
 // Add test utilities

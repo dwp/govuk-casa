@@ -65,6 +65,7 @@ describe('Middleware: page/render', () => {
         method: 'GET',
         inEditMode: true,
         editOriginUrl: '/test-origin-url',
+        editSearchParams: 'test=params',
       });
       mockRequest.casa.journeyContext.getDataForPage.returns('test-data');
       await middleware(mockRequest, mockResponse, stubNext);
@@ -72,6 +73,7 @@ describe('Middleware: page/render', () => {
         formData: 'test-data',
         inEditMode: true,
         editOriginUrl: '/test-origin-url',
+        editSearchParams: 'test=params',
       }, sinon.match.func);
     });
 
@@ -98,6 +100,7 @@ describe('Middleware: page/render', () => {
         method: 'POST',
         inEditMode: true,
         editOriginUrl: '/test-origin-url',
+        editSearchParams: 'test=params',
         i18nTranslator: {
           t: sinon.stub().callsFake(s => (`${s}_translated`)),
         },
@@ -112,6 +115,7 @@ describe('Middleware: page/render', () => {
         formData: 'test-post-body',
         inEditMode: true,
         editOriginUrl: '/test-origin-url',
+        editSearchParams: 'test=params',
       }), sinon.match.func);
     });
 

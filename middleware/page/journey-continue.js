@@ -1,7 +1,8 @@
+const { URLSearchParams } = require('url');
 const createLogger = require('../../lib/Logger.js');
 const { executeHook } = require('./utils.js');
 
-module.exports = (pageMeta = {}, mountUrl = '/') => (req, res, next) => {
+module.exports = (pageMeta = {}, mountUrl = '/', useStickyEdit = false) => (req, res, next) => {
   const logger = createLogger('page.journey-continue');
   logger.setSessionId(req.session.id);
   const pageId = pageMeta.id;
@@ -33,33 +34,58 @@ module.exports = (pageMeta = {}, mountUrl = '/') => (req, res, next) => {
       nextWaypoint = editOriginUrl;
       logger.trace('Comparing pre-gather traversal snapshot (starting from origin %s)', nextOrigin);
 
+      // Grab the list of traversed waypoints as it was before gathering, and
+      // generate a new list of traversed waypoints based on the new context.
       const { preGatherTraversalSnapshot = [] } = req.casa || Object.create(null);
       const currentTraversalSnapshot = journey.traverseNextRoutes(req.casa.journeyContext, {
         startWaypoint: journeyOrigin.waypoint,
       });
 
-      preGatherTraversalSnapshot.every((el, i) => {
+      // Compare the two snapshots. Some rules:
+      // `a, b, c` vs `a, b, x, c` <- should stop at `x` (`x` was inserted) <- [..++..]
+      // `a, b, c, d` vs `a, b, d` <- should stop at `d` (`c` was removed) <- [..-.]
+      // `a, b, c, d` vs `a, c, d` <- should stop at `d` (`b` was removed) <- [.-..]
+      // `a, b, c` vs `a, c, d`    <- should stop at `d` (`b` was removed, `d` was added) <- [.-..+]
+      let compareIndex = 0;
+      const compareIndexMax = preGatherTraversalSnapshot.length - 1;
+      for (let i = 0, l = currentTraversalSnapshot.length; i < l; i++) {
+        // Build waypoint URL for the current waypoint
         const waypointUrl = `${mountUrl}/${currentTraversalSnapshot[i].label.sourceOrigin || nextOrigin}/${currentTraversalSnapshot[i].source}`.replace(/\/+/g, '/');
-        const same = el === currentTraversalSnapshot[i].source;
-        const atEditOrigin = editOriginUrl.replace(/\/+$/g, '') === waypointUrl;
 
-        if (atEditOrigin) {
+        // Stop testing if we've arrived at the edit origin waypoint
+        if (editOriginUrl.replace(/\/+$/g, '') === waypointUrl) {
           nextWaypoint = editOriginUrl;
-          return false;
+          break;
         }
 
-        if (!same || i === currentTraversalSnapshot.length - 1) {
-          logger.trace('Journey altered (previous tip = %s, new tip = %s, origin = %s)', el, currentTraversalSnapshot[i].source, nextOrigin);
-          nextWaypoint = `${mountUrl}/${nextOrigin}/${currentTraversalSnapshot[i].source}`;
-          return false;
-        }
-
-        // Track a change in origin, and assume that all subsequent matches
+        // Find a match for the current waypoint in the previous snapshot.
+        // And track a change in origin, assuming that all subsequent matches
         // (until the next change of origin) are accessed from that origin.
-        nextOrigin = currentTraversalSnapshot[i].label.targetOrigin || nextOrigin;
+        while (compareIndex <= compareIndexMax) {
+          nextWaypoint = waypointUrl;
+          nextOrigin = currentTraversalSnapshot[i].label.targetOrigin || nextOrigin;
+          if (currentTraversalSnapshot[i].source === preGatherTraversalSnapshot[compareIndex++]) {
+            // The current snapshot may include more waypoints than than the
+            // previous. In this case, if we've exhausted the list of previous
+            // waypoints, with the last one being a match, we must leave the user on
+            // the next waypoint in the current snapshot. Otherwise, the user will
+            // be left on the same after submitting the form.
+            if ((compareIndex > compareIndexMax) && (i < l - 1)) {
+              nextWaypoint = `${mountUrl}/${nextOrigin}/${currentTraversalSnapshot[i + 1].source}`;
+              nextOrigin = currentTraversalSnapshot[i + 1].label.targetOrigin || nextOrigin;
+            }
 
-        return true;
-      });
+            break;
+          }
+        }
+      }
+
+      // Ensure the user remains in edit mode after redirecting, unless they're
+      // being sent back to the edit origin anyway
+      if (useStickyEdit && nextWaypoint !== editOriginUrl) {
+        const urlEditParams = new URLSearchParams({ edit: '', editorigin: editOriginUrl });
+        nextWaypoint += `?${urlEditParams.toString()}`;
+      }
     } else if (journey.containsWaypoint(pageId)) {
       logger.trace('Check waypoint %s can be reached (journey guid = %s)', pageId, journeyOrigin.originId);
       const routes = journey.traverseNextRoutes(req.casa.journeyContext, {

@@ -15,6 +15,7 @@
  *  /current-waypoint?skipto=next-waypoint
  */
 
+const { URL, URLSearchParams } = require('url');
 const createLogger = require('../../lib/Logger.js');
 
 module.exports = (mountUrl) => (req, res, next) => {
@@ -48,13 +49,25 @@ module.exports = (mountUrl) => (req, res, next) => {
   // Persist changes to session
   req.session.journeyContext = req.casa.journeyContext.toObject();
 
+  // Attach edit flags to the redirect URL, if present
+  let redirectUrl = `${mountUrl}/${journeyOrigin.originId || ''}/${skipto}`.replace(/\/+/g, '/');
+  if (req.inEditMode) {
+    try {
+      const urlEditParams = new URLSearchParams({ edit: '', editorigin: req.editOriginUrl });
+      const u = new URL(`${redirectUrl}?${urlEditParams}`, 'http://placeholder.test');
+      redirectUrl = u.pathname.replace(/^\/+$/, '').replace(/[:.]/g, '').replace(/\/+/g, '/') + u.search;
+    } catch (e) {
+      req.editOriginUrl = '';
+    }
+  }
+
   // Save session and send user on their way
   req.session.save((err) => {
     if (err) {
       logger.error(err);
       next(err);
     } else {
-      res.status(302).redirect(`${mountUrl}/${journeyOrigin.originId || ''}/${skipto}`.replace(/\/+/g, '/'));
+      res.status(302).redirect(redirectUrl);
     }
   });
 };

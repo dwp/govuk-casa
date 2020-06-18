@@ -39,6 +39,10 @@ module.exports = (mountUrl = '/', plan) => (req, res, next) => {
   const redirectUrlPrefix = `${mountUrl}/${req.casa.journeyOrigin.originId || ''}/`.replace(/\/+/g, '/');
   if (currentUrlIndex === -1) {
     let redirectUrl = `${redirectUrlPrefix}${traversed[traversed.length - 1]}`;
+    if (req.inEditMode) {
+      const urlEditParams = new URLSearchParams({ edit: '', editorigin: req.editOriginUrl });
+      redirectUrl = `${redirectUrl}?${urlEditParams.toString()}`;
+    }
     redirectUrl = redirectUrl.replace(/\/+/g, '/');
     logger.debug('Traversal redirect: %s to %s', req.casa.journeyWaypointId, redirectUrl);
     res.status(302).redirect(`${redirectUrl}#`);

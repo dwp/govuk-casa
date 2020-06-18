@@ -1,10 +1,11 @@
 /**
- * Set `req.inEditMode` and `req.editOriginUrl` attributes.
+ * Set `req.inEditMode`, `req.editOriginUrl`, and `req.editSearchParams`
+ * attributes.
  *
  * Note `req.query.*` are all uri-decoded prior to this point.
  */
 
-const { URL } = require('url');
+const { makeEditLink, sanitiseAbsolutePath } = require('../../lib/utils/index.js');
 const logger = require('../../lib/Logger')('page.edit-mode');
 
 module.exports = (allowPageEdit) => (req, res, next) => {
@@ -25,15 +26,13 @@ module.exports = (allowPageEdit) => (req, res, next) => {
     }
   }
 
-  // Extract path name from edit origin url
-  try {
-    const u = new URL(editOriginUrl, 'http://placeholder.test');
-    req.editOriginUrl = u.pathname.replace(/^\/+$/, '').replace(/[:.]/g, '').replace(/\/+/g, '/');
-  } catch (e) {
-    req.editOriginUrl = '';
-  }
+  // Store edit information on request
+  req.editOriginUrl = allowPageEdit ? sanitiseAbsolutePath(editOriginUrl) : '';
   req.inEditMode = inEditMode;
   logger.trace('Set edit mode: %s (origin = %s)', req.inEditMode, req.editOriginUrl);
+
+  // Create a urlencoded string of the parameters for use in custom URLs
+  req.editSearchParams = req.inEditMode ? makeEditLink({ origin: req.editOriginUrl }) : '';
 
   // Clean up
   if (req.query && 'edit' in req.query) {
