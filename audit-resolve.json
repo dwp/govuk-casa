@@ -1,0 +1,10 @@
+{
+  "decisions": {
+    "1213|@commitlint/config-conventional>conventional-changelog-conventionalcommits>compare-func>dot-prop": {
+      "decision": "postpone",
+      "madeAt": 1597344523000
+    }
+  },
+  "rules": {},
+  "version": 1
+}
