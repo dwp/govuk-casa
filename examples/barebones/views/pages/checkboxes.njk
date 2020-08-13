@@ -10,6 +10,7 @@
   {{ casaGovukCheckboxes({
     name: "boxes",
     casaErrors: formErrors,
+    casaValue: formData.boxes,
     fieldset: {
       legend: {
         text: t('checkboxes:boxes.label'),
@@ -22,20 +23,16 @@
     },
     items: [{
       value: "twistedflax",
-      text: t('checkboxes:boxes.options.twistedflax'),
-      checked: true if includes(formData.boxes, "twistedflax") else false
+      text: t('checkboxes:boxes.options.twistedflax')
     },{
       value: "tworeeds",
-      text: t('checkboxes:boxes.options.tworeeds'),
-      checked: true if includes(formData.boxes, "tworeeds") else false
+      text: t('checkboxes:boxes.options.tworeeds')
     }, {
       value: "water",
-      text: t('checkboxes:boxes.options.water'),
-      checked: true if includes(formData.boxes, "water") else false
+      text: t('checkboxes:boxes.options.water')
     }, {
       value: "horus",
-      text: t('checkboxes:boxes.options.horus'),
-      checked: true if includes(formData.boxes, "horus") else false
+      text: t('checkboxes:boxes.options.horus')
     }]
   }) }}
 
