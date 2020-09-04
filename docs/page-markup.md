@@ -160,6 +160,14 @@ const casaApp = casa(app, {
 });
 ```
 
+## Importing CASA styles when building your own Sass
+If you're building your own Sass you can import the CASA styles into your project:
+
+```css
+/* assumes node_modules is an import path */
+@import "@dwp/govuk-casa/src/scss/casaElements";
+```
+
 ## Customising the cookie message
 
 CASA provides a `casa/partials/cookie_message.njk` template that you can override to inject your own content into its default cookie message bar, e.g.:

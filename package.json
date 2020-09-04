@@ -10,6 +10,7 @@
     "locales/**/*",
     "middleware/**/*",
     "test/utils/**/*",
+    "src/scss/*",
     "views/**/*",
     "index.js",
     "casa.js",

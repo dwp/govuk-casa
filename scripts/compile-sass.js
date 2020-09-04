@@ -26,7 +26,7 @@ const { resolveModulePath } = require('../lib/Util.js');
  * @throws {Exception} For an IO errors
  */
 function compileSassSources(targetDir, npmGovukFrontend, npmGovukCasa) {
-  const casaSassSrcDir = path.resolve(npmGovukCasa, 'src', 'css');
+  const casaSassSrcDir = path.resolve(npmGovukCasa, 'src', 'scss');
   const dstDir = path.resolve(targetDir, 'casa', 'css');
 
   const partialRegex = new RegExp(`\\${path.sep}_[^\\${path.sep}]+$`);
