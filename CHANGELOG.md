@@ -1,3 +1,12 @@
+# [6.7.0](https://github.com/dwp/govuk-casa/compare/6.6.1...6.7.0) (2020-09-04)
+
+
+### Features
+
+* package SCSS files for users who wish to compile their own CSS ([79bd972](https://github.com/dwp/govuk-casa/commit/79bd972b100665553c7420c2161b5db02dd08ba6))
+
+
+
 <a name="6.6.1"></a>
 ## [6.6.1](https://github.com/dwp/govuk-casa/compare/6.6.0...6.6.1) (2020-06-02)
 
