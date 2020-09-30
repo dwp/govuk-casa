@@ -1,7 +1,4 @@
 {
-  "devDependencies": {
-    "automerge": true
-  },
   "prHourlyLimit": 0,
   "packageRules": [
     {
@@ -17,5 +14,8 @@
       ],
       "rangeStrategy": "auto"
     }
-  ]
+  ],
+  "groupName": "dependencies",
+  "rebaseWhen": "behind-base-branch",
+  "separateMajorMinor": false
 }
