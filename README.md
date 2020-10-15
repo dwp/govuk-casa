@@ -62,6 +62,10 @@ Finally, we need to bring all of this together, by creating a bootstrap script f
 
 That's it! The basics have been covered here, but if you want to delve deeper under the hood then take a read through the **[developer API documentation](docs/api.md)** too.
 
+## Migrating between versions
+
+A series of migration guides are provided in [`docs/`](docs/) that should help you upgrade between major versions of CASA.
+
 ## Testing your app
 
 CASA provides a basic [`testTraversal()`](docs/testing.md) utility function that can help to test that the routes defined in your Plan are executed in the expected sequence when given a series of defined data inputs.

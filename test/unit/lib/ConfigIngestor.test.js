@@ -38,6 +38,23 @@ const {
 
 const dirTestData = path.resolve(__dirname, '..', 'testdata');
 
+const minimalConfig = {
+  compiledAssetsDir: dirTestData,
+  i18n: {
+    dirs: [],
+    locales: [],
+  },
+  sessions: {
+    name: 'session-name',
+    secret: 'secret',
+    secure: false,
+    ttl: 3600,
+  },
+  views: {
+    dirs: [],
+  },
+};
+
 describe('ConfigIngestor', () => {
   describe('ingest()', () => {
     it('should be a function', () => {
@@ -49,24 +66,15 @@ describe('ConfigIngestor', () => {
     });
 
     it('should return an immutable object when given valid configuration', () => {
-      const config = ingest({
-        compiledAssetsDir: dirTestData,
-        i18n: {
-          dirs: [],
-          locales: [],
-        },
-        sessions: {
-          name: 'session-name',
-          secret: 'secret',
-          secure: false,
-          ttl: 3600,
-        },
-        views: {
-          dirs: [],
-        },
-      });
+      const config = ingest(minimalConfig);
 
       return expect(Object.isFrozen(config)).to.be.true;
+    });
+
+    it('should contain the expected defaults', () => {
+      const config = ingest(minimalConfig);
+
+      expect(config.sessions.cookieSameSite).to.equal('Strict');
     });
   });
 
@@ -379,14 +387,35 @@ describe('ConfigIngestor', () => {
   });
 
   describe('validateSessionsCookieSameSite()', () => {
-    it('should the default value if no value is specified', () => {
-      expect(validateSessionsCookieSameSite(undefined, false)).to.equal(false);
-      expect(validateSessionsCookieSameSite(undefined, true)).to.equal(true);
+    it('should throw if a default flag value is not provided', () => {
+      expect(() => validateSessionsCookieSameSite(undefined)).to.throw(TypeError, 'validateSessionsCookieSameSite() requires an explicit default flag');
+      expect(() => validateSessionsCookieSameSite(undefined, 'Lax')).to.not.throw();
     });
 
-    it('should return a valid value', () => {
-      expect(validateSessionsCookieSameSite('test-path')).to.equal(true);
-      expect(validateSessionsCookieSameSite('')).to.equal(false);
+    it('should throw if an invalid default flag is provided', () => {
+      const err = 'validateSessionsCookieSameSite() default flag must be set to one of true, false, Strict, Lax or None (sessions.cookieSameSite)';
+      expect(() => validateSessionsCookieSameSite('Strict', 'BadValue')).to.throw(TypeError, err);
+      expect(() => validateSessionsCookieSameSite('Strict', [])).to.throw(TypeError, err);
+      expect(() => validateSessionsCookieSameSite('Strict', 'Lax')).to.not.throw();
+    });
+
+    it('should throw if not provided with a valid value', () => {
+      const err = 'SameSite flag must be set to one of true, false, Strict, Lax or None (sessions.cookieSameSite)';
+      expect(() => validateSessionsCookieSameSite('BadValue', false)).to.throw(TypeError, err);
+      expect(() => validateSessionsCookieSameSite([], false)).to.throw(TypeError, err);
+      expect(() => validateSessionsCookieSameSite(false, 'Lax')).to.not.throw();
+    });
+
+    it('should return a valid provided value', () => {
+      expect(validateSessionsCookieSameSite('Strict', false)).to.equal('Strict');
+      expect(validateSessionsCookieSameSite('Lax', false)).to.equal('Lax');
+      expect(validateSessionsCookieSameSite('None', false)).to.equal('None');
+      expect(validateSessionsCookieSameSite(false, true)).to.equal(false);
+      expect(validateSessionsCookieSameSite(true, false)).to.equal(true);
+    });
+
+    it('should return a default flag if none provided', () => {
+      expect(validateSessionsCookieSameSite(undefined, 'Lax')).to.equal('Lax');
     });
   });
 
