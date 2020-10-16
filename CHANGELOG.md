@@ -1,3 +1,7 @@
+## [6.7.2](https://github.com/dwp/govuk-casa/compare/6.7.1...6.7.2) (2020-10-16)
+
+
+
 ## [6.7.1](https://github.com/dwp/govuk-casa/compare/6.7.0...6.7.1) (2020-10-08)
 
 
