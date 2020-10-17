@@ -11,6 +11,8 @@
     "middleware/**/*",
     "test/utils/**/*",
     "src/scss/*",
+    "src/browserconfig.xml",
+    "src/robots.txt",
     "views/**/*",
     "index.js",
     "casa.js",
