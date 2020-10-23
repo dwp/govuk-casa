@@ -1,3 +1,12 @@
+# [6.8.0](https://github.com/dwp/govuk-casa/compare/6.7.2...6.8.0) (2020-10-23)
+
+
+### Features
+
+* option to make edit mode "sticky" until user is back on track ([4f9b397](https://github.com/dwp/govuk-casa/commit/4f9b39703c6facde376c9622f1d720042a7f4171)), closes [#95](https://github.com/dwp/govuk-casa/issues/95)
+
+
+
 ## [6.7.2](https://github.com/dwp/govuk-casa/compare/6.7.1...6.7.2) (2020-10-16)
 
 
