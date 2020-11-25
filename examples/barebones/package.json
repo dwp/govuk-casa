@@ -4,7 +4,7 @@
   "description": "Simple barebones example CASA application",
   "main": "app.js",
   "dependencies": {
-    "@dwp/govuk-casa": "6.7.2",
+    "@dwp/govuk-casa": "6.8.0",
     "express": "4.17.1",
     "express-session": "1.17.1",
     "moment": "2.29.1"
