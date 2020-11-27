@@ -105,15 +105,13 @@ When `ticked` is `false` the traversal sequence will be: `a <--> c`
 
 ![conditional route][building-blocks-route-condition]
 
-**NOTE:** When you define a cutom route condition, CASA will no longer check the validation state of the source waypoint when evaluating the route condition. You can change this behaviour globally by toggling the `validateBeforeRouteCondition` flag, e.g:
+**NOTE:** When you define a cutom route condition, CASA will still perform its own check before running your condition (specifically, it checks that the previous waypoint has passed validation). You can override this behaviour by toggling the `validateBeforeRouteCondition` flag when creating a Plan, e.g:
 
 ```javascript
 const plan = new Plan({
-  validateBeforeRouteCondition: true,
+  validateBeforeRouteCondition: false,
 });
 ```
-
-> **This default behaviour is likely to change in upcoming versions, so it is recommended that you enable this flag now**
 
 ### How changing answers effects the user's journey
 

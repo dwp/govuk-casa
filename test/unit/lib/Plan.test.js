@@ -8,12 +8,28 @@ const { expect } = chai;
 const Plan = require('../../../lib/Plan.js');
 const JourneyContext = require('../../../lib/JourneyContext.js');
 
+// Helper function to generate structure of a node that appears last in the
+// returned list of traversable nodes
+const makeLeafNode = source => ({
+  source,
+  target: null,
+  name: 'next',
+  label: {
+    sourceOrigin: undefined,
+    targetOrigin: undefined,
+  },
+});
+
 describe('Plan', () => {
   let plan;
   let stubContext;
 
   beforeEach(() => {
-    plan = new Plan();
+    // Skip internal validation checks so we don't have to scaffold a context
+    // just for validation purposes.
+    plan = new Plan({
+      validateBeforeRouteCondition: false,
+    });
     stubContext = new JourneyContext();
   });
 
@@ -22,18 +38,19 @@ describe('Plan', () => {
       expect(plan.getWaypoints()).to.contain('__origin__');
     });
 
-    it('should alloe overriding of default options', () => {
+    it('should allow overriding of default options', () => {
       const myPlan = new Plan({
-        validateBeforeRouteCondition: true,
+        validateBeforeRouteCondition: false,
       })
-      expect(myPlan.getOptions()).to.have.property('validateBeforeRouteCondition').that.equals(true);
+      expect(myPlan.getOptions()).to.have.property('validateBeforeRouteCondition').that.equals(false);
     });
   });
 
   describe('getOptions', () => {
     it('should create default options', () => {
-      expect(plan.getOptions()).to.deep.equal({
-        validateBeforeRouteCondition: false,
+      const defaultPlan = new Plan();
+      expect(defaultPlan.getOptions()).to.deep.equal({
+        validateBeforeRouteCondition: true,
       });
     });
   });
@@ -49,7 +66,7 @@ describe('Plan', () => {
 
     it('should not throw, and store the route when given valid arguments', () => {
       expect(() => plan.setNamedRoute('a', 'b', 'next', () => {})).to.not.throw();
-      expect(plan.getRoutes()).to.deep.eql([{
+      expect(plan.getRoutes()).to.deep.eq([{
         source: 'a',
         target: 'b',
         name: 'next',
@@ -205,7 +222,9 @@ describe('Plan', () => {
           warn: stubWarnLog,
         }),
       });
-      const planTest = new PlanProxy();
+      const planTest = new PlanProxy({
+        validateBeforeRouteCondition: false,
+      });
 
       const stub_n0n1 = sinon.stub().returns(true);
       const stub_n1n2 = sinon.stub().throws(new Error('test-error'));
@@ -213,6 +232,7 @@ describe('Plan', () => {
       planTest.addOrigin('main', 'n0');
       planTest.setNextRoute('n0', 'n1', stub_n0n1);
       planTest.setNextRoute('n1', 'n2', stub_n1n2);
+
       planTest.traverseRoutes(stubContext, { startWaypoint: 'n0', routeName: 'next' });
 
       expect(stubWarnLog).to.be.calledOnceWithExactly('Route follow function threw an exception, "%s" (%s)', 'test-error', 'n1/n2');
@@ -225,7 +245,9 @@ describe('Plan', () => {
           warn: stubWarnLog,
         }),
       });
-      const planTest = new PlanProxy();
+      const planTest = new PlanProxy({
+        validateBeforeRouteCondition: false,
+      });
 
       const stub_n0n1 = sinon.stub().returns(true);
       const stub_n0n2 = sinon.stub().returns(true);
@@ -235,7 +257,7 @@ describe('Plan', () => {
       planTest.setNextRoute('n0', 'n2', stub_n0n2);
 
       const routes = planTest.traverseRoutes(stubContext, { startWaypoint: 'n0', routeName: 'next' });
-      expect(routes).to.deep.eql([{
+      expect(routes).to.deep.eq([{
         source: 'n0',
         target: null,
         name: 'next',
@@ -262,15 +284,7 @@ describe('Plan', () => {
       const route_n1n2 = plan.getRoutes().filter(e => `${e.source}${e.target}${e.name}` === 'n1n2next')[0];
 
       const output = plan.traverseRoutes(stubContext, { startWaypoint: 'n0', routeName: 'next' });
-      expect(output).to.deep.eql([route_n0n1, route_n1n2, {
-        source: 'n2',
-        target: null,
-        name: 'next',
-        label: {
-          sourceOrigin: undefined,
-          targetOrigin: undefined,
-        },
-      }]);
+      expect(output).to.deep.eq([route_n0n1, route_n1n2, makeLeafNode('n2')]);
     });
 
     it('should stop traversing if a loop is encountered, finishing on the first repeated route', () => {
@@ -284,15 +298,7 @@ describe('Plan', () => {
 
       // n0 -> n1 -> n2 -> n3 -> n1
       expect(output).to.have.length(5);
-      expect(output.pop()).to.eql({
-        source: 'n1',
-        target: null,
-        name: 'next',
-        label: {
-          sourceOrigin: undefined,
-          targetOrigin: undefined,
-        },
-      });
+      expect(output.pop()).to.eql(makeLeafNode('n1'));
     });
 
     it('should stop traversing and return results if stopCondition is met', () => {
@@ -315,7 +321,31 @@ describe('Plan', () => {
         stopCondition: (r) => (r.target === 'n2'),
       });
 
-      expect(output).to.deep.eql([route_n0n1, route_n1n2]);
+      expect(output).to.deep.equal([route_n0n1, route_n1n2]);
+    });
+
+    it('should validate the previous node before custom conditions on a route', () => {
+      const plan = new Plan();
+      const context = new JourneyContext({}, { n0: null, n1: null, n2: undefined, n3: undefined });
+
+      const stub_n0n1 = sinon.stub().returns(true);
+      const stub_n1n2 = sinon.stub().returns(true);
+      const stub_n2n3 = sinon.stub().returns(true);
+
+      plan.addOrigin('main', 'n0');
+      plan.setNextRoute('n0', 'n1', stub_n0n1);
+      plan.setNextRoute('n1', 'n2', stub_n1n2);
+      plan.setNextRoute('n2', 'n3', stub_n2n3);
+
+      const route_n0n1 = plan.getRoutes().filter(e => `${e.source}${e.target}${e.name}` === 'n0n1next')[0];
+      const route_n1n2 = plan.getRoutes().filter(e => `${e.source}${e.target}${e.name}` === 'n1n2next')[0];
+
+      const output = plan.traverseRoutes(context, {
+        startWaypoint: 'n0',
+        routeName: 'next',
+      });
+
+      expect(output).to.deep.equal([route_n0n1, route_n1n2, makeLeafNode('n2')]);
     });
   });
 });
