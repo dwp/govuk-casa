@@ -1,13 +1,17 @@
 const chai = require('chai');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
+const proxyquire = require('proxyquire');
 
 const { expect } = chai;
 chai.use(sinonChai);
 
+const logger = require('../../helpers/logger-mock.js');
 const { request, response } = require('../../helpers/express-mocks.js');
 
 const mwSeed = require('../../../../middleware/session/seed.js');
+
+const { DEFAULT_CONTEXT_ID } = require('../../../../lib/enums.js');
 
 const JourneyContext = require('../../../../lib/JourneyContext.js');
 
@@ -21,7 +25,7 @@ describe('Middleware: session/expiry', () => {
     mockRequest = request();
     mockResponse = response();
     stubNext = sinon.stub();
-    middleware = mwSeed();
+    middleware = mwSeed(logger())[1];
   });
 
   it('should create a req.casa.journeyContext JourneyContext property', () => {
@@ -34,43 +38,28 @@ describe('Middleware: session/expiry', () => {
     expect(stubNext).to.be.calledOnceWithExactly();
   });
 
-  describe('should create JourneyContext instance with data held in session', () => {
-    let spyFromObject;
+  it('should initialise the journey context session', () => {
+    const initContextStoreSpy = sinon.spy(JourneyContext, 'initContextStore');
+    middleware(mockRequest, mockResponse, stubNext);
+    expect(initContextStoreSpy).to.be.calledOnceWithExactly(mockRequest.session);
+    initContextStoreSpy.restore();
+  });
 
-    beforeEach(() => {
-      spyFromObject = sinon.spy(JourneyContext, 'fromObject');
+  it('should fallback to the default context if the requested ID is invalid', () => {
+    mockRequest = request({
+      query: { contextid: 'invalid' },
     });
+    middleware(mockRequest, mockResponse, stubNext);
+    expect(mockRequest.casa).to.have.property('journeyContext').that.is.an.instanceof(JourneyContext);
+    expect(mockRequest.casa.journeyContext.identity.id).to.equal(DEFAULT_CONTEXT_ID);
+  });
 
-    afterEach(() => {
-      spyFromObject.restore();
+  it('should fallback to the default context if the requested one cannot be found', () => {
+    mockRequest = request({
+      query: { contextid: '00000000-0000-0000-0000-000000000000' },
     });
-
-    it('set journey data', () => {
-      mockRequest.session.journeyContext = {
-        data: {
-          test: 'data',
-        },
-      };
-      middleware(mockRequest, mockResponse, stubNext);
-      expect(spyFromObject).to.be.calledOnceWith(sinon.match({
-        data: {
-          test: 'data',
-        },
-      }));
-    });
-
-    it('set journey validation errors', () => {
-      mockRequest.session.journeyContext = {
-        validation: {
-          test: 'data',
-        },
-      };
-      middleware(mockRequest, mockResponse, stubNext);
-      expect(spyFromObject).to.be.calledOnceWith(sinon.match({
-        validation: {
-          test: 'data',
-        },
-      }));
-    });
+    middleware(mockRequest, mockResponse, stubNext);
+    expect(mockRequest.casa).to.have.property('journeyContext').that.is.an.instanceof(JourneyContext);
+    expect(mockRequest.casa.journeyContext.identity.id).to.equal(DEFAULT_CONTEXT_ID);
   });
 });

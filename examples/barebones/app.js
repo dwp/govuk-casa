@@ -22,14 +22,17 @@ const casaApp = configure(app, {
     dirs: [ path.resolve(__dirname, 'locales') ],
     locales: [ 'en', 'cy' ]
   },
-  allowPageEdit: true
+  allowPageEdit: true,
+  mountController: function (callback) {
+    require('./routes/static-assets')(this.expressRouter);
+    callback();
+  },
 });
 
 // Custom, non-journey routes handlers.
 // Add any routes that are not involved in the data-gathering journey
 // (e.g. feedback page, welcome/'before you start' page, other info pages, etc)
 // should be declared before you load the CASA page/journey definitions.
-require('./routes/static-assets')(casaApp.router);
 require('./routes/index')(casaApp.router);
 require('./routes/feedback')(casaApp.router, casaApp.csrfMiddleware, casaApp.config.mountUrl);
 require('./routes/complete')(casaApp.router);

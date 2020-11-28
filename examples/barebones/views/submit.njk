@@ -9,6 +9,7 @@
 {% block content %}
   <form action="{{ casa.mountUrl }}submit" method="post">
     <input type="hidden" name="_csrf" value="{{ casa.csrfToken }}">
+    <input type="hidden" name="contextid" value="{{ activeContextId }}">
 
     <h1 class="govuk-heading-xl">{{ t('submit:h1') }}</h1>
 

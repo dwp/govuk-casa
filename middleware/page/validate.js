@@ -1,5 +1,6 @@
 const createLogger = require('../../lib/Logger');
 const Validation = require('../../lib/validation/index.js');
+const JourneyContext = require('../../lib/JourneyContext.js');
 const { executeHook } = require('./utils.js');
 
 module.exports = (pageMeta = {}) => (req, res, next) => {
@@ -39,7 +40,7 @@ module.exports = (pageMeta = {}) => (req, res, next) => {
       // Validation has passed, so clear any validation errors currently stored
       // against the page and persist to session
       req.casa.journeyContext.clearValidationErrorsForPage(pageId);
-      req.session.journeyContext = req.casa.journeyContext.toObject();
+      JourneyContext.putContext(req.session, req.casa.journeyContext);
 
       // The next middleware handler is responsible for moving the user onto the
       // correct next waypoint.
@@ -59,7 +60,7 @@ module.exports = (pageMeta = {}) => (req, res, next) => {
       // are not in valid format, an exception is thrown by `setValidationErrorsForPage`
       logger.trace('Storing validation errors on waypoint %s', pageId);
       req.casa.journeyContext.setValidationErrorsForPage(pageId, errors);
-      req.session.journeyContext = req.casa.journeyContext.toObject();
+      JourneyContext.putContext(req.session, req.casa.journeyContext);
 
       next();
     });

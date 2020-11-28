@@ -1,6 +1,6 @@
-const { URLSearchParams } = require('url');
 const createLogger = require('../../lib/Logger.js');
 const { executeHook } = require('./utils.js');
+const { parseRequest, createGetRequest } = require('../../lib/utils/index.js');
 
 module.exports = (pageMeta = {}, mountUrl = '/', useStickyEdit = false) => (req, res, next) => {
   const logger = createLogger('page.journey-continue');
@@ -8,8 +8,6 @@ module.exports = (pageMeta = {}, mountUrl = '/', useStickyEdit = false) => (req,
   const pageId = pageMeta.id;
 
   req.casa = req.casa || Object.create(null);
-
-  const { journeyOrigin, plan: journey } = req.casa;
 
   // If the page has errors, traversal must stop here until those errors are
   // resolved. It is the responsibility of the next middleware to deal with
@@ -19,19 +17,36 @@ module.exports = (pageMeta = {}, mountUrl = '/', useStickyEdit = false) => (req,
     return next();
   }
 
+  const { journeyOrigin, plan: journey } = req.casa;
+
+  const commonRedirectAttributes = {
+    // undefined because we're including the mountUrl in the waypoint portion of the request builder
+    mountUrl: undefined,
+    editOrigin: req.editOriginUrl,
+    contextId: req.casa.journeyContext.identity.id,
+  };
+
   function calculateNextWaypoint() {
     let nextWaypoint;
-    // const waypointPrefix = `${mountUrl}/${journey.guid || ''}/`.replace(/\/+/g, '/');
+
     if (req.inEditMode) {
-      // When in edit mode, the user should be redirected back to the 'review'
-      // UI (denoted by the `req.editOriginUrl`) after submitting their update
-      // unless - due to the journey data being altered - the waypoints along
-      // the journey have changed. If the user hasn't yet reached the 'review'
-      // step, the 'journey' middleware will ensure they are redirected back to
-      // the correct next waypoint.
+      // Extract just the waypoint portion of the editOriginUrl, for comparison
+      // to waypoint during traversal. This will include the mountUrl.
+      const editOriginWaypoint = req.inEditMode && req.editOriginUrl ? `/${parseRequest({
+        method: req.method,
+        url: req.editOriginUrl,
+        query: {},
+        body: {},
+      }).waypoint}` : '';
+
+      // When in edit mode, the user should be redirected back to
+      // `req.editOriginUrl` after submitting their update unless - due to the
+      // journey data being altered - the waypoints along the journey have
+      // changed. If the user hasn't yet reached the edit origin url, the
+      // 'rails' middleware will ensure they are redirected back to the
+      // correct next waypoint.
       let nextOrigin = journeyOrigin.originId || '';
-      const editOriginUrl = req.editOriginUrl || '';
-      nextWaypoint = editOriginUrl;
+      nextWaypoint = editOriginWaypoint;
       logger.trace('Comparing pre-gather traversal snapshot (starting from origin %s)', nextOrigin);
 
       // Grab the list of traversed waypoints as it was before gathering, and
@@ -53,8 +68,8 @@ module.exports = (pageMeta = {}, mountUrl = '/', useStickyEdit = false) => (req,
         const waypointUrl = `${mountUrl}/${currentTraversalSnapshot[i].label.sourceOrigin || nextOrigin}/${currentTraversalSnapshot[i].source}`.replace(/\/+/g, '/');
 
         // Stop testing if we've arrived at the edit origin waypoint
-        if (editOriginUrl.replace(/\/+$/g, '') === waypointUrl) {
-          nextWaypoint = editOriginUrl;
+        if (editOriginWaypoint === waypointUrl) {
+          nextWaypoint = editOriginWaypoint;
           break;
         }
 
@@ -71,7 +86,7 @@ module.exports = (pageMeta = {}, mountUrl = '/', useStickyEdit = false) => (req,
             // the next waypoint in the current snapshot. Otherwise, the user will
             // be left on the same after submitting the form.
             if ((compareIndex > compareIndexMax) && (i < l - 1)) {
-              nextWaypoint = `${mountUrl}/${nextOrigin}/${currentTraversalSnapshot[i + 1].source}`;
+              nextWaypoint = `${mountUrl}/${nextOrigin}/${currentTraversalSnapshot[i + 1].source}`.replace(/\/+/g, '/');
               nextOrigin = currentTraversalSnapshot[i + 1].label.targetOrigin || nextOrigin;
             }
 
@@ -82,10 +97,11 @@ module.exports = (pageMeta = {}, mountUrl = '/', useStickyEdit = false) => (req,
 
       // Ensure the user remains in edit mode after redirecting, unless they're
       // being sent back to the edit origin anyway
-      if (useStickyEdit && nextWaypoint !== editOriginUrl) {
-        const urlEditParams = new URLSearchParams({ edit: '', editorigin: editOriginUrl });
-        nextWaypoint += `?${urlEditParams.toString()}`;
-      }
+      nextWaypoint = createGetRequest({
+        ...commonRedirectAttributes,
+        waypoint: nextWaypoint,
+        editMode: useStickyEdit && nextWaypoint !== editOriginWaypoint,
+      });
     } else if (journey.containsWaypoint(pageId)) {
       logger.trace('Check waypoint %s can be reached (journey guid = %s)', pageId, journeyOrigin.originId);
       const routes = journey.traverseNextRoutes(req.casa.journeyContext, {
@@ -103,12 +119,18 @@ module.exports = (pageMeta = {}, mountUrl = '/', useStickyEdit = false) => (req,
       } else {
         nextWaypoint = req.originalUrl;
       }
+
+      nextWaypoint = createGetRequest({
+        ...commonRedirectAttributes,
+        waypoint: nextWaypoint,
+        editMode: false,
+      });
     } else {
       logger.trace('Waypoint %s not in journey %s. Returning to original url', pageId, journeyOrigin.originId);
       nextWaypoint = req.originalUrl;
     }
 
-    return `/${nextWaypoint}`.replace(/\/+/g, '/');
+    return nextWaypoint;
   }
 
   function redirect(url) {

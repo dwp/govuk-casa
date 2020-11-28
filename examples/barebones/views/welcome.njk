@@ -18,4 +18,12 @@
       isStartButton: true
     }) }}
   </p>
+
+  <p class="govuk-body">
+    {{ govukButton({
+      text: 'Try an alternative context',
+      href: casa.mountUrl + "personal-details?contextid=" + demoContextId,
+      isStartButton: true
+    }) }}
+  </p>
 {% endblock %}

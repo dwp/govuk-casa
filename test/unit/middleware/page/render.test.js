@@ -74,6 +74,7 @@ describe('Middleware: page/render', () => {
         inEditMode: true,
         editOriginUrl: '/test-origin-url',
         editSearchParams: 'test=params',
+        activeContextId: undefined,
       }, sinon.match.func);
     });
 

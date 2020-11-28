@@ -1,8 +1,9 @@
-const mwBodyParser = require('../../lib/commonBodyParser.js');
+const commonBodyParser = require('../../lib/commonBodyParser.js');
 const createLogger = require('../../lib/Logger.js');
+const JourneyContext = require('../../lib/JourneyContext.js');
 const { executeHook, extractSessionableData, runGatherModifiers } = require('./utils.js');
 
-module.exports = (pageMeta = {}) => [mwBodyParser, (req, res, next) => {
+module.exports = (pageMeta = {}) => [commonBodyParser, (req, res, next) => {
   const logger = createLogger('page.gather');
   logger.setSessionId(req.session.id);
 
@@ -32,7 +33,7 @@ module.exports = (pageMeta = {}) => [mwBodyParser, (req, res, next) => {
     logger.trace('Storing session data for %s', pageId);
     req.casa.journeyContext.setDataForPage(pageMeta, data);
     req.casa.journeyContext.removeValidationStateForPage(pageId);
-    req.session.journeyContext = req.casa.journeyContext.toObject();
+    JourneyContext.putContext(req.session, req.casa.journeyContext);
   }
 
   // Promise

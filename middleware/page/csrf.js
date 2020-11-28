@@ -6,7 +6,7 @@
  */
 
 const csrf = require('csurf');
-const mwBodyParser = require('../../lib/commonBodyParser.js');
+const commonBodyParser = require('../../lib/commonBodyParser.js');
 
 const mwCsrfProtection = csrf({
   cookie: false,
@@ -27,11 +27,11 @@ const mwCsrfSupplyToken = (req, res, next) => {
   next();
 };
 
-// All of theses middleware are required to run in this sequence, so for
+// All of these middleware are required to run in this sequence, so for
 // convenience they are returned as an array so they can be added to Express
-// middleware chain as one entity
+// middleware chain as one entity.
 module.exports = [
-  mwBodyParser,
+  commonBodyParser,
   mwCsrfProtection,
   mwCsrfSupplyToken,
 ];

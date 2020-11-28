@@ -1,10 +1,16 @@
 # Breaking Changes
 
 The following changes are **mandatory**:
-- [Breaking Changes](#breaking-changes)
-  - [Mandatory changes](#mandatory-changes)
-    - [Route conditions](#route-conditions)
-    - [Date validation](#date-validation)
+- [Check your default route condition behaviours](#route-conditions)
+- [Date validation](#date-validation)
+- [Stop using `req.session.journeyContext`](#stop-using-the-session-journey-context)
+- [Replace `makeEditLink()` calls](#replace-makeeditlink-calls)
+- [Remove `parseOriginWaypointInUrl()` calls](#remove-parseOriginWaypointInUrl-scalls)
+- [Replace `editSearchParams` with generated parameters and update skip links](#replace-editSearchParams-with-generated-parameters-and-update-skip-links)
+- [Update middleware function calls](#update-middleware-function-calls)
+
+The following changes are **optional**:
+- [Add active context ID to journey form macro](#add-active-context-id-to-form)
 
 --------------------------------------------------------------------------------
 
@@ -61,3 +67,165 @@ r.dateObject.bind({
 If you are working with `luxon` and want to pass in a `luxon.Duration` object you can. However, in most cases using plain objects is recommended for flexibility and simplicity.
 
 If you pass the `now` parameter into your date validation, you'll need to pass a `luxon.DateTime` object instead of a `moment` object.
+
+### Stop using the session journey context
+
+If you refer to `req.session.journeyContext` anywhere in your code, this will no longer be guaranteed to contain an up-to-date representation of the user's active journey context.
+
+Instead, you should only ever use `req.casa.journeyContext` and write any changes back to the session using `JourneyContext.putContext()`. For example:
+
+```javascript
+/* OLD METHOD */
+
+// Update the request object
+req.casa.journeyContext.setDataForPage('a-waypoint-id', { /* some data */ });
+req.casa.journeyContext.setValidationErrorsForPage('a-waypoint-id', { /* errors */});
+
+// Update the session with a plain object representation of the journey context
+req.session.journeyContext = req.casa.journeyContext.toObject();
+
+// Before redirecting, persist changes to session
+req.session.save(callback);
+```
+
+```javascript
+/* NEW METHOD */
+
+// Update the request object
+req.casa.journeyContext.setDataForPage('a-waypoint-id', { /* some data */ });
+req.casa.journeyContext.setValidationErrorsForPage('a-waypoint-id', { /* errors */});
+
+// Update the session with a plain object representation of the journey context
+JourneyContext.putContext(req.session, req.casa.journeyContext);
+
+// Before redirecting, persist changes to session
+req.session.save(callback);
+```
+
+### Replace `makeEditLink()` calls
+
+`makeEditLink()` is now [`createGetRequest()`](lib/utils/createGetRequest.js) and its function signature has changed.
+
+This new function should be used everywhere that you want to generate links within your journey, e.g.
+
+```javascript
+createGetRequest({
+  mountUrl: res.locals.casa.mountUrl,
+  waypoint: `/absolute/url/to/waypoint/including/waypoint-origin`,
+  skipTo: `waypoint`, // Use this to generate a "skipto" link
+  editMode: true,
+  editOrigin: '/url/to/which/user/is/returned/after/editing',
+  contextId: req.casa.journeyContext.identity.id, // The current context ID
+});
+```
+
+In nunjucks, a [`makeLink()` function](middleware/page/prepare-request.js) is available but uses `createGetRequest()` under the hood. Its function signature has also changed. It is request-specific so has the following arguments bound to it:
+
+* `mountUrl`
+* `waypoint` (current waypoint)
+* `contextId` (current context ID)
+* `editMode` (current edit mode)
+* `editOriginUrl` (current edit origin url)
+
+
+### Remove `parseOriginWaypointInUrl()` calls
+
+The `parseOriginWaypointInUrl()` function has been removed.
+
+
+### Replace `editSearchParams` with generated parameters and update skip links
+
+The `req.editSearchParams` has been removed. This was a convenience string for appending to custom built URLs. However, you will now need to generate the same string using `createGetRequest()` (fe.g. either in your middleware, or the equivalent nunjucks function). This is likely only to affect those that were using the "sticky edit" mode in their application.
+
+For example, where you once may have used it as so:
+
+```javascript
+link = `?skipto=${waypoint}${editSearchParams}`
+```
+
+You woud now do this:
+
+```javascript
+const { utils: { createGetRequest }} = require('@dwp/govuk-casa');
+
+link = createGetRequest({
+  skipTo: waypoint,
+  editMode: req.inEditMode,
+  editOrigin: req.editOriginUrl,
+  contextId: req.casa.journeyContext.identity.id,
+});
+```
+
+Or this (in Nunjucks):
+
+```nunjucks
+<a href="{{ makeLink({ skipTo: waypoint }) }}">Go here</a>
+```
+
+
+### Update middleware function calls
+
+This only affects those that are utilising CASA's middleware function on their own custom routes.
+
+The `prepare-request` and `edit-mode` middleware functions have changed their signature, and now require a `mountUrl` argument:
+
+* `middlewarePrepareRequest(mountUrl, plan)`
+* `middlewareEditMode(mountUrl, plan)`
+
+
+## Optional changes
+
+### Add active context id to form
+
+If you are making use of [Ephemeral Contexts](docs/ephemeral-contexts.md), the CASA journey form macro will need to be aware of which context you're using at any point.
+
+To enable this, simply add the `activeContextId` parameter when calling the `casaJourneyForm()` macro. For example:
+
+```nunjucks
+{% extends "casa/layouts/journey.njk" %}
+
+{% from "components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "casa/components/journey-form/macro.njk" import casaJourneyForm with context %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column">
+    {% if formErrorsGovukArray %}
+      {{ govukErrorSummary({
+        titleText: t("error:summary.h1"),
+        errorList: formErrorsGovukArray
+      }) }}
+    {% endif %}
+
+    {% call casaJourneyForm({
+      csrfToken: casa.csrfToken,
+      inEditMode: inEditMode,
+      editOriginUrl: editOriginUrl,
+      activeContextId: activeContextId
+    }) %}
+      {% block journey_form %}{% endblock %}
+    {% endcall %}
+  </div>
+</div>
+{% endblock %}
+```
+
+The `activeContextId` template variable is only available to pages rendered using CASA's get/post rendering middleware, so you will need to manually make it available to any custom forms using something like this:
+
+```javascript
+router.get('/my-form', csrf, function(req, res, next) {
+  res.render('my-form.njk', {
+    activeContextId: req.casa.journeyContext.isDefault() ? undefined : req.casa.journeyContext.identity.id,
+  });
+});
+```
+
+And include it in your form as so.
+
+```nunjucks
+<form action="{{ casa.mountUrl }}submit" method="post">
+  <input type="hidden" name="_csrf" value="{{ casa.csrfToken }}">
+  <input type="hidden" name="contextid" value="{{ activeContextId }}">
+  ...
+</form>
+```

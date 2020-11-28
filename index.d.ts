@@ -98,3 +98,14 @@ export function configure(app: object, config: object): CasaApp;
 
 export { ValidationRules as validationRules } from './lib/validation/rules/ValidationRules';
 export function simpleFieldValidation([]): void;
+
+/* ---------------------------------------------------------------- Utilities */
+
+export interface CasaRequestObject {
+  waypoint?: string,
+  editMode?: boolean,
+  editOrigin?: string,
+  contextId?: string,
+  mountUrl?: string,
+  skipTo?: string,
+}

@@ -1,6 +1,7 @@
 const chai = require('chai');
 const sinonChai = require('sinon-chai');
 const sinon = require('sinon');
+const proxyquire = require('proxyquire');
 
 const { expect } = chai;
 chai.use(sinonChai);
@@ -9,7 +10,9 @@ const { request, response } = require('../../helpers/express-mocks.js');
 const { data: journeyContext } = require('../../helpers/journey-mocks.js');
 const JourneyContext = require('../../../../lib/JourneyContext.js');
 
-const mwSkip = require('../../../../middleware/page/skip.js');
+const mwSkip = proxyquire('../../../../middleware/page/skip.js', {
+  '../../lib/JourneyContext.js': journeyContext,
+});
 
 describe('Middleware: page/skip', () => {
   let stubRequest;
@@ -69,10 +72,9 @@ describe('Middleware: page/skip', () => {
     stubRequest.casa.journeyWaypointId = 'source-waypoint';
     stubRequest.query.skipto = 'target-waypoint';
     stubRequest.casa.journeyContext = new JourneyContext();
-    // stubRequest.journeyContext.getData = sinon.stub().returns('test-data');
     middleware(stubRequest, stubResponse, stubNext);
 
-    expect(stubRequest.session.journeyContext.data).to.eql({
+    expect(stubRequest.casa.journeyContext.data).to.eql({
       'source-waypoint': { __skipped__: true },
     });
     expect(stubRequest.session.save).to.be.calledOnceWithExactly(sinon.match.func);

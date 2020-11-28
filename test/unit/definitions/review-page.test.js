@@ -87,18 +87,18 @@ describe('definitions: review.page', () => {
 
     it('should set the correct "reviewBlocks" template variable', () => {
       prerender = reviewPage({
-        testPage0: {
+        'test-page-0': {
           reviewBlockView: 'test-view',
         },
-        testPage1: Object.create(null),
+        'test-page-1': Object.create(null),
       }).hooks.prerender;
       mockRequest.editOriginUrl = 'test-origin';
       mockRequest.casa.journeyOrigin = { originId: '', waypoint: '' };
-      mockRequest.casa.plan.traverse = sinon.stub().returns(['testPage0', 'testPage1']);
+      mockRequest.casa.plan.traverse = sinon.stub().returns(['test-page-0', 'test-page-1']);
       prerender(mockRequest, mockResponse, stubNext);
       expect(mockResponse.locals).has.property('reviewBlocks').that.deep.eql([{
-        waypointId: 'testPage0',
-        waypointEditUrl: '/test-mount/testPage0?edit&editorigin=test-origin',
+        waypointId: 'test-page-0',
+        waypointEditUrl: '/test-mount/test-page-0?edit=&editorigin=%2Ftest-origin',
         reviewBlockView: 'test-view',
       }]);
     });

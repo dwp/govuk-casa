@@ -15,14 +15,16 @@ const router = () => {
   return routerObj;
 };
 
-const request = () => ({
+const request = (overrides = {}) => ({
   headers: {},
   method: 'GET',
+  url: '/',
   query: {},
   session: {
     save: sinon.stub().callsFake(cb => cb()),
     destroy: sinon.stub().callsFake(cb => (cb())),
   },
+  ...overrides,
 });
 
 const response = () => {

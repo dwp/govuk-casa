@@ -4,17 +4,21 @@ import PageMeta from '../index';
 export = JourneyContext;
 
 declare class JourneyContext {
-  constructor(data?: object, validation?: { [key: string]: JourneyContextPageValidation }, nav?: object);
+  constructor(data?: object, validation?: { [key: string]: JourneyContextPageValidation }, nav?: object, identity?: object);
 
   toObject(): JourneyContextObject;
 
   static fromObject(obj: JourneyContextObject): JourneyContext;
 
+  static fromContext(context: JourneyContext): JourneyContext;
+
   public data: object;
 
-  public validation: object;
+  public validation: JourneyContextPageValidation;
 
   public nav: JourneyContextNavObject;
+
+  public identity: JourneyContextIdentityObject;
 
   getData(): object;
 
@@ -41,12 +45,41 @@ declare class JourneyContext {
   setNavigationLanguage(language: string): JourneyContext;
 
   isPageValid(pageId: string): boolean;
+
+  getIdentity(): JourneyContextIdentityObject;
+
+  isDefault(): boolean;
+
+  static initContextStore(session: object): void;
+
+  static validateContextId(id: string): string;
+
+  static getContextById(session: object, id: string): JourneyContext;
+
+  static getContextByName(session: object, name: string): JourneyContext;
+
+  static getContextsByTag(session: object, tag: string): JourneyContext;
+
+  static getContexts(session: object): Array<JourneyContext>;
+
+  static putContext(session: object, context:JourneyContext): void;
+
+  static removeContext(session: object, context:JourneyContext): void;
+
+  static removeContextById(session: object, id:string): void;
+
+  static removeContextByName(session: object, name:string): void;
+
+  static removeContextsByTag(session: object, tag:string): void;
+
+  static removeContexts(session: object): void;
 }
 
 interface JourneyContextObject {
-  data: object;
-  validation: JourneyContextPageValidation;
-  nav: object;
+  data?: object;
+  validation?: JourneyContextPageValidation;
+  nav?: JourneyContextNavObject;
+  identity?: JourneyContextIdentityObject;
 }
 
 interface JourneyContextPageValidation {
@@ -55,4 +88,10 @@ interface JourneyContextPageValidation {
 
 interface JourneyContextNavObject {
   language?: string;
+}
+
+interface JourneyContextIdentityObject {
+  id: String,
+  name?: String,
+  tags?: Array<String>,
 }

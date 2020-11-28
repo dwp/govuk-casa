@@ -5,6 +5,9 @@ module.exports = (pageMeta = {}) => (req, res, next) => {
   const logger = createLogger('page.render');
   logger.setSessionId(req.session.id);
   const pageId = pageMeta.id;
+  const activeContextId = req.casa.journeyContext.isDefault()
+    ? undefined
+    : req.casa.journeyContext.identity.id;
 
   req.casa = req.casa || Object.create(null);
 
@@ -23,6 +26,7 @@ module.exports = (pageMeta = {}) => (req, res, next) => {
       inEditMode: req.inEditMode,
       editOriginUrl: req.editOriginUrl,
       editSearchParams: req.editSearchParams,
+      activeContextId,
     }, renderErrorCallback);
   }
 
@@ -48,11 +52,18 @@ module.exports = (pageMeta = {}) => (req, res, next) => {
       inEditMode: req.inEditMode,
       editOriginUrl: req.editOriginUrl,
       editSearchParams: req.editSearchParams,
+      activeContextId,
     }, renderErrorCallback);
   }
 
   return executeHook(logger, req, res, pageMeta, 'prerender').then(() => {
-    logger.trace('Rendering view for %s (editmode=%s, method=%s)', pageId, req.inEditMode ? 'true' : 'false', req.method);
+    logger.trace(
+      'Rendering view for %s (editmode=%s, method=%s, contextId=%s)',
+      pageId,
+      req.inEditMode ? 'true' : 'false',
+      req.method,
+      req.casa.journeyContext.identity.id,
+    );
     if (req.method.toLowerCase() === 'post') {
       renderPOST();
     } else {

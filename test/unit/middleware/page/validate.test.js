@@ -134,6 +134,9 @@ describe('Middleware: page/validate', () => {
       field0: [],
     };
     stubExecuteHook.rejects(testErrors);
+    mockRequest.casa.journeyContext = new JourneyContext();
+    mockRequest.casa.journeyContext.identity.id = '123e4567-e89b-12d3-a456-426614174000';
+    mockRequest.casa.journeyContext.setValidationErrorsForPage = sinon.stub();
     await middleware(mockRequest, mockResponse, stubNext);
     expect(mockRequest.casa.journeyContext.setValidationErrorsForPage).to.be.calledWithExactly(
       'test-id',

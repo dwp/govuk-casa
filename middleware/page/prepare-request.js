@@ -6,53 +6,72 @@
  *  Plan plan = The grand Plan.
  */
 
-const createLogger = require('../../lib/Logger.js');
-const { parseOriginWaypointInUrl } = require('../../lib/Util.js');
+const { parseRequest, createGetRequest } = require('../../lib/utils/index.js');
 
-module.exports = (plan) => (req, res, next) => {
-  const logger = createLogger('page.prepare-request');
-  logger.setSessionId(req.session.id);
+function getSingleOriginMeta(origins, casaRequest) {
+  // Even though single-origin Plans won't generally generate URLs with the
+  // origin ID included, there is a chance that could happen. So here we're
+  // making sure to ignore it if it's there.
+  const [originOrWaypoint, waypoint] = casaRequest.waypoint.split('/');
 
-  req.casa = req.casa || Object.create(null);
+  return {
+    // Set blank originId to prevent generated URLs containing an origin
+    origin: { ...origins[0], originId: '' },
+    waypoint: originOrWaypoint === origins[0].originId ? waypoint : originOrWaypoint,
+  };
+}
 
-  // Determine which origin is being requested in the URL.
-  // Bear in mind that the router's mount URL will _not_ be included in the
-  // `req.url`, so we don't need to do any extra work to remove it, ref:
-  // https://expressjs.com/en/api.html#req.originalUrl
-  // const userJourney = util.getJourneyFromUrl(userJourneys, req.url);
+function getMultiOriginMeta(origins, casaRequest) {
+  const [originId, waypoint] = casaRequest.waypoint.split('/');
+
+  return {
+    origin: origins.find((o) => o.originId === originId),
+    waypoint,
+  };
+}
+
+module.exports = (mountUrl, plan) => {
+  // Prepare for extracting metadata from each request
   const origins = plan.getOrigins();
-  let origin;
-  let waypoint;
-  if (origins.length === 1) {
-    const { waypoint: urlWaypoint } = parseOriginWaypointInUrl(req.url);
-    [origin] = origins;
-    origin.originId = ''; // to prevent urls being generated with the origin in them
-    waypoint = urlWaypoint;
-  } else {
-    const { originId: urlOriginId, waypoint: urlWaypoint } = parseOriginWaypointInUrl(req.url);
-    [origin] = origins.filter((o) => o.originId === urlOriginId);
-    waypoint = urlWaypoint;
-  }
+  const getOriginAndWaypoint = (origins.length === 1 ? getSingleOriginMeta : getMultiOriginMeta)
+    .bind(null, origins);
 
-  // Define read-only properties
-  Object.defineProperty(req.casa, 'plan', {
-    value: plan,
-    configurable: false,
-    enumerable: true,
-    writable: false,
-  });
-  Object.defineProperty(req.casa, 'journeyOrigin', {
-    value: origin,
-    configurable: false,
-    enumerable: true,
-    writable: false,
-  });
-  Object.defineProperty(req.casa, 'journeyWaypointId', {
-    value: waypoint,
-    configurable: false,
-    enumerable: true,
-    writable: false,
-  });
+  return (req, res, next) => {
+    // Extract the Plan origin and current waypoint from the request
+    const { origin, waypoint } = getOriginAndWaypoint(parseRequest(req));
 
-  next();
+    // Define read-only properties
+    req.casa = req.casa || Object.create(null);
+    Object.defineProperty(req.casa, 'plan', {
+      value: plan,
+      configurable: false,
+      enumerable: true,
+      writable: false,
+    });
+    Object.defineProperty(req.casa, 'journeyOrigin', {
+      value: origin,
+      configurable: false,
+      enumerable: true,
+      writable: false,
+    });
+    Object.defineProperty(req.casa, 'journeyWaypointId', {
+      value: waypoint,
+      configurable: false,
+      enumerable: true,
+      writable: false,
+    });
+
+    // Utility function for creating links from within templates
+    res.locals.makeLink = (args) => (createGetRequest({
+      mountUrl,
+      waypoint: `${origin.originId}/${waypoint}`,
+      contextId: req.casa.journeyContext.isDefault() ? '' : req.casa.journeyContext.identity.id,
+      editMode: req.inEditMode,
+      editOrigin: req.editOriginUrl,
+      ...args,
+    }));
+
+    // Next middleware
+    next();
+  };
 };

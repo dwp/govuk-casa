@@ -26,6 +26,7 @@ exports = module.exports = (function MyAppUserJourney() {
     'submit',
   );
 
+  // plan.addOrigin('main', 'personal-details');
   plan.addOrigin('main', 'personal-details');
 
   return plan;

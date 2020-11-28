@@ -14,5 +14,5 @@ const mwSeed = require('./seed.js');
 module.exports = (app, mountUrl, sessionExpiryController, sessionConfig) => {
   app.use(mwInit(logger, sessionConfig));
   app.use(mwExpiry(logger, mountUrl, sessionExpiryController, sessionConfig));
-  app.use(mwSeed());
+  app.use(mwSeed(logger));
 }

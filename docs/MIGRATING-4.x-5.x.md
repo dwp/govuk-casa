@@ -123,7 +123,7 @@ You can no longer use `/` in waypoint IDs. This is due to how the URLs are now p
 
 We have adopted a Graph-based data structure to describe user journeys under the hood, which are managed through a new [`Plan`](#../lib/Plan.js) class. The older `UserJourney.*` classes have all been rolled into this one `Plan` class.
 
-The API for defining journeys has changed drastically. See one of the [example projects](../examples/) for an idea of how journeys are now constructed, or the [documentation for building plans](plan.md) to understand how to construct your own plans from scratch.
+The API for defining journeys has changed drastically. See one of the [example projects](../examples/) for an idea of how journeys are now constructed, or the [documentation for building plans](docs/guides/2-plan.md) to understand how to construct your own plans from scratch.
 
 To ease migration, you can convert your existing `UserJourney.Map` instances to the new `Plan` model. At the end of your `journey.js` file, instead of returning an instance of `UserJourney.Map()`, return a call to `convertToPlan()`, for example:
 

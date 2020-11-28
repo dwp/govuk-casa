@@ -9,6 +9,7 @@ const { expect } = chai;
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
+const { DEFAULT_CONTEXT_ID } = require('../../../../lib/enums.js');
 const { request, response } = require('../../helpers/express-mocks.js');
 const { plan: journeyPlan } = require('../../helpers/journey-mocks.js');
 const logger = require('../../helpers/logger-mock.js');
@@ -40,6 +41,8 @@ describe('Middleware: page/journey-continue', () => {
           getData: sinon.stub().returns({}),
           getValidationErrors: sinon.stub().returns({}),
           hasValidationErrorsForPage: sinon.stub().returns(false),
+          isDefault: sinon.stub().returns(true),
+          identity: { id: DEFAULT_CONTEXT_ID },
         },
       },
     });
@@ -103,7 +106,7 @@ describe('Middleware: page/journey-continue', () => {
       });
       await middlewareWithConfig(mockRequest, mockResponse, stubNext);
       expect(mockResponse.status).to.be.calledOnceWithExactly(302);
-      expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-edit-origin/#');
+      expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-edit-origin#');
     });
 
     it('should return to the first changed waypoint if the traversal is altered', async () => {
@@ -115,11 +118,11 @@ describe('Middleware: page/journey-continue', () => {
       mockRequest.casa.preGatherTraversalSnapshot = ['page0', 'page1', 'page2'];
       mockRequest.casa.plan.traverseNextRoutes.returns([{
         source: 'page0',
-        target: 'changeA',
+        target: 'change-a',
         name: 'next',
         label: { sourceOrigin: undefined, targetOrigin: undefined }
       }, {
-        source: 'changeA',
+        source: 'change-a',
         target: 'changeB',
         name: 'next',
         label: { sourceOrigin: undefined, targetOrigin: undefined }
@@ -131,7 +134,7 @@ describe('Middleware: page/journey-continue', () => {
       }]);
       await middlewareWithConfig(mockRequest, mockResponse, stubNext);
       expect(mockResponse.status).to.be.calledOnceWithExactly(302);
-      expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/changeA#');
+      expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/change-a#');
     });
 
     it('should return to the first matching waypoint if the traversal is shortened', async () => {
@@ -278,18 +281,18 @@ describe('Middleware: page/journey-continue', () => {
         label: { sourceOrigin: undefined, targetOrigin: undefined }
       }, {
         source: 'page1',
-        target: 'changeA',
+        target: 'change-a',
         name: 'next',
         label: { sourceOrigin: 'previous-origin', targetOrigin: 'changed-origin' }
       }, {
-        source: 'changeA',
+        source: 'change-a',
         target: null,
         name: 'next',
         label: { sourceOrigin: undefined, targetOrigin: undefined }
       }]);
       await middlewareWithConfig(mockRequest, mockResponse, stubNext);
       expect(mockResponse.status).to.be.calledOnceWithExactly(302);
-      expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/changed-origin/changeA#');
+      expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/changed-origin/change-a#');
     });
   });
 
@@ -303,23 +306,23 @@ describe('Middleware: page/journey-continue', () => {
       mockRequest.casa.preGatherTraversalSnapshot = ['page0', 'page1', 'page2'];
       mockRequest.casa.plan.traverseNextRoutes.returns([{
         source: 'page0',
-        target: 'changeA',
+        target: 'change-a',
         name: 'next',
         label: { sourceOrigin: undefined, targetOrigin: undefined }
       }, {
-        source: 'changeA',
-        target: 'changeB',
+        source: 'change-a',
+        target: 'change-b',
         name: 'next',
         label: { sourceOrigin: undefined, targetOrigin: undefined }
       }, {
-        source: 'changeB',
+        source: 'change-b',
         target: null,
         name: 'next',
         label: { sourceOrigin: undefined, targetOrigin: undefined }
       }]);
       await middlewareWithConfig(mockRequest, mockResponse, stubNext);
       expect(mockResponse.status).to.be.calledOnceWithExactly(302);
-      expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/changeA?edit=&editorigin=%2Ftest-edit-origin%2F#');
+      expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/change-a?edit=&editorigin=%2Ftest-edit-origin%2F#');
     });
 
     it('should return to the first matching waypoint if the traversal is shortened', async () => {
@@ -359,18 +362,18 @@ describe('Middleware: page/journey-continue', () => {
         label: { sourceOrigin: undefined, targetOrigin: undefined }
       }, {
         source: 'page1',
-        target: 'changeA',
+        target: 'change-a',
         name: 'next',
         label: { sourceOrigin: 'previous-origin', targetOrigin: 'changed-origin' }
       }, {
-        source: 'changeA',
+        source: 'change-a',
         target: null,
         name: 'next',
         label: { sourceOrigin: undefined, targetOrigin: undefined }
       }]);
       await middlewareWithConfig(mockRequest, mockResponse, stubNext);
       expect(mockResponse.status).to.be.calledOnceWithExactly(302);
-      expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/changed-origin/changeA?edit=&editorigin=%2Ftest-edit-origin%2F#');
+      expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/changed-origin/change-a?edit=&editorigin=%2Ftest-edit-origin%2F#');
     });
   });
 
@@ -426,13 +429,13 @@ describe('Middleware: page/journey-continue', () => {
         { source: 'page2', target: null, name: 'next', label: { targetOrigin: undefined } },
       ]);
       await middlewareWithConfig(mockRequest, mockResponse, stubNext);
-      expect(mockResponse.status).to.be.calledOnceWithExactly(302);
-      expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/page2#');
       expect(mockLogger.trace).to.be.calledWithExactly(
         'Check waypoint %s can be reached (journey guid = %s)',
         'page2',
         '',
       );
+      expect(mockResponse.status).to.be.calledOnceWithExactly(302);
+      expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/page2#');
     });
   });
 });

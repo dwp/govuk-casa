@@ -2,6 +2,7 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 
 const JourneyContext = require('../../../lib/JourneyContext.js');
+const { DEFAULT_CONTEXT_ID } = require('../../../lib/enums.js');
 
 describe('JourneyContext', () => {
   describe('constructor()', () => {
@@ -188,6 +189,273 @@ describe('JourneyContext', () => {
       const data1 = new JourneyContext();
       data1.setNavigationLanguage('fr');
       expect(data1.nav).to.have.property('language').that.equals('fr');
+    });
+  });
+
+  describe('fromContext()', () => {
+    it('should throw if provided with an invalid source context', () => {
+      expect(() => {
+        JourneyContext.fromContext();
+      }).to.throw(TypeError, 'Source context must be a JourneyContext');
+    });
+
+    it('should generate a new JourneyContext, with a different ID', () => {
+      const source = new JourneyContext();
+      const newInstance = JourneyContext.fromContext(source);
+
+      expect(newInstance).to.be.an.instanceof(JourneyContext);
+      expect(newInstance.identity.id).not.be.empty.and.not.to.equal(source.identity.id);
+    });
+  });
+
+  describe('initContextStore()', () => {
+    it('should create a new context store with one default context', () => {
+      const session = {};
+      JourneyContext.initContextStore(session);
+
+      expect(session).to.have.property('journeyContextList').that.is.an('object');
+      expect(Object.keys(session.journeyContextList)).to.have.length(1);
+
+      const contexts = JourneyContext.getContexts(session);
+      expect(contexts[0].isDefault()).to.be.true;
+    });
+  });
+
+  describe('validateContextId', () => {
+    it('should return the default context ID if it is provided', () => {
+      expect(JourneyContext.validateContextId(DEFAULT_CONTEXT_ID)).to.equal(DEFAULT_CONTEXT_ID);
+    });
+
+    it('should throw if the provided ID is not a strind', () => {
+      expect(() => {
+        JourneyContext.validateContextId(123);
+      }).to.throw(TypeError, 'Context ID must be a string');
+    });
+
+    it('should throw if the provided ID is not a valid UUID', () => {
+      expect(() => {
+        JourneyContext.validateContextId('abcdefgh-e89b-12d3-a456-426614174000');
+      }).to.throw(SyntaxError, 'Context ID is not in the correct uuid format');
+    });
+  });
+
+  describe('getContextById()', () => {
+    it('should return undefined if no context is found', () => {
+      expect(JourneyContext.getContextById({}, 'unreal')).to.be.undefined;
+    });
+
+    it('should return a JourneyContext if found matching ID', () => {
+      const session = {};
+      JourneyContext.initContextStore(session);
+      JourneyContext.putContext(session, JourneyContext.fromObject({
+        identity: { id: 'test' }
+      }));
+
+      expect(JourneyContext.getContextById(session, 'test')).to.be.an.instanceof(JourneyContext)
+    });
+  });
+
+  describe('getContextByName()', () => {
+    it('should return undefined if no context is found', () => {
+      expect(JourneyContext.getContextByName({ journeyContextList: {} }, 'name')).to.be.undefined;
+    });
+
+    it('should return a JourneyContext if found matching name', () => {
+      const context = JourneyContext.getContextByName({
+        journeyContextList: { 'some-context': { identity: { name: 'test-name' } } }
+      }, 'test-name');
+
+      expect(context).to.be.an.instanceof(JourneyContext);
+      expect(context.identity.name).to.equal('test-name');
+    });
+  });
+
+  describe('getContextsByTag()', () => {
+    it('should return an empty array if no context is found', () => {
+      expect(JourneyContext.getContextsByTag({ journeyContextList: {} }, 'tag')).to.be.an('array').and.be.empty;
+    });
+
+    it('should return an array of JourneyContexts if found matching tag', () => {
+      const contexts = JourneyContext.getContextsByTag({
+        journeyContextList: { 'some-context': { identity: { tags: [ 'test-tag' ] } } }
+      }, 'test-tag');
+
+      expect(contexts).to.be.an('array');
+      expect(contexts).to.have.length(1);
+      expect(contexts[0]).to.be.an.instanceof(JourneyContext);
+      expect(contexts[0].identity.tags).to.include('test-tag');
+    });
+  });
+
+  describe('getContexts()', () => {
+    it('should return an empty array if no contexts are stored', () => {
+      expect(JourneyContext.getContexts({ journeyContextList: {} })).to.be.an('array').and.be.empty;
+    });
+
+    it('should return an array of all stored contexts', () => {
+      const contexts = JourneyContext.getContexts({
+        journeyContextList: {
+          first: { identity: { id: 'first' } },
+          second: { identity: { id: 'second' } },
+        },
+      });
+
+      expect(contexts).to.be.an('array').with.length(2);
+      expect(contexts[0].identity.id).to.equal('first');
+      expect(contexts[1].identity.id).to.equal('second');
+    });
+  });
+
+  describe('removeContext()', () => {
+    it('should leave the store unchanged if the context is not in the session store', () => {
+      const missingContextObject = { identity: { id: 'test-not-present' } };
+      const session = {
+        journeyContextList: {
+          test: { identity: { id: 'test' } },
+        }
+      };
+      const context = JourneyContext.fromObject(missingContextObject);
+      JourneyContext.removeContext(session, context);
+      expect(session.journeyContextList).to.deep.equal({
+        test: { identity: { id: 'test' } },
+      });
+    });
+
+    it('should remove the context from the session store if presents', () => {
+      const contextObject = { identity: { id: 'test' } };
+      const session = {
+        journeyContextList: {
+          [contextObject.identity.id]: contextObject,
+          another: { identity: { id: 'another' } },
+        }
+      };
+      const context = JourneyContext.fromObject(contextObject);
+      JourneyContext.removeContext(session, context);
+      expect(session.journeyContextList).to.deep.equal({
+        another: { identity: { id: 'another' } },
+      });
+    });
+  });
+
+  describe('removeContextById()', () => {
+    it('should leave the store unchanged if the context is not in the session store', () => {
+      const session = {
+        journeyContextList: {
+          test: { identity: { id: 'test' } },
+        }
+      };
+      JourneyContext.removeContextById(session, 'test-not-present');
+      expect(session.journeyContextList).to.deep.equal({
+        test: { identity: { id: 'test' } },
+      });
+    });
+
+    it('should remove the context from the session store if presents', () => {
+      const session = {
+        journeyContextList: {
+          test: { identity: { id: 'test' } },
+          another: { identity: { id: 'another' } },
+        }
+      };
+      JourneyContext.removeContextById(session, 'test');
+      expect(session.journeyContextList).to.deep.equal({
+        another: { identity: { id: 'another' } },
+      });
+    });
+  });
+
+  describe('removeContextByName()', () => {
+    it('should leave the store unchanged if the context is not in the session store', () => {
+      const session = {
+        journeyContextList: {
+          test: { identity: { name: 'test' } },
+        }
+      };
+      JourneyContext.removeContextByName(session, 'test-not-present');
+      expect(session.journeyContextList).to.deep.equal({
+        test: { identity: { name: 'test' } },
+      });
+    });
+
+    it('should remove the context from the session store if presents', () => {
+      const session = {
+        journeyContextList: {
+          test: { identity: { id: 'test', name: 'test-name' } },
+          another: { identity: { id: 'another', name: 'another' } },
+        }
+      };
+      JourneyContext.removeContextByName(session, 'test-name');
+      expect(session.journeyContextList).to.deep.equal({
+        another: { identity: { id: 'another', name: 'another' } },
+      });
+    });
+  });
+
+  describe('removeContextsByTag()', () => {
+    it('should leave the store unchanged if the contexts is not in the session store', () => {
+      const session = {
+        journeyContextList: {
+          test: { identity: { id: 'test', tags: [ 'test-tag' ] } },
+        }
+      };
+      JourneyContext.removeContextsByTag(session, 'test-not-present');
+      expect(session.journeyContextList).to.deep.equal({
+        test: { identity: { id: 'test', tags: [ 'test-tag' ] } } ,
+      });
+    });
+
+    it('should remove the contexts from the session store if presents', () => {
+      const session = {
+        journeyContextList: {
+          test: { identity: { id: 'test', tags: [ 'test-tag' ] } },
+          another: { identity: { id: 'another', tags: [ 'another' ] } },
+        }
+      };
+      JourneyContext.removeContextsByTag(session, 'test-tag');
+      expect(session.journeyContextList).to.deep.equal({
+        another: { identity: { id: 'another', tags: [ 'another' ] } },
+      });
+    });
+  });
+
+  describe('removeContexts()', () => {
+    it('should remove all contexts from the session store', () => {
+      const session = {
+        journeyContextList: {
+          test: { identity: { id: 'test', tags: [ 'test-tag' ] } },
+          another: { identity: { id: 'another', tags: [ 'another' ] } },
+        }
+      };
+      JourneyContext.removeContexts(session);
+      expect(session.journeyContextList).to.deep.equal({});
+    });
+  });
+
+  describe('putContext()', () => {
+    it('should throw if provided session is not an object', () => {
+      expect(() => JourneyContext.putContext()).to.throw(TypeError, 'Session must be an object');
+    });
+
+    it('should throw if context if not a JourneyContext', () => {
+      const session = {};
+      JourneyContext.initContextStore(session);
+      expect(() => JourneyContext.putContext(session, null)).to.throw(TypeError, 'Context must be an valid JourneyContext');
+    });
+
+    it('should throw if context does not have an id', () => {
+      const session = {};
+      JourneyContext.initContextStore(session);
+      expect(() => JourneyContext.putContext(session, new JourneyContext())).to.throw(TypeError, 'Context must have an ID before storing in session');
+    });
+
+    it('should initialise session if not already initialised', () => {
+      const initSpy = sinon.spy(JourneyContext, 'initContextStore');
+      const session = {};
+      const context = new JourneyContext();
+      context.identity.id = '123e4567-e89b-12d3-a456-426614174000';
+      JourneyContext.putContext(session, context);
+      expect(initSpy).to.be.calledOnceWithExactly(session);
+      initSpy.restore();
     });
   });
 });

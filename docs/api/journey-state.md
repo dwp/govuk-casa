@@ -172,7 +172,7 @@ req.casa.journeyContext.setDataForPage('a-waypoint-id', { /* some data */ });
 req.casa.journeyContext.setValidationErrorsForPage('a-waypoint-id', { /* errors */});
 
 // Update the session with a plain object representation of the journey context
-req.session.journeyContext = req.casa.journeyContext.toObject();
+JourneyContext.putContext(req.session, req.casa.journeyContext);
 ```
 
 And before you complete the response (or relinquish control to the next middleware layer), be sure that your session data is persisted by explcitly calling `session.save()`. For example, prior to redirecting:

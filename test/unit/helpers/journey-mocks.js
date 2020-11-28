@@ -1,5 +1,7 @@
 const sinon = require('sinon');
 
+const { DEFAULT_CONTEXT_ID } = require('../../../lib/enums.js');
+
 const map = () => ({
   guid: null,
   traverse: sinon.stub().returns([]),
@@ -16,7 +18,11 @@ const data = () => ({
   setValidationErrorsForPage: sinon.stub(),
   toObject: sinon.stub().returns({}),
   fromObject: sinon.stub().callsFake(() => data()),
+  isDefault: sinon.stub().returns(true),
+  identity: { id: DEFAULT_CONTEXT_ID },
 });
+
+data.putContext = sinon.stub().returns();
 
 const plan = () => ({
   containsWaypoint: sinon.stub().returns(false),

@@ -15,8 +15,9 @@
  *  /current-waypoint?skipto=next-waypoint.
  */
 
-const { URL, URLSearchParams } = require('url');
+const JourneyContext = require('../../lib/JourneyContext.js');
 const createLogger = require('../../lib/Logger.js');
+const { createGetRequest } = require('../../lib/utils/index.js');
 
 module.exports = (mountUrl) => (req, res, next) => {
   const logger = createLogger('page.skip');
@@ -47,19 +48,17 @@ module.exports = (mountUrl) => (req, res, next) => {
   });
 
   // Persist changes to session
-  req.session.journeyContext = req.casa.journeyContext.toObject();
+  JourneyContext.putContext(req.session, req.casa.journeyContext);
 
-  // Attach edit flags to the redirect URL, if present
-  let redirectUrl = `${mountUrl}/${journeyOrigin.originId || ''}/${skipto}`.replace(/\/+/g, '/');
-  if (req.inEditMode) {
-    try {
-      const urlEditParams = new URLSearchParams({ edit: '', editorigin: req.editOriginUrl });
-      const u = new URL(`${redirectUrl}?${urlEditParams}`, 'http://placeholder.test');
-      redirectUrl = u.pathname.replace(/^\/+$/, '').replace(/[:.]/g, '').replace(/\/+/g, '/') + u.search;
-    } catch (e) {
-      req.editOriginUrl = '';
-    }
-  }
+  // Attach edit and contextId flags to the redirect URL, if applicable
+  // const redirectUrl
+  const redirectUrl = createGetRequest({
+    mountUrl,
+    waypoint: `${journeyOrigin.originId || ''}/${skipto}`,
+    editMode: req.inEditMode,
+    editOrigin: req.editOriginUrl,
+    contextId: req.casa.journeyContext.identity.id,
+  });
 
   // Save session and send user on their way
   req.session.save((err) => {

@@ -2,7 +2,7 @@
 
 * [Available imports](api/imports.md)
 * [Initialising CASA](api/bootstrap.md)
-  * [Middleware sequencing](api/middleware.md)
+
 * [Logging](api/logging.md)
 * [Journey state and sessions](api/journey-state.md)
 * Multilingual suport

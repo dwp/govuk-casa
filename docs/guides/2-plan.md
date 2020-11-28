@@ -12,13 +12,13 @@ The simplest plan is a linear, one-page-after-the-other affair. However, you can
 ## Terminology
 
 * **Plan**: The sum of all _Waypoints_, _Routes_ and _Origins_
-* **Waypoint**: A visitable point in a user's journey through your plan (e.g. a UI that the user visits)
-* **Route**: A connection between any two waypoints in the plan; can be directed either two-ways, or one-way between the waypoints
+* **Waypoint**: A visitable point in a user's journey through your plan
+* **Route**: A connection between any two Waypoints in the plan; can be directed either two-ways, or one-way between the waypoints
 * **Origin**: A point within the Plan from which traversals will be started; at least one origin must be defined
 * **Condition**: A boolean decision of whether a particular route will be followed or not during a traversal
-* **Journey Context**: Some state information about the user's interaction with the plan (contains data and validation state)
+* **Journey Context**: Some state information about the user's interaction with the Plan (contains data and validation state)
 
-Whilst the terms _Waypoint_ and _Page_ are interchangeable for the most part, it is not always the case that a _Waypoint_ will lead to one of your page form templates being rendered. For example, the `submit` waypoint in the [example application](deploying.md#1-plan) is actually delivered to the user by some custom route handlers, rather than CASA's default page-handling middleware. It is due to this subtle semantic difference that we tend to prefer the term _Waypoint_ when describing points along a user's journey.
+Whilst the terms _Waypoint_ and _Page_ are interchangeable for the most part, you should think of _Waypoints_ as abstractions, and _Pages_ as concrete implementations (i.e. visible web pages) of the same concept.
 
 ## Simple linear routes
 
@@ -66,12 +66,11 @@ plan.addOrigin('main', 'a');
 
 ## Route conditions
 
-You can attach conditions against routes to control how the user traverses through them. By default, there are conditions attached to each route that will prevent them being traversed unless the "source" waypoint satisfies two conditions:
+You can attach conditions to routes that control how the user traverses through them. By default, there are conditions attached to each route that will prevent them being traversed unless the "source" waypoint satisfies these conditions:
 
-* The user has provided some data to store against that waypoint (i.e. they've submitted a non-empty form)
-* There are no validation errors on that data
+* The waypoint has been successfully validated (i.e. validation has been executed, and no errors found)
 
-However, you can override these defaults with your own functions, which must match the following signature:
+However, you can override this behaviour with your own conditional functions, which must match the following signature:
 
 ```javascript
 /**
@@ -80,7 +79,6 @@ However, you can override these defaults with your own functions, which must mat
  * @returns {boolean} whether the route should be followed or not
  */
 myCondition = (route, context) => {
-  // perform checks
   return trueOrFalse;
 };
 ```

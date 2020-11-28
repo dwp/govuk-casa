@@ -26,8 +26,8 @@ In summary, this is the order of execution:
    At this point, a new empty `Router` instance is mounted, currently without any routes defined. This is later returned by the CASA bootstrapping process so that you may mount your own custom middleware/routes on this router prior to mounting the CASA journey handlers.
 4.  **APPLICATION CODE**<br/>
    Now the initial boostrapping process is finished, control passees back to your application code. You can mount things on the main ExpressJS router, or on the `router` passed back by the [bootstrap process](bootstrap.md). Your code should then call the `loadDefinitions()` function returned by the bootstrapping process in order to continue applying the final CASA middleware mounting.
-5. **CASA "journey" middleware**<br/>
-   Once you call `loadDefinitions()`, the following are mounted:
+5. **CASA "page" middleware**<br/>
+   Once you call `loadDefinitions()`, the following are mounted for each page defined in your page meta:
    1. **Session timeout page** - [`routes/session-timeout.js`](../../routes/session-timeout.js)<br/>
       Set on the CASA journey router (i.e. `router.use(...)`). Simply renders the `session-timeout` page when `/session-timeout` route is requested.
    2. **Journey routing logic** - [`middleware/page/journey-rails.js`](../../middleware/page/journey-rails.js)<br/>

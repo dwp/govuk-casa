@@ -1,6 +1,6 @@
 # Deploying a CASA app
 
-Once you've prepared your [Plan](plan.md), created your [page templates](page-markup.md), and setup [field validation](field-validation.md), then you can bring them all together into your ExpressJS web application.
+Once you've prepared your [Plan](docs/guides/2-plan.md), created your [page templates](page-markup.md), and setup [field validation](field-validation.md), then you can bring them all together into your ExpressJS web application.
 
 After following the guides below, you'll have a basic service ready to run.
 
@@ -77,7 +77,7 @@ As we want our pages to all have the same custom layout (2-thirds + 1-third colu
       csrfToken: casa.csrfToken,
       inEditMode: inEditMode,
       editOriginUrl: editOriginUrl,
-      casaMountUrl: casa.mountUrl
+      activeContextId: casa.activeContextId
     }) %}
       {% block journey_form %}{% endblock %}
     {% endcall %}
@@ -90,7 +90,6 @@ As we want our pages to all have the same custom layout (2-thirds + 1-third colu
   </div>
 </div>
 {% endblock %}
-
 ```
 
 Now we can setup each of our journey pages, using the above layout. First, the `personal-info` page (markup, validators, locale):
@@ -305,7 +304,7 @@ module.exports = (router) => {
 {% endblock %}
 ```
 
-Next, a route and template for the final submission. This will use CASA's [CSRF (Cross Site Request Forgery) middleware helpers](api/middleware.md) to protect the submission form from external manipulation
+Next, a route and template for the final submission. This will use CASA's [CSRF (Cross Site Request Forgery) middleware helpers](docs/api/0-middleware.md) to protect the submission form from external manipulation
 
 ```javascript
 // routes/submit.js

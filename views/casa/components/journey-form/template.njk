@@ -4,6 +4,7 @@
   <input type="hidden" name="_csrf" value="{{ params.csrfToken }}" />
   {% if params.inEditMode %}<input type="hidden" name="edit" value="true" />{% endif %}
   {% if params.inEditMode and params.editOriginUrl %}<input type="hidden" name="editorigin" value="{{ params.editOriginUrl }}" />{% endif %}
+  {% if params.activeContextId %}<input type="hidden" name="contextid" value="{{ params.activeContextId }}" />{% endif %}
 
   {# FORM CONTENT HERE #}
   {{ caller() }}

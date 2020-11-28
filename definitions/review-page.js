@@ -2,9 +2,9 @@
  * Definition for the built-in 'review' page in CASA.
  */
 
-const qs = require('querystring');
 const JourneyContext = require('../lib/JourneyContext.js');
 const { rules, SimpleField } = require('../lib/validation/index.js');
+const { createGetRequest } = require('../lib/utils/index.js');
 
 module.exports = function reviewPageDefinition(pagesMeta = {}) {
   return {
@@ -42,9 +42,13 @@ module.exports = function reviewPageDefinition(pagesMeta = {}) {
           const meta = pagesMeta[waypointId] || Object.create(null);
           return meta.reviewBlockView ? {
             waypointId,
-            waypointEditUrl: `${res.locals.changeUrlPrefix}${waypointId}?edit&${qs.stringify({
-              editorigin: req.editOriginUrl,
-            })}`,
+            waypointEditUrl: createGetRequest({
+              mountUrl: res.locals.casa.mountUrl,
+              waypoint: `${journeyOrigin.originId || ''}/${waypointId}`,
+              editMode: true,
+              editOrigin: req.editOriginUrl,
+              contextId: req.casa.journeyContext.identity.id,
+            }),
             reviewBlockView: meta.reviewBlockView,
           } : null;
         }).filter((o) => o !== null);
