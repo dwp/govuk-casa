@@ -5,6 +5,7 @@
  * Note `req.query.*` are all uri-decoded prior to this point.
  */
 
+const { URL } = require('url');
 const { makeEditLink, sanitiseAbsolutePath } = require('../../lib/utils/index.js');
 const logger = require('../../lib/Logger')('page.edit-mode');
 
@@ -24,6 +25,13 @@ module.exports = (allowPageEdit) => (req, res, next) => {
       inEditMode = req.body && 'edit' in req.body;
       editOriginUrl = req.body && 'editorigin' in req.body ? req.body.editorigin : DEFAULT_REVIEW_URL;
     }
+  }
+
+  // Extract pathname from the provided editOriginUrl
+  try {
+    editOriginUrl = (new URL(editOriginUrl, 'http://placeholder.test')).pathname;
+  } catch (e) {
+    editOriginUrl = '';
   }
 
   // Store edit information on request

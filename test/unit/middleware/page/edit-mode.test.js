@@ -103,7 +103,7 @@ describe('Middleware: page/edit-mode', () => {
         query: {
           edit: true,
         },
-        originalUrl: '/test-url',
+        originalUrl: '/test-url?param=123',
       };
       handler(stubReq, null, () => {});
       expect(stubReq).to.have.property('editOriginUrl').that.equals('/test-url');
@@ -158,7 +158,7 @@ describe('Middleware: page/edit-mode', () => {
         },
       };
       handler(stubReq, null, () => {});
-      expect(stubReq).to.have.property('editOriginUrl').that.equals('/this/is-a/valid/p4rt');
+      expect(stubReq).to.have.property('editOriginUrl').that.equals('/efb992efbc8ec2a3e282ac/c480c3bf20/this');
     });
 
     it('should escape all non-valid characters when defined in POST body', () => {
@@ -171,7 +171,33 @@ describe('Middleware: page/edit-mode', () => {
         },
       };
       handler(stubReq, null, () => {});
-      expect(stubReq).to.have.property('editOriginUrl').that.equals('/this/is-a/valid/p4rt');
+      expect(stubReq).to.have.property('editOriginUrl').that.equals('/efb992efbc8ec2a3e282ac/c480c3bf20/this');
+    });
+
+    it('should only return pathname when given a fqdn url in editorigin', () => {
+      const handler = mwEditMode(true);
+      const stubReq = {
+        method: 'POST',
+        body: {
+          edit: true,
+          editorigin: 'https://test.test/only/this?param=123',
+        },
+      };
+      handler(stubReq, null, () => {});
+      expect(stubReq).to.have.property('editOriginUrl').that.equals('/only/this');
+    });
+
+    it('should only return pathname from a fqdn url', () => {
+      const handler = mwEditMode(true);
+      const stubReq = {
+        method: 'POST',
+        body: {
+          edit: true,
+        },
+        originalUrl: 'https://test.test/only/this?param=123',
+      };
+      handler(stubReq, null, () => {});
+      expect(stubReq).to.have.property('editOriginUrl').that.equals('/only/this');
     });
 
     it('should remove the editorigin parameter from request query and body', () => {
@@ -206,7 +232,7 @@ describe('Middleware: page/edit-mode', () => {
       const handler = mwEditMode(true);
       const stubReq = {
         method: 'GET',
-        query: { edit: true, editorigin: 'test-abc/cde' },
+        query: { edit: true, editorigin: 'test-abc/cde?param=123' },
         originalUrl: '/test-url',
       };
       handler(stubReq, null, () => {});
