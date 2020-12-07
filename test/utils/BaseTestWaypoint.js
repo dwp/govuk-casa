@@ -96,7 +96,7 @@ class BaseTestWaypoint {
 
   /* eslint-disable-next-line no-unused-vars */
   async progress({ httpResponse, httpAgent }) {
-    const formData = this.dom('form').serialize();
+    const formData = this.dom('.casa-journey-form').serialize();
     return httpAgent.post(`${this.mountUrl}${this.waypointId}`).send(formData).then((response) => ({
       nextUrl: (response.headers.location || `${this.mountUrl}${this.waypointId}`),
     }));
