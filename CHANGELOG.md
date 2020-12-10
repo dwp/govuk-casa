@@ -1,3 +1,12 @@
+## [6.8.1](https://github.com/dwp/govuk-casa/compare/6.8.0...6.8.1) (2020-12-10)
+
+
+### Bug Fixes
+
+* extract path from editorigin without querstring ([d5625b6](https://github.com/dwp/govuk-casa/commit/d5625b661bc0c267776dffb95960f8f9dd7a70a0))
+
+
+
 # [6.8.0](https://github.com/dwp/govuk-casa/compare/6.7.2...6.8.0) (2020-10-23)
 
 
