@@ -76,21 +76,6 @@ dep-vuln:
   script:
     - npm run security:vulnerable-packages
 
-checkmarx:
-  stage: security-tests
-  <<: *executor-docker
-  <<: *not-branches
-  image: $CI_REGISTRY/engineering-practice/checkmarx-cli:latest
-  variables:
-    CHECKMARX_REPORT_FORMAT: PDF
-  script:
-    - checkmarx ${CI_PROJECT_NAME}@${CI_PROJECT_NAMESPACE}#${CI_COMMIT_REF_NAME} Engineering
-    - sh -c 'if [ ! -f .checkmarx/checkmarx.PDF ]; then exit 1; fi'
-  artifacts:
-    paths:
-      - .checkmarx
-  allow_failure: true
-
 outdated:
   stage: security-tests
   <<: *executor-docker
