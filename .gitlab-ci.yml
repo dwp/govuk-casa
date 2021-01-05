@@ -1,4 +1,4 @@
-image: node:12-alpine@sha256:a9ee412baa5c130dea5f8483e95890f8d7e499dda196973f4397189b0bb98244
+image: node:12-alpine@sha256:12048cdfd75d944df35f3144132d9bdeee78015fbd6df765edad1be46599b110
 
 .executor-docker: &executor-docker
   tags:
