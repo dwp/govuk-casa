@@ -1,7 +1,10 @@
 # Breaking Changes
 
 The following changes are **mandatory**:
-- [Check your default route condition behaviours](#route-conditions)
+- [Breaking Changes](#breaking-changes)
+  - [Mandatory changes](#mandatory-changes)
+    - [Route conditions](#route-conditions)
+    - [Date validation](#date-validation)
 
 --------------------------------------------------------------------------------
 
@@ -28,3 +31,33 @@ const plan = new Plan({
   validateBeforeRouteCondition: false,
 });
 ```
+
+### Date validation
+
+In this version of CASA, the `moment` date library has been replaced with `luxon` due to `moment` being officially deprecated. When setting the `afterOffsetFromNow` and `beforeOffsetFromNow` parameters for the date validation rule, you can no longer pass `moment.duration` objects. Instead, pass plain objects structured as outlined in https://moment.github.io/luxon/docs/manual/tour.html#durations.
+
+For example, to pass in 1 week, instead of doing this:
+
+```javascript
+r.dateObject.bind({
+  beforeOffsetFromNow: moment.duration(1, 'week'),
+  errorMsgBeforeOffset: {
+    summary: 'Date of birth cannot be in the future'
+  }
+})
+```
+
+Do this:
+
+```javascript
+r.dateObject.bind({
+  beforeOffsetFromNow: { weeks: 1 },
+  errorMsgBeforeOffset: {
+    summary: 'Date of birth cannot be in the future'
+  }
+})
+```
+
+If you are working with `luxon` and want to pass in a `luxon.Duration` object you can. However, in most cases using plain objects is recommended for flexibility and simplicity.
+
+If you pass the `now` parameter into your date validation, you'll need to pass a `luxon.DateTime` object instead of a `moment` object.

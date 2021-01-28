@@ -23,16 +23,26 @@ describe('View filter: formatDateObject', () => {
   });
 
   it('should enforce a numerical lower boundary on each date component', () => {
-    const stubMoment = sinon.stub().returns({ format: NOOP, locale: () => ({ format: NOOP }) });
+    const stubLuxon = {
+      DateTime: {
+        fromObject: sinon.stub().returns({ toFormat: NOOP, setLocale: () => ({ toFormat: NOOP }) }),
+      },
+    };
     const formatDateObjectProxy = proxyquire(UNIT_SRC, {
-      moment: stubMoment,
+      luxon: stubLuxon,
     });
+
     formatDateObjectProxy({
       dd: 0,
       mm: 0,
       yyyy: 0,
     });
-    expect(stubMoment).to.be.calledOnceWithExactly([0, 0, 1]);
+
+    expect(stubLuxon.DateTime.fromObject).to.be.calledOnceWithExactly({
+      day: 1,
+      month: 0,
+      year: 0,
+    });
   });
 
   it('should output a string date in the excpected format, given valid date object with single digits', () => {

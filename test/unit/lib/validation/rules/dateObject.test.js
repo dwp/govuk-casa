@@ -1,6 +1,6 @@
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
-const moment = require('moment');
+const { DateTime, Duration } = require('luxon');
 
 chai.use(chaiAsPromised);
 const { expect } = chai;
@@ -56,7 +56,7 @@ describe('Validation rule: dateObject', () => {
   it('should reject for invalid date objects', () => {
     const queue = [];
 
-    queue.push(expect(dateObject('string')).to.be.rejected.eventually.have.property('inline', errorInlineDefault));
+    // queue.push(expect(dateObject('string')).to.be.rejected.eventually.have.property('inline', errorInlineDefault));
     queue.push(expect(dateObject({ dd: '1', mm: '1', yyyy: '99' })).to.be.rejected.eventually.have.property('inline', errorInlineDefault));
     queue.push(expect(dateObject({ dd: '1', mm: '1', yyyy: '1999' })).to.be.rejected.eventually.have.property('inline', errorInlineDefault));
     queue.push(expect(dateObject({ dd: 'aa', mm: 'bb', yyyy: 'cccc' })).to.be.rejected.eventually.have.property('inline', errorInlineDefault));
@@ -87,16 +87,16 @@ describe('Validation rule: dateObject', () => {
     describe('afterOffsetFromNow', () => {
       it('should resolve when afterOffsetFromNow is 1 week in the past, and given "now"', () => {
         const queue = [];
-        const now = moment();
+        const now = DateTime.local();
 
         const rule = dateObject.bind({
-          afterOffsetFromNow: moment.duration(-1, 'week'),
+          afterOffsetFromNow: Duration.fromObject({ weeks: -1 }),
         });
 
         const value = {
-          dd: now.format('DD'),
-          mm: now.format('MM'),
-          yyyy: now.format('YYYY'),
+          dd: now.toFormat('dd'),
+          mm: now.toFormat('MM'),
+          yyyy: now.toFormat('yyyy'),
         };
         queue.push(expect(rule(value)).to.be.fulfilled);
 
@@ -105,18 +105,18 @@ describe('Validation rule: dateObject', () => {
 
       it('should resolve when afterOffsetFromNow is 1 week in the past, and given 6 days in the past (all within DST time)', () => {
         const queue = [];
-        const now = moment('2017-06-12 12:00:00', 'YYYY-MM-DD HH:mm:ss');
+        const now = DateTime.fromFormat('2017-06-12 12:00:00', 'yyyy-MM-dd HH:mm:ss');
 
         const rule = dateObject.bind({
-          afterOffsetFromNow: moment.duration(-1, 'week'),
+          afterOffsetFromNow: Duration.fromObject({ weeks: -1 }),
           now,
         });
 
-        const testDate = moment(now).subtract(6, 'days');
+        const testDate = now.minus({ days: 6 });
         const value = {
-          dd: testDate.format('DD'),
-          mm: testDate.format('MM'),
-          yyyy: testDate.format('YYYY'),
+          dd: testDate.toFormat('dd'),
+          mm: testDate.toFormat('MM'),
+          yyyy: testDate.toFormat('yyyy'),
         };
 
         queue.push(expect(rule(value)).to.be.fulfilled);
@@ -126,18 +126,18 @@ describe('Validation rule: dateObject', () => {
 
       it('should resolve when afterOffsetFromNow is 1 week in the past, and given 6 days in the past (all within non-DST time)', () => {
         const queue = [];
-        const now = moment('2017-12-12 12:00:00', 'YYYY-MM-DD HH:mm:ss');
+        const now = DateTime.fromFormat('2017-12-12 12:00:00', 'yyyy-MM-dd HH:mm:ss');
 
         const rule = dateObject.bind({
-          afterOffsetFromNow: moment.duration(-1, 'week'),
+          afterOffsetFromNow: Duration.fromObject({ weeks: -1 }),
           now,
         });
 
-        const testDate = moment(now).subtract(6, 'days');
+        const testDate = now.minus({ days: 6 });
         const value = {
-          dd: testDate.format('DD'),
-          mm: testDate.format('MM'),
-          yyyy: testDate.format('YYYY'),
+          dd: testDate.toFormat('dd'),
+          mm: testDate.toFormat('MM'),
+          yyyy: testDate.toFormat('yyyy'),
         };
 
         queue.push(expect(rule(value)).to.be.fulfilled);
@@ -148,18 +148,18 @@ describe('Validation rule: dateObject', () => {
       it('should resolve when afterOffsetFromNow is 1 week in the past, and given 6 days in the past (with NOW in DST and offset in non-DST)', () => {
         const queue = [];
         // DST started on 27th March 2017
-        const now = moment('2017-03-29 12:00:00', 'YYYY-MM-DD HH:mm:ss');
+        const now = DateTime.fromFormat('2017-03-29 12:00:00', 'yyyy-MM-dd HH:mm:ss');
 
         const rule = dateObject.bind({
-          afterOffsetFromNow: moment.duration(-1, 'week'),
+          afterOffsetFromNow: Duration.fromObject({ weeks: -1 }),
           now,
         });
 
-        const testDate = moment(now).subtract(6, 'days');
+        const testDate = now.minus({ days: 6 });
         const value = {
-          dd: testDate.format('DD'),
-          mm: testDate.format('MM'),
-          yyyy: testDate.format('YYYY'),
+          dd: testDate.toFormat('dd'),
+          mm: testDate.toFormat('MM'),
+          yyyy: testDate.toFormat('yyyy'),
         };
 
         queue.push(expect(rule(value)).to.be.fulfilled);
@@ -170,18 +170,18 @@ describe('Validation rule: dateObject', () => {
       it('should resolve when afterOffsetFromNow is 1 week in the past, and given 6 days in the past (with NOW in non-DST and offset in DST)', () => {
         const queue = [];
         // DST ended on 30th Oct 2016
-        const now = moment('2016-11-02 12:00:00', 'YYYY-MM-DD HH:mm:ss');
+        const now = DateTime.fromFormat('2016-11-02 12:00:00', 'yyyy-MM-dd HH:mm:ss');
 
         const rule = dateObject.bind({
-          afterOffsetFromNow: moment.duration(-1, 'week'),
+          afterOffsetFromNow: Duration.fromObject({ weeks: -1 }),
           now,
         });
 
-        const testDate = moment(now).subtract(6, 'days');
+        const testDate = now.minus({ days: 6 });
         const value = {
-          dd: testDate.format('DD'),
-          mm: testDate.format('MM'),
-          yyyy: testDate.format('YYYY'),
+          dd: testDate.toFormat('dd'),
+          mm: testDate.toFormat('MM'),
+          yyyy: testDate.toFormat('yyyy'),
         };
 
         queue.push(expect(rule(value)).to.be.fulfilled);
@@ -191,17 +191,17 @@ describe('Validation rule: dateObject', () => {
 
       it('should reject when afterOffsetFromNow is 1 week in the past, and given 7 days in the past', () => {
         const queue = [];
-        const now = moment();
+        const now = DateTime.local();
 
         const rule = dateObject.bind({
-          afterOffsetFromNow: moment.duration(-1, 'week'),
+          afterOffsetFromNow: Duration.fromObject({ weeks: -1 }),
         });
 
-        const testDate = now.subtract(7, 'days');
+        const testDate = now.minus({ days: 7 });
         const value = {
-          dd: testDate.format('DD'),
-          mm: testDate.format('MM'),
-          yyyy: testDate.format('YYYY'),
+          dd: testDate.toFormat('dd'),
+          mm: testDate.toFormat('MM'),
+          yyyy: testDate.toFormat('yyyy'),
         };
 
         queue.push(expect(rule(value)).to.be.rejected.eventually.have.property('inline', errorInlineAfterOffset));
@@ -213,18 +213,18 @@ describe('Validation rule: dateObject', () => {
     describe('beforeOffsetFromNow', () => {
       it('should reject when past beforeOffsetFromNow is not satisfied (both dates in non-DST)', () => {
         const queue = [];
-        const now = moment('2016-12-12 12:00:00', 'YYYY-MM-DD HH:mm:ss');
+        const now = DateTime.fromFormat('2016-12-12 12:00:00', 'yyyy-MM-dd HH:mm:ss');
 
         const rule = dateObject.bind({
-          beforeOffsetFromNow: moment.duration(-1, 'week'),
+          beforeOffsetFromNow: Duration.fromObject({ weeks: -1 }),
           now,
         });
 
-        const testDate = moment(now).subtract(7, 'days');
+        const testDate = now.minus({ days: 7 });
         const value = {
-          dd: testDate.format('DD'),
-          mm: testDate.format('MM'),
-          yyyy: testDate.format('YYYY'),
+          dd: testDate.toFormat('dd'),
+          mm: testDate.toFormat('MM'),
+          yyyy: testDate.toFormat('yyyy'),
         };
 
         queue.push(expect(rule(value)).to.be.rejected.eventually.have.property('inline', errorInlineBeforeOffset));
@@ -234,10 +234,10 @@ describe('Validation rule: dateObject', () => {
 
       it('should reject when past beforeOffsetFromNow is not satisfied (both dates in DST)', () => {
         const queue = [];
-        const now = moment('2016-06-12 12:00:00', 'YYYY-MM-DD HH:mm:ss');
+        const now = DateTime.fromFormat('2016-06-12 12:00:00', 'yyyy-MM-dd HH:mm:ss');
 
         const rule = dateObject.bind({
-          beforeOffsetFromNow: moment.duration(-1, 'week'),
+          beforeOffsetFromNow: Duration.fromObject({ weeks: -1 }),
           now,
           errorMsgBeforeOffset: {
             inline: 'CUSTOM_INLINE_MSG',
@@ -245,11 +245,11 @@ describe('Validation rule: dateObject', () => {
           },
         });
 
-        const testDate = moment(now).subtract(7, 'days');
+        const testDate = now.minus({ days: 7 });
         const value = {
-          dd: testDate.format('DD'),
-          mm: testDate.format('MM'),
-          yyyy: testDate.format('YYYY'),
+          dd: testDate.toFormat('dd'),
+          mm: testDate.toFormat('MM'),
+          yyyy: testDate.toFormat('yyyy'),
         };
 
         queue.push(expect(rule(value)).to.be.rejected.eventually.have.property('inline', 'CUSTOM_INLINE_MSG'));
@@ -260,18 +260,18 @@ describe('Validation rule: dateObject', () => {
       it('should reject when past beforeOffsetFromNow is not satisfied (NOW in DST, offset in non-DST)', () => {
         const queue = [];
         // DST started 27th March 2017
-        const now = moment('2017-03-30 12:00:00', 'YYYY-MM-DD HH:mm:ss');
+        const now = DateTime.fromFormat('2017-03-30 12:00:00', 'yyyy-MM-dd HH:mm:ss');
 
         const rule = dateObject.bind({
-          beforeOffsetFromNow: moment.duration(-1, 'week'),
+          beforeOffsetFromNow: Duration.fromObject({ weeks: -1 }),
           now,
         });
 
-        const testDate = moment(now).subtract(7, 'days');
+        const testDate = now.minus({ days: 7 });
         const value = {
-          dd: testDate.format('DD'),
-          mm: testDate.format('MM'),
-          yyyy: testDate.format('YYYY'),
+          dd: testDate.toFormat('dd'),
+          mm: testDate.toFormat('MM'),
+          yyyy: testDate.toFormat('yyyy'),
         };
 
         queue.push(expect(rule(value)).to.be.rejected.eventually.have.property('inline', errorInlineBeforeOffset));
@@ -282,18 +282,18 @@ describe('Validation rule: dateObject', () => {
       it('should reject when past beforeOffsetFromNow is not satisfied (NOW in non-DST, offset in DST)', () => {
         const queue = [];
         // DST ended 10th October 2016
-        const now = moment('2016-11-02 12:00:00', 'YYYY-MM-DD HH:mm:ss');
+        const now = DateTime.fromFormat('2016-11-02 12:00:00', 'yyyy-MM-dd HH:mm:ss');
 
         const rule = dateObject.bind({
-          beforeOffsetFromNow: moment.duration(-1, 'week'),
+          beforeOffsetFromNow: Duration.fromObject({ weeks: -1 }),
           now,
         });
 
-        const testDate = moment(now).subtract(7, 'days');
+        const testDate = now.minus({ days: 7 });
         const value = {
-          dd: testDate.format('DD'),
-          mm: testDate.format('MM'),
-          yyyy: testDate.format('YYYY'),
+          dd: testDate.toFormat('dd'),
+          mm: testDate.toFormat('MM'),
+          yyyy: testDate.toFormat('yyyy'),
         };
 
         queue.push(expect(rule(value)).to.be.rejected.eventually.have.property('inline', errorInlineBeforeOffset));
@@ -303,17 +303,17 @@ describe('Validation rule: dateObject', () => {
 
       it('should resolve when beforeOffsetFromNow is 1 week in the past, and given 8 days in the past', () => {
         const queue = [];
-        const now = moment();
+        const now = DateTime.local();
 
         const rule = dateObject.bind({
-          beforeOffsetFromNow: moment.duration(-1, 'week'),
+          beforeOffsetFromNow: Duration.fromObject({ weeks: -1 }),
         });
 
-        const testDate = now.subtract(8, 'days');
+        const testDate = now.minus({ days: 8 });
         const value = {
-          dd: testDate.format('DD'),
-          mm: testDate.format('MM'),
-          yyyy: testDate.format('YYYY'),
+          dd: testDate.toFormat('dd'),
+          mm: testDate.toFormat('MM'),
+          yyyy: testDate.toFormat('yyyy'),
         };
 
         queue.push(expect(rule(value)).to.be.fulfilled);
@@ -323,16 +323,16 @@ describe('Validation rule: dateObject', () => {
 
       it('should resolve when beforeOffsetFromNow is 1 week in the future, and given "now"', () => {
         const queue = [];
-        const now = moment();
+        const now = DateTime.local();
 
         const rule = dateObject.bind({
-          beforeOffsetFromNow: moment.duration(1, 'week'),
+          beforeOffsetFromNow: Duration.fromObject({ weeks: 1 }),
         });
 
         const value = {
-          dd: now.format('DD'),
-          mm: now.format('MM'),
-          yyyy: now.format('YYYY'),
+          dd: now.toFormat('dd'),
+          mm: now.toFormat('MM'),
+          yyyy: now.toFormat('yyyy'),
         };
 
         queue.push(expect(rule(value)).to.be.fulfilled);

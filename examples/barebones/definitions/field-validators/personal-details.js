@@ -1,5 +1,5 @@
 const { validationRules: r, simpleFieldValidation: sf} = require('@dwp/govuk-casa');
-const moment = require('moment');
+const { Duration } = require('luxon');
 
 const fieldValidators = {
   title: sf([
@@ -35,7 +35,7 @@ const fieldValidators = {
       }
     }),
     r.dateObject.bind({
-      beforeOffsetFromNow: moment.duration(1, 'day'),
+      beforeOffsetFromNow: { days: 1 },
       errorMsgBeforeOffset: {
         summary: 'Date of birth cannot be in the future'
       }

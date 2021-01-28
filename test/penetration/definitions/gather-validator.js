@@ -1,4 +1,4 @@
-const moment = require('moment');
+const { Duration } = require('luxon');
 
 const Validation = require('../../../lib/Validation.js');
 
@@ -25,7 +25,7 @@ const fieldValidators = {
       },
     }),
     r.dateObject.bind({
-      beforeOffsetFromNow: moment.duration('7', 'days'),
+      beforeOffsetFromNow: Duration.fromObject({ days: 7 }),
     }),
   ]),
   field_radios: sf([
