@@ -75,9 +75,9 @@ module.exports = function routePages(
     router.get(
       routeUrl,
       mwPrepare(plan),
-      mwCsrfProtection,
       mwDetectEditMode(allowPageEdit),
       mwJourneyRails(mountUrl, plan),
+      mwCsrfProtection,
       mwSkip(mountUrl),
       // TODO: Maybe put the hook executions at this level? e.g.
       // mwExecutePageHooks(pageMeta, 'prerender')
@@ -88,9 +88,9 @@ module.exports = function routePages(
     router.post(
       routeUrl,
       mwPrepare(plan),
-      mwCsrfProtection,
       mwDetectEditMode(allowPageEdit),
       mwJourneyRails(mountUrl, plan),
+      mwCsrfProtection,
       mwGatherData(pageMeta),
       mwValidateData(pageMeta),
       mwJourneyContinue(pageMeta, mountUrl, useStickyEdit),
