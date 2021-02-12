@@ -1,6 +1,6 @@
 # Deploying a CASA app
 
-Once you've prepared your [Plan](docs/guides/2-plan.md), created your [page templates](page-markup.md), and setup [field validation](field-validation.md), then you can bring them all together into your ExpressJS web application.
+Once you've prepared your [Plan](docs/guides/3-plan.md), created your [page templates](page-markup.md), and setup [field validation](field-validation.md), then you can bring them all together into your ExpressJS web application.
 
 After following the guides below, you'll have a basic service ready to run.
 

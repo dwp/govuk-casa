@@ -10,7 +10,7 @@ The following changes are **mandatory**:
 
 ### Field Validation
 
-If you have any custom validation rules that use the `dataContext` parameter, this object no longer contains a `pageData` element and has instead been replaced with an instance of the [`JourneyContext`](api/journey-state.md).
+If you have any custom validation rules that use the `dataContext` parameter, this object no longer contains a `pageData` element and has instead been replaced with an instance of the [`JourneyContext`](docs/topics/journey-state.md).
 
 For example, this validator function ...
 

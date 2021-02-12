@@ -2,7 +2,7 @@
 
 ## Plan Traversal
 
-Test that your Plan is traversed in the correct sequence using the [`testTraversal()`]() function.
+Test that your Plan is traversed in the correct sequence using the [`testTraversal()`](test/utils/testTraversal.js) function.
 
 To set up a traversal test you need three core components:
 
@@ -146,7 +146,7 @@ module.exports = ({ mountUrl, waypointId, dom }) => {
 
 Every waypoint handler implements a `progress()` method which describes what action the user takes on a page in order to progress onto the next waypoint. This method returns a `nextUrl` value which holds the relative URL to load next.
 
-By default this looks for a `<form>`, `POST`s it, and captures the resulting url (see `progress()` in [`BaseTextWaypoint`](../test/utils/BaseTestWaypoint.js)).
+By default this looks for a `<form>`, `POST`s it, and captures the resulting url (see `progress()` in [`BaseTextWaypoint`](test/utils/BaseTestWaypoint.js)).
 
 However, your page might not have a form, or you might want to progress in a slightly custom waypoint depending on circumstances. In this case, just define your own `progress()` method.
 

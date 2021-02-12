@@ -177,7 +177,7 @@ The `prepare-request` and `edit-mode` middleware functions have changed their si
 
 ### Add active context id to form
 
-If you are making use of [Ephemeral Contexts](docs/ephemeral-contexts.md), the CASA journey form macro will need to be aware of which context you're using at any point.
+If you are making use of [Ephemeral Contexts](docs/topics/ephemeral-contexts.md), the CASA journey form macro will need to be aware of which context you're using at any point.
 
 To enable this, simply add the `activeContextId` parameter when calling the `casaJourneyForm()` macro. For example:
 

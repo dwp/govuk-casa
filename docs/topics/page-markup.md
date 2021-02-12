@@ -12,11 +12,11 @@ For all the code examples below, we'll store our templates in the `views/` direc
 
 CASA provides the following templates, all of which can be overridden in your project by creating the equivalent file in your own `views/` directory.
 
-* `casa/components/*/macro.njk` - wrappers around the core `govuk*()` macros. See **[CASA Template Macros](casa-template-macros.md)** for more details.
+* `casa/components/*/macro.njk` - wrappers around the core `govuk*()` macros. See **[CASA Template Macros](docs/topics/casa-template-macros.md)** for more details.
 * `casa/components/journey-form/macro.njk` - wrap your form content in a CASA-compatible `<form>` element
 * `casa/errors/*.njk` - HTTP error templates (403, 404, 500, 503)
 * `casa/layouts/journey.njk` - layout suggested for use on your data-capturing pages (extends `casa/layout/main.njk`)
-* `casa/layout/main.njk` - layout suggested for all non-data-capturing pages (e.g. welcome pages, custom feedback forms, etc) (extends the GOVUK Design System's  [`template.njk` layout](https://github.com/alphagov/govuk-frontend/blob/master/package/template.njk))
+* `casa/layout/main.njk` - layout suggested for all non-data-capturing pages (e.g. welcome pages, custom feedback forms, etc) (extends the GOVUK Design System's  [`template.njk` layout](https://github.com/alphagov/govuk-frontend/blob/master/package/govuk/template.njk))
 * `casa/partials/*.njk` - various common partial templates
 * `casa/session-timeout.njk` - session timeout template
 
@@ -27,7 +27,7 @@ The following global variables are available to your templates:
 * `casa.mountUrl` (`string`) - the URL prefix on which your app is running (mirrors the `mountUrl` config setting)
 * `casa.csrfToken` (`string`) - a CSRF token you can use in forms
 * `casa.journeyPreviousUrl` (`string`) - the URL to the previous page in the current user journey
-* `govuk.*` (`object`) - various data related to the GOVUK Frontend layout template; see [`middleware/variables/index.js`](../middleware/variables/index.js) for a full list of data in this object
+* `govuk.*` (`object`) - various data related to the GOVUK Frontend layout template; see [`middleware/variables/index.js`](middleware/variables/index.js) for a full list of data in this object
 
 The following global functions and variables are available to your templates:
 
@@ -41,7 +41,7 @@ The following global functions and variables are available to your templates:
 
 The following are only available to waypoint templates (or any requests that have `middleware/page/prepare-request.js` in their middleware chain):
 
-* `makeLink({ string waypoint, string editOrigin })` - create a link to edit a waypoint (see [`utils/createGetRequest.js`](../lib/utils/createGetRequest.js)). For convenience this will be pre-populated with mountUrl, waypoint, contextId, but can be overriden at call time.
+* `makeLink({ string waypoint, string editOrigin })` - create a link to edit a waypoint (see [`utils/createGetRequest.js`](lib/utils/createGetRequest.js)). For convenience this will be pre-populated with mountUrl, waypoint, contextId, but can be overriden at call time.
 
 ## Creating a basic page
 
@@ -148,12 +148,6 @@ If you want to give the user the option to skip over the current page in the jou
 
 This will only skip over the _current_ waypoint, so the target waypoint must be reachable from the current one.
 
-If you want to support "sticky edit" mode in this skip link (i.e. you want the user to remain in edit mode when they skip to that waypoint), then you'll also need to include the edit URL parameters, e.g.
-
-```nunjuck
-<a href="{{ makeLink({ skipTo: 'address-entry', editMode: true, editOrigin:  }) }}">Skip to the Address Entry page</a>
-```
-
 ## Adding custom stylesheets and JavaScript
 
 Adding your own CSS and JavaScript is a case of overriding the `head` and `bodyEnd` blocks as follows:
@@ -182,6 +176,7 @@ const casaApp = casa(app, {
 ```
 
 ## Importing CASA styles when building your own Sass
+
 If you're building your own Sass you can import the CASA styles into your project:
 
 ```css

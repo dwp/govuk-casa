@@ -50,7 +50,7 @@ CASA comes bundled with [a few built-in rules](field-validation-rules.md), some 
 
 ### Error message conventions
 
-Most validation rule functions will accept some configuration related to the error messages they generate in the following formats. These `errorMsg` objects are used as constructor parameters to create an instance of the [`ValidationError`](../lib/validation/ValidationError.js) class for each error:
+Most validation rule functions will accept some configuration related to the error messages they generate in the following formats. These `errorMsg` objects are used as constructor parameters to create an instance of the [`ValidationError`](lib/validation/ValidationError.js) class for each error:
 
 ```javascript
 // Simple string (will be passed through i18n translate function)

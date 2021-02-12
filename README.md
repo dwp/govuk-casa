@@ -24,35 +24,10 @@ CASA aims to maintain support for the **latest CURRENT even version** and the **
 
 ## Getting started
 
-Install CASA and all required peer dependencies:
+To get started quickly, take a look through the ["barebones" example application](examples/barebones/). This provides you with a basic application out of the box, covering most features of CASA.
 
-```bash
-npm install express express-session @dwp/govuk-casa
-```
-
-If you just want to get up and running with a basic CASA application, take a look at **[Deploying a CASA app](docs/deploying.md)** first or browse through one of the [example applications](examples/).
-
-Alternatively, have a read through our **[Guides](docs/guide.md)** to start building an understanding of the core concepts involved in building a CASA app.
-
-
-
-
-
-
-a good place to start is to begin designing your _Routes Plan_. This will provide CASA with information about the high-level flows that a user takes through your service, including the various conditional forks that may appear in the journey. Visit **[Designing a Route Plan](docs/guides/2-plan.md)** to get started.
-
-Once your plan begins to take shape, you can start to create the HTML pages that will take your users through the various routes within it, capturing data from them along the way. All markup is generated through [Nunjucks](https://mozilla.github.io/nunjucks/) templates, and you can use the [GOVUK Design System components](https://design-system.service.gov.uk/components/) to generate elements that match the GOVUK styling. Visit **[Creating Pages](docs/page-markup.md)** to get started.
-
-Now you've got some pages ready to collect data from the user, you'll most likely want to add a bit of validation logic to those data fields to make sure you're capturing the right stuff, in the right format. Visit **[Defining Field Validation](docs/field-validation.md)** to get started.
-
-Finally, we need to bring all of this together, by creating a bootstrap script for our service. Visit **[Deploying a CASA app](docs/deploying.md)** to get started.
-
-That's it! The basics have been covered here, but if you want to delve deeper under the hood then take a read through the **[developer API documentation](docs/api.md)** too.
+Alternatively, read through our **[Guides](docs/guide.md)** to start building an understanding of the core concepts involved in building a CASA app.
 
 ## Migrating between versions
 
-A series of migration guides are provided in [`docs/`](docs/) that should help you upgrade between major versions of CASA.
-
-## Testing your app
-
-CASA provides a basic [`testTraversal()`](docs/testing.md) utility function that can help to test that the routes defined in your Plan are executed in the expected sequence when given a series of defined data inputs.
+A series of migration guides are provided in [`docs/migration-guides/`](docs/migration-guides/) that should help you upgrade between major versions of CASA.

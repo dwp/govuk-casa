@@ -1,13 +1,25 @@
-[building-blocks-ab]: assets/plan-building-blocks-ab.png "a to b"
-[building-blocks-ae]: assets/plan-building-blocks-ae.png "a to e"
-[building-blocks-abc-oneway]: assets/plan-building-blocks-abc-oneway.png "a, b, c one-way route"
-[building-blocks-route-condition]: assets/plan-building-blocks-route-condition.png "route condition"
+[building-blocks-ab]: docs/assets/plan-building-blocks-ab.png "a to b"
+[building-blocks-ae]: docs/assets/plan-building-blocks-ae.png "a to e"
+[building-blocks-abc-oneway]: docs/assets/plan-building-blocks-abc-oneway.png "a, b, c one-way route"
+[building-blocks-route-condition]: docs/assets/plan-building-blocks-route-condition.png "route condition"
 
-# Designing a Route Plan
+# Designing a Plan
 
 A _Plan_ in CASA simply describes the sequence of web pages that a user visits during their session.
 
 The simplest plan is a linear, one-page-after-the-other affair. However, you can also go to town and design complex journeys that take the user off on tangents (and back again, or not) depending on the data they are providing during their session.
+
+For all the examples below, we recommend defining your Plan in its own file, wrapped in a function so that you can easily inject configuration at runtime, if needed. For example:
+
+```javascript
+/* definitions/plan.js */
+
+module.exports = () => {
+  const plan = new Plan();
+  // ...
+  return plan;
+};
+```
 
 ## Terminology
 
@@ -32,7 +44,7 @@ plan.setRoute('a', 'b');
 plan.addOrigin('main', 'a');
 ```
 
-> NOTE: an origin is mandatory; however, when only one origin is defined, its name is irrelevant
+> NOTE: an origin is mandatory; however, when only one origin is defined, its name is irrelevant (we have use `main` above)
 
 ![simple two-way route between a and b][building-blocks-ab]
 
@@ -66,9 +78,9 @@ plan.addOrigin('main', 'a');
 
 ## Route conditions
 
-You can attach conditions to routes that control how the user traverses through them. By default, there are conditions attached to each route that will prevent them being traversed unless the "source" waypoint satisfies these conditions:
+You can attach conditions to routes that control how the user traverses through them. By default, there are conditions attached to each route that will prevent them being traversed unless the following are satisifed:
 
-* The waypoint has been successfully validated (i.e. validation has been executed, and no errors found)
+* The "source" waypoint has been successfully validated (i.e. validation has been executed, and no errors found)
 
 However, you can override this behaviour with your own conditional functions, which must match the following signature:
 
@@ -83,7 +95,7 @@ myCondition = (route, context) => {
 };
 ```
 
-See [Journey State](api/journey-state.md) for more information on how to use instances of the [`JourneyContext`](../lib/JourneyContext.js) class.
+See [Journey State](docs/topics/journey-state.md) for more information on how to use instances of the [`JourneyContext`](lib/JourneyContext.js) class.
 
 Here's a simple example that checks the journey's data context to determine whether one route or the other should be followed:
 
@@ -103,7 +115,7 @@ When `ticked` is `false` the traversal sequence will be: `a <--> c`
 
 ![conditional route][building-blocks-route-condition]
 
-**NOTE:** When you define a cutom route condition, CASA will still perform its own check before running your condition (specifically, it checks that the previous waypoint has passed validation). You can override this behaviour by toggling the `validateBeforeRouteCondition` flag when creating a Plan, e.g:
+**NOTE:** When you define a cutom route condition, CASA will still perform its own checks before running your condition (specifically, that the "source" waypoint has passed validation). You can override this behaviour by toggling the `validateBeforeRouteCondition` flag when creating a Plan, e.g:
 
 ```javascript
 const plan = new Plan({
@@ -156,7 +168,7 @@ Now, a user can visit the following URLs to start traversing from that origin's 
 
 ## Looping routes
 
-TODO: Explain how to possibly use hooks to clear session data prior to sending user back to a waypoint to complete/restart a loop.
+If your service includes some form of repetitive data gathering, such as collecting details for an arbitrary number of bank accounts a user has, then you may find **[Ephemeral Contexts](docs/topics/ephemeral-contexts.md)** helpful. These are temporary Journey Contexts that can be used to guide the user along a particular route to gather data before then being discarded.
 
 ## Visualising the Plan
 
