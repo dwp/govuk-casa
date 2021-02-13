@@ -8,7 +8,7 @@ const { expect } = chai;
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
-const { nestHooks, executeHook } = require('../../../../middleware/page/utils.js');
+const { applyValidatorSanitiser, nestHooks, executeHook } = require('../../../../middleware/page/utils.js');
 
 const SimpleField = require('../../../../lib/validation/SimpleField.js');
 
@@ -78,7 +78,7 @@ describe('Middleware: page/utils', () => {
         fieldValidators: {},
       };
       const output = extractSessionableData(stubLogger, pageMeta);
-      expect(stubLogger.warn).to.be.calledOnceWithExactly('No field validators defined for "%s" waypoint. Will use an empty object.', 'test-waypoint');
+      expect(stubLogger.debug).to.be.calledOnceWithExactly('No field validators defined for "%s" waypoint. Will use an empty object.', 'test-waypoint');
       expect(output).to.eql({});
     });
 
@@ -322,6 +322,65 @@ describe('Middleware: page/utils', () => {
         expect(pageMeta.hooks['test-hook']).to.be.calledOnce;
         expect(err).to.equal(stubError);
       }
+    });
+  });
+
+  /* ---------------------------------------------- applyValidatorSanitiser() */
+
+  describe('applyValidatorSanitiser()', () => {
+    it('should return the data untouched if the validator has no sanitise method', () => {
+      // Setup
+      const originalValue = 'testme';
+      const basicValidator = function () {};
+      const fieldValidator = SimpleField([ basicValidator ]);
+
+      // Execute
+      const sanitisedValue = applyValidatorSanitiser(fieldValidator, originalValue)
+
+      // Assert
+      expect(sanitisedValue).to.equal(originalValue);
+    });
+
+    it('should return original value, and not try to extract prototype from a bound-function validator', () => {
+      // Context
+      // We don't want the "new boundFunction()" to be called in an attempt to
+      // extract a "sanitise()" method from the original prototype because this
+      // could execute the actual validation logic, leading to uncaught Promises
+
+      // Setup
+      const originalValue = 'testme';
+      const testValue = 'sanitised';
+      const basicValidator = function () {};
+      basicValidator.prototype.sanitise = sinon.spy((value) => (testValue));
+      const fieldValidator = SimpleField([ basicValidator.bind() ]);
+
+      // Execute
+      const sanitisedValue = applyValidatorSanitiser(fieldValidator, originalValue)
+
+      // Assert
+      expect(basicValidator.prototype.sanitise).not.to.be.calledOnceWithExactly(originalValue);
+      expect(sanitisedValue).to.equal(originalValue);
+    });
+
+    it('should apply the sanitise function on every validation function when present', () => {
+      // Setup
+      const originalValue = 'testme';
+      const firstValidator = {
+        sanitise: sinon.spy((value) => (`${value}-first`)),
+      };
+      const secondValidator = {
+        sanitise: sinon.spy((value) => (`${value}-second`)),
+      };
+      const fieldValidator = SimpleField([ firstValidator, secondValidator ]);
+      const context = {};
+
+      // Execute
+      const sanitisedValue = applyValidatorSanitiser(fieldValidator, originalValue, context)
+
+      // Assert
+      expect(firstValidator.sanitise).to.be.calledOnceWithExactly(originalValue, context);
+      expect(secondValidator.sanitise).to.be.calledOnceWithExactly(`${originalValue}-first`, context);
+      expect(sanitisedValue).to.equal(`${originalValue}-first-second`);
     });
   });
 });

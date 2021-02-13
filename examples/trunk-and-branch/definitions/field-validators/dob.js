@@ -2,7 +2,7 @@ const { validationRules: r, simpleFieldValidation: sf } = require('@dwp/govuk-ca
 
 const fieldValidators = {
   dob: sf([
-    r.required.bind({
+    r.required.make({
       errorMsg: {
         summary: 'Please provide a date',
         focusSuffix: ['[dd]']

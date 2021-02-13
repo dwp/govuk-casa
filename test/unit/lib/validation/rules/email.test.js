@@ -11,49 +11,78 @@ const ValidationError = require('../../../../../lib/validation/ValidationError.j
 describe('Validation rule: email', () => {
   it('should resolve for valid emails', () => {
     const queue = [];
+    const rule = email.make().validate;
 
-    queue.push(expect(email('joe.bloggs@domain.net')).to.be.fulfilled);
-    queue.push(expect(email('user+category@domain.co.uk')).to.be.fulfilled);
+    queue.push(expect(rule('joe.bloggs@domain.net')).to.be.fulfilled);
+    queue.push(expect(rule('user+category@domain.co.uk')).to.be.fulfilled);
 
     return Promise.all(queue);
   });
 
   it('should reject with a ValidationError', () => {
-    return expect(email('bad-args')).to.eventually.be.rejected.and.be.an.instanceOf(ValidationError);
+    const rule = email.make().validate;
+    return expect(rule('bad-args')).to.eventually.be.rejected.and.be.an.instanceOf(ValidationError);
   });
 
   it('should reject for invalid emails', () => {
     const queue = [];
-    queue.push(expect(email('invalid@domain@domain.net')).to.be.rejected);
-    queue.push(expect(email('invalid')).to.be.rejected);
-    queue.push(expect(email('cats@cats.co.')).to.be.rejected);
+    const rule = email.make().validate;
+    queue.push(expect(rule('invalid@domain@domain.net')).to.be.rejected);
+    queue.push(expect(rule('invalid')).to.be.rejected);
+    queue.push(expect(rule('cats@cats.co.')).to.be.rejected);
     return Promise.all(queue);
   });
 
   it('should not allow spaces in emails', () => {
     const queue = [];
+    const rule = email.make().validate;
 
-    queue.push(expect(email(' has-leading-space@domain.net')).to.be.rejected);
-    queue.push(expect(email('has-trailing-space@domain.net ')).to.be.rejected);
-    queue.push(expect(email('has-mid space@domain.net')).to.be.rejected);
-    queue.push(expect(email('has-mid-space@domain .net')).to.be.rejected);
-    queue.push(expect(email('has-mid-tab@domain\t.net')).to.be.rejected);
-    queue.push(expect(email(' ')).to.be.rejected);
-    queue.push(expect(email('\t')).to.be.rejected);
+    queue.push(expect(rule(' has-leading-space@domain.net')).to.be.rejected);
+    queue.push(expect(rule('has-trailing-space@domain.net ')).to.be.rejected);
+    queue.push(expect(rule('has-mid space@domain.net')).to.be.rejected);
+    queue.push(expect(rule('has-mid-space@domain .net')).to.be.rejected);
+    queue.push(expect(rule('has-mid-tab@domain\t.net')).to.be.rejected);
+    queue.push(expect(rule(' ')).to.be.rejected);
+    queue.push(expect(rule('\t')).to.be.rejected);
 
     return Promise.all(queue);
   });
 
   it('should reject for non-string email', () => {
     const queue = [];
+    const rule = email.make().validate;
 
-    queue.push(expect(email()).to.be.rejected);
-    queue.push(expect(email([])).to.be.rejected);
-    queue.push(expect(email({})).to.be.rejected);
-    queue.push(expect(email(1)).to.be.rejected);
-    queue.push(expect(email(false)).to.be.rejected);
-    queue.push(expect(email(() => {})).to.be.rejected);
+    queue.push(expect(rule()).to.be.rejected);
+    queue.push(expect(rule([])).to.be.rejected);
+    queue.push(expect(rule({})).to.be.rejected);
+    queue.push(expect(rule(1)).to.be.rejected);
+    queue.push(expect(rule(false)).to.be.rejected);
+    queue.push(expect(rule(() => {})).to.be.rejected);
 
     return Promise.all(queue);
+  });
+
+  describe('sanitise()', () => {
+    [
+      // type | input | expected output
+      ['string', '', ''],
+      ['number', 123, '123'],
+      ['object', {}, ''],
+      ['function', () => {}, ''],
+      ['array', [], ''],
+      ['boolean', true, ''],
+    ].forEach(([type, input, output]) => {
+      it(`should coerce ${type} to a string`, () => {
+        const sanitise = email.make().sanitise;
+
+        expect(sanitise(input)).to.equal(output);
+      });
+    });
+
+    it('should let an undefined value pass through', () => {
+      const sanitise = email.make().sanitise;
+
+      expect(sanitise()).to.be.undefined;
+    });
   });
 });

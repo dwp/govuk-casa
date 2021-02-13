@@ -17,7 +17,7 @@ describe('Validation rule: postalAddressObject', () => {
   const errorInlinePostcode = 'validation:rule.postalAddressObject.postcode.inline';
 
   it('should reject with an Array of ValidationError objects', () => {
-    return expect(postalAddressObject('bad-args')).to.eventually.be.rejected.and.satisfy((result) => {
+    return expect(postalAddressObject.make().validate('bad-args')).to.eventually.be.rejected.and.satisfy((result) => {
       return Array.isArray(result) && result.every((r) => (r instanceof ValidationError));
     });
   });
@@ -27,7 +27,7 @@ describe('Validation rule: postalAddressObject', () => {
 
     queue.push(
       expect(
-        postalAddressObject({
+        postalAddressObject.make().validate({
           address1: 'street',
           address3: 'town',
           postcode: 'AA0 0BB',
@@ -43,7 +43,7 @@ describe('Validation rule: postalAddressObject', () => {
 
     queue.push(
       expect(
-        postalAddressObject({
+        postalAddressObject.make().validate({
           address1: 'Street',
           address3: 'Town',
           postcode: 'AA0 0BB',
@@ -57,7 +57,7 @@ describe('Validation rule: postalAddressObject', () => {
   it('should resolve for valid address with a single digit first line', () => {
     const queue = [];
 
-    queue.push(expect(postalAddressObject({
+    queue.push(expect(postalAddressObject.make().validate({
       address1: '3',
       address2: 'street',
       address3: 'town',
@@ -69,9 +69,9 @@ describe('Validation rule: postalAddressObject', () => {
 
   it('should reject if an address[1-4] input breaches strlenmax attribute', () => {
     const queue = [];
-    const rule = postalAddressObject.bind({
+    const rule = postalAddressObject.make({
       strlenmax: 10,
-    });
+    }).validate;
 
     queue.push(
       expect(
@@ -87,9 +87,9 @@ describe('Validation rule: postalAddressObject', () => {
   });
 
   it('should resolve for valid address with postcode flagged as optional', () => {
-    const rule = postalAddressObject.bind({
+    const rule = postalAddressObject.make({
       requiredFields: ['address1', 'address2', 'address3', 'address4'],
-    });
+    }).validate;
 
     return expect(
       rule({
@@ -102,9 +102,9 @@ describe('Validation rule: postalAddressObject', () => {
   });
 
   it('should resolve for empty address with all fields flagged as optional', () => {
-    const rule = postalAddressObject.bind({
+    const rule = postalAddressObject.make({
       requiredFields: [],
-    });
+    }).validate;
 
     return expect(rule({})).to.be.fulfilled;
   });
@@ -114,13 +114,13 @@ describe('Validation rule: postalAddressObject', () => {
 
     // eslint-disable-next-line arrow-body-style
     queue.push(
-      expect(postalAddressObject()).to.be.rejected.eventually
+      expect(postalAddressObject.make().validate()).to.be.rejected.eventually
         .satisfy(v => JSON.stringify(v).match(errorInlineDefault)),
     );
 
     queue.push(
       expect(
-        postalAddressObject({
+        postalAddressObject.make().validate({
           address2: '$INVALID$',
           address4: '$INVALID$',
         }),
@@ -137,7 +137,7 @@ describe('Validation rule: postalAddressObject', () => {
 
     queue.push(
       expect(
-        postalAddressObject({
+        postalAddressObject.make().validate({
           address3: 'town',
           postcode: 'AA0 0BB',
         }),
@@ -146,7 +146,7 @@ describe('Validation rule: postalAddressObject', () => {
 
     queue.push(
       expect(
-        postalAddressObject({
+        postalAddressObject.make().validate({
           address1: 'street',
           postcode: 'AA0 0BB',
         }),
@@ -158,7 +158,7 @@ describe('Validation rule: postalAddressObject', () => {
 
     queue.push(
       expect(
-        postalAddressObject({
+        postalAddressObject.make().validate({
           address1: 'street',
           address3: 'town',
         }),
@@ -170,7 +170,7 @@ describe('Validation rule: postalAddressObject', () => {
 
     queue.push(
       expect(
-        postalAddressObject({
+        postalAddressObject.make().validate({
           address1: 'street',
           address3: 'town',
           postcode: '!@£$%^&*()<>,.~`/?\\:;"\'{[}]_-+=',
@@ -183,7 +183,7 @@ describe('Validation rule: postalAddressObject', () => {
 
     queue.push(
       expect(
-        postalAddressObject({
+        postalAddressObject.make().validate({
           address1: 'street',
           address3: 'town',
           postcode: '-',
@@ -194,7 +194,7 @@ describe('Validation rule: postalAddressObject', () => {
       }),
     );
 
-    queue.push(expect(postalAddressObject({
+    queue.push(expect(postalAddressObject.make().validate({
       address1: 'house',
       address2: '8',
       address3: 'town',
@@ -209,14 +209,14 @@ describe('Validation rule: postalAddressObject', () => {
   });
 
   it('should use a specific error message if defined', () => {
-    const rule = postalAddressObject.bind({
+    const rule = postalAddressObject.make({
       errorMsg: 'errdefault',
       errorMsgAddress1: 'err1',
       errorMsgAddress2: 'err2',
       errorMsgAddress3: 'err3',
       errorMsgAddress4: 'err4',
       errorMsgPostcode: 'err5',
-    });
+    }).validate;
     const queue = [];
 
     queue.push(
@@ -241,9 +241,9 @@ describe('Validation rule: postalAddressObject', () => {
   });
 
   it('should reject for address components only containing spaces', () => {
-    const rule = postalAddressObject.bind({
+    const rule = postalAddressObject.make({
       requiredFields: ['address1', 'address2', 'address3', 'address4'],
-    });
+    }).validate;
 
     return expect(
       rule({
@@ -264,7 +264,7 @@ describe('Validation rule: postalAddressObject', () => {
   });
 
   function testPostcodeChecker(postcode) {
-    return postalAddressObject({
+    return postalAddressObject.make().validate({
       address1: 'street',
       address3: 'town',
       postcode,
@@ -347,5 +347,61 @@ describe('Validation rule: postalAddressObject', () => {
     queue.push(testInvalidPostcodeChecker('BFPO 3AA'));
 
     return Promise.all(queue);
+  });
+
+  describe('sanitise', () => {
+    [
+      // type | input | expected output
+      ['string', '', {}],
+      ['number', 123, {}],
+      ['function', () => {}, {}],
+      ['array', [], {}],
+      ['boolean', true, {}],
+      ['undefined', undefined, {}],
+    ].forEach(([type, input, output]) => {
+      it(`should coerce ${type} to an object`, () => {
+        const sanitise = postalAddressObject.make().sanitise;
+
+        expect(sanitise(input)).to.deep.equal(output);
+      });
+    });
+
+    it('should prune unrecognised attributes', () => {
+      const sanitise = postalAddressObject.make().sanitise;
+
+      expect(sanitise({
+        unknown: '',
+        address2_custom: 'another',
+        address1: 'street',
+        address2: 'suburb',
+        address3: 'town',
+        address4: 'province',
+        postcode: '',
+      })).to.deep.equal({
+        address1: 'street',
+        address2: 'suburb',
+        address3: 'town',
+        address4: 'province',
+        postcode: '',
+      });
+    });
+
+    it('should coerce each attribute to a string', () => {
+      const sanitise = postalAddressObject.make().sanitise;
+
+      expect(sanitise({
+        address1: 1,
+        address2: [],
+        address3: () => {},
+        address4: true,
+        postcode: new Set(),
+      })).to.deep.equal({
+        address1: '1',
+        address2: '',
+        address3: '() => {}',
+        address4: 'true',
+        postcode: '[object Set]',
+      });
+    });
   });
 });

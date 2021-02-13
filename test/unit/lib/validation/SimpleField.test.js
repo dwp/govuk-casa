@@ -1,17 +1,28 @@
 const sinon = require('sinon');
 const { expect } = require('chai');
 
+const { format } = require('util');
 const SimpleField = require('../../../../lib/validation/SimpleField.js');
+const { ValidatorFactory } = require('../../../../casa.js');
+
+class StubValidator extends ValidatorFactory {}
 
 describe('Validation: SimpleField', () => {
   it('should return an object', () => {
     expect(SimpleField()).to.be.an('object');
   });
 
-  it('should throw a TypeError if any non-function validator has been used', () => {
-    expect(() => {
-      SimpleField(['not-a-function']);
-    }).to.throw(TypeError, 'Validators must be a function, got string');
+  it('should throw a TypeError if neither a ValidatorFactory or function validator has been used', () => {
+    const msg = 'Cannot coerce input to a validator object (typeof = %s)';
+    expect(() => SimpleField(['not-a-function'])).to.throw(TypeError, format(msg, 'string'));
+    expect(() => SimpleField([[]])).to.throw(TypeError, format(msg, 'object'));
+    expect(() => SimpleField([1])).to.throw(TypeError, format(msg, 'number'));
+    expect(() => SimpleField([false])).to.throw(TypeError, format(msg, 'boolean'));
+
+    expect(() => SimpleField([ ValidatorFactory ])).not.to.throw();
+    expect(() => SimpleField([ new StubValidator ])).not.to.throw();
+    expect(() => SimpleField([ () => {} ])).not.to.throw();
+    expect(() => SimpleField([ (function (){}).bind() ])).not.to.throw();
   });
 
   it('should throw a TypeError if a non-function condition has been used', () => {
@@ -57,8 +68,8 @@ describe('Validation: SimpleField', () => {
   });
 
   it('should accept a custom "validators" array property', () => {
-    const testValidators = [() => {}];
-    const sf = SimpleField(testValidators);
-    expect(sf.validators).to.equal(testValidators);
+    const stubRule = sinon.stub().returns('test-run');
+    const sf = SimpleField([ stubRule ]);
+    expect(sf.validators[0].validate()).to.equal('test-run');
   });
 });

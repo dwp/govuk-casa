@@ -9,42 +9,44 @@ import ValidationError from './lib/validation/ValidationError';
 
 /* ----------------------------------------------------------------- PageMeta */
 
-declare interface PageMeta {
-  view: string;
-  fieldValidators?: PageMetaFieldValidatorMap;
-  fieldGatherModifiers?: PageMetaGatherModifiersMap;
-  hooks?: PageMetaHooksMap;
-  reviewBlockView?: string;
-  id?: string;
-  fieldWriter?: PageMetaDataWriter;
-  fieldReader?: PageMetaDataReader;
+declare global {
+  interface PageMeta {
+    view: string;
+    fieldValidators?: PageMetaFieldValidatorMap;
+    fieldGatherModifiers?: PageMetaGatherModifiersMap;
+    hooks?: PageMetaHooksMap;
+    reviewBlockView?: string;
+    id?: string;
+    fieldWriter?: PageMetaDataWriter;
+    fieldReader?: PageMetaDataReader;
+  }
 }
 
-type PageMetaFieldValidatorMap = {
+export type PageMetaFieldValidatorMap = {
   [key: string]: typeof SimpleField;
 };
 
-type PageMetaGatherModifiersMap = {
+export type PageMetaGatherModifiersMap = {
   [key: string]: Function;
 }
 
-type PageMetaHooksMap = {
+export type PageMetaHooksMap = {
   [key in PageMetaHookName]: PageMetaHook;
 }
 
-type PageMetaHookName = "pregather" | "prevalidate" | "preredirect" | "prerender";
+export type PageMetaHookName = "pregather" | "prevalidate" | "preredirect" | "prerender";
 
-interface PageMetaHook {
+export interface PageMetaHook {
   // Use real Express types? Will need to import relevant @types
   (req: object, res: object, next: Function): void;
 }
 
 // Function that returns object that will wholly overwrite CDO.
-type PageMetaDataWriter = (args:{ waypointId: string, formData: { [key: string]: any }, contextData: object }) => object;
+export type PageMetaDataWriter = (args:{ waypointId: string, formData: { [key: string]: any }, contextData: object }) => object;
 
 // Function that returns an object that maps form fields to values; suitable for
 // HTML forms
-type PageMetaDataReader = (args:{ waypointId: string, contextData: object }) => object;
+export type PageMetaDataReader = (args:{ waypointId: string, contextData: object }) => object;
 
 /* --------------------------------------------------------------- Validators */
 
@@ -83,6 +85,9 @@ export interface ValidationErrorObject {
 
 export type ValidatorErrorObjectGenerator = (context: ValidatorContext) => ValidationErrorObject;
 
+export { ValidationRules as validationRules } from './lib/validation/rules/ValidationRules';
+export function simpleFieldValidation([]): void;
+
 export declare class Plan {
   addSequence(...args: string[]): void;
   setRoute(start: string, end: string): void;
@@ -90,13 +95,18 @@ export declare class Plan {
   addOrigin(start: string, end: string): void;
 }
 
+export interface CasaAppConfig {
+  mountUrl?: string;
+}
+
 export interface CasaApp {
   loadDefinitions(pages: object, plan: object): Promise<ValidationError>;
   router: object;
+  csrfMiddleware: Function;
+  config: CasaAppConfig;
 }
 export function configure(app: object, config: object): CasaApp;
 
-export { ValidationRules as validationRules } from './lib/validation/rules/ValidationRules';
 export function simpleFieldValidation([]): void;
 
 /* ---------------------------------------------------------------- Utilities */

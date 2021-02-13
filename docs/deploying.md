@@ -147,19 +147,19 @@ const { validationRules: r, simpleFieldValidation: sf } = require('@dwp/govuk-ca
 
 module.exports = {
   firstName: sf([
-    r.required.bind({
+    r.required.make({
       errorMsg: 'personal-info:field.firstName.error_required',
     }),
   ]),
 
   lastName: sf([
-    r.required.bind({
+    r.required.make({
       errorMsg: 'personal-info:field.lastName.error_required',
     }),
   ]),
 
   email: sf([
-    r.required.bind({
+    r.required.make({
       errorMsg: 'personal-info:field.email.error_required',
     }),
     r.email,

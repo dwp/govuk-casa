@@ -70,7 +70,7 @@ And when using the `required` field validator in conjunction with this macro, yo
 // data at all.
 module.exports = {
   myDateField: sf([
-    r.required.bind({
+    r.required.make({
       errorMsg: {
         summary: 'Your error mesasge',
         focusSuffix: '[dd]'

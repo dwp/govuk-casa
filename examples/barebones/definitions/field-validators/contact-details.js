@@ -3,11 +3,11 @@ const { validationRules: r, simpleFieldValidation: sf} = require('@dwp/govuk-cas
 const fieldValidators = {
   tel: sf([
     r.optional,
-    r.regex.bind({
+    r.regex.make({
       pattern: /^[0-9\-\+\(\) ]+$/,
       errorMsg: 'contact-details:field.tel.invalid',
     }),
-    r.strlen.bind({
+    r.strlen.make({
       max: 20,
       errorMsgMax: 'contact-details:field.tel.tooLong',
     })
@@ -15,11 +15,11 @@ const fieldValidators = {
 
   telOther: sf([
     r.optional,
-    r.regex.bind({
+    r.regex.make({
       pattern: /^[0-9\-\+\(\) ]+$/,
       errorMsg: 'contact-details:field.telOther.invalid',
     }),
-    r.strlen.bind({
+    r.strlen.make({
       max: 20,
       errorMsgMax: 'contact-details:field.telOther.tooLong',
     })
@@ -31,7 +31,7 @@ const fieldValidators = {
   ]),
 
   address: sf([
-    r.required.bind({
+    r.required.make({
       errorMsg: {
         summary: 'You need to enter an address',
         // Need to specify which of the subfields the error summary link should

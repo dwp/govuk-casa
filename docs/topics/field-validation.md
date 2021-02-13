@@ -4,7 +4,9 @@ Each form input you include in your page form can be validated against some pres
 
 If using [CASA's GOVUK Frontend macro wrappers](casa-template-macros.md), each input that fails validation will also be marked with some information about the failure in a `data-validation` html attribute. This is useful for capturing analytics, for example.
 
-Before input is validated it can be manipulated by [Gather Modifier](gather-modifiers.md) functions.
+Validators can be defined as a simple function, a plain object that implements certain properties, or an instance of the [`ValidatorFactory`](lib/validation/ValidatorFactory.js) class.
+
+Before input is validated it may be sanitised by each validator too, and can be further manipulated by [Gather Modifier](gather-modifiers.md) functions.
 
 ## Defining fields to be gathered
 
@@ -37,36 +39,77 @@ This would result in `ref_number` not being gathered into the CASA session, beca
     rules.required,
   ]),
   ref_number: SimpleField([
-    r.optional,
+    rules.optional,
   ]),
 }
 ```
 
+## Structure of a validator
+
+Validators must implement the following basic structure:
+
+```javascript
+{
+  // Rquired: Main validation logic
+  validate: function (value, { waypointId, fieldName, journeyContext }) { ... },
+
+  // Optional: Sanitisation logic run on value before validation
+  sanitise: function (value, { waypointId, fieldName, journeyContext }) { ... },
+
+  // Optional: Generic object to hold arbitrary configuration
+  config: { ... },
+}
+```
+
+> *NOTE*: It is important that the `validate` and `sanitise` methods are assigned proper named/anonymous functions, rather than "fat arrow" functions as they will need a `this` context, and may be bound by CASA's internal workings.
+
+The [`ValidatorFactory`](lib/validation/ValidationFactory.js) class offers a means to generate these structures consistently.
+
 ## Built-in rules
 
-Validation rules are simple functions that return a `Promise` that is either resolved if the data is valid, or rejected if invalid.
+CASA comes bundled with [a few built-in rules](field-validation-rules.md), some of which can be configured to behave differently depending on your requirements. These rules are available in the `validationRules` object provided by the main `@dwp/govuk-casa` module.
 
-CASA comes bundled with [a few built-in rules](field-validation-rules.md), some of which can be configured to behave differently depending on your requirements. These rules are available in a `rules` object provided by the `@dwp/govuk-casa/lib/Validation` module.
+All of these rules implement the [`ValidatorFactory`](lib/validation/ValidatorFactory.js) class and can be added to your fields in one of two ways:
+
+```javascript
+const { validationRules: rules } = require('@dwp/govuk-casa');
+
+// As an uninstantiated class reference
+{
+  myField: SimpleField([
+    rules.required,
+  ]),
+}
+
+// Instantiated with some configuration
+{
+  myField: SimpleField([
+    rules.required.make({
+      ...
+    }),
+  ]),
+}
+```
 
 ### Error message conventions
 
-Most validation rule functions will accept some configuration related to the error messages they generate in the following formats. These `errorMsg` objects are used as constructor parameters to create an instance of the [`ValidationError`](lib/validation/ValidationError.js) class for each error:
+Most validation rules can be configured to customise the error messages they generate in the following formats. These `errorMsg` objects are used as constructor parameters to create an instance of the [`ValidationError`](lib/validation/ValidationError.js) class for each error:
 
 ```javascript
 // Simple string (will be passed through i18n translate function)
-rules.myRule.bind({
+rules.myRule.make({
   errorMsg: 'validation:myRule.errorMessage',
 });
 
 // Simple string in object format. Only `summary` is required
-rules.myRule.bind({
+rules.myRule.make({
   errorMsg: {
     summary: 'validation:myRule.errorMessage',
   },
 });
 
 // Object (to allow for different message in error summary and inline positions)
-rules.myRule.bind({
+rules.myRule.make({
   errorMsg: {
     inline: 'validation:myRule.errorMessage.inline',
     summary: 'validation:myRule.errorMessage.summary',
@@ -79,7 +122,7 @@ rules.myRule.bind({
 // For example, this will cause the error summary to link
 // to the input that has an id of `f-theThing-boom`
 theThing: SimpleField([
-  rules.myRule.bind({
+  rules.myRule.make({
     errorMsg: {
       summary: 'validation:myRule.errorMessage.summary',
       focusSuffix: '-boom',
@@ -96,7 +139,7 @@ theThing: SimpleField([
 // an id of `f-theThing-boom`, but will also highlight both `f-theThing-boom`
 // and `f-theThing-wallop`
 theThing: SimpleField([
-  rules.myRule.bind({
+  rules.myRule.make({
     errorMsg: {
       summary: 'validation:myRule.errorMessage.summary',
       focusSuffix: ['-boom', '-wallop'],
@@ -110,7 +153,7 @@ theThing: SimpleField([
 // For example, this will make the error appear in `formErrors["theThing-alt"]`
 // rather than `formErrors["theThing"]`:
 theThing: SimpleField([
-  rules.myRule.bind({
+  rules.myRule.make({
     errorMsg: {
       summary: 'validation:myRule.errorMessage.summary',
       fieldKeySuffix: '-alt',
@@ -125,7 +168,7 @@ theThing: SimpleField([
 // resolves to "Hello, ${name}", where the `name` variable is injected at
 // runtime:
 theThing: SimpleField([
-  rules.myRule.bind({
+  rules.myRule.make({
     errorMsg: {
       summary: 'validation:myRule.errorMessage.summary',
       variables: ({ waypointId, fieldName, journeyContext}) => ({
@@ -139,7 +182,7 @@ theThing: SimpleField([
 // request currently being served. This function should simply return an object
 // that is suitable for passing to the `ValidationError` constructor.
 theThing: SimpleField([
-  rules.myRule.bind({
+  rules.myRule.make({
     errorMsg: ({ waypointId, fieldName, journeyContext}) => ({
       summary: 'validation:myRule.errorMessage.summary',
       variables: {
@@ -152,7 +195,7 @@ theThing: SimpleField([
 
 ## Defining basic validation
 
-The object key should reference the name of the field you wish to validate and should not include any special characters (`a-z A-Z 0-9 - _ []` is fine).
+The object key should reference the name of the field you wish to validate and should not include any special characters (`a-z A-Z 0-9 - _ []` are all fine).
 
 ```javascript
 // definitions/field-validators/personal-info.js
@@ -161,13 +204,13 @@ const { validationRules: rules, simpleFieldValidation: SimpleField } = require('
 module.exports = {
   // Make the `name` field a required value
   name: SimpleField([
-    rules.required
+    rules.required,
   ]),
 
   // Ensure email is required, and is a valid format
   email: SimpleField([
     rules.required,
-    rules.email
+    rules.email,
   ])
 };
 ```
@@ -186,50 +229,70 @@ module.exports = {
 
 ## Custom rules
 
-As rules are simply JavaScript functions, you can create custom rules very easily. A rule function takes the form:
+A custom validator can be defined as one of:
+
+* An instance of the [`ValidatorFactory`](lib/validation/ValidatorFactory.js) class (recommended), or
+* An object that implements the [structure above](#structure-of-a-validator), or
+* A simple JavaScript function (for validation only)
+
+No matter what you choose, it will be coerced into the [required object structure](#structure-of-a-validator).
+
+To use the class method:
 
 ```javascript
-/**
- * `fieldValue` contains the data entered by the user
- * `dataContext` is an object containing some more context including:
- *    `waypointId`: ID of the waypoint being validated
- *    `fieldName`: name of the field being validated; this should not contain any special characters
- *    `journeyContext`: all data/validation held in the current JourneyContext
- *
- * @return Promise
- */
-function myRule (fieldValue, { waypointId, fieldName, journeyContext } = dataContext) {
-  return new Promise((resolve, reject) => {
-    if (/*fieldValue is valid*/) {
-      resolve();
-    } else {
-      reject(new ValidationError({
-        summary: 'Error message - this will pass through t() for translation'
-      }));
-    }
-  });
+/* MyValidator.js */
+const { ValidatorFactory, ValidationError } = require('@dwp/govuk-casa');
+
+class MyValidator extends ValidatorFactory {
+  /* Optional */
+  constructor(config) {
+    super();
+    /* Do some prep work as needed */
+  }
+
+  /* Optional */
+  sanitise(fieldValue, { waypointId, fieldName, journeyContext } = dataContext) {
+    // do some sanitisation on fieldValue
+    return sanitisedValue;
+  }
+
+  /* Required */
+  validate(fieldValue, { waypointId, fieldName, journeyContext } = dataContext) {
+    return new Promise((resolve, reject) => {
+      if (/*fieldValue is valid*/) {
+        resolve();
+      } else {
+        reject(new ValidationError({
+          summary: 'Error message - this will pass through t() for translation'
+        }));
+      }
+    })
+  }
 }
-```
 
-You can then add this rule to your list of validators, e.g
 
-```javascript
+/* field-valdiators.js */
+const MyValidator = require('./MyValidator.js');
+
 module.exports = {
   // Make the `name` field a required value
   name: SimpleField([
     rules.required,
-    myRule
+    MyValidator.make(),
   ]),
 
   // Ensure email is required, and is a valid format
   email: SimpleField([
     rules.required,
-    rules.email
+    rules.email,
   ])
 };
 ```
 
-Your validator function must reject with an instance of `ValidationError`.
+If you prefer to use a basic function, then it should adopt the same signature as the `validate()` method above.
+
+Note that the `this` context in your class' `validate()` and `sanitise()` methods will _not_ refer to an instance of your class, so you will not be able to call other class methods from within those methods. They will instead be bound to an object created via the `make()` static method. If you wish to add other properties to that object, you must override the `make()` method to add them.
+
 
 ## Conditional validation
 
@@ -267,7 +330,7 @@ module.exports = {
     rules.required,
     rules.email
   ], ({ waypointId, fieldName, journeyContext}) => {
-    return journeyContext.getDataForPage(waypointId).email;
+    return !!journeyContext.getDataForPage(waypointId).email;
   })
 };
 ```

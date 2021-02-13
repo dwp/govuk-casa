@@ -20,7 +20,7 @@ If you'd like to contribute any changes, enhancements or report issues, please t
 
 ## Requirements
 
-CASA aims to maintain support for the **latest CURRENT even version** and the **previous LTS version** of NodeJS, and requires at least version `6.4.0` of npm. See the [NodeJS release schedule](https://nodejs.org/en/about/releases/) for more information.
+CASA aims to maintain support for the **latest LTS version** of NodeJS, and requires at least version `6.4.0` of npm. See the [NodeJS release schedule](https://nodejs.org/en/about/releases/) for more information.
 
 ## Getting started
 

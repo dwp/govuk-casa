@@ -10,13 +10,13 @@ const ValidationError = require('../../../../../lib/validation/ValidationError.j
 
 describe('Validation rule: inArray', () => {
   it('should reject with a ValidationError', () => {
-    return expect(inArray('bad-args')).to.eventually.be.rejected.and.be.an.instanceOf(ValidationError);
+    return expect(inArray.make().validate('bad-args')).to.eventually.be.rejected.and.be.an.instanceOf(ValidationError);
   });
 
   it('should resolve if value is contained within array', () => {
-    const rule = inArray.bind({
+    const rule = inArray.make({
       source: ['a', 'b', 'c'],
-    })
+    }).validate;
     const queue = [];
 
     const result = rule('b');
@@ -28,14 +28,14 @@ describe('Validation rule: inArray', () => {
     return Promise.all(queue);
   });
 
-  it('should reject if value is null', () => expect(inArray(null)).to.be.rejected);
+  it('should reject if value is null', () => expect(inArray.make().validate(null)).to.be.rejected);
 
-  it('should reject if value is undefined', () => expect(inArray()).to.be.rejected);
+  it('should reject if value is undefined', () => expect(inArray.make().validate()).to.be.rejected);
 
   it('should reject if value is not contained within array', () => {
-    const rule = inArray.bind({
+    const rule = inArray.make({
       source: ['a', 'b', 'c'],
-    })
+    }).validate;
     const queue = [];
 
     let result = rule('not present').catch(() => (false));
@@ -46,23 +46,23 @@ describe('Validation rule: inArray', () => {
 
     queue.push(expect(rule([])).to.be.rejected);
 
-    queue.push(expect(inArray.bind({
+    queue.push(expect(inArray.make({
       source: [undefined],
-    })()).to.be.rejected);
+    }).validate()).to.be.rejected);
 
-    queue.push(expect(inArray()).to.be.rejected);
+    queue.push(expect(inArray.make().validate()).to.be.rejected);
 
     return Promise.all(queue);
   });
 
   it('should use a specific error message if defined', () => {
-    const rule = inArray.bind({
+    const rule = inArray.make({
       source: ['a', 'b', 'c'],
       errorMsg: {
         inline: 'TEST INLINE',
         summary: 'TEST SUMMARY',
       },
-    });
+    }).validate;
     const queue = [];
 
     // Will result in an undefined result
@@ -70,5 +70,29 @@ describe('Validation rule: inArray', () => {
     queue.push(expect(result.catch(err => Promise.reject(JSON.stringify(err)))).to.be.rejectedWith(/TEST INLINE/));
 
     return Promise.all(queue);
+  });
+
+  describe('sanitise()', () => {
+    [
+      // type | input | expected output
+      ['string', '', ''],
+      ['number', 123, '123'],
+      ['object', {}, ''],
+      ['function', () => {}, ''],
+      ['array', [], ''],
+      ['boolean', true, ''],
+    ].forEach(([type, input, output]) => {
+      it(`should coerce ${type} to a string`, () => {
+        const sanitise = inArray.make().sanitise;
+
+        expect(sanitise(input)).to.equal(output);
+      });
+    });
+
+    it('should let an undefined value pass through', () => {
+      const sanitise = inArray.make().sanitise;
+
+      expect(sanitise()).to.be.undefined;
+    });
   });
 });

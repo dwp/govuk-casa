@@ -78,6 +78,28 @@ function executeHook(logger, req = {}, res = {}, pageMeta = {}, hookName = '') {
 }
 
 /**
+ * Apply the `sanitise()` method of each validator rule defined in the
+ * fieldValidator. The output of each sanitisation is passed as input to the
+ * next.
+ *
+ * `context` contains the `fieldName`, `waypointId` and `journeyContext`.
+ *
+ * @param {SimpleFieldValidatorConfig} fieldValidator Validator
+ * @param {any} data Data to be sanitised
+ * @param {any} context Data context
+ * @return {any} Sanitised data
+ */
+function applyValidatorSanitiser(fieldValidator, data, context) {
+  // Apply each valdiator's `sanitise` method
+  let sanitisedData = data;
+  fieldValidator.validators.forEach((validatorObj) => {
+    sanitisedData = validatorObj.sanitise(sanitisedData, context);
+  });
+
+  return sanitisedData;
+}
+
+/**
  * Extract the data that will be saved to session, removing data that does not
  * have an associated field validator.
  *
@@ -117,7 +139,7 @@ function extractSessionableData(
   }
 
   if (Object.keys(fieldValidators).length === 0) {
-    logger.warn(
+    logger.debug(
       'No field validators defined for "%s" waypoint. Will use an empty object.',
       pageMeta.id,
     );
@@ -140,7 +162,15 @@ function extractSessionableData(
         journeyContext: journeyContextWrapper,
       })
     ) {
-      prunedData[k] = data[k];
+      prunedData[k] = applyValidatorSanitiser(
+        fieldValidators[k],
+        data[k],
+        {
+          fieldName: normalizeHtmlObjectPath(k),
+          waypointId: pageMeta.id,
+          journeyContext: journeyContextWrapper,
+        },
+      );
     }
   });
 
@@ -168,8 +198,9 @@ function runGatherModifiers(fieldValue, gatherModifiers = []) {
 }
 
 module.exports = {
-  nestHooks,
+  applyValidatorSanitiser,
   executeHook,
   extractSessionableData,
+  nestHooks,
   runGatherModifiers,
 };

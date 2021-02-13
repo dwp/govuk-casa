@@ -8,6 +8,7 @@ module.exports = function(casaApp, mountUrl, router, csrf) {
   router.post('/submit', csrf, function(req, res, next) {
     // Note, `req.casa.journeyContext` holds all the gathered data so you can manipulate
     // it however you wish at this point before submitting to final destination
+    console.log(JSON.stringify(req.casa.journeyContext.getData(), null, 2));
 
     // Remember to clear the journey data once submitted
     casaApp.endSession(req).then(() => {

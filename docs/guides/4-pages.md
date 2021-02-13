@@ -142,20 +142,20 @@ module.exports = {
     view: 'pages/personal-details.njk'
     fieldValidators: {
       name: sf([
-        r.required.bind({
+        r.required.make({
           errorMsg: 'personal-details:field.name.error_required',
         }),
       ]),
 
       email: sf([
-        r.required.bind({
+        r.required.make({
           errorMsg: 'personal-details:field.email.error_required',
         }),
         r.email,
       ]),
 
       details: sf([
-        r.required.bind({
+        r.required.make({
           errorMsg: 'personal-details:field.details.error_required',
         }),
       ]),

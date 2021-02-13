@@ -19,7 +19,7 @@ validationRules.dateObject
 
 ```javascript
 // All configuration options
-validationRules.dateObject.bind({
+validationRules.dateObject.make({
   // Allow single digits to be used for day/month
   allowSingleDigitDay: true,
   allowSingleDigitMonth: true,
@@ -63,7 +63,7 @@ validationRules.email
 
 ```javascript
 // All configuration  options
-validationRules.email.bind({
+validationRules.email.make({
   // Error message
   errorMsg: {
     summary: 'validation:rule.email.summary',
@@ -77,7 +77,7 @@ Test whether the field's value occurs within a predefined array.
 
 ```javascript
 // Minimal
-validationRules.inArray.bind({
+validationRules.inArray.make({
   // Validate if value contains any of these options
   source: ['apples', 'pears', 'lemons'],
 })
@@ -85,7 +85,7 @@ validationRules.inArray.bind({
 
 ```javascript
 // All configuration optiona
-validationRules.inArray.bind({
+validationRules.inArray.make({
   // Validate if value contains any of these options
   source: ['apples', 'pears', 'lemons']
 
@@ -107,7 +107,7 @@ validationRules.nino
 
 ```javascript
 // All configuration options
-validationRules.nino.bind({
+validationRules.nino.make({
   // Strip all whitespace (\u0020 spaces) from the value before validating it
   allowWhitespace: true,
 
@@ -138,7 +138,7 @@ validationRules.postalAddressObject
 
 ```javascript
 // All configuration options
-validationRules.postAddressObject.bind({
+validationRules.postAddressObject.make({
   // Limit the length of each address line (address1 - 4)
   strlenmax: 100,
 
@@ -176,14 +176,14 @@ Ensure that a provided values meets the rules of a regular expression.
 
 ```javascript
 // Minimal
-validationRules.regex.bind({
+validationRules.regex.make({
   pattern: /^[0-9]{3}$/,
 })
 ```
 
 ```javascript
 // All configuration options
-validationRules.regex.bind({
+validationRules.regex.make({
   // Match this pattern
   pattern: /^[0-9]{3}$/,
 
@@ -209,7 +209,7 @@ validationRules.required
 
 ```javascript
 // All configuration options
-validationRules.required.bind({
+validationRules.required.make({
   // Error message
   errorMsg: {
     summary: 'validation:rule.required.summary',
@@ -217,13 +217,15 @@ validationRules.required.bind({
 })
 ```
 
+> **NOTE:** This rule will convert Array and Object inputs to one-dimensional versions of themselves, and set anything else to `undefined`, i.e. `[1, [2, 3], 3]` would become `[1, undefined, 3]`. If you have more complex objects, you will need to write a custom validator to handle them appropriately.
+
 ## `strlen`
 
 Validate that string values meet a minimum/maximum length (no. characters).
 
 ```javascript
 // Set maximum length to 100 characters
-validationRules.strlen.bind({
+validationRules.strlen.make({
   // Set at least the min or max length (or both) to make this rule worthwhile
   min: 10,
   max: 100,
