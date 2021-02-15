@@ -18,7 +18,7 @@
       </p>
     </div>
 
-    <div class="casa-form-control-block">
+    <div class="govuk-button-group casa-form-control-block">
       {{ govukButton({
         attributes: {
           id: 'continue-button'
@@ -27,9 +27,7 @@
         preventDoubleClick: true
       }) }}
 
-      <p class="casa-cancel-review govuk-body">
-        <a href="{{ casa.mountUrl }}review" class="govuk-link--no-visited-state">{{ t('common:form.buttons.cancel.label') }}</a>
-      </p>
+      <a href="{{ casa.mountUrl }}review" class="govuk-link govuk-link--no-visited-state">{{ t('common:form.buttons.cancel.label') }}</a>
     </div>
   </form>
 {% endblock %}

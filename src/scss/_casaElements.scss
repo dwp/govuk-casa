@@ -1,10 +1,3 @@
-// Cancel edit link wrapper
-// This adds some alignment so it sits next to the "Continue" button better
-.casa-cancel-review {
-  margin: (govuk-spacing(2) - $govuk-border-width-form-element) govuk-spacing(2); // matches padding on `.govuk-button`
-  display: inline-block;
-}
-
 // JavaScript-managed hidden elements
 // govuk_template_jinja uses its js-hidden class slightly differently to CASA;
 // it adds the class using JavaScript vs CASA's method of showing it and only

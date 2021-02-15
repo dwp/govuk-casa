@@ -30,14 +30,12 @@ Which will render something like this:
 
   ... your form inputs here ...
 
-  <div class="casa-form-control-block">
+  <div class="govuk-button-group casa-form-control-block">
     <button type="submit" class="govuk-button" data-prevent-double-click="true" id="continue-button">
       Save changes
     </button>
 
-    <p class="casa-cancel-review govuk-body">
-      <a href="/url/to/review/page" class="govuk-link--no-visited-state">Cancel</a>
-    </p>
+    <a href="/url/to/review/page" class="govuk-link govuk-link--no-visited-state">Cancel</a>
   </div>
 </form>
 ```

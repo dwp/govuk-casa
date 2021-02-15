@@ -9,7 +9,7 @@
   {{ caller() }}
 
   {% if not params.buttonBarHidden %}
-    <div class="casa-form-control-block">
+    <div class="govuk-button-group casa-form-control-block">
       {{ govukButton({
         attributes: {
           id: 'continue-button'
@@ -19,9 +19,7 @@
       }) }}
 
       {% if params.inEditMode %}
-        <p class="casa-cancel-review govuk-body">
-          <a href="{{ params.editOriginUrl }}" class="govuk-link--no-visited-state">{{ t('common:form.buttons.cancel.label') }}</a>
-        </p>
+        <a href="{{ params.editOriginUrl }}" class="govuk-link govuk-link--no-visited-state">{{ t('common:form.buttons.cancel.label') }}</a>
       {% endif %}
     </div>
   {% endif %}
