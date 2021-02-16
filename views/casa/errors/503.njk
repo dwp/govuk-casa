@@ -1,11 +1,11 @@
 {% extends "casa/layouts/main.njk" %}
 
 {% block pageTitle %}
-  Service unavailable - {{ t('common:serviceName') }}
+  {{ t('503:pageTitle') }} - {{ t('common:serviceName') }}
 {% endblock %}
 
 {% block content %}
-  <h1 class="govuk-heading-xl">Service unavailable</h1>
+  <h1 class="govuk-heading-xl">{{ t('503:pageTitle') }}</h1>
 
-  <p class="govuk-body">Try again later.</p>
+  <p class="govuk-body">{{ t('503:body') }}</p>
 {% endblock %}

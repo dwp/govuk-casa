@@ -1,11 +1,11 @@
 {% extends "casa/layouts/main.njk" %}
 
 {% block pageTitle %}
-  Forbidden - {{ t('common:serviceName') }}
+  {{ t('403:pageTitle') }} - {{ t('common:serviceName') }}
 {% endblock %}
 
 {% block content %}
-  <h1 class="govuk-heading-xl">Forbidden</h1>
+  <h1 class="govuk-heading-xl">{{ t('403:pageTitle') }}</h1>
 
-  <p class="govuk-body">You are forbidden from accessing this resource.</p>
+  <p class="govuk-body">{{ t('403:body') }}</p>
 {% endblock %}
