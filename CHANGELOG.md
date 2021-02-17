@@ -1,3 +1,12 @@
+## [6.8.2](https://github.com/dwp/govuk-casa/compare/6.8.1...6.8.2) (2021-02-17)
+
+
+### Bug Fixes
+
+* reorder middleware to avoid errors when receiving sessionless POSTs ([84840a3](https://github.com/dwp/govuk-casa/commit/84840a30a28baefe6ecd3387aa30048db60e2f35))
+
+
+
 ## [6.8.1](https://github.com/dwp/govuk-casa/compare/6.8.0...6.8.1) (2020-12-10)
 
 
