@@ -75,17 +75,39 @@ describe('Validation rule: inArray', () => {
   describe('sanitise()', () => {
     [
       // type | input | expected output
-      ['string', '', ''],
-      ['number', 123, '123'],
-      ['object', {}, ''],
-      ['function', () => {}, ''],
-      ['array', [], ''],
-      ['boolean', true, ''],
-    ].forEach(([type, input, output]) => {
-      it(`should coerce ${type} to a string`, () => {
+      ['string', 'string',  '', ''],
+      ['number', 'string', 123, '123'],
+      ['array', 'array', [], []],
+    ].forEach(([type, target, input, output]) => {
+      it(`should coerce ${type} to a ${target}`, () => {
         const sanitise = inArray.make().sanitise;
 
-        expect(sanitise(input)).to.equal(output);
+        expect(sanitise(input)).to.deep.equal(output);
+      });
+    });
+    [
+      // type | input | expected output
+      ['object', {}],
+      ['function', () => {}],
+      ['boolean', true],
+    ].forEach(([type, input, output]) => {
+      it(`should coerce ${type} to an undefined value`, () => {
+        const sanitise = inArray.make().sanitise;
+
+        expect(sanitise(input)).to.be.undefined;
+      });
+    });
+
+    [
+      // type | input | expected output
+      ['mixed array', ['12', 3], ['12', '3']],
+      ['numeric array', [1, 2, 3], ['1', '2', '3']],
+      ['array of unstringables', [{}, () => {}, []], [undefined, undefined, undefined]],
+    ].forEach(([type, input, output]) => {
+      it(`should coerce ${type} elements to a one-dimensional array`, () => {
+        const sanitise = inArray.make().sanitise;
+
+        expect(sanitise(input)).to.deep.equal(output);
       });
     });
 
