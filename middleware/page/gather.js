@@ -1,5 +1,5 @@
 const mwBodyParser = require('../../lib/commonBodyParser.js');
-const createLogger = require('../../lib/Logger');
+const createLogger = require('../../lib/Logger.js');
 const { executeHook, extractSessionableData, runGatherModifiers } = require('./utils.js');
 
 module.exports = (pageMeta = {}) => [mwBodyParser, (req, res, next) => {

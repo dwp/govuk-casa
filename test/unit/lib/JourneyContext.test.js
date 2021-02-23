@@ -110,14 +110,14 @@ describe('JourneyContext', () => {
       const c = new JourneyContext();
       expect(() => {
         return c.getDataForPage(undefined);
-      }).to.throw(TypeError, 'page must be a string or PageMeta object. Got undefined');
+      }).to.throw(TypeError, 'Page must be a string or PageMeta object. Got undefined');
     });
 
     it('should throw a TypeError when setDataForPage() is passed an incorrectly typed argument', () => {
       const c = new JourneyContext();
       expect(() => {
         return c.setDataForPage(undefined, {});
-      }).to.throw(TypeError, 'page must be a string or PageMeta object. Got undefined');
+      }).to.throw(TypeError, 'Page must be a string or PageMeta object. Got undefined');
     });
   });
 
