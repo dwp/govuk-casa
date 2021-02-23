@@ -1,3 +1,12 @@
+## [6.8.3](https://github.com/dwp/govuk-casa/compare/6.8.2...6.8.3) (2021-02-23)
+
+
+### Performance Improvements
+
+* call field read/write function only if defined ([6d7765e](https://github.com/dwp/govuk-casa/commit/6d7765ef00b4f3488e3e7b6df7a0bfbeec9a37fd))
+
+
+
 ## [6.8.2](https://github.com/dwp/govuk-casa/compare/6.8.1...6.8.2) (2021-02-17)
 
 
