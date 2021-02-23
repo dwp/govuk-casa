@@ -25,6 +25,7 @@ type config = {
 };
 
 type validatorObject = {
+  name?: string,
   config?: config,
   sanitise?: Function,
   validate?: Function,

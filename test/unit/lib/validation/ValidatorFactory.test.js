@@ -24,10 +24,11 @@ describe('Validation: ValidatorFactory', () => {
     it('should return an object with only valid methods', () => {
       const instance = StubSubClass.make();
 
-      expect(Reflect.ownKeys(instance)).to.have.length(3);
+      expect(Reflect.ownKeys(instance)).to.have.length(4);
       expect(instance).to.have.ownProperty('config').that.is.an('object');
       expect(instance).to.have.ownProperty('validate').that.is.an('function');
       expect(instance).to.have.ownProperty('sanitise').that.is.an('function');
+      expect(instance).to.have.ownProperty('name').that.is.an('string');
     });
 
     it('should return an object that includes the original config', () => {
@@ -50,7 +51,7 @@ describe('Validation: ValidatorFactory', () => {
       const obj = ValidatorFactory.coerceToValidatorObject(StubSubClass);
 
       expect(spyMake).to.be.calledOnceWithExactly();
-      expect(obj).to.have.keys('validate', 'sanitise', 'config');
+      expect(obj).to.have.keys('validate', 'sanitise', 'config', 'name');
     });
     
     it('should set a validate property when given a plain function', () => {
@@ -58,16 +59,16 @@ describe('Validation: ValidatorFactory', () => {
 
       const obj = ValidatorFactory.coerceToValidatorObject(plainFunction);
 
-      expect(obj).to.have.keys('validate', 'sanitise', 'config');
+      expect(obj).to.have.keys('validate', 'sanitise', 'config', 'name');
       expect(obj.validate()).to.equal('test-executed');
     });
 
     it('should override all properties when given an object', () => {
-      const plainObject = { validate: 'x', sanitise: 'y', config: 'z' };
+      const plainObject = { name: 'w', validate: 'x', sanitise: 'y', config: 'z' };
 
       const obj = ValidatorFactory.coerceToValidatorObject(plainObject);
 
-      expect(obj).to.have.keys('validate', 'sanitise', 'config');
+      expect(obj).to.have.keys('validate', 'sanitise', 'config', 'name');
       expect(obj).to.deep.equal(plainObject);
     });
   });

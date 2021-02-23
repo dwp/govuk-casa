@@ -76,8 +76,8 @@ module.exports = function routePages(
     router.get(
       routeUrl,
       mwBodyParser,
-      mwPrepare(plan),
-      mwDetectEditMode(allowPageEdit),
+      mwPrepare(mountUrl, plan),
+      mwDetectEditMode(mountUrl, allowPageEdit),
       mwJourneyRails(mountUrl, plan),
       mwCsrfProtection,
       mwSkip(mountUrl),
@@ -90,8 +90,8 @@ module.exports = function routePages(
     router.post(
       routeUrl,
       mwBodyParser,
-      mwPrepare(plan),
-      mwDetectEditMode(allowPageEdit),
+      mwPrepare(mountUrl, plan),
+      mwDetectEditMode(mountUrl, allowPageEdit),
       mwJourneyRails(mountUrl, plan),
       mwCsrfProtection,
       mwGatherData(pageMeta),
