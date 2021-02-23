@@ -71,7 +71,6 @@
     "jsdom": "16.4.0",
     "minimatch": "3.0.4",
     "mocha": "8.3.0",
-    "node-mocks-http": "1.10.1",
     "npm-audit-resolver": "2.2.1",
     "nyc": "15.1.0",
     "proxyquire": "2.1.3",

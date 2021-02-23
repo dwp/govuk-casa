@@ -46,6 +46,30 @@ describe('Middleware: errors/catch-all', () => {
     });
   });
 
+  describe('Blocked payload', () => {
+    let mockError;
+
+    beforeEach(() => {
+      mockError = new Error();
+      mockError.type = 'entity.verify.failed';
+    });
+
+    it('should create an info log', () => {
+      middleware(mockError, mockRequest, mockResponse);
+      expect(mockLogger.info).to.have.been.calledOnceWithExactly('[403] Request payload blocked');
+    });
+
+    it('should set HTTP status to 403', () => {
+      middleware(mockError, mockRequest, mockResponse);
+      expect(mockResponse.status).to.have.been.calledOnceWithExactly(403);
+    });
+
+    it('should render the casa/errors/403.njk template', () => {
+      middleware(mockError, mockRequest, mockResponse);
+      expect(mockResponse.render).to.have.been.calledOnceWithExactly('casa/errors/403.njk');
+    });
+  });
+
   describe('Other errors', () => {
     let mockError;
 

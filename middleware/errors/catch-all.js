@@ -10,6 +10,9 @@ module.exports = (logger) => (err, req, res, next) => {
   if (err.code === 'EBADCSRFTOKEN') {
     logger.info('[403] CSRF token missing/invalid');
     res.status(403).render('casa/errors/403.njk');
+  } else if (err.type === 'entity.verify.failed') {
+    logger.info('[403] Request payload blocked');
+    res.status(403).render('casa/errors/403.njk');
   } else if (!res.headersSent) {
     logger.error('[500] Internal Server Error (rendered page) - %s - %s', err.message, err.stack.toString());
     res.status(500).render('casa/errors/500.njk');

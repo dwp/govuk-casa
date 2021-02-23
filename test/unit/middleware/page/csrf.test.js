@@ -19,20 +19,6 @@ describe('Middleware: page/csrf', () => {
     mockResponse = response();
   });
 
-  describe('body-parser', () => {
-    it('should use the urlencoded body parser', () => {
-      const stubBodyParser = {
-        urlencoded: sinon.stub(),
-      };
-      proxyquire('../../../../middleware/page/csrf.js', {
-        'body-parser': stubBodyParser,
-      });
-      expect(stubBodyParser.urlencoded).is.calledOnceWithExactly({
-        extended: true,
-      });
-    });
-  });
-
   describe('csrf', () => {
     it('should be configured to not use cookies and uses "session" as request property', () => {
       const stubCsurf = sinon.stub();

@@ -1,12 +1,6 @@
-const bodyParser = require('body-parser');
+const mwBodyParser = require('../../lib/commonBodyParser.js');
 const createLogger = require('../../lib/Logger');
 const { executeHook, extractSessionableData, runGatherModifiers } = require('./utils.js');
-
-// We want a body parser to gather the POSTed data into `req.body`
-const mwBodyParser = bodyParser.urlencoded({
-  // Adds support for array[style][params] -> objects
-  extended: true,
-});
 
 module.exports = (pageMeta = {}) => [mwBodyParser, (req, res, next) => {
   const logger = createLogger('page.gather');

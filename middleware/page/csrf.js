@@ -5,13 +5,8 @@
  *   <input type="hidden" name="_csrf" value="{{ casa.csrfToken }}">
  */
 
-const bodyParser = require('body-parser');
 const csrf = require('csurf');
-
-// Adds support for array[style][params] -> objects
-const mwBodyParser = bodyParser.urlencoded({
-  extended: true,
-});
+const mwBodyParser = require('../../lib/commonBodyParser.js');
 
 const mwCsrfProtection = csrf({
   cookie: false,
