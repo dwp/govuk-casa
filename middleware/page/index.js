@@ -38,6 +38,7 @@
  *   };
  */
 
+const mwBodyParser = require('../../lib/commonBodyParser.js');
 const mwPrepare = require('./prepare-request.js');
 const mwSkip = require('./skip.js');
 const mwJourneyRails = require('./journey-rails.js');
@@ -74,6 +75,7 @@ module.exports = function routePages(
 
     router.get(
       routeUrl,
+      mwBodyParser,
       mwPrepare(plan),
       mwDetectEditMode(allowPageEdit),
       mwJourneyRails(mountUrl, plan),
@@ -87,6 +89,7 @@ module.exports = function routePages(
 
     router.post(
       routeUrl,
+      mwBodyParser,
       mwPrepare(plan),
       mwDetectEditMode(allowPageEdit),
       mwJourneyRails(mountUrl, plan),

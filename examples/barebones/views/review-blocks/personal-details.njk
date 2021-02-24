@@ -7,7 +7,10 @@
 {% endblock %}
 
 {% block reviewBlock %}
-  {% set pData = journeyContext.person %}
+  {# Note: this is "person" rather than "personal-details" because the
+   "personal-details" page definition includes a "fieldWriter()" function that
+   stores data on "person" #}
+  {% set pData = journeyContext['person'] %}
 
   {{ govukSummaryList({
     classes: "govuk-!-margin-bottom-9",
