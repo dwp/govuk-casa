@@ -1,3 +1,12 @@
+## [6.8.4](https://github.com/dwp/govuk-casa/compare/6.8.3...6.8.4) (2021-02-24)
+
+
+### Bug Fixes
+
+* add missing parser middleware ([75c457f](https://github.com/dwp/govuk-casa/commit/75c457fa81ad67dea451fcee8293430d07b94c9e))
+
+
+
 ## [6.8.3](https://github.com/dwp/govuk-casa/compare/6.8.2...6.8.3) (2021-02-23)
 
 
