@@ -398,6 +398,37 @@ describe('Validation rule: dateObject', () => {
       });
     });
 
+    it('should ignore toString overrides', () => {
+      const sanitise = dateObject.make().sanitise;
+
+      expect(sanitise({
+        dd: {
+          toString: 'test',
+        },
+        mm: {
+          toString: () => ('test'),
+        },
+        yyyy: 'year',
+      })).to.deep.equal({
+        dd: '',
+        mm: '',
+        yyyy: 'year',
+      });
+
+      expect(sanitise({
+        dd: {
+          __proto__: {
+            toString: 'test',
+          },
+        },
+        mm: 'month',
+      })).to.deep.equal({
+        dd: '',
+        mm: 'month',
+        yyyy: '',
+      });
+    });
+
     it('should let an undefined value pass through', () => {
       const sanitise = dateObject.make().sanitise;
 

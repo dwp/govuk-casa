@@ -398,9 +398,9 @@ describe('Validation rule: postalAddressObject', () => {
       })).to.deep.equal({
         address1: '1',
         address2: '',
-        address3: '() => {}',
-        address4: 'true',
-        postcode: '[object Set]',
+        address3: '',
+        address4: '',
+        postcode: '',
       });
     });
   });
