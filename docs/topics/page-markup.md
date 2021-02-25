@@ -94,7 +94,7 @@ Here we'll create a page for the `personal-info` waypoint; save this to `view/pa
 ```nunjucks
 {% extends "casa/layouts/journey.njk" %}
 
-{% from "components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "casa/components/journey-form/macro.njk" import casaJourneyForm with context %}
 {% from "casa/components/input/macro.njk" import casaGovukInput with context %}
 

@@ -6,7 +6,7 @@ const { expect } = chai;
 chai.use(sinonChai);
 
 const { app } = require('../../helpers/express-mocks.js');
-const { renderTemplateFile } = require('../../templates/helpers.js');
+const { renderTemplate } = require('../../templates/helpers.js');
 
 const middleware = require('../../../../middleware/headers/config-defaults.js');
 
@@ -64,8 +64,7 @@ describe('Middleware: headers/config-defaults', () => {
   });
 
   it('should add script-src hashes for all inline javascript in the GOV.UK template', () => {
-    const govukTemplatePath = require.resolve('govuk-frontend/govuk/template.njk');
-    const $ = renderTemplateFile(govukTemplatePath, {});
+    const $ = renderTemplate('govuk/template.njk', {});
 
     const scriptHashes = [];
     $('script:not([src])').each((i, elem) => {

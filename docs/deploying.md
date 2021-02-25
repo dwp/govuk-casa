@@ -60,7 +60,7 @@ As we want our pages to all have the same custom layout (2-thirds + 1-third colu
 {# views/layouts/custom-journey.njk #}
 {% extends "casa/layouts/journey.njk" %}
 
-{% from "components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "casa/components/journey-form/macro.njk" import casaJourneyForm with context %}
 
 {% block content %}
@@ -282,7 +282,7 @@ module.exports = (router) => {
 {# views/welcome.njk #}
 {% extends "casa/layouts/main.njk" %}
 
-{% from "components/button/macro.njk" import govukButton %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% block pageTitle %}
   Welcome
@@ -333,7 +333,7 @@ module.exports = function (casaApp, mountUrl, router, csrf) {
 {# views/submit.njk #}
 {% extends "casa/layouts/main.njk" %}
 
-{% from "components/button/macro.njk" import govukButton %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% block pageTitle %}
   Submit your answers
@@ -512,7 +512,7 @@ Here's some review blocks for each of our pages:
 {# views/pages-review/personal-info.njk #}
 {% extends "casa/review/page-block.njk" %}
 
-{% from "components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 
 {% block pageBlockTitle %}
   {{ t('personal-info:title') }}
@@ -583,7 +583,7 @@ Here's some review blocks for each of our pages:
 {# views/pages-review/hobbies.njk #}
 {% extends "casa/review/page-block.njk" %}
 
-{% from "components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 
 {% block pageBlockTitle %}
   {{ t('hobbies:title') }}

@@ -30,7 +30,7 @@ module.exports = (logger, app, viewDirs = [], govukFrontendDir = '') => {
   // Resolove priority: userland template > CASA templates > GOVUK templates
   const dirViews = viewDirs.map((dir) => path.resolve(dir)).concat([
     path.resolve(__dirname, '..', '..', 'views'),
-    path.resolve(govukFrontendDir, 'govuk'),
+    path.resolve(govukFrontendDir),
   ]);
 
   // Prepare a single Nunjucks environment for all responses to use. Note that

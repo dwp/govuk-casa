@@ -44,7 +44,7 @@ describe('Middleware: nunjucks/index', () => {
       `${cwd}/a`,
       `${cwd}/b`,
       `${cwd}/views`,
-      `${cwd}/govuk-frontend/govuk`,
+      `${cwd}/govuk-frontend`,
     ]);
   });
 

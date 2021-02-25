@@ -17,7 +17,7 @@ Before creating individual Page templates, you will need to create a _layout_ to
 {# views/layouts/custom-journey.njk #}
 {% extends "casa/layouts/journey.njk" %}
 
-{% from "components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "casa/components/journey-form/macro.njk" import casaJourneyForm with context %}
 
 {% block content %}
@@ -66,7 +66,7 @@ Here's an example of what a template might look like for a `personal-details` wa
 {% extends "layouts/custom-journey.njk" %}
 
 {% from "casa/components/input/macro.njk" import casaGovukInput with context %}
-{% from "components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 
 {% block casaPageTitle %}
   t('personal-details:title')

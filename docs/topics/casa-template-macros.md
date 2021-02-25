@@ -15,7 +15,7 @@ For example:
 
 ```nunjucks
 {# Use the GOVUK Design System component directly #}
-{% from "components/input/macro.njk" import govukInput %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
 
 {{ govukInput({
   name: 'dob',

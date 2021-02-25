@@ -1,4 +1,4 @@
-{% from "components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 
 {% set fieldErrors = params.casaErrors[params.namePrefix] %}
 {% set hasSuffixHighlights = true if fieldErrors[0].focusSuffix.length else false %}

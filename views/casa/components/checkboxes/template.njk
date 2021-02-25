@@ -1,4 +1,4 @@
-{% from "components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 
 {# Ensure field name is always suffixed with [] to have it parsed consistently as an array #}
 {% set fieldName = params.name | replace('[]', '') + '[]' %}

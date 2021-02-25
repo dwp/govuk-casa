@@ -5,9 +5,10 @@ const nunjucks = require('nunjucks');
 
 // Configure Nunujucks environments in same way as main application
 // see `middleware/nunjucks/index.js`
+const govukTemplatePath = npath.resolve(require.resolve('govuk-frontend'), '../../');
 const nunjucksLoader = new nunjucks.FileSystemLoader([
   npath.resolve(__dirname, '../../../views/'),
-  npath.resolve(require.resolve('govuk-frontend'), '../'),
+  govukTemplatePath,
 ], {
   watch: false,
   noCache: false,
@@ -30,7 +31,10 @@ nunjucksEnv.addGlobal('t', (k, vars = {}) => k.replace(/\$\{([^\}]+)\}/g, (o, m)
 }));
 
 /**
- * Generate a cheerio instance from the specified template source.
+ * Generate a cheerio instance from the specified template source file.
+ *
+ * Use this to render a template that exists outside of the registred Nunjucks
+ * paths.
  *
  * @param {String} tpl Template source file
  * @param {Object} context Variables to pass into template
@@ -44,6 +48,23 @@ function renderTemplateFile(tpl, context) {
   });
 }
 
+/**
+ * Generate a cheerio instance from the specified template source.
+ *
+ * Use this when the template exists in one of the Nunjucks views paths.
+ *
+ * @param {String} tpl Template source file (relative to one of the Nunjucks view paths)
+ * @param {Object} context Variables to pass into template
+ * @return {Object} Cheerio object
+ */
+function renderTemplate(tpl, context) {
+  const renderedTemplate = nunjucksEnv.render(tpl, context || {});
+  return cheerio.load(renderedTemplate, {
+    normalizeWhitespace: true,
+  });
+}
+
 module.exports = {
   renderTemplateFile,
+  renderTemplate,
 };

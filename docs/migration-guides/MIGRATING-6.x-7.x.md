@@ -10,6 +10,7 @@ The following changes are **mandatory**:
 - [Replace `editSearchParams` with generated parameters and update skip links](#replace-editSearchParams-with-generated-parameters-and-update-skip-links)
 - [Update middleware function calls](#update-middleware-function-calls)
 - [Update field validator definitions](#field-validator-definitions)
+- [Update paths to GOVUK Nunjucks macros](#update-govuk-nunjucks-macro-paths)
 
 The following changes are **optional**:
 - [Add active context ID to journey form macro](#add-active-context-id-to-form)
@@ -236,6 +237,20 @@ module.exports = MyValidatorFactory;
 See the [full documentation on field validation](docs/topics/field-validation.md) for more details.
 
 
+### Update GOVUK Nunjucks macro paths
+
+We have changed the path to the `govuk-frontend` component macros so they match those described in the [GOVUK Design System](https://design-system.service.gov.uk/components/). Therefore, any references you may have to these components will need to be updated. For example:
+
+```nunjucks
+{# OLD PATHS #}
+{% extends "template.njk" %}
+{% from "components/button/macro.njk" import govukButton %}
+
+{# NEW PATHS #}
+{% extends "govuk/template.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+```
+
 ## Optional changes
 
 ### Add active context id to form
@@ -247,7 +262,7 @@ To enable this, simply add the `activeContextId` parameter when calling the `cas
 ```nunjucks
 {% extends "casa/layouts/journey.njk" %}
 
-{% from "components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "casa/components/journey-form/macro.njk" import casaJourneyForm with context %}
 
 {% block content %}
