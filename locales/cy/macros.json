@@ -6,9 +6,8 @@
   },
 
   "postalAddressObject": {
-    "address1": "Adeilad neu stryd",
-    "address1Aid": "Adeilad neu stryd 1",
-    "address2Aid": "Adeilad neu stryd 2",
+    "address1": "Adeilad a stryd <span class=\"govuk-visually-hidden\">llinell 1 o 2</span>",
+    "address2": "<span class=\"govuk-visually-hidden\">Adeilad a stryd llinell 2 o 2</span>",
     "address3": "Tref neu ddinas",
     "address4": "Sir",
     "postcode": "Cod post"
