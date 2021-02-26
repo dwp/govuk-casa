@@ -1,3 +1,7 @@
+## [3.0.5](https://github.com/dwp/govuk-casa/compare/3.0.4...3.0.5) (2021-02-26)
+
+
+
 <a name="3.0.4"></a>
 ## [3.0.4](https://github.com/dwp/govuk-casa/compare/3.0.3...3.0.4) (2019-10-24)
 
