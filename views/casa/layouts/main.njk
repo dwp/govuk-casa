@@ -8,6 +8,15 @@
 {% endblock %}
 
 
+{% block skipLink %}
+  {# Harcoding content for the skip link as t() may not be availble on some error pages #}
+  {{ govukSkipLink({
+    href: '#main-content',
+    text: 'Neidio i\'r prif gynnwys' if locale === 'cy' else 'Skip to main content'
+  }) }}
+{% endblock %}
+
+
 {% block bodyStart %}
   <div id="global-cookie-message" class="js-hidden">
     {% include "casa/partials/cookie_message.njk" %}
