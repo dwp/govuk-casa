@@ -66,6 +66,16 @@
         "inline": "Value is too long",
         "summary": "Value is too long"
       }
+    },
+    "wordCount": {
+      "min": {
+        "inline": "Value is too short",
+        "summary": "Value is too short"
+      },
+      "max": {
+        "inline": "Value is too long",
+        "summary": "Value is too long"
+      }
     }
   }
 }

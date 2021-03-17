@@ -69,6 +69,7 @@ const {
     regex,
     required,
     strlen,
+    wordCount,
   },
 
   // Function to carry out validation on given data

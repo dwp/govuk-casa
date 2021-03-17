@@ -6,6 +6,7 @@ import PostalAddressObject from './postalAddressObject';
 import Regex from './dateObject';
 import Required from './required';
 import Strlen from './strlen';
+import WordCount from './wordCount';
 
 export namespace ValidationRules {
   export type dateObject = DateObject;
@@ -17,4 +18,5 @@ export namespace ValidationRules {
   export type regex = Regex;
   export type required = Required;
   export type strlen = Strlen;
+  export type wordCount = WordCount;
 }
