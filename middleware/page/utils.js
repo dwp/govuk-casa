@@ -87,7 +87,7 @@ function executeHook(logger, req = {}, res = {}, pageMeta = {}, hookName = '') {
  * @param {SimpleFieldValidatorConfig} fieldValidator Validator
  * @param {any} data Data to be sanitised
  * @param {any} context Data context
- * @return {any} Sanitised data
+ * @returns {any} Sanitised data
  */
 function applyValidatorSanitiser(fieldValidator, data, context) {
   // Apply each valdiator's `sanitise` method
