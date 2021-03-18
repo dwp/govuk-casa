@@ -8,6 +8,7 @@ image: node:14-alpine@sha256:2ae9624a39ce437e7f58931a5747fdc60224c6e40f8980db907
   only:
     - master
     - tags
+    - 7.0.0
 
 stages:
   - build
