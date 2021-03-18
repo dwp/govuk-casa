@@ -3,7 +3,7 @@
  *
  * Enhances `req` with:
  *  object session = Current session
- *  model/claim claim = Current Claim state
+ *  model/claim claim = Current Claim state.
  */
 
 const logger = require('../../lib/Logger.js')('session');

@@ -2,7 +2,7 @@
  * Generate CSRF protection to use on all mutating (POST) requests. The
  * `csrfSupplyToken` function will make the current token available to views
  * via the `casa.csrfToken` variable, which you can use as so:
- *   <input type="hidden" name="_csrf" value="{{ casa.csrfToken }}">
+ *   <input type="hidden" name="_csrf" value="{{ casa.csrfToken }}">.
  */
 
 const csrf = require('csurf');

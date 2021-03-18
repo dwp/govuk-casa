@@ -2,27 +2,28 @@ const { isObjectWithKeys, isObjectType, normalizeHtmlObjectPath } = require('../
 const JourneyContext = require('../../lib/JourneyContext.js');
 
 /**
-* Converts an array of functions to a nested callback, eg:
-* [                                  |   function nested(req, res, next) {-
-*   function a(req, res, next) {-    |     a(req, res, () => {-
-*     ...                            |       ...
-*     next();                        |       b(req, res, () => {-
-*   },                               |         ...
-*   function b(req, res, next) {-    |         c(req, res, () => {-
-*     ...                            |           ...
-*     next();                        |           next();
-*   },                               |         });
-*   function c(req, res, next) {-    |       })
-*     ...                            |     });
-*     next();                        |   }
-*   },                               |
-* ]                                  |
-* @param  {Logger} logger Request-specific Logger instance
-* @param  {string} hookName Name of the hook being called
-* @param  {string} waypointId id of waypoint
-* @param  {array} hooks array of middleware like functions
-* @return {function} nested function
-*/
+ * Converts an array of functions to a nested callback, eg:
+ * [                                  |   function nested(req, res, next) {-
+ *   function a(req, res, next) {-    |     a(req, res, () => {-
+ *     ...                            |       ...
+ *     next();                        |       b(req, res, () => {-
+ *   },                               |         ...
+ *   function b(req, res, next) {-    |         c(req, res, () => {-
+ *     ...                            |           ...
+ *     next();                        |           next();
+ *   },                               |         });
+ *   function c(req, res, next) {-    |       })
+ *     ...                            |     });
+ *     next();                        |   }
+ *   },                               |
+ * ]                                  |.
+ *
+ * @param  {object} logger Request-specific Logger instance.
+ * @param  {string} hookName Name of the hook being called.
+ * @param  {string} waypointId ID of waypoint.
+ * @param  {Array} hooks Array of middleware like functions.
+ * @returns {Function} Nested function.
+ */
 function nestHooks(logger, hookName, waypointId, hooks) {
   return hooks.reduce((inital, hook, hookNumber) => {
     if (typeof hook === 'function') {
@@ -43,12 +44,12 @@ function nestHooks(logger, hookName, waypointId, hooks) {
  * The returned Promise will always resolve unless the hook function ends the
  * response with something like `res.send()`.
  *
- * @param  {Logger} logger Request-specific Logger instance
- * @param  {request} req Express request
- * @param  {response} res Express response
- * @param  {object} pageMeta Metadata of page being processed
- * @param  {string} hookName Name of hook to execute
- * @return {Promise} Promise
+ * @param  {object} logger Request-specific Logger instance.
+ * @param  {object} req Express request.
+ * @param  {object} res Express response.
+ * @param  {object} pageMeta Metadata of page being processed.
+ * @param  {string} hookName Name of hook to execute.
+ * @returns {Promise} Promise.
  */
 function executeHook(logger, req = {}, res = {}, pageMeta = {}, hookName = '') {
   return new Promise((resolve, reject) => {
@@ -83,12 +84,12 @@ function executeHook(logger, req = {}, res = {}, pageMeta = {}, hookName = '') {
  * Where no validators are defined for the requested waypoint, we will store
  * nothing in the session.
  *
- * @param {Logger} logger Request-specific logger instance
- * @param {object} pageMeta Page meta object
- * @param {object} data Data to be pruned
- * @param {JourneyContext} journeyContext Request's journey context
- * @returns {object} The pruned data
- * @throws {TypeError} When given invalid argument types
+ * @param {object} logger Request-specific logger instance.
+ * @param {object} pageMeta Page meta object.
+ * @param {object} data Data to be pruned.
+ * @param {JourneyContext} journeyContext Request's journey context.
+ * @returns {object} The pruned data.
+ * @throws {TypeError} When given invalid argument types.
  */
 function extractSessionableData(
   logger,
@@ -149,9 +150,9 @@ function extractSessionableData(
 /**
  * Run modifying functions against the specified field.
  *
- * @param {object} fieldValue Value to modify
- * @param {array|function} gatherModifiers Either an array of functions or a single function
- * @return {mixed} Modified value
+ * @param {object} fieldValue Value to modify.
+ * @param {Array | Function} gatherModifiers Either an array of functions or a single function.
+ * @returns {any} Modified value.
  */
 function runGatherModifiers(fieldValue, gatherModifiers = []) {
   const modifiers = Array.isArray(gatherModifiers) ? gatherModifiers : [gatherModifiers];

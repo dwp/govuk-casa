@@ -4,7 +4,7 @@
  * This should be run prior to publishing.
  *
  * Usage:
- *  node compile-js.js
+ *  node compile-js.js.
  */
 
 /* eslint-disable-next-line import/no-extraneous-dependencies */
@@ -15,10 +15,10 @@ const fs = require('fs-extra');
 /**
  * Compile CASA core JS assets.
  *
- * @param {string} targetDir Directory to which compiled assets are saved
- * @param {string} npmGovukCasa Root path of `govuk-casa` module
+ * @param {string} targetDir Directory to which compiled assets are saved.
+ * @param {string} npmGovukCasa Root path of `govuk-casa` module.
  * @returns {void}
- * @throws {Error} on compilation error
+ * @throws {Error} On compilation error.
  */
 function compileJsSources(targetDir, npmGovukCasa) {
   const casaJsSrcDir = path.resolve(npmGovukCasa, 'src', 'js');

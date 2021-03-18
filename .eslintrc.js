@@ -8,6 +8,7 @@ module.exports = {
     indent: [2, 2],
     semi: [0],
     'sonarjs/cognitive-complexity': [1, 10],
+    'jsdoc/require-description-complete-sentence': [0],
   },
   globals: {
     GOVUK_CASA_DEBUG_NS: true,

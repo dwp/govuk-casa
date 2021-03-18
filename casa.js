@@ -98,9 +98,9 @@ function mountCasaMiddleware(app, config, i18nUtility) {
 /**
  * Prepare an Express app to run as a CASA application.
  *
- * @param {express} expressApp The ExpressJS app to decorate
- * @param {object} config CASA configuration
- * @returns {object} CASA assets
+ * @param {express} expressApp The ExpressJS app to decorate.
+ * @param {object} config CASA configuration.
+ * @returns {object} CASA assets.
  */
 function CasaBootstrap(expressApp, config) {
   // Create a Router instance on which some CASA middleware will be mounted

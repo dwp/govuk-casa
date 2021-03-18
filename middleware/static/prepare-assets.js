@@ -2,11 +2,11 @@
  * Inject the configured `mountUrl` into the pre-compiled CSS sources, and copy
  * all CSS and JS to the `compiledAssetsDir` directory.
  *
- * @param {string} npmGovukCasa Path to root of `govuk-casa` module
- * @param {string} compiledAssetsDir Directory where compiled assets are saved
- * @param {string} mountUrl Mount point
+ * @param {string} npmGovukCasa Path to root of `govuk-casa` module.
+ * @param {string} compiledAssetsDir Directory where compiled assets are saved.
+ * @param {string} mountUrl Mount point.
  * @returns {void}
- * @throws {Exception} For any IO errors
+ * @throws {Error} For any IO errors.
  */
 
 const path = require('path');

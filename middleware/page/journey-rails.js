@@ -5,7 +5,7 @@
  *
  * Enhances `res.locals.casa` with:
  *  string journeyPreviousUrl = Absolute URL to the previous page in the journey
- *      (if applicable)
+ *      (if applicable).
  */
 
 const createLogger = require('../../lib/Logger.js');

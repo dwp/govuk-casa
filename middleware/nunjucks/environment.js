@@ -8,23 +8,22 @@
  *
  * Enhances `res` with:
  *  function render = Function to render and return a template response
- *  Environment nunjucksEnvironment = Nunjucks environment for this request
+ *  Environment nunjucksEnvironment = Nunjucks environment for this request.
  */
 
 const nunjucks = require('nunjucks');
 const path = require('path');
 
 /**
- * `govukFrontendDir` must be the path to the layout template file
- * (template.njk), which would typically be passed in from
- * the result of:
+ * `govukFrontendDir` must be the path to the layout template file template.njk
+ * which would typically be passed in from the result of:
  *   require.resolve('govuk-frontend')
  *
- * @param {object} logger Logger
- * @param {Express} app Express app
- * @param {array} viewDirs List of view directories to register with Nunjucks
- * @param {string} govukFrontendDir Path to `govuk-frontend` module
- * @return {nunjucks.Environment} Configured environment
+ * @param {object} logger Logger.
+ * @param {Function} app Express app.
+ * @param {Array} viewDirs List of view directories to register with Nunjucks.
+ * @param {string} govukFrontendDir Path to `govuk-frontend` module.
+ * @returns {nunjucks.Environment} Configured environment.
  */
 module.exports = (logger, app, viewDirs = [], govukFrontendDir = '') => {
   // Resolve all application template search paths, and add CASA-specific dirs.

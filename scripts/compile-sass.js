@@ -4,7 +4,7 @@
  * This should be run prior to publishing.
  *
  * Usage:
- *  node compile-sass.js
+ *  node compile-sass.js.
  */
 
 /* eslint-disable-next-line import/no-extraneous-dependencies */
@@ -19,11 +19,11 @@ const { resolveModulePath } = require('../lib/Util.js');
  * Compile all Sass files in the `src/casa/` source directory, and store output
  * into the specified `targetDir`.
  *
- * @param {string} targetDir Directory where compiled assets are saved
- * @param {string} npmGovukFrontend Path to `govuk-fronted` node module
- * @param {string} npmGovukCasa Root path of `govuk-casa`
+ * @param {string} targetDir Directory where compiled assets are saved.
+ * @param {string} npmGovukFrontend Path to `govuk-fronted` node module.
+ * @param {string} npmGovukCasa Root path of `govuk-casa`.
  * @returns {void}
- * @throws {Exception} For an IO errors
+ * @throws {Error} For any IO errors.
  */
 function compileSassSources(targetDir, npmGovukFrontend, npmGovukCasa) {
   const casaSassSrcDir = path.resolve(npmGovukCasa, 'src', 'scss');

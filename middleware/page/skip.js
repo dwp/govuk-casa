@@ -12,7 +12,7 @@
  * visited beforehand, so this middleware must come after journey-rails.
  *
  * Format:
- *  /current-waypoint?skipto=next-waypoint
+ *  /current-waypoint?skipto=next-waypoint.
  */
 
 const { URL, URLSearchParams } = require('url');

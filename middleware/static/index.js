@@ -42,6 +42,7 @@ const onehour = 3600000;
  *
  * @param {object} args See above
  * @returns {void}
+ * @throws {ReferenceError}
  */
 module.exports = (args) => {
   const {

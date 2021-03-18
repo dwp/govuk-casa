@@ -7,10 +7,11 @@
   /**
    * Polyfill for attaching event listeners to elements.
    *
-   * @param {HTMLElement} obj Element to which event is attached
-   * @param {string} ev Event name
-   * @param {Function} func Listener
+   * @param {HTMLElement} obj Element to which event is attached.
+   * @param {string} ev Event name.
+   * @param {Function} func Listener.
    * @returns {void}
+   * @throws {Error}
    */
   function attachEventPolyfill(obj, ev, func) {
     if (obj.addEventListener) {
@@ -60,7 +61,7 @@
   /**
    * Attach show/hide functionalty.
    *
-   * @param {HTMLElement} node Element to init
+   * @param {HTMLElement} node Element to init.
    * @returns {void}
    */
   function casaV1InitShowHide(node) {
@@ -70,7 +71,8 @@
 
     /**
      * Show target.
-     * @param {HTMLElement} targetEl Target
+     *
+     * @param {HTMLElement} targetEl Target.
      * @returns {void}
      */
     function showTarget(targetEl) {
@@ -80,7 +82,8 @@
 
     /**
      * Hide target.
-     * @param {HTMLElement} targetEl Target
+     *
+     * @param {HTMLElement} targetEl Target.
      * @returns {void}
      */
     function hideTarget(targetEl) {
@@ -90,6 +93,7 @@
 
     /**
      * Click node.
+     *
      * @returns {void}
      */
     function clickNode() {

@@ -1,9 +1,9 @@
 /**
  * Enhances `req.casa` with:
  *  string journeyWaypointId = Converts requested URL into a string suitable for
- *      use as a journey waypoint ID (i.e. remove trailing slashes)
+ *      use as a journey waypoint ID (i.e. Remove trailing slashes)
  *  object journeyOrigin = The origin from which traversals should start
- *  Plan plan = The grand Plan
+ *  Plan plan = The grand Plan.
  */
 
 const createLogger = require('../../lib/Logger.js');

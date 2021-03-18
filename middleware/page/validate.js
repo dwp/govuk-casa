@@ -12,7 +12,7 @@ module.exports = (pageMeta = {}) => (req, res, next) => {
   /**
    * Run validation process.
    *
-   * @return {Promise} Promise
+   * @returns {Promise} Promise.
    */
   function runValidation() {
     let result;

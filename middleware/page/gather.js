@@ -21,7 +21,7 @@ module.exports = (pageMeta = {}) => [mwBodyParser, (req, res, next) => {
   /**
    * Store data in request, clearing validation flags prior to validation.
    *
-   * @param {object} data Data to store
+   * @param {object} data Data to store.
    * @returns {void}
    */
   function storeSessionData(data) {

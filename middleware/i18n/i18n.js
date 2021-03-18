@@ -1,19 +1,19 @@
 /**
-* Configure multi-lingual support.
-*
-* This middleware will determine the language to use for each request, by
-* inspecting the query and existing session.
-*
-* Enhances `req` with:
-*   string language = The language code to use (ISO 639-1)
-*   function i18nTranslator = A class instance to translate for the current req
-*
-* Enhances `req.session` with:
-*   string language = The language code to use (ISO 639-1)
-*
-* Enhances `req.casa.journeyContext.nav` with
-*   string language = The language code to use (ISO 639-1)
-*/
+ * Configure multi-lingual support.
+ *
+ * This middleware will determine the language to use for each request, by
+ * inspecting the query and existing session.
+ *
+ * Enhances `req` with:
+ *   string language = The language code to use (ISO 639-1).
+ *   Function i18nTranslator = A class instance to translate for the current req.
+ *
+ * Enhances `req.session` with:
+ *   string language = The language code to use (ISO 639-1).
+ *
+ * Enhances `req.casa.journeyContext.nav` with
+ *   string language = The language code to use (ISO 639-1).
+ */
 
 module.exports = (logger, supportedLocales = [], translatorFactory) => (req, res, next) => {
   const currentSessionLanguage = (req.session || Object.create(null)).language;

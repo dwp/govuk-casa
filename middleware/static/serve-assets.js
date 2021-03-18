@@ -2,10 +2,10 @@
  * Serve up all CASA assets from the `compiledAssetsDir` directory, and all
  * third party assets from their respective npm package directories.
  *
- * @param {express} app Express app
- * @param {Express.Static} static Static module from ExpressJS
- * @param {string} compiledAssetsDir Directory where static assets are saved
- * @param {string} prefixCasa Virtual URL prefix
+ * @param {Function} app Express app.
+ * @param {Function} static Static module from ExpressJS.
+ * @param {string} compiledAssetsDir Directory where static assets are saved.
+ * @param {string} prefixCasa Virtual URL prefix.
  * @returns {void}
  */
 

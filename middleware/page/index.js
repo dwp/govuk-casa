@@ -15,16 +15,16 @@
  *     hooks: {
  *       pregather: function(req, res, next) {},
  *       postvalidate: function(req, res, next) {},
- *       prerender: function(req, res, next) {}
- *     }
- *   }
+ *       prerender: function(req, res, next) {}.
+ *     }.
+ *   }.
  *
  * The `next()` function takes an optional error object containing an array of
  * errors for each field, e.g:
  *   next({
  *     <fieldName>: [{inline: '...', summary: '...'}, ...],
  *     ...
- *   })
+ *   }).
  *
  * "Override":
  * -----------
@@ -35,7 +35,7 @@
  *       get: function(req, res, next) {},
  *       post: function(req, res, next) {}
  *     }
- *   };
+ *   };.
  */
 
 const mwBodyParser = require('../../lib/commonBodyParser.js');
