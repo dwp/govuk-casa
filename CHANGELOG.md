@@ -1,3 +1,49 @@
+# [7.0.0-beta1](https://github.com/dwp/govuk-casa/compare/6.8.4...7.0.0-beta1) (2021-03-18)
+
+
+### Bug Fixes
+
+* postalAddressObject welsh translations ([9f311ab](https://github.com/dwp/govuk-casa/commit/9f311ab618879648229d2e47a9640c986b45ba0c)), closes [#124](https://github.com/dwp/govuk-casa/issues/124)
+* skip link only appears in English, even when browsing in Welsh ([a5ec074](https://github.com/dwp/govuk-casa/commit/a5ec074dc3b36f7894b8fb22d74b999cf53d1ac9))
+
+
+### Code Refactoring
+
+* [bc] add govuk/ prefix to nunjucks macros ([94012d8](https://github.com/dwp/govuk-casa/commit/94012d8bb33132fcccd680b23ab5f99ae1c072cc)), closes [#104](https://github.com/dwp/govuk-casa/issues/104)
+* [bc] add sanitise sibling methods to validators ([1b15b27](https://github.com/dwp/govuk-casa/commit/1b15b27101780d8619a73de72bc2132c0e740bf3))
+* [bc] replace moment with luxon ([d971882](https://github.com/dwp/govuk-casa/commit/d971882bfdef7be54a203bdfa6410803cd171f0a)), closes [#145](https://github.com/dwp/govuk-casa/issues/145)
+* **plan:** [bc] change default route condition behaviour ([892ed4b](https://github.com/dwp/govuk-casa/commit/892ed4ba4af6f422e7a342f2f6086a005697d34f)), closes [#140](https://github.com/dwp/govuk-casa/issues/140)
+
+
+### Features
+
+* [bc] add support for ephemeral contexts ([e48242b](https://github.com/dwp/govuk-casa/commit/e48242bf356bd00a3547e760244da0fb63ea4240)), closes [#128](https://github.com/dwp/govuk-casa/issues/128)
+* [bc] upgrade to latest node LTS version ([a4f1d24](https://github.com/dwp/govuk-casa/commit/a4f1d24b22792b2797392aa90abb9cb85f6b33f8)), closes [#145](https://github.com/dwp/govuk-casa/issues/145)
+* add new wordCount validator ([f9a6a22](https://github.com/dwp/govuk-casa/commit/f9a6a226024ecd91e3186afe266cf6359b367eca))
+* add translations for error pages ([e2a7db2](https://github.com/dwp/govuk-casa/commit/e2a7db205af29383f07a7ea661174439e442fdb3))
+* style error pages using GovUK frontend ([eaf6ad2](https://github.com/dwp/govuk-casa/commit/eaf6ad224ca435e49fcb7a16de72ab246193055c)), closes [#151](https://github.com/dwp/govuk-casa/issues/151)
+
+
+### BREAKING CHANGES
+
+* Any existing templates will need to update their
+references to the govuk macros. See migration guide for details.
+* Built-in validation rules are no longer simple
+functions so cannot be bound. See docs/migration-guides/MIGRATING-6.x-7.x.md
+for migration path.
+* Large swathes of the codebase have changes, which has
+affected some of the public-facing API. See migrations notes in
+docs/migration-guides/MIGRATING-6.x-7.x.md
+* this replaces the moment datetime library with the
+luxon datetime library
+* Upgrade to node version 14 and set an minimum version
+* **plan:** This differs to the existing default behaviour, where custom
+logic functions completely override those validation checks. The old behaviour
+can still be obtained by applying the "validateBeforeRouteCondition" flag on
+a Plan.
+
+
+
 ## [6.8.4](https://github.com/dwp/govuk-casa/compare/6.8.3...6.8.4) (2021-02-24)
 
 
