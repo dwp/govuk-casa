@@ -40,9 +40,6 @@ module.exports = (args) => {
   }, {
     url: `${proxyMountUrl}browserconfig.xml`,
     path: path.resolve(__dirname, '../../src/browserconfig.xml'),
-  }, {
-    url: `${proxyMountUrl}robots.txt`,
-    path: path.resolve(__dirname, '../../src/robots.txt'),
   }];
 
   mounts.forEach((m) => {

@@ -42,11 +42,13 @@ module.exports = (app, cspConfig = {}) => {
   cspDirectives = Object.keys(cspDirectives).map((directive) => `${directive} ${cspDirectives[directive].join(' ')}`);
 
   // Prepare default headers
+  // added X-Robots-Tag based on https://www.gov.uk/service-manual/technology/get-a-domain-name
   const defaultHeaders = {
     'X-Content-Type-Options': 'nosniff',
     'X-XSS-Protection': '1; mode=block',
     'X-Frame-Options': 'DENY',
     'Content-Security-Policy': cspDirectives.join('; '),
+    'X-Robots-Tag': 'noindex, nofollow',
   };
 
   return {

@@ -46,9 +46,6 @@ describe('Middleware: static/serve-assets', () => {
     }, {
       url: '/test-proxy-url/browserconfig.xml',
       path: `${srcPath}/browserconfig.xml`,
-    }, {
-      url: '/test-proxy-url/robots.txt',
-      path: `${srcPath}/robots.txt`,
     }];
 
     mounts.forEach((m) => {

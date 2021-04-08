@@ -35,6 +35,7 @@ describe('Middleware: headers/config-defaults', () => {
     expect(output.defaultHeaders).to.have.property('X-Content-Type-Options').and.is.a('String');
     expect(output.defaultHeaders).to.have.property('X-Frame-Options').and.is.a('String');
     expect(output.defaultHeaders).to.have.property('X-XSS-Protection').and.is.a('String');
+    expect(output.defaultHeaders).to.have.property('X-Robots-Tag').and.is.a('String');
   });
 
   it('should return correct default headers when not applying customisation', () => {
@@ -44,6 +45,7 @@ describe('Middleware: headers/config-defaults', () => {
       'X-Content-Type-Options': 'nosniff',
       'X-Frame-Options': 'DENY',
       'X-XSS-Protection': '1; mode=block',
+      'X-Robots-Tag': 'noindex, nofollow',
     });
   });
 
