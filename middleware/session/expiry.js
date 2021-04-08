@@ -31,6 +31,7 @@ module.exports = (logger, mountUrl = '/', sessionConfig = {}) => (req, res, next
     return;
   }
 
+  const lang = req.session.language ? req.session.language : 'en';
   // Destroy session
   logger.debug('Destroying expired session %s (tmp new ID %s)', oldSessionId, req.sessionID);
   req.session.destroy((err) => {
@@ -43,7 +44,8 @@ module.exports = (logger, mountUrl = '/', sessionConfig = {}) => (req, res, next
       secure: sessionConfig.secure,
       maxAge: null,
     });
-    const referer = req.originalUrl ? `?${qs.stringify({ referer: req.originalUrl })}` : '#';
-    res.status(302).redirect(`${mountUrl}session-timeout${referer}`);
+    const referer = req.originalUrl ? `?${qs.stringify({ referer: req.originalUrl })}&` : '?';
+    const langQuery = `${qs.stringify({ lang })}`;
+    res.status(302).redirect(`${mountUrl}session-timeout${referer}${langQuery}`);
   });
 }

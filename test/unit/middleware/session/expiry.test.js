@@ -92,20 +92,21 @@ describe('Middleware: session/expiry', () => {
     });
   });
 
-  it('should redirect to session-timeout url', () => {
+  it('should redirect to session-timeout url and append lang as en to query string', () => {
     const middlewareWithConfig = mwExpiry(mockLogger, '/test-mount/');
     mockRequest.casaSessionExpired = 'trigger';
     middlewareWithConfig(mockRequest, mockResponse, stubNext);
     expect(mockResponse.status).to.be.calledOnceWithExactly(302);
-    expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/session-timeout#');
+    expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/session-timeout?lang=en');
   });
 
-  it('should redirect to session-timeout url and append original url as query string', () => {
+  it('should redirect to session-timeout url and append original url, lang as cy to query string', () => {
     const middlewareWithConfig = mwExpiry(mockLogger, '/test-mount/');
+    mockRequest.session.language = 'cy';
     mockRequest.casaSessionExpired = 'trigger';
     mockRequest.originalUrl = '/test-url?with=some&query[bits]=true';
     middlewareWithConfig(mockRequest, mockResponse, stubNext);
     expect(mockResponse.status).to.be.calledOnceWithExactly(302);
-    expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/session-timeout?referer=%2Ftest-url%3Fwith%3Dsome%26query%5Bbits%5D%3Dtrue');
+    expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/session-timeout?referer=%2Ftest-url%3Fwith%3Dsome%26query%5Bbits%5D%3Dtrue&lang=cy');
   });
 });
