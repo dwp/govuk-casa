@@ -1,3 +1,12 @@
+# [4.1.0](https://github.com/dwp/govuk-casa/compare/4.0.11...4.1.0) (2021-04-16)
+
+
+### Features
+
+* add language to session-time page ([fe89ab0](https://github.com/dwp/govuk-casa/commit/fe89ab0065928d035671a060d118ebca04deab60))
+
+
+
 ## [4.0.11](https://github.com/dwp/govuk-casa/compare/4.0.10...4.0.11) (2021-02-17)
 
 
