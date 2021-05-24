@@ -34,19 +34,19 @@
     "csurf": "1.11.0",
     "debug": "4.3.1",
     "fast-copy": "2.1.1",
-    "fs-extra": "9.1.0",
-    "govuk-frontend": "3.11.0",
+    "fs-extra": "10.0.0",
+    "govuk-frontend": "3.12.0",
     "govuk_template_jinja": "0.26.0",
     "graphlib": "2.1.8",
     "klaw-sync": "6.0.0",
     "lodash.merge": "4.6.2",
-    "luxon": "1.26.0",
+    "luxon": "1.27.0",
     "nunjucks": "3.2.3",
     "object-resolve-path": "1.1.1",
     "serve-favicon": "2.5.0",
     "uid-safe": "2.1.5",
     "uuid": "8.3.2",
-    "validator": "13.5.2"
+    "validator": "13.6.0"
   },
   "devDependencies": {
     "@commitlint/cli": "12.1.1",
