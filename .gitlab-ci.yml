@@ -1,126 +1,25 @@
-image: node:14-alpine@sha256:2ae9624a39ce437e7f58931a5747fdc60224c6e40f8980db90728de58e22af7c
+include:
+  - project: dwp/engineering/gitlab-ci-toolbox
+    ref: 3.x.x
+    file: blueprints/node.yml
+  - project: dwp/engineering/gitlab-ci-toolbox
+    ref: 3.x.x
+    file: blueprints/auto-tag-merge.yml
+  - project: dwp/engineering/gitlab-ci-toolbox
+    ref: 3.x.x
+    file: templates/build-docker-image.yml
+  - template: DAST.latest.gitlab-ci.yml
 
-.executor-docker: &executor-docker
-  tags:
-    - docker
+variables:
+  NODE_IMAGE: node:14-alpine@sha256:2ae9624a39ce437e7f58931a5747fdc60224c6e40f8980db90728de58e22af7c
+  NODE_PUBLISH_TO_GITLAB: "true"
 
-.not-branches: &not-branches
-  only:
-    - master
-    - tags
-    - 7.0.0
-
-stages:
-  - build
-  - compliance
-  - security-tests
-  - unit-tests
-  - quality-tests
-  - reporting
-
-npm:
+# Build the dist/ folder for subsequent stages
+build-static-assets:
+  extends: .node-common
   stage: build
-  <<: *executor-docker
-  script:
-    - npm i --no-save --no-optional
-    - npm dedupe
-    - npm run prepare
+  script: npm run compile-static-assets
   artifacts:
-    expire_in: 20 mins
+    expire_in: 1 day
     paths:
-      - ./dist
-      - ./node_modules
-      - ./package-lock.json
-
-eslint:
-  stage: compliance
-  <<: *executor-docker
-  dependencies:
-    - npm
-  script:
-    - npm run compliance:lint
-
-coverage:
-  stage: unit-tests
-  <<: *executor-docker
-  dependencies:
-    - npm
-  script:
-    - npm run quality:coverage
-  artifacts:
-    expire_in: 20 mins
-    paths:
-      - ./.coverage
-
-sonar-scanner:
-  stage: quality-tests
-  <<: *executor-docker
-  <<: *not-branches
-  image: "$CI_REGISTRY/engineering-practice/sonar-scanner:latest"
-  dependencies:
-    - coverage
-  script:
-    - 'sonar-scanner -Dsonar.projectBaseDir="$CI_PROJECT_DIR"'
-
-sensitives:
-  stage: security-tests
-  <<: *executor-docker
-  script:
-    - apk add git
-    - eval "git log -p | grep ${LOG_SCAN_QUERY}" && exit 1 || exit 0
-
-dep-vuln:
-  stage: security-tests
-  <<: *executor-docker
-  dependencies:
-    - npm
-  script:
-    - npm run security:vulnerable-packages
-
-outdated:
-  stage: security-tests
-  <<: *executor-docker
-  dependencies:
-    - npm
-  script:
-    - npm outdated
-  allow_failure: true
-
-zap:
-  stage: security-tests
-  <<: *not-branches
-  tags:
-    - docker-in-docker
-  dependencies:
-    - npm
-  variables:
-    HOSTNAME: pentest.service
-    PENTEST_SERVICE_URL: http://$HOSTNAME:4000/
-  image: docker:18.09@sha256:7215e8e09ea282e517aa350fc5380c1773c117b1867316fb59076d901e252d15
-  services:
-    - docker:18.09-dind@sha256:da86d052a9c32ceb60b3f73a28a3acec053f4265e5e0f09924df05bd585fa88e
-  before_script:
-    - export NO_PROXY="$NO_PROXY,docker"
-  script:
-    - docker network create --internal test
-    - docker run -d -v $(pwd):/package/:rw --name $HOSTNAME --net test --hostname $HOSTNAME -p 4000:4000 node:12-alpine /bin/sh -c "cd /package && npm run start-pen-test-service"
-    - docker run -t -v $(pwd):/zapout/:rw --name zap --net test -e PENTEST_SERVICE_URL:$PENTEST_SERVICE_URL -e LC_ALL=C.UTF-8 -e LANG=C.UTF-8 owasp/zap2docker-stable /bin/sh -c "export LC_ALL LANG; zap-cli -v start -o '-config api.disablekey=true' && zap-cli -v open-url '$PENTEST_SERVICE_URL' && zap-cli -v spider '$PENTEST_SERVICE_URL' && zap-cli -v quick-scan -s all -f json -r '$PENTEST_SERVICE_URL'; SCAN_EXIT=\$?; echo "\$SCAN_EXIT"; zap-cli -v report -f html -o /zapout/zap-report.html && zap-cli -v shutdown && exit \$SCAN_EXIT"
-  artifacts:
-    when: always
-    expire_in: 20 mins
-    paths:
-      - ./zap-report.html
-
-pages:
-  stage: reporting
-  <<: *executor-docker
-  <<: *not-branches
-  dependencies:
-    - zap
-  script:
-    - mkdir public
-    - echo '<dl><dt><a href="zap-report.html">ZAP Report</a></dt><dd>Results of ZAP penetration testing</ss></dl>' > public/index.html
-    - mv ./zap-report.html public/
-  artifacts:
-    paths:
-      - public
+      - dist/
