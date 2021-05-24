@@ -103,6 +103,7 @@
     "start-pen-test-service": "PORT=4000 node ./test/penetration/server.js",
     "compile-static-assets": "node ./scripts/compile-sass.js && node ./scripts/compile-js.js",
     "prepare": "npm run compile-static-assets --silent",
+    "postinstall": "husky install",
     "upgrade-deps": "OD=$(npm outdated --long --parseable); echo \"$OD\" | grep ':devDependencies:' | awk -F: '{ print $4 }' | xargs npm i -DE; echo \"$OD\" | grep ':dependencies:' | awk -F: '{ print $4 }' | xargs npm i -E"
   },
   "author": "DWP <open-source@engineering.digital.dwp.gov.uk>",
