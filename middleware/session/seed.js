@@ -38,7 +38,7 @@ module.exports = (logger) => ([commonBodyParser, (req, res, next) => {
     contextId = JourneyContext.validateContextId(contextId);
     req.casa.journeyContext = JourneyContext.getContextById(req.session, contextId);
   } catch (ex) {
-    logger.info(ex.message);
+    logger.error(ex.message);
   }
   if (!req.casa.journeyContext) {
     logger.info(`Context '${contextId}' not found. Will use 'default'`);

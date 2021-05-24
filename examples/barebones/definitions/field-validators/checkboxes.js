@@ -17,9 +17,8 @@ const fieldValidators = {
               count: fieldValue ? fieldValue.length : 0,
             }
           }));
-        } else {
-          return Promise.resolve();
         }
+        return Promise.resolve();
       },
 
       sanitise: function boxCountSanitise (value) {

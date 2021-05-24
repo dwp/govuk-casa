@@ -81,14 +81,14 @@ describe('parseRequest', () => {
     expect(req1).to.not.have.property('editOrigin');
   });
 
-  it('should contain contextid when parsing a GET request', () => {
+  it('should contain contextId when parsing a GET request', () => {
     const base = { method: 'GET', query: { contextid: 'abc' } };
     const req1 = parseRequest({ ...base, url: 'https://somewhere.test/' });
 
     expect(req1).to.have.property('contextId').that.equals('abc');
   });
 
-  it('should contain contextid when parsing a POST request', () => {
+  it('should contain contextId when parsing a POST request', () => {
     const base = { method: 'POST', body: { contextid: 'abc' } };
     const req1 = parseRequest({ ...base, url: 'https://somewhere.test/' });
 

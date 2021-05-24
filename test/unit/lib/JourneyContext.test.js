@@ -350,7 +350,7 @@ describe('JourneyContext', () => {
       });
     });
 
-    it('should remove the context from the session store if presents', () => {
+    it('should remove the context from the session store if present', () => {
       const session = {
         journeyContextList: {
           test: { identity: { id: 'test' } },
@@ -404,7 +404,7 @@ describe('JourneyContext', () => {
       });
     });
 
-    it('should remove the contexts from the session store if presents', () => {
+    it('should remove the contexts from the session store if present', () => {
       const session = {
         journeyContextList: {
           test: { identity: { id: 'test', tags: [ 'test-tag' ] } },
@@ -439,7 +439,7 @@ describe('JourneyContext', () => {
     it('should throw if context if not a JourneyContext', () => {
       const session = {};
       JourneyContext.initContextStore(session);
-      expect(() => JourneyContext.putContext(session, null)).to.throw(TypeError, 'Context must be an valid JourneyContext');
+      expect(() => JourneyContext.putContext(session, null)).to.throw(TypeError, 'Context must be a valid JourneyContext');
     });
 
     it('should throw if context does not have an id', () => {
