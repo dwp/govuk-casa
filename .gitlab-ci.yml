@@ -23,3 +23,24 @@ build-static-assets:
     expire_in: 1 day
     paths:
       - dist/
+
+# Package up a testable CASA application, ready for dyanmic security tests
+zap-package:
+  extends: .toolbox-build-docker-image
+  stage: package
+  variables:
+    DOCKERFILE: test/penetration/Dockerfile
+
+dast:
+  stage: security-dynamic-analysis
+  tags:
+    - docker-in-docker-privileged
+  needs:
+    - zap-package
+  variables:
+    DAST_WEBSITE: http://casa-pentest-app:3000/
+    DAST_FULL_SCAN_ENABLED: "true"
+  services:
+    - name: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA
+      alias: casa-pentest-app
+  
