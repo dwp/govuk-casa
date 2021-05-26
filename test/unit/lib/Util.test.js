@@ -57,19 +57,26 @@ describe('Util', () => {
   });
 
   describe('objectPathValue()', () => {
-    it('should return undefined for an invalid path', () => expect(objectPathValue({}, 'invalid_path')).to.be.undefined);
+    it('should return undefined for missing paths', () => {
+      /* eslint-disable-next-line no-unused-expressions */
+      expect(objectPathValue({}, 'missing_path')).to.be.undefined;
+    });
 
     it('should return undefined for missing paths using dot notation', () => {
       /* eslint-disable no-unused-expressions */
+      expect(objectPathValue({}, 'missing_path')).to.be.undefined;
       expect(objectPathValue({ a: { b: { c: 'hi' } } }, 'a.b.c.d')).to.be.undefined;
       expect(objectPathValue({ a: { b: { c: 'hi' } } }, 'a.c.b')).to.be.undefined;
+      expect(objectPathValue({'a.b': { c: 'hi' }}, 'a.b.c')).to.be.undefined;
       /* eslint-enable no-unused-expressions */
     });
 
-    it('should return undefined for missing paths using array notation', () => {
+    it('should return undefined for missing paths using bracket notation', () => {
       /* eslint-disable no-unused-expressions */
+      expect(objectPathValue({ a: { b: { c: 'hi' } } }, 'a[b][c][d]')).to.be.undefined;
       expect(objectPathValue({ a: { b: { c: 'hi' } } }, 'a["b"]["c"]["d"]')).to.be.undefined;
       expect(objectPathValue({ a: { b: { c: 'hi' } } }, 'a["b"]["c"]["d"]')).to.be.undefined;
+      expect(objectPathValue({ a: { b: { c: 'hi' } } }, 'a[b.c]')).to.be.undefined;
       /* eslint-enable no-unused-expressions */
     });
 
@@ -86,18 +93,42 @@ describe('Util', () => {
       expect(objectPathValue({ a: { b: { c: 'hi' } } }, 'a.b.c')).to.equal('hi');
     });
 
-    it('should return a value for a valid nested path using array notation', () => {
+    it('should return a value for a valid nested path using bracket notation', () => {
       expect(objectPathValue({ a: { b: { c: 'hi' } } }, 'a[b][c]')).to.equal('hi');
     });
 
-    it('should return a value for a nested path using mixed array and dot notation', () => {
+    it('should return a value for a nested path using mixed bracket and dot notation', () => {
       expect(objectPathValue({ a: { b: { c: 'hi' } } }, 'a["b"].c')).to.equal('hi');
+      expect(objectPathValue({ a: { b: { c: 'hi' } } }, "a['b'].c")).to.equal('hi');
+      expect(objectPathValue({ a: { b: { c: 'hi' } } }, 'a[b].c')).to.equal('hi');
       expect(objectPathValue({ a: { b: { c: 'hi' } } }, 'a.b["c"]')).to.equal('hi');
       expect(objectPathValue({ a: { b: [{ c: 'hi', d: 'bye' }] } }, 'a.b')).to.be.an('array');
       expect(objectPathValue({ a: { b: [{ c: 'hi', d: 'bye' }] } }, 'a.b[0]["c"]')).to.equal('hi');
       expect(objectPathValue({ a: { b: [{ c: 'hi', d: 'bye' }] } }, 'a.b[0]["d"]')).to.equal('bye');
       expect(objectPathValue({ a: { b: [[]] } }, 'a.b[0]')).to.be.an('array');
       expect(objectPathValue({ a: { b: [['a', 'b']] } }, 'a.b[0][1]')).to.equal('b');
+      expect(objectPathValue({'a b': { c: 'hi' }}, 'a b.c')).to.equal('hi');
+
+      expect(objectPathValue({ $a: { b: { c: 'hi' } } }, '$a.b.c')).to.equal('hi');
+      expect(objectPathValue({ a: { $b: { c: 'hi' } } }, 'a.$b.c')).to.equal('hi');
+    });
+
+    it('should return undefined when given an invalid path', () => {
+      /* eslint-disable no-unused-expressions */
+      expect(objectPathValue({ a: { b: { c: 'hi' } } }, '[a].b.c')).to.be.undefined;
+      expect(objectPathValue({ "": { b: { c: 'hi' } } }, '[.b.c')).to.be.undefined;
+      expect(objectPathValue({ a: { b: { c: 'hi' } } }, ']a.b.c')).to.be.undefined;
+      expect(objectPathValue({ a: { b: { c: 'hi' } } }, 'a..b.c')).to.be.undefined;
+
+      // Don't allow string indexing
+      expect(objectPathValue({ a: { b: { c: 'hi' } } }, 'a.b.c[0]')).to.be.undefined;
+      /* eslint-enable no-unused-expressions */
+    });
+
+    it('should throw when protected properties are referenced', () => {
+      expect(() => objectPathValue({ a: { b: function () {} } }, 'a.b.constructor')).to.throw(Error, /Refusing to update blacklisted property/);
+      expect(() => objectPathValue({ a: { b: {} } }, 'a.b.__proto__')).to.throw(Error, /Refusing to update blacklisted property/);
+      expect(() => objectPathValue({ a: { b: {} } }, 'a.b.prototype')).to.throw(Error, /Refusing to update blacklisted property/);
     });
   });
 
