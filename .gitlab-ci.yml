@@ -8,6 +8,7 @@ image: node:12-alpine@sha256:b8d44d2beeeb1bea09a0b2da2dcd062116ca393f0f2ad065f05
   only:
     - master
     - tags
+    - /^maintain/
 
 stages:
   - build
@@ -113,7 +114,8 @@ zap:
 pages:
   stage: reporting
   <<: *executor-docker
-  <<: *not-branches
+  only:
+    - master
   dependencies:
     - zap
   script:
