@@ -1,3 +1,13 @@
+## [6.8.5](https://github.com/dwp/govuk-casa/compare/6.8.4...6.8.5) (2021-06-03)
+
+
+### Bug Fixes
+
+* route correctly when in sticky edit mode ([249f4d4](https://github.com/dwp/govuk-casa/commit/249f4d48025fd0f2c2aaf65d16c981dc126b4978))
+* skip link only appears in English, even when browsing in Welsh ([a5ec074](https://github.com/dwp/govuk-casa/commit/a5ec074dc3b36f7894b8fb22d74b999cf53d1ac9))
+
+
+
 ## [6.8.4](https://github.com/dwp/govuk-casa/compare/6.8.3...6.8.4) (2021-02-24)
 
 
