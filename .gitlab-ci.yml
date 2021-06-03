@@ -56,7 +56,7 @@ sonar-scanner:
   stage: quality-tests
   <<: *executor-docker
   <<: *not-branches
-  image: "$CI_REGISTRY/engineering-practice/sonar-scanner:latest"
+  image: "$CI_REGISTRY/dwp/engineering/sonar-scanner:latest"
   dependencies:
     - coverage
   script:
