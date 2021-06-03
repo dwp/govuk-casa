@@ -47,7 +47,9 @@ module.exports = (pageMeta = {}, mountUrl = '/', useStickyEdit = false) => (req,
       // `a, b, c, d` vs `a, c, d` <- should stop at `d` (`b` was removed) <- [.-..]
       // `a, b, c` vs `a, c, d`    <- should stop at `d` (`b` was removed, `d` was added) <- [.-..+]
       let compareIndex = 0;
-      const compareIndexMax = preGatherTraversalSnapshot.length - 1;
+      const compareIndexMax = useStickyEdit
+        ? currentTraversalSnapshot.length - 1
+        : preGatherTraversalSnapshot.length - 1;
       for (let i = 0, l = currentTraversalSnapshot.length; i < l; i++) {
         // Build waypoint URL for the current waypoint
         const waypointUrl = `${mountUrl}/${currentTraversalSnapshot[i].label.sourceOrigin || nextOrigin}/${currentTraversalSnapshot[i].source}`.replace(/\/+/g, '/');
@@ -64,7 +66,18 @@ module.exports = (pageMeta = {}, mountUrl = '/', useStickyEdit = false) => (req,
         while (compareIndex <= compareIndexMax) {
           nextWaypoint = waypointUrl;
           nextOrigin = currentTraversalSnapshot[i].label.targetOrigin || nextOrigin;
-          if (currentTraversalSnapshot[i].source === preGatherTraversalSnapshot[compareIndex++]) {
+          compareIndex++;
+
+          // If we've exhausted the pre-gathering waypoints, then sticky mode
+          // should try to send us as far along the remaining journey as possible
+          if (useStickyEdit && preGatherTraversalSnapshot[compareIndex - 1] === undefined) {
+            nextWaypoint = `${mountUrl}/${nextOrigin}/${currentTraversalSnapshot[compareIndex - 1].source}`;
+            /* eslint-disable-next-line max-len */
+            nextOrigin = currentTraversalSnapshot[compareIndex - 1].label.targetOrigin || nextOrigin;
+            break;
+          }
+
+          if (currentTraversalSnapshot[i].source === preGatherTraversalSnapshot[compareIndex - 1]) {
             // The current snapshot may include more waypoints than than the
             // previous. In this case, if we've exhausted the list of previous
             // waypoints, with the last one being a match, we must leave the user on

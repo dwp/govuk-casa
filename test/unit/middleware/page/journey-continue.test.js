@@ -345,6 +345,39 @@ describe('Middleware: page/journey-continue', () => {
       expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/page1?edit=&editorigin=%2Ftest-edit-origin%2F#');
     });
 
+    it('should return to the furthest matching waypoint if the traversal is lengthened', async () => {
+      const middlewareWithConfig = mwJourney({}, '/test-mount/', true);
+      mockRequest = Object.assign(mockRequest, {
+        inEditMode: true,
+        editOriginUrl: '/test-edit-origin/',
+      });
+      mockRequest.casa.preGatherTraversalSnapshot = ['page0', 'page1', 'page2'];
+      mockRequest.casa.plan.traverseNextRoutes.returns([{
+        source: 'page0',
+        target: 'page1',
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }, {
+        source: 'page1',
+        target: 'changeA',
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }, {
+        source: 'changeA',
+        target: 'changeB',
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }, {
+        source: 'changeB',
+        target: undefined,
+        name: 'next',
+        label: { sourceOrigin: undefined, targetOrigin: undefined }
+      }]);
+      await middlewareWithConfig(mockRequest, mockResponse, stubNext);
+      expect(mockResponse.status).to.be.calledOnceWithExactly(302);
+      expect(mockResponse.redirect).to.be.calledOnceWithExactly('/test-mount/changeB?edit=&editorigin=%2Ftest-edit-origin%2F#');
+    });
+
     it('should return to the first changed waypoint if the traversal is altered, and include any changes to the origin', async () => {
       const middlewareWithConfig = mwJourney({}, '/test-mount/', true);
       mockRequest = Object.assign(mockRequest, {
