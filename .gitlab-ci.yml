@@ -43,4 +43,13 @@ dast:
   services:
     - name: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA
       alias: casa-pentest-app
-  
+
+# Manipulate publishing process to Gitlab
+node-publish-gitlab:
+  before_script:
+    # Job runs as root, so we need to allow hooks to run in the general case
+    - npm set "unsafe-perm" "true"
+    # As this is a OSS project, there is an .npmrc setting that points @dwp
+    # at the public npm registry. For internal publishing purpses, we need to
+    # remove that reference.
+    - if [ -f .npmrc ]; then sed -i.bak '/^@dwp:registry.*$/d' .npmrc; fi
