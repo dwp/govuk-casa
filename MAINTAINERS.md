@@ -56,32 +56,21 @@ git push -u origin sue-feature/thing
 When you're ready to release `master`, begin by carrying out the common version-bumping steps:
 
 ```bash
-# Bump version number in all files as needed
-# Currently you will need to bump `sonar-project.properties` manually
-git checkout master
-git pull --rebase
-npm version --no-git-tag-version <major | minor | patch>
+# Prepare a new release on a branch
+git checkout -b chore/package
+npx standard-version
 
-# Generate a CHANGELOG
-npm run package:changelog
-
-# Commit, tag and push to origin
-git add -u
-git commit -sm 'chore: package <version>'
-git tag <version>
-git push --tags
-git push
+# Push and create an MR for review and merge
+git push -u origin head
 ```
 
-At this point, wait for the internal CI pipeline to go green before continuing.
+On merging that MR, the following happens:
 
-```
-# Push to Github
-git push --tags git@github.com:dwp/govuk-casa.git master
-git push git@github.com:dwp/govuk-casa.git master
-```
+* The commit is tagged
+* The new version of the package will be published internally
+* A few minutes later, the code will be automatically to the [GitHub repo](https://github.com/dwp/govuk-casa).
 
-Wait for the travis CI job to go green, before then publishing to [npmjs.com](https://npmjs.com/):
+Finally, to publish to the public npm registry:
 
 ```bash
 # Check if you're logged in, or login to npm
@@ -93,7 +82,7 @@ npm publish --dry-run
 
 # Publish the npm package, using the appropriate tag:
 # - For `master` branch, use `latest` tag
-# - For `maintain/2.x` branch, use `previous` tag
+# - For `maintain/6.x` branch, use `maintain6x` tag
 # - For an upcoming major bump, use `next` tag
 npm publish --tag latest
 ```
