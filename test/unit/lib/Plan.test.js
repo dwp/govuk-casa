@@ -88,6 +88,13 @@ describe('Plan', () => {
       plan.setNamedRoute('a', 'b', 'next', follow);
       expect(plan.getRouteCondition('a', 'b', 'next')).to.equal(follow);
     });
+
+    it('should extact origins and use them in creating the route', () => {
+      plan.setNamedRoute('originA:waypoint-a', 'originB:waypoint-b', 'next', () => {});
+      expect(plan.getRoutes()).to.deep.eq([
+        { source: 'waypoint-a', target: 'waypoint-b', name: 'next', label: { sourceOrigin: 'originA', targetOrigin: 'originB' } },
+      ]);
+    });
   });
 
   describe('setRoute', () => {
