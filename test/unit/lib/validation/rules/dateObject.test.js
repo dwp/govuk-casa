@@ -212,6 +212,26 @@ describe('Validation rule: dateObject', () => {
 
         return Promise.all(queue);
       });
+
+      it('should handle different timezones', () => {
+        const queue = [];
+        const now = DateTime.fromObject({ zone: 'est' });
+
+        const rule = dateObject.make({
+          afterOffsetFromNow: Duration.fromObject({ weeks: -1 }),
+        }).validate;
+
+        const testDate = now.minus({ days: 7 });
+        const value = {
+          dd: testDate.toFormat('dd'),
+          mm: testDate.toFormat('MM'),
+          yyyy: testDate.toFormat('yyyy'),
+        };
+
+        queue.push(expect(rule(value)).to.be.rejected.eventually.have.property('inline', errorInlineAfterOffset));
+
+        return Promise.all(queue);
+      });
     });
 
     describe('beforeOffsetFromNow', () => {
