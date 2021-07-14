@@ -285,6 +285,20 @@ describe('JourneyContext', () => {
       expect(contexts[0]).to.be.an.instanceof(JourneyContext);
       expect(contexts[0].identity.tags).to.include('test-tag');
     });
+
+    it('should return an array of JourneyContexts if found matching tag and one of the JourneyContexts has no tags array present', () => {
+      const contexts = JourneyContext.getContextsByTag({
+        journeyContextList: {
+          'some-context': { identity: { tags: [ 'test-tag' ] } },
+          'some-context-with-no-tags': { identity: { } },
+        }
+      }, 'test-tag');
+
+      expect(contexts).to.be.an('array');
+      expect(contexts).to.have.length(1);
+      expect(contexts[0]).to.be.an.instanceof(JourneyContext);
+      expect(contexts[0].identity.tags).to.include('test-tag');
+    });
   });
 
   describe('getContexts()', () => {
