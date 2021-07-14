@@ -21,7 +21,7 @@ As a general guide, here are a few questions to ask when reviewing any contribut
 
 ```bash
 git fetch origin
-git checkout master
+git checkout main
 ```
 
 3. Checkout the Github PR with:
@@ -29,16 +29,16 @@ git checkout master
 ```bash
 # Create a new local branch based on the contributor's name and branch, e.g.
 # if "sue" wants to merge her "feature/thing" branch ...
-git checkout -b sue-feature/thing master
+git checkout -b sue-feature/thing main
 
 # Pull the contributor's changes into that branch
 git pull git://github.com/sue/sues-forked-repo.git feature/thing
 ```
 
-4. Rebase the MR onto `master` to ensure it plays nicely with the latest integrated codebase:
+4. Rebase the MR onto `main` to ensure it plays nicely with the latest integrated codebase:
 
 ```bash
-git rebase -i master
+git rebase -i main
 ```
 
 5. Push this branch up to the canonical internal repository, and create a new internal PR. At this point we review the code in the same manner as any other internal project.
@@ -49,11 +49,11 @@ git push -u origin sue-feature/thing
 
 6. Review the code locally using the guidelines above, ensuring it builds, passes linting and tests. Use the `npm run pipeline` script to cover these checks (check for changes to that script beforehand)
 
-7. If successful, merge into master, ensure CI build passes before finally pushing back up to Github.
+7. If successful, merge into `main`, ensure CI build passes before finally pushing back up to Github.
 
 ## Preparing for release
 
-When you're ready to release `master`, begin by carrying out the common version-bumping steps:
+When you're ready to release `main`, begin by carrying out the common version-bumping steps:
 
 ```bash
 # Prepare a new release on a branch
@@ -81,7 +81,7 @@ npm adduser --scope=@dwp
 npm publish --dry-run
 
 # Publish the npm package, using the appropriate tag:
-# - For `master` branch, use `latest` tag
+# - For `main` branch, use `latest` tag
 # - For `maintain/6.x` branch, use `maintain6x` tag
 # - For an upcoming major bump, use `next` tag
 npm publish --tag latest

@@ -16,7 +16,7 @@ CASA provides the following templates, all of which can be overridden in your pr
 * `casa/components/journey-form/macro.njk` - wrap your form content in a CASA-compatible `<form>` element
 * `casa/errors/*.njk` - HTTP error templates (403, 404, 500, 503)
 * `casa/layouts/journey.njk` - layout suggested for use on your data-capturing pages (extends `casa/layout/main.njk`)
-* `casa/layout/main.njk` - layout suggested for all non-data-capturing pages (e.g. welcome pages, custom feedback forms, etc) (extends the GOVUK Design System's  [`template.njk` layout](https://github.com/alphagov/govuk-frontend/blob/master/package/govuk/template.njk))
+* `casa/layout/main.njk` - layout suggested for all non-data-capturing pages (e.g. welcome pages, custom feedback forms, etc) (extends the GOVUK Design System's  [`template.njk` layout](https://github.com/alphagov/govuk-frontend/blob/main/package/govuk/template.njk))
 * `casa/partials/*.njk` - various common partial templates
 * `casa/session-timeout.njk` - session timeout template
 

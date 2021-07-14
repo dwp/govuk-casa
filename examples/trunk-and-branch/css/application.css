@@ -4,7 +4,7 @@
 
 /*
   Task list rendered Sass output from:
-  https://github.com/alphagov/govuk-prototype-kit/blob/master/app/assets/sass/patterns/_task-list.scss
+  https://github.com/alphagov/govuk-prototype-kit/blob/main/app/assets/sass/patterns/_task-list.scss
 */
 .app-task-list {
   list-style-type: none;
