@@ -16,6 +16,6 @@ module.exports = {
     GOVUK_CASA_DEBUG_NS: true,
   },
   parserOptions: {
-    ecmaVersion: '2018',
+    ecmaVersion: '2020',
   },
 };
