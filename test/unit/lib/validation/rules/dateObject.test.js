@@ -215,7 +215,7 @@ describe('Validation rule: dateObject', () => {
 
       it('should handle different timezones', () => {
         const queue = [];
-        const now = DateTime.fromObject({ zone: 'est' });
+        const now = DateTime.fromObject({}, { zone: 'est' });
 
         const rule = dateObject.make({
           afterOffsetFromNow: Duration.fromObject({ weeks: -1 }),
