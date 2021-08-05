@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.0.4](https://github.com/dwp/govuk-casa/compare/7.0.3...7.0.4) (2021-08-05)
+
+
+### Bug Fixes
+
+* **journey-context-tags:** Bumped ecmaVersion in eslintrc and refactored getContextsByTag to use optional chaining ([3d6fcb0](https://github.com/dwp/govuk-casa/commit/3d6fcb04386f121cd7f9906d33c87354151e33be))
+* **journey-context-tags:** Fixed bug where TypeError was thrown if a JC had no tags ([7e56c3e](https://github.com/dwp/govuk-casa/commit/7e56c3e4e2fa99010bb89f11ce187b05f487e33c))
+
 ### [7.0.3](https://github.com/dwp/govuk-casa/compare/7.0.2...7.0.3) (2021-06-10)
 
 ### [7.0.2](https://github.com/dwp/govuk-casa/compare/7.0.1...7.0.2) (2021-06-08)
