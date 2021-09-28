@@ -1,3 +1,7 @@
+## [6.8.6](https://github.com/dwp/govuk-casa/compare/6.8.5...6.8.6) (2021-09-28)
+
+
+
 ## [6.8.5](https://github.com/dwp/govuk-casa/compare/6.8.4...6.8.5) (2021-06-03)
 
 
