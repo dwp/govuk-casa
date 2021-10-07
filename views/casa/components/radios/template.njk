@@ -36,7 +36,7 @@
 
 {# Ensure that the first item has the id matching `f-<name>` in order for error summary linkage to work #}
 {% if not mergedParams.items[0].id %}
-  {% set mergedParams = mergeObjectsDeep(mergedParams, {
+  {% set mergedParams = mergeObjects(mergedParams, {
     items: [{
       id: 'f-' + params.name
     }]

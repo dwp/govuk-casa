@@ -1,0 +1,73 @@
+{% extends "layouts/journey.njk" %}
+
+{% from "casa/components/input/macro.njk" import casaGovukInput with context %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+
+{% set msgSuffix = msgSuffix or '' %}
+
+{% block casaPageTitle %}
+  {{ t('your-address:pageTitle') }} - {{ t('common:serviceName') }}
+{% endblock %}
+
+{% block journey_form %}
+  {% call govukFieldset({
+    legend: {
+      text: t('your-address:pageTitle'),
+      classes: "govuk-fieldset__legend--xl",
+      isPageHeading: true
+    }
+  }) %}
+    {% if addressLookupFailed %}
+      <p class="govuk-body">
+        {{ t('your-address:addressLookupFailed') }}
+      </p>
+    {% endif %}
+    {{ casaGovukInput({
+      value: formData.addressLine1,
+      label: {
+        html: t('your-address:field.addressLine1.label')
+      },
+      name: "addressLine1",
+      casaErrors: formErrors
+    }) }}
+
+    {{ casaGovukInput({
+      value: formData.addressLine2,
+      label: {
+        html: t('your-address:field.addressLine2.label')
+      },
+      name: "addressLine2",
+      casaErrors: formErrors
+    }) }}
+
+    {{ casaGovukInput({
+      value: formData.town,
+      label: {
+        text: t('your-address:field.town.label')
+      },
+      classes: "govuk-!-width-two-thirds",
+      name: "town",
+      casaErrors: formErrors
+    }) }}
+
+    {{ casaGovukInput({
+      value: formData.county,
+      label: {
+        text: t('your-address:field.county.label')
+      },
+      classes: "govuk-!-width-two-thirds",
+      name: "county",
+      casaErrors: formErrors
+    }) }}
+
+    {{ casaGovukInput({
+      value: formData.postcode,
+      label: {
+        text: t('your-address:field.postcode.label')
+      },
+      classes: "govuk-input--width-10",
+      name: "postcode",
+      casaErrors: formErrors
+    }) }}
+  {% endcall %}
+{% endblock %}

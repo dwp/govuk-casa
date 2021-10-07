@@ -1,0 +1,26 @@
+{% extends "layouts/journey.njk" %}
+
+{% from "casa/components/input/macro.njk" import casaGovukInput with context %}
+
+
+{% block casaPageTitle %}
+  {{ t('moves-limit:pageTitle') }}
+{% endblock %}
+
+
+{% block journey_form %}
+  <h1 class="govuk-heading-xl">
+    {{ t('moves-limit:h1') }}
+  </h1>
+
+  {{ casaGovukInput({
+    name: 'limit',
+    value: formData['limit'],
+    label: {
+      text: t('moves-limit:h1'),
+      classes: 'govuk-label--m'
+    },
+    classes: "govuk-input--width-10",
+    casaErrors: formErrors
+  }) }}
+{% endblock %}

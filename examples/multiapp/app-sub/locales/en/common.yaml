@@ -1,0 +1,7 @@
+serviceName: "CASA Example: Multi-application"
+yes: Yes
+no: No
+form:
+  buttons:
+    submit:
+      label: Submit

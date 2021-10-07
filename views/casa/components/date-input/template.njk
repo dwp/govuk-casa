@@ -21,7 +21,7 @@
   namePrefix: '',
   attributes: mergedAttributes,
   items: [
-    mergeObjectsDeep({
+    mergeObjects({
       label: t('macros:dateInput.day'),
       classes: 'govuk-input--width-2 ' + (inputErrorClass if includes(fieldErrors[0].focusSuffix, '[dd]') or not hasSuffixHighlights)
     }, params.items[0] if params.items[0] else {}, {
@@ -29,7 +29,7 @@
       name: params.namePrefix + '[dd]',
       value: params.casaValue.dd
     }),
-    mergeObjectsDeep({
+    mergeObjects({
       label: t('macros:dateInput.month'),
       classes: 'govuk-input--width-2 ' + (inputErrorClass if includes(fieldErrors[0].focusSuffix, '[mm]') or not hasSuffixHighlights)
     }, params.items[1] if params.items[1] else {}, {
@@ -37,7 +37,7 @@
       name: params.namePrefix + '[mm]',
       value: params.casaValue.mm
     }),
-    mergeObjectsDeep({
+    mergeObjects({
       label: t('macros:dateInput.year'),
       classes: 'govuk-input--width-4 ' + (inputErrorClass if includes(fieldErrors[0].focusSuffix, '[yyyy]') or not hasSuffixHighlights)
     }, params.items[2] if params.items[2] else {}, {

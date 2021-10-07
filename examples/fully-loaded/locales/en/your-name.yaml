@@ -1,0 +1,6 @@
+pageTitle: What is your full name?
+field:
+  fullName:
+    hint: Include any middle names.
+    required: Enter your full name.
+    length: Full name must be 100 characters or less.

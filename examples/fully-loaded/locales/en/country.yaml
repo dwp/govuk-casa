@@ -1,0 +1,10 @@
+pageTitle: Which country do you live in?
+field:
+  country:
+    required: Select the country you live in.
+    options:
+      ENGLAND: England
+      SCOTLAND: Scotland
+      WALES: Wales
+      NORTHERN_IRELAND: Northern Ireland
+      somewhereElse: Somewhere else

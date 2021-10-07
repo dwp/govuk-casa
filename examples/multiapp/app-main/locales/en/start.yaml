@@ -1,0 +1,6 @@
+pageTitle: Welcome
+h1: Welcome
+field:
+  name:
+    label: What is your name?
+    empty: Enter your name

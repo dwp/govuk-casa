@@ -1,17 +1,16 @@
 {
-  "name": "@dwp/govuk-casa-example-barebones",
+  "name": "govuk-casa-barebones-example",
   "version": "1.0.0",
-  "description": "Simple barebones example CASA application",
-  "main": "app.js",
-  "dependencies": {
-    "@dwp/govuk-casa": "^7.0.3",
-    "express": "4.17.1",
-    "express-session": "^1.17.2",
-    "moment": "2.29.1"
-  },
+  "description": "CASA example: barebones application",
+  "main": "server.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node server.js"
   },
-  "author": "DWP <open-source@engineering.digital.dwp.gov.uk>",
-  "license": "ISC"
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@dwp/govuk-casa": "8.0.0-alpha2",
+    "express": "4.17.1"
+  }
 }

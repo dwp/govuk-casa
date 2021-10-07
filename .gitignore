@@ -1,10 +1,7 @@
+.a11y/
 .coverage/
-.DS_Store
-.sonar/
+.junit/
 .nyc_output/
-.stryker-tmp/
-dist/*
-!dist/.gitkeep
+dist/
 node_modules/
-npm-debug.log
-stryker.log
+examples/**/package-lock.json

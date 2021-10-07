@@ -1,0 +1,66 @@
+# No partner
+
+journey:
+  country:
+    england: click()
+  how-we-use-your-info:
+    # No interactions
+  date-of-birth:
+    day: 11
+    month: 03
+    year: 1900
+  live-with-partner:
+    yes: click()
+    day: 11
+    month: 12
+    year: 1950
+  your-name:
+    fullName: Joe Bloggs
+  your-partners-name:
+    fullName: Joanna Bloggs
+  your-address:
+    addr1: Street
+    addr2: Suburb
+    town: Town
+    county: County
+    postcode: AA1 1AA
+  accounts:
+    currentSavingsAccounts: select()
+  check-your-answers:
+    # No interactiond
+  submit:
+    # No interactions
+  what-happens-next:
+    # No interactions
+
+errors:
+  live-with-partner:
+    - yes: click()
+      messages:
+      - en: Enter your partner’s date of birth.
+    - yes: click()
+      day: x
+      month: y
+      year: z
+      messages:
+      - en: Enter a real date of birth.
+    - yes: click()
+      day: 11
+      month: 11
+      year: 3000
+      messages:
+      - en: Enter a date of birth that is in the past.
+  your-partners-name:
+    - messages:
+      - en: Enter their full name.
+    - fullName: randomString(101)
+      messages:
+      - en: Full name must be 100 characters or less.
+
+templateVars:
+  check-your-answers:
+    country: ENGLAND
+    dateOfBirth: 11 March 1900
+    partnerDateOfBirth: 11 December 1950
+    address: Street, Suburb, Town, County, AA1 1AA
+    accounts: currentSavingsAccounts

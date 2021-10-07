@@ -1,0 +1,42 @@
+{% extends "layouts/journey.njk" %}
+
+{% from "casa/components/checkboxes/macro.njk" import casaGovukCheckboxes with context %}
+
+{% block casaPageTitle %}
+  {{ t("accounts:" + claimTypePrefix + "pageTitle") }} - {{ t("common:serviceName") }}
+{% endblock %}
+
+{% block journey_form %}
+  {{ casaGovukCheckboxes({
+    name: "accounts",
+    fieldset: {
+      legend: {
+        text: t("accounts:" + claimTypePrefix + "pageTitle"),
+        isPageHeading: true,
+        classes: "govuk-fieldset__legend--xl"
+      }
+    },
+    hint: {
+      text: t("accounts:field.accounts.hint")
+    },
+    items: [{
+      value: "currentSavingsAccounts",
+      text: t("accounts:field.accounts.options.currentSavingsAccounts")
+    }, {
+      value: "isas",
+      text: t("accounts:field.accounts.options.isas")
+    }, {
+      value: "premiumBondsSavingsCertificates",
+      text: t("accounts:field.accounts.options.premiumBondsSavingsCertificates")
+    }, {
+      value: "shares",
+      text: t("accounts:field.accounts.options.shares")
+    }, {
+      value: "unitTrusts",
+      text: t("accounts:field.accounts.options.unitTrusts")
+    }],
+    casaWithAnalytics: true,
+    casaValue: formData.accounts,
+    casaErrors: formErrors
+  }) }}
+{% endblock %}

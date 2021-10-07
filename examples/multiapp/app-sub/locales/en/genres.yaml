@@ -1,0 +1,9 @@
+pageTitle: What musical genres do you enjoy?
+genres:
+  label: What musical genres do you enjoy?
+  options:
+    disco: D.I.S.C.O
+    blues: Blues
+    rock: Rock
+    hiphop: Hip hop
+    bagpipes: Bagpipes

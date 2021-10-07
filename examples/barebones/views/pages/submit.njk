@@ -1,0 +1,14 @@
+{% extends "layouts/journey.njk" %}
+
+{% block casaPageTitle %}
+  {{ t('submit:pageTitle') }}
+{% endblock %}
+
+
+{% block journey_form %}
+  <h1 class="govuk-heading-xl">{{ t('submit:h1') }}</h1>
+
+  <p class="govuk-body">
+    This is the final submission page; a final chance for the user to confirm they want to go ahead.
+  </p>
+{% endblock %}

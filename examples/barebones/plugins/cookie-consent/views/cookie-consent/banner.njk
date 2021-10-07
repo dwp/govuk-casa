@@ -1,0 +1,17 @@
+{% if not cookieConsentHideBanner %}
+  {% if cookieConsentChoice %}
+    <div>
+      <p>Cookie consent choice has been made: {{ cookieConsentChoice }}</p>
+    </div>
+  {% else %}
+    <div>
+      <p class="govuk-body"> Ths is where the cookie banner goes</p>
+      <form method="post" action="{{ casa.mountUrl }}cookie-consent/accept">
+        <button type="submit" class="govuk-button">Accept cookies</button>
+      </form>
+      <form method="post" action="{{ casa.mountUrl }}cookie-consent/reject">
+        <button type="submit" class="govuk-button">Reject cookies</button>
+      </form>
+    </div>
+  {% endif %}
+{% endif %}

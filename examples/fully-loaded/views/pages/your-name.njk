@@ -1,0 +1,27 @@
+{% extends "layouts/journey.njk" %}
+
+{% from "casa/components/input/macro.njk" import casaGovukInput with context %}
+{% from "casa/components/radios/macro.njk" import casaGovukRadios with context %}
+{% from "casa/components/textarea/macro.njk" import casaGovukTextarea with context %}
+
+{% block casaPageTitle %}
+  {{ t("your-name:pageTitle") }} - {{ t("common:serviceName") }}
+{% endblock %}
+
+{% block journey_form %}
+  {{ casaGovukInput({
+    name: "fullName",
+    classes: "govuk-input--width-20",
+    label: {
+      text: t("your-name:pageTitle"),
+      isPageHeading: true,
+      classes: "govuk-label--xl"
+    },
+    hint: {
+      text: t("your-name:field.fullName.hint")
+    },
+    value: formData.fullName,
+    casaErrors: formErrors
+  }) }}
+
+{% endblock %}

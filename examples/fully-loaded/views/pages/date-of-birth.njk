@@ -1,0 +1,25 @@
+{% extends "layouts/journey.njk" %}
+
+{% from "casa/components/date-input/macro.njk" import casaGovukDateInput with context %}
+
+{% block casaPageTitle %}
+  {{ t("date-of-birth:pageTitle") }} - {{ t("common:serviceName") }}
+{% endblock %}
+
+{% block journey_form %}
+  {{ casaGovukDateInput({
+    namePrefix: "dateOfBirth",
+    fieldset: {
+      legend: {
+        text: t("date-of-birth:pageTitle"),
+        isPageHeading: true,
+        classes: "govuk-fieldset__legend--xl"
+      }
+    },
+    hint: {
+      text: t("date-of-birth:field.dateOfBirth.hint")
+    },
+    casaErrors: formErrors,
+    casaValue: formData.dateOfBirth
+  }) }}
+{% endblock %}

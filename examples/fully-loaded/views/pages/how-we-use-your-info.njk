@@ -1,0 +1,26 @@
+{% extends "layouts/journey.njk" %}
+
+{% block casaPageTitle %}
+  {{ t("how-we-use-your-info:pageTitle") }} - {{ t("common:serviceName") }}
+{% endblock %}
+
+{% block journey_form %}
+  <h1 class="govuk-heading-xl govuk-!-margin-bottom-4">
+    {{ t("how-we-use-your-info:pageTitle") }}
+  </h1>
+
+  <p class="govuk-body-l govuk-!-margin-bottom-6">
+    {{ t("how-we-use-your-info:detailsYouProvide") }}
+  </p>
+
+  <p class="govuk-body-l govuk-!-font-weight-bold govuk-!-margin-bottom-2">
+    {{ t("how-we-use-your-info:weWillUseInformation") }}
+  </p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>{{ t("how-we-use-your-info:fromHere") }}</li>
+    <li>{{ t("how-we-use-your-info:weGetFromElsewhere") }}</li>
+  </ul>
+  <p class="govuk-body govuk-!-margin-bottom-7">
+    {{ t("how-we-use-your-info:" + northernIrelandPrefix + "moreInfo") | safe }}
+  </p>
+{% endblock %}

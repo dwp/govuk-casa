@@ -1,0 +1,17 @@
+pageTitle: Do you have a partner?
+field:
+  havePartner:
+    hint: If you live with a partner their details must be included as part of your application. A partner is a husband wife civil partner or someone that you are in a relationship with.
+    required: Select yes if you have a partner.
+    options:
+      yes: Yes
+      no: No I do not have a partner
+    optionHints:
+      yes: If you live with a partner we will ask you about them.
+  partnerDateOfBirth:
+    legend: What is your partner's date of birth?
+    hint: For example 31 3 1948.
+    required: Enter your partner’s date of birth.
+    format: Enter a real date of birth.
+    future: Enter a date of birth that is in the past.
+

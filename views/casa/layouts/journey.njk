@@ -1,21 +1,16 @@
 {% extends "casa/layouts/main.njk" %}
 
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "casa/components/journey-form/macro.njk" import casaJourneyForm with context %}
+
 
 {# Automatically apply padding with/without back link #}
 {% set mainClasses %}{{ mainClasses }} govuk-main-wrapper--auto-spacing{% endset %}
 
 
+{# Add back link, if appropriate #}
 {% block beforeContent %}
-  {# Phase banner #}
-  {# TODO: remove phase variable - just get template author to override a `casa/partials/phase_banner.njk` template #}
-  {% if casa.phase == 'alpha' %}
-    {% include "casa/partials/phase_banner_alpha.njk" %}
-  {% elseif casa.phase == 'beta' %}
-    {% include "casa/partials/phase_banner_beta.njk" %}
-  {% endif %}
-
-  {# Add back link, if appropriate #}
   {% if not inEditMode and casa.journeyPreviousUrl %}
     {{ govukBackLink({
       text: t('common:back'),
@@ -30,3 +25,25 @@
   {{- t("error:documentTtlePrefix") if formErrors -}}
   {% block casaPageTitle %}{% endblock %}
 {%- endblock %}
+
+
+{# A default content block. Override this if you want a customised form #}
+{% block content %}
+  {% if formErrorsGovukArray %}
+    {{ govukErrorSummary({
+      titleText: t("error:summary.h1"),
+      descriptionText: errorDescription or t('error:summary.defaultDescription'),
+      errorList: formErrorsGovukArray
+    }) }}
+  {% endif %}
+
+  {% call casaJourneyForm({
+    formUrl: formUrl,
+    csrfToken: casa.csrfToken,
+    inEditMode: inEditMode,
+    editOriginUrl: editOriginUrl,
+    activeContextId: activeContextId
+  }) %}
+    {% block journey_form %}{% endblock %}
+  {% endcall %}
+{% endblock %}

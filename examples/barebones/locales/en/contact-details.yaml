@@ -1,0 +1,24 @@
+pageTitle: Contact details
+h1: Contact details
+html:
+  intro: |
+    <p class=govuk-body>
+      This form demonstrates a conditional fork in the user journey.
+    </p>
+    <p class=govuk-body>
+      Try leaving all optional fields blank and continuing. Then come back and enter <code>007</code> in the first telephone field before continuing. The latter action will take you on a slightly different journey.
+    </p>
+field:
+  tel:
+    label: Phone number
+    tooLong: Enter a telephone number in 20 characters or less
+    invalid: Enter a valid telephone number
+  telOther:
+    label: Other number
+    tooLong: Enter a telephone number in 20 characters or less
+    invalid: Enter a valid telephone number
+  email:
+    label: Email
+    invalid: Enter a valid email address
+  address:
+    label: Address

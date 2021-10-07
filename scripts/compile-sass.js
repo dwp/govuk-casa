@@ -1,61 +1,47 @@
 /**
- * Compile the sass sources into static CSS files.
+ * Compile the CASA and govuk-frontend sass sources into a static CSS file.
  *
- * This should be run prior to publishing.
- *
- * Usage:
+ * Usage (from project root):
  *  node compile-sass.js.
  */
 
-/* eslint-disable-next-line import/no-extraneous-dependencies */
-const sass = require('sass');
-const path = require('path');
-const klaw = require('klaw-sync');
-const fs = require('fs-extra');
+import sass from 'sass';
+import { writeFile } from 'fs/promises';
 
-const { resolveModulePath } = require('../lib/Util.js');
+const { renderSync } = sass;
 
 /**
  * Compile all Sass files in the `src/casa/` source directory, and store output
  * into the specified `targetDir`.
- *
- * @param {string} targetDir Directory where compiled assets are saved.
- * @param {string} npmGovukFrontend Path to `govuk-fronted` node module.
- * @param {string} npmGovukCasa Root path of `govuk-casa`.
- * @returns {void}
- * @throws {Error} For any IO errors.
  */
-function compileSassSources(targetDir, npmGovukFrontend, npmGovukCasa) {
-  const casaSassSrcDir = path.resolve(npmGovukCasa, 'src', 'scss');
-  const dstDir = path.resolve(targetDir, 'casa', 'css');
-
-  const partialRegex = new RegExp(`\\${path.sep}_[^\\${path.sep}]+$`);
-  const files = klaw(casaSassSrcDir, {
-    nodir: true,
-    filter: (f) => (!f.path.match(partialRegex)),
-  }).map((f) => f.path);
-
-  files.forEach((file) => {
-    const cssContent = sass.renderSync({
-      file,
-      includePaths: [
-        casaSassSrcDir,
-        `${npmGovukFrontend}`,
-      ],
-      outputStyle: 'compressed',
-    }).css.toString('utf8');
-
-    const dstPath = path.resolve(dstDir, path.relative(casaSassSrcDir, file))
-      .replace(/\.scss$/, '.css');
-    fs.ensureDirSync(path.dirname(dstPath));
-    fs.writeFileSync(dstPath, cssContent, {
-      encoding: 'utf8',
-    });
+async function compileSassSources() {
+  // Main CSS
+  let targetFile = 'dist/assets/css/casa.css';
+  const { css } = renderSync({
+    file: 'assets/scss/casa.scss',
+    includePaths: [
+      'assets/scss/',
+      'node_modules/govuk-frontend/govuk/',
+    ],
+    outputStyle: 'compressed',
+    outFile: targetFile,
+    quietDeps: true,
   });
+  await writeFile(targetFile, css, { encoding: 'utf8' });
+
+  // IE8 support
+  targetFile = 'dist/assets/css/casa-ie8.css';
+  const { css: cssIe8 } = renderSync({
+    file: 'assets/scss/casa-ie8.scss',
+    includePaths: [
+      'assets/scss/',
+      'node_modules/govuk-frontend/govuk/',
+    ],
+    outputStyle: 'compressed',
+    outFile: targetFile,
+    quietDeps: true,
+  });
+  await writeFile(targetFile, cssIe8, { encoding: 'utf8' })
 }
 
-compileSassSources(
-  path.resolve('./dist/'),
-  path.resolve(resolveModulePath('govuk-frontend', module.paths), 'govuk'),
-  path.resolve(__dirname, '../'),
-);
+await compileSassSources();

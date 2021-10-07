@@ -1,0 +1,38 @@
+{% extends "layouts/journey.njk" %}
+
+{% from "casa/components/checkboxes/macro.njk" import casaGovukCheckboxes with context %}
+
+{% block casaPageTitle %}
+  {{ t('genres:pageTitle') }}
+{% endblock %}
+
+{% block journey_form %}
+  {{ casaGovukCheckboxes({
+    name: "genres",
+    casaErrors: formErrors,
+    casaValue: formData.genres,
+    fieldset: {
+      legend: {
+        text: t('genres:genres.label'),
+        isPageHeading: true,
+        classes: "govuk-fieldset__legend--xl"
+      }
+    },
+    items: [{
+      value: "disco",
+      text: t('genres:genres.options.disco')
+    },{
+      value: "blues",
+      text: t('genres:genres.options.blues')
+    }, {
+      value: "rock",
+      text: t('genres:genres.options.rock')
+    }, {
+      value: "hiphop",
+      text: t('genres:genres.options.hiphop')
+    }, {
+      value: "bagpipes",
+      text: t('genres:genres.options.bagpipes')
+    }]
+  }) }}
+{% endblock %}

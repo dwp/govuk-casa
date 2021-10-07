@@ -1,0 +1,58 @@
+# Traverse forwards and backwards
+
+journey:
+  country:
+    england: click()
+  how-we-use-your-info:
+    # No interactions
+  date-of-birth:
+    day: 11
+    month: 03
+    year: 1900
+  live-with-partner:
+    yes: click()
+    day: 11
+    month: 12
+    year: 1950
+  your-name:
+    fullName: Joe Bloggs
+  your-partners-name:
+    fullName: Joanna Bloggs
+  your-address:
+    addr1: Street
+    addr2: Suburb
+    town: Town
+    county: County
+    postcode: AA1 1AA
+  accounts:
+    currentSavingsAccounts: select()
+  check-your-answers:
+    # No interactions
+  submit:
+    _back: click()
+  check-your-answers--2:
+    _back: click()
+  accounts--2:
+    _back: click()
+  your-address--2:
+    _back: click()
+  your-partners-name--2:
+    _back: click()
+  your-name--2:
+    _back: click()
+  live-with-partner--2:
+    _back: click()
+  date-of-birth--2:
+    _back: click()
+  how-we-use-your-info--2:
+    _back: click()
+  country--2:
+    # No interactions
+
+templateVars:
+  check-your-answers:
+    country: ENGLAND
+    dateOfBirth: 11 March 1900
+    partnerDateOfBirth: 11 December 1950
+    address: Street, Suburb, Town, County, AA1 1AA
+    accounts: currentSavingsAccounts

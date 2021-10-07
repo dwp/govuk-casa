@@ -1,0 +1,407 @@
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
+import chai, { expect } from 'chai';
+
+import ingest, {
+  validateI18nObject,
+  validateI18nDirs,
+  validateI18nLocales,
+  validateMountUrl,
+  validateSessionObject,
+  validateSessionCookiePath,
+  validateSessionCookieSameSite,
+  validateSessionName,
+  validateSessionSecret,
+  validateSessionSecure,
+  validateSessionStore,
+  validateSessionTtl,
+  validateViews,
+  validatePages,
+  validatePlan,
+  validateGlobalHooks,
+} from '../../src/lib/configuration-ingestor.js';
+
+chai.use(sinonChai);
+
+const minimalConfig = {
+  i18n: {
+    dirs: [],
+    locales: [],
+  },
+  session: {
+    name: 'session-name',
+    secret: 'secret',
+    secure: false,
+    ttl: 3600,
+    cookieSameSite: 'Strict',
+    cookiePath: '/',
+  },
+  views: [],
+  pages: [],
+};
+
+describe('ConfigIngestor', () => {
+  describe('ingest()', () => {
+    it('should be a function', () => {
+      expect(ingest).to.be.a('function');
+    });
+
+    it('should throw an Error when given invalid configuration', () => {
+      expect(() => ingest()).to.throw();
+    });
+
+    it('should return an immutable object when given valid configuration', () => {
+      const config = ingest(minimalConfig);
+
+      return expect(Object.isFrozen(config)).to.be.true;
+    });
+
+    it('should contain the expected defaults', () => {
+      const config = ingest(minimalConfig);
+
+      expect(config.sessions.cookieSameSite).to.equal('Strict');
+    });
+  });
+
+  describe('validateI18nObject()', () => {
+    it('should throw a TypeError when not given an object', () => {
+      expect(() => validateI18nObject()).to.throw(TypeError, 'I18n must be an object');
+    });
+
+    it('should call the callback, passing a valid value, and return its result', () => {
+      const stubCallback = sinon.stub().returns('test-response');
+      const testInput = {};
+      expect(validateI18nObject(testInput, stubCallback)).to.equal('test-response');
+      expect(stubCallback).to.be.calledOnceWithExactly(testInput);
+    });
+  });
+
+  describe('validateI18nDirs()', () => {
+    it('should throw an Error if no value is specified', () => {
+      expect(() => validateI18nDirs()).to.throw(ReferenceError, 'I18n directories are missing (i18n.dirs)');
+    });
+
+    it('should throw an Error if the value is not an Array', () => {
+      expect(() => validateI18nDirs('not an array')).to.throw(TypeError, 'I18n directories must be an array (i18n.dirs)');
+    });
+
+    it('should return a valid value', () => {
+      const testDirs = ['my/i18n-directory'];
+      expect(validateI18nDirs(testDirs)).to.eql(['my/i18n-directory'])
+    });
+  });
+
+  describe('validateI18nLocales()', () => {
+    it('should throw an Error if no value is specified', () => {
+      expect(() => validateI18nLocales()).to.throw(ReferenceError, 'I18n locales are missing (i18n.locales)');
+    });
+
+    it('should throw an Error if the value is not an Array', () => {
+      expect(() => validateI18nLocales('not an array')).to.throw(TypeError, 'I18n locales must be an array (i18n.locales)');
+    });
+
+    it('should return a valid value', () => {
+      const testLocales = ['en', 'cy'];
+      expect(validateI18nLocales(testLocales)).to.equal(testLocales);
+    });
+  });
+
+  describe('validateMountUrl()', () => {
+    it('should default to / when a value is not specified', () => {
+      expect(validateMountUrl()).to.equal('/');
+    });
+
+    it('should throw an Error if a trailing slash is missing', () => {
+      expect(() => validateMountUrl('/missing-trailing-slash')).to.throw(Error, 'Mount URL must include a trailing slash (/)');
+    });
+
+    it('should return a valid value', () => {
+      expect(validateMountUrl('/this-is/my/mount-url/')).to.equal('/this-is/my/mount-url/');
+    });
+
+    it('should include a custom name in the error message', () => {
+      expect(() => validateMountUrl('/missing-trailing-slash', 'CUSTOM')).to.throw(Error, 'CUSTOM must include a trailing slash (/)');
+    });
+  });
+
+  describe('validateSessionObject()', () => {
+    it('should call the callback, passing a valid value, and return its result', () => {
+      const stubCallback = sinon.stub().returns('test-response');
+      const testInput = {};
+      expect(validateSessionObject(testInput, stubCallback)).to.equal('test-response');
+      expect(stubCallback).to.be.calledOnceWithExactly(testInput);
+    });
+  });
+
+  describe('validateSessionCookiePath()', () => {
+    it('should the default value if no value is specified', () => {
+      expect(validateSessionCookiePath(undefined, '/default/')).to.equal('/default/');
+    });
+
+    it('should return a valid value', () => {
+      expect(validateSessionCookiePath('test-path')).to.equal('test-path');
+    });
+  });
+
+  describe('validateSessionCookieSameSite()', () => {
+    it('should throw if a default flag value is not provided', () => {
+      expect(() => validateSessionCookieSameSite(undefined)).to.throw(TypeError, 'validateSessionCookieSameSite() requires an explicit default flag');
+      expect(() => validateSessionCookieSameSite(undefined, 'Lax')).to.not.throw();
+    });
+
+    it('should throw if an invalid default flag is provided', () => {
+      const err = 'validateSessionCookieSameSite() default flag must be set to one of true, false, Strict, Lax or None (sessions.cookieSameSite)';
+      expect(() => validateSessionCookieSameSite('Strict', 'BadValue')).to.throw(TypeError, err);
+      expect(() => validateSessionCookieSameSite('Strict', [])).to.throw(TypeError, err);
+      expect(() => validateSessionCookieSameSite('Strict', 'Lax')).to.not.throw();
+    });
+
+    it('should throw if not provided with a valid value', () => {
+      const err = 'SameSite flag must be set to one of true, false, Strict, Lax or None (sessions.cookieSameSite)';
+      expect(() => validateSessionCookieSameSite('BadValue', false)).to.throw(TypeError, err);
+      expect(() => validateSessionCookieSameSite([], false)).to.throw(TypeError, err);
+      expect(() => validateSessionCookieSameSite(false, 'Lax')).to.not.throw();
+    });
+
+    it('should return a valid provided value', () => {
+      expect(validateSessionCookieSameSite('Strict', false)).to.equal('Strict');
+      expect(validateSessionCookieSameSite('Lax', false)).to.equal('Lax');
+      expect(validateSessionCookieSameSite('None', false)).to.equal('None');
+      expect(validateSessionCookieSameSite(false, true)).to.equal(false);
+      expect(validateSessionCookieSameSite(true, false)).to.equal(true);
+    });
+
+    it('should return a default flag if none provided', () => {
+      expect(validateSessionCookieSameSite(undefined, 'Lax')).to.equal('Lax');
+    });
+  });
+
+  describe('validateSessionName()', () => {
+    it('should throw an ReferenceError if no value is specified', () => {
+      expect(() => validateSessionName()).to.throw(ReferenceError, 'Session name is missing (sessions.name)');
+    });
+
+    it('should throw a TypeError if the value is not a string', () => {
+      expect(() => validateSessionName([])).to.throw(TypeError, 'Session name must be a string (sessions.name)');
+    });
+
+    it('should return a valid value', () => {
+      expect(validateSessionName('test-name')).to.equal('test-name');
+    });
+  });
+
+  describe('validateSessionSecret()', () => {
+    it('should throw an ReferenceError if no value is specified', () => {
+      expect(() => validateSessionSecret()).to.throw(ReferenceError, 'Session secret is missing (sessions.secret)');
+    });
+
+    it('should throw a TypeError if the value is not a string', () => {
+      expect(() => validateSessionSecret([])).to.throw(TypeError, 'Session secret must be a string (sessions.secret)');
+    });
+
+    it('should return a valid value', () => {
+      expect(validateSessionSecret('test-secret')).to.equal('test-secret');
+    });
+  });
+
+  describe('validateSessionSecure()', () => {
+    it('should throw an ReferenceError if no value is specified', () => {
+      expect(() => validateSessionSecure()).to.throw(ReferenceError, 'Session secure flag is missing (sessions.secure)');
+    });
+
+    it('should throw a TypeError if the value is not a string', () => {
+      expect(() => validateSessionSecure([])).to.throw(TypeError, 'Session secure flag must be boolean (sessions.secure)');
+    });
+
+    it('should return a valid value', () => {
+      expect(validateSessionSecure(false)).to.equal(false);
+    });
+  });
+
+  describe('validateSessionStore()', () => {
+    it('should return null if no store is specified', () => {
+      expect(validateSessionStore()).to.equal(null);
+    });
+
+    it('should return a valid value', () => {
+      const testStore = () => {};
+      expect(validateSessionStore(testStore)).to.equal(testStore);
+    });
+  });
+
+  describe('validateSessionTtl()', () => {
+    it('should throw an ReferenceError if no value is specified', () => {
+      expect(() => validateSessionTtl()).to.throw(ReferenceError, 'Session ttl is missing (sessions.ttl)');
+    });
+
+    it('should throw a TypeError if the value is not an integer', () => {
+      expect(() => validateSessionTtl([])).to.throw(TypeError, 'Session ttl must be an integer (sessions.ttl)');
+    });
+
+    it('should return a valid value', () => {
+      expect(validateSessionTtl(3600)).to.equal(3600);
+    });
+  });
+
+  describe('validateViews()', () => {
+    it('should throw an Error if no value is specified', () => {
+      expect(() => validateViews()).to.throw(ReferenceError, 'View directories are missing (views)');
+    });
+
+    it('should throw an Error if the value is not an Array', () => {
+      expect(() => validateViews('not an array')).to.throw(TypeError, 'View directories must be an array (views)');
+    });
+
+    it('should return a valid value', () => {
+      const testDirs = ['my/view-directory'];
+      expect(validateViews(testDirs)).to.eql(['my/view-directory'])
+    });
+  });
+
+  describe('validatePages', () => {
+    it('does not throw, given valid pages', () => {
+      expect(() => validatePages([{
+        waypoint: 'test',
+        view: 'test.njk',
+      }])).to.not.throw();
+
+      expect(() => validatePages([{
+        waypoint: 'test',
+        view: 'test.njk',
+        hooks: [{
+          hook: 'prerender',
+          middleware: () => {},
+        }],
+        fields: [],
+      }])).to.not.throw();
+    });
+
+    it('throws if not an array', () => {
+      expect(() => validatePages()).to.throw(TypeError, 'Pages must be an array (pages)');
+    });
+
+    it('throws if waypoint is invalid', () => {
+      expect(() => validatePages([{
+        waypoint: false,
+      }])).to.throw(TypeError, 'Page at index 0 is invalid: Waypoint must be a string');
+
+      expect(() => validatePages([{
+        waypoint: '',
+      }])).to.throw(SyntaxError, 'Page at index 0 is invalid: Waypoint must not be empty');
+
+      expect(() => validatePages([{
+        waypoint: '$',
+      }])).to.throw(SyntaxError, 'Page at index 0 is invalid: Waypoint must contain only a-z, 0-9, -, _ and / characters');
+    });
+
+    it('throws if view is invalid', () => {
+      expect(() => validatePages([{
+        waypoint: 'test',
+        view: false,
+      }])).to.throw(TypeError, 'Page at index 0 is invalid: View must be a string');
+
+      expect(() => validatePages([{
+        waypoint: 'test',
+        view: '',
+      }])).to.throw(SyntaxError, 'Page at index 0 is invalid: View must not be empty');
+
+      expect(() => validatePages([{
+        waypoint: 'test',
+        view: '$',
+      }])).to.throw(SyntaxError, 'View must contain only a-z, 0-9, -, _ and / characters, and end in .njk');
+    });
+
+    describe('hooks', () => {
+      it('throws if hooks are invalid', () => {
+        expect(() => validatePages([{
+          waypoint: 'test',
+          view: 'test.njk',
+          hooks: false,
+        }])).to.throw(TypeError, 'Page at index 0 is invalid: Hooks must be an array');
+      });
+
+      it('throws if hook name is invalid', () => {
+        expect(() => validatePages([{
+          waypoint: 'test',
+          view: 'test.njk',
+          hooks: [{
+            hook: false,
+          }],
+        }])).to.throw(TypeError, 'Page hook at index 0 is invalid: Hook name must be a string');
+
+        expect(() => validatePages([{
+          waypoint: 'test',
+          view: 'test.njk',
+          hooks: [{
+            hook: '',
+          }],
+        }])).to.throw(SyntaxError, 'Page hook at index 0 is invalid: Hook name must not be empty');
+
+        expect(() => validatePages([{
+          waypoint: 'test',
+          view: 'test.njk',
+          hooks: [{
+            hook: '.bad-format',
+          }],
+        }])).to.throw(SyntaxError, 'Page hook at index 0 is invalid: Hook name must match either <scope>.<hookname> or <hookname> formats');
+      });
+    });
+
+    describe('field', () => {
+      it('throws if fields are invalid', () => {
+        expect(() => validatePages([{
+          waypoint: 'test',
+          view: 'test.njk',
+          fields: false,
+        }])).to.throw(TypeError, 'Page at index 0 is invalid: Page fields must be an array (page[].fields)');
+
+        expect(() => validatePages([{
+          waypoint: 'test',
+          view: 'test.njk',
+          fields: [{}],
+        }])).to.throw(TypeError, 'Page at index 0 is invalid: Page field at index 0 is invalid: Page field must be an instance of PageField (created via the "field()" function)');
+      });
+    });
+  });
+
+  describe('validatePlan', () => {
+    it('throws if not an instance of the Plan class', () => {
+      expect(() => validatePlan(false)).to.throw(TypeError, 'Plan must be an instance the Plan class (plan)');
+    });
+  });
+
+  describe('validateGlobalHooks()', () => {
+    it('throws if not an array', () => {
+      expect(() => validateGlobalHooks(false)).to.throw(TypeError, 'Hooks must be an array');
+    });
+
+    it('throws if hook name is invalid', () => {
+      expect(() => validateGlobalHooks([{
+        hook: false,
+      }])).to.throw(TypeError, 'Global hook at index 0 is invalid: Hook name must be a string');
+
+      expect(() => validateGlobalHooks([{
+        hook: '',
+      }])).to.throw(SyntaxError, 'Global hook at index 0 is invalid: Hook name must not be empty');
+
+      expect(() => validateGlobalHooks([{
+        hook: '.bad-format',
+      }])).to.throw(SyntaxError, 'Global hook at index 0 is invalid: Hook name must match either <scope>.<hookname> or <hookname> formats');
+    });
+
+    it('throws if middleware is invalid', () => {
+      expect(() => validateGlobalHooks([{
+        hook: 'name',
+        middleware: false,
+      }])).to.throw(TypeError, 'Global hook at index 0 is invalid: Hook middleware must be a function');
+    });
+
+    it('throws if path is invalid', () => {
+      expect(() => validateGlobalHooks([{
+        hook: 'name',
+        middleware: () => {},
+        path: false,
+      }])).to.throw(TypeError, 'Global hook at index 0 is invalid: Hook path must be a string or RegExp');
+    });
+  });
+});

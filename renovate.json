@@ -1,21 +1,17 @@
 {
-  "prHourlyLimit": 0,
-  "packageRules": [
-    {
-      "packagePatterns": [
-        "*"
-      ],
-      "rangeStrategy": "pin"
-    },
-    {
-      "depTypeList": [
-        "engines",
-        "peerDependencies"
-      ],
-      "rangeStrategy": "auto"
-    }
-  ],
-  "groupName": "dependencies",
   "rebaseWhen": "behind-base-branch",
-  "separateMajorMinor": false
+  "commitMessagePrefix": "chore(renovate):",
+  "packageRules": [{
+    "matchPackagePatterns": "*",
+    "matchUpdateTypes": ["major"],
+    "groupName": "major dependencies"
+  }, {
+    "matchPackagePatterns": "*",
+    "matchUpdateTypes": ["patch", "minor"],
+    "groupName": "minor/patch dependencies"
+  }, {
+    "matchPackagePatterns": "*",
+    "matchUpdateTypes": ["pin", "digest"],
+    "groupName": "pin dependencies"
+  }]
 }

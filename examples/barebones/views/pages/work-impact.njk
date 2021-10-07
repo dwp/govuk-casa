@@ -4,9 +4,17 @@
 {% from "casa/components/textarea/macro.njk" import casaGovukTextarea with context %}
 {% from "casa/components/character-count/macro.njk" import casaGovukCharacterCount with context %}
 
+
+{% block bodyEnd %}
+  {{ super() }}
+  <script src="{{ casa.mountUrl }}assets/work-impact.js"></script>
+{% endblock %}
+
+
 {% block casaPageTitle %}
   {{ t('work-impact:pageTitle') }}
 {% endblock %}
+
 
 {% block journey_form %}
   <h1 class="govuk-heading-xl">

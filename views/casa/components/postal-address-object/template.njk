@@ -14,7 +14,7 @@
     {% if fieldAddress1Errors %}
       {% set fieldAttributes = mergeObjects(fieldAttributes, {'data-validation': {fn: params.name + '[address1]', va: fieldAddress1Errors[0].validator} | dump}) %}
     {% endif %}
-    {{ govukInput(mergeObjectsDeep({
+    {{ govukInput(mergeObjects({
       label: {
         html: t('macros:postalAddressObject.address1')
       },
@@ -33,7 +33,7 @@
     {% if fieldAddress2Errors %}
       {% set fieldAttributes = mergeObjects(fieldAttributes, {'data-validation': {fn: params.name + '[address2]', va: fieldAddress2Errors[0].validator} | dump}) %}
     {% endif %}
-    {{ govukInput(mergeObjectsDeep({
+    {{ govukInput(mergeObjects({
       label: {
         html: t('macros:postalAddressObject.address2')
       },
@@ -54,7 +54,7 @@
   {% if fieldErrors %}
     {% set fieldAttributes = mergeObjects(fieldAttributes, {'data-validation': {fn: params.name + '[address3]', va: fieldErrors[0].validator} | dump}) %}
   {% endif %}
-  {{ govukInput(mergeObjectsDeep({
+  {{ govukInput(mergeObjects({
     classes: "govuk-!-width-two-thirds",
     label: {
       html: t('macros:postalAddressObject.address3')
@@ -75,7 +75,7 @@
   {% if fieldErrors %}
     {% set fieldAttributes = mergeObjects(fieldAttributes, {'data-validation': {fn: params.name + '[address4]', va: fieldErrors[0].validator} | dump}) %}
   {% endif %}
-  {{ govukInput(mergeObjectsDeep({
+  {{ govukInput(mergeObjects({
     classes: "govuk-!-width-two-thirds",
     label: {
       html: t('macros:postalAddressObject.address4')
@@ -96,7 +96,7 @@
   {% if fieldErrors %}
     {% set fieldAttributes = mergeObjects(fieldAttributes, {'data-validation': {fn: params.name + '[postcode]', va: fieldErrors[0].validator} | dump}) %}
   {% endif %}
-  {{ govukInput(mergeObjectsDeep({
+  {{ govukInput(mergeObjects({
     classes: "govuk-input--width-10",
     label: {
       html: t('macros:postalAddressObject.postcode')

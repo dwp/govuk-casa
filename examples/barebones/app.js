@@ -1,54 +1,103 @@
-const { configure } = require('@dwp/govuk-casa');
-const express = require('express');
-const path = require('path');
+const ExpressJS = require('express');
+const { static: expressStatic } = ExpressJS;
+const { configure, JourneyContext } = require('@dwp/govuk-casa');
+const { resolve } = require('path');
 
-// Create a new CASA application instance.
-const app = express();
-const casaApp = configure(app, {
-  mountUrl: '/barebones/',
-  views: {
-    dirs: [ path.resolve(__dirname, 'views') ]
-  },
-  compiledAssetsDir: path.resolve(__dirname, 'static'),
-  phase: 'alpha',
-  serviceName: 'common:serviceName',
-  sessions: {
-    name: 'myappsessionid',
-    secret: 'secret',
-    ttl: 60 * 60,
-    secure: false
-  },
-  i18n: {
-    dirs: [ path.resolve(__dirname, 'locales') ],
-    locales: [ 'en', 'cy' ]
-  },
-  allowPageEdit: true,
-  mountController: function (callback) {
-    require('./routes/static-assets')(this.expressRouter);
-    callback();
-  },
-});
+const cookieConsentPlugin = require('./plugins/cookie-consent/plugin.js');
+const checkYourAnswersPlugin = require('./plugins/check-your-answers/plugin.js');
 
-// Custom, non-journey routes handlers.
-// Add any routes that are not involved in the data-gathering journey
-// (e.g. feedback page, welcome/'before you start' page, other info pages, etc)
-// should be declared before you load the CASA page/journey definitions.
-require('./routes/index')(casaApp.router);
-require('./routes/feedback')(casaApp.router, casaApp.csrfMiddleware, casaApp.config.mountUrl);
-require('./routes/complete')(casaApp.router);
+const pages = require('./definitions/pages.js');
+const plan = require('./definitions/plan.js')();
+const events = require('./definitions/events.js')(plan);
 
-// Load CASA page and user journey definitions
-casaApp.loadDefinitions(
-  require('./definitions/pages.js'),
-  require('./definitions/journey.js')
-);
+const application = ({
+  MOUNT_URL = '/',
+}) => {
+  // Configure some CASA routes and other middleware for use in our CASA app
+  const { staticRouter, ancillaryRouter, csrfMiddleware, mount } = configure({
+    mountUrl: MOUNT_URL,
+    views: [
+      resolve(__dirname, 'views'),
+    ],
+    session: {
+      name: 'myappsessionid',
+      secret: 'secret',
+      ttl: 60 * 60,
+      secure: false
+    },
+    hooks: [{
+      hook: 'journey.postvalidate',
+      middleware: (req, res, next) => {
+        const errors = req.casa.journeyContext.getValidationErrorsForPage(req.casa.waypoint);
+        console.log(`Running the example "journey.postvalidate" hook on "${req.path}". There were ${errors.length} errors`);
+        next();
+      },
+    }],
+    plugins: [
+      cookieConsentPlugin(),
+      checkYourAnswersPlugin({
+        waypoints: [ 'review' ],
+      }),
+    ],
+    i18n: {
+      dirs: [ resolve(__dirname, 'locales') ],
+      locales: [ 'en', 'cy' ]
+    },
+    pages: pages({ mountUrl: MOUNT_URL }),
+    plan,
+    events,
+  });
 
-// Custom route handlers for journey waypoints
-require('./routes/submit')(casaApp, casaApp.config.mountUrl, casaApp.router, casaApp.csrfMiddleware);
+  // Example: Adding a custom static asset route
+  // Attach these to the `staticRouter`
+  staticRouter.get('/css/application.css', (req, res, next) => {
+    res.set('content-type', 'text/css');
+    res.send('.govuk-header { background-color: #003078; }');
+  });
 
-// Start server
-const server = app.listen(process.env.PORT || 3000, () => {
-  const host = server.address().address;
-  const { port } = server.address();
-  console.log('App listening at http://%s:%s', host, port);
-});
+  staticRouter.use('/assets', expressStatic(resolve(__dirname, 'assets/')));
+  staticRouter.all('/assets', (req, res) => res.status(404).send('Not found'));
+
+  // Example: Adding custom routes before page handlers
+  // You can do this by adding a route/middleware to the `ancillaryRouter`.
+  ancillaryRouter.use('/start', (req, res, next) => {
+    // To demonstrate Ephemeral Contexts, we'll create one here and make it
+    // available to the user via a button on the welcome page
+    if (!req.session.demoContextId) {
+      const demoContext = JourneyContext.fromContext(req.casa.journeyContext);
+      JourneyContext.putContext(req.session, demoContext);
+      req.session.demoContextId = demoContext.identity.id;
+    }
+
+    res.render('welcome.njk', {
+      demoContextId: req.session.demoContextId,
+      salutation: ['John', 'Bob', 'Sue', 'Clara'][Math.floor(Math.random() * 4)],
+    });
+  });
+
+  ancillaryRouter.use('/what-happens-next', (req, res, next) => {
+    res.render('what-happens-next.njk');
+  });
+
+  // Example of how to mount a handler for the `/` index route. Need to use a
+  // regex for the specific match to only `/`.
+  ancillaryRouter.use(/^\/$/, (req, res, next) => {
+    res.redirect(302, `${MOUNT_URL}start`);
+  });
+
+  // Now mount all CASA's routers and middleware
+  // You cannot mount anything afer this point because CASA will add its own
+  // fall-through and error handling middleware
+  const casaApp = ExpressJS();
+  mount(casaApp);
+
+  // Finally, mount our CASA app on the desired mountUrl. Here, you could also
+  // specify a proxy prefix if you were using nginx rewriting, for example.
+  const app = ExpressJS();
+  app.use(MOUNT_URL, casaApp);
+
+  // Return the base web app
+  return app;
+};
+
+module.exports = application;

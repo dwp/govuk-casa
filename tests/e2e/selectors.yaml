@@ -1,0 +1,44 @@
+country:
+  england: 'input[name="country"][value="ENGLAND"]'
+  skipLink: '#skip-waypoint'
+
+date-of-birth:
+  day: 'input[name="dateOfBirth[dd]"]'
+  month: 'input[name="dateOfBirth[mm]"]'
+  year: 'input[name="dateOfBirth[yyyy]"]'
+
+live-with-partner:
+  no: 'input[name="havePartner"][value="no"]'
+  yes: 'input[name="havePartner"][value="yes"]'
+  day: 'input[name="partnerDateOfBirth[dd]"]'
+  month: 'input[name="partnerDateOfBirth[mm]"]'
+  year: 'input[name="partnerDateOfBirth[yyyy]"]'
+
+your-name:
+  fullName: 'input[name="fullName"]'
+
+your-partners-name:
+  fullName: 'input[name="fullName"]'
+
+your-address:
+  addr1: 'input[name="addressLine1"]'
+  addr2: 'input[name="addressLine2"]'
+  town: 'input[name="town"]'
+  county: 'input[name="county"]'
+  postcode: 'input[name="postcode"]'
+
+accounts:
+  currentSavingsAccounts: 'input[name="accounts[]"][value="currentSavingsAccounts"]'
+  isas: 'input[name="accounts[]"][value="isas"]'
+  premiumBondsSavingsCertificates: 'input[name="accounts[]"][value="premiumBondsSavingsCertificates"]'
+  shares: 'input[name="accounts[]"][value="shares"]'
+  unitTrusts: 'input[name="accounts[]"][value="unitTrusts"]'
+
+how-we-use-your-info:
+  # Empty, but needed so a `_back` selector can be added
+
+check-your-answers:
+  changePartner: 'a[href$="#f-havePartner"]'
+
+submit:
+  # Empty, but needed so a `_back` selector can be added

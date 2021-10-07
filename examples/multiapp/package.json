@@ -1,0 +1,16 @@
+{
+  "name": "govuk-casa-multiapps-example",
+  "version": "1.0.0",
+  "description": "CASA example: multiple sub-apps",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@dwp/govuk-casa": "8.0.0-alpha2",
+    "express": "4.17.1"
+  }
+}

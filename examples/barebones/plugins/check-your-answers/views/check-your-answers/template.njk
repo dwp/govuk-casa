@@ -1,0 +1,22 @@
+{% extends "layouts/journey.njk" %}
+
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+
+{% block casaPageTitle %}
+  {{ t('check-your-answers:pageTitle') }}
+{% endblock %}
+
+
+{% block journey_form %}
+  <h1>{{ t('check-your-answers:pageTitle') }}</h1>
+
+  {% for section in sections %}
+    <h2>{{ section.waypoint }}</h2>
+
+    {{ govukSummaryList({
+      classes: "govuk-!-margin-bottom-9",
+      rows: section.rows
+    }) }}
+  {% endfor %}
+{% endblock %}

@@ -167,7 +167,7 @@ link = createGetRequest({
 
 Or this (in Nunjucks):
 
-```nunjucks
+```jinja
 <a href="{{ makeLink({ skipTo: waypoint }) }}">Go here</a>
 ```
 
@@ -241,7 +241,7 @@ See the [full documentation on field validation](docs/topics/field-validation.md
 
 We have changed the path to the `govuk-frontend` component macros so they match those described in the [GOVUK Design System](https://design-system.service.gov.uk/components/). Therefore, any references you may have to these components will need to be updated. For example:
 
-```nunjucks
+```jinja
 {# OLD PATHS #}
 {% extends "template.njk" %}
 {% from "components/button/macro.njk" import govukButton %}
@@ -259,7 +259,7 @@ If you are making use of [Ephemeral Contexts](docs/topics/ephemeral-contexts.md)
 
 To enable this, simply add the `activeContextId` parameter when calling the `casaJourneyForm()` macro. For example:
 
-```nunjucks
+```jinja
 {% extends "casa/layouts/journey.njk" %}
 
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
@@ -300,7 +300,7 @@ router.get('/my-form', csrf, function(req, res, next) {
 
 And include it in your form as so.
 
-```nunjucks
+```jinja
 <form action="{{ casa.mountUrl }}submit" method="post">
   <input type="hidden" name="_csrf" value="{{ casa.csrfToken }}">
   <input type="hidden" name="contextid" value="{{ activeContextId }}">

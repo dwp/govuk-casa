@@ -1,0 +1,73 @@
+// Decorates the request with some contextual data about the user's journey
+// through the application. This is used by downstream middleware and templates.
+
+import lodash from 'lodash';
+import JourneyContext from '../lib/JourneyContext.js';
+import waypointUrl from '../lib/waypoint-url.js';
+
+const { has } = lodash;
+
+const editOrigin = (req) => {
+  if (has(req.query, 'editorigin')) {
+    return waypointUrl({ waypoint: req.query.editorigin });
+  }
+  if (has(req?.body, 'editorigin')) {
+    return waypointUrl({ waypoint: req.body.editorigin });
+  }
+  return '';
+}
+
+export default function dataMiddleware({
+  plan,
+  mountUrl,
+  events,
+}) {
+  return [
+    (req, res, next) => {
+      /* ------------------------------------------------ Request decorations */
+
+      // CASA
+      req.casa = {
+        ...req?.casa,
+
+        // The plan
+        plan,
+
+        // Current journey context, loaded from session, specified by
+        // `contextid` request parameter
+        journeyContext: JourneyContext.extractContextFromRequest(req).addEventListeners(events),
+
+        // Edit mode
+        editMode: (has(req?.query, 'edit') && has(req?.query, 'editorigin')) || (has(req?.body, 'edit') && has(req?.body, 'editorigin')),
+        editOrigin: editOrigin(req),
+      };
+
+      // Grab chosen language from session
+      req.casa.journeyContext.nav.language = req.session.language;
+
+      /* ------------------------------------------------- Template variables */
+
+      // CASA and userland templates
+      res.locals.casa = {
+        mountUrl,
+      };
+      res.locals.locale = req.language;
+
+      // Used by govuk-frontend template
+      // - req.language is provided by i18n-http-middleware
+      res.locals.htmlLang = req.language;
+
+      // Function for building URLs. This will be curried with the `mountUrl`
+      // and `journeyContext` for convenience
+      res.locals.waypointUrl = (args) => waypointUrl({
+        mountUrl,
+        journeyContext: req.casa.journeyContext,
+        ...args,
+      });
+
+      // req.editSearchParams
+
+      next();
+    },
+  ];
+}

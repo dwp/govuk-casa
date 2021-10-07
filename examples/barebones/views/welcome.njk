@@ -1,4 +1,4 @@
-{% extends "layouts/custom-main.njk" %}
+{% extends "layouts/main.njk" %}
 
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content %}
-  <h1 class="govuk-heading-xl">{{ t('welcome:h1') }}</h1>
+  <h1 class="govuk-heading-xl">{{ t('welcome:h1', { salutation: salutation }) }}</h1>
 
   {{ t('welcome:html.body') | safe }}
 

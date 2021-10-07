@@ -1,0 +1,20 @@
+pageTitle: What is your home address?
+field:
+  addressLine1:
+    label: Building and street <span class="govuk-visually-hidden">line 1 of 2</span>
+    required: Enter the building and street.
+    length: Enter the building and street using 500 characters or less.
+  addressLine2:
+    label: <span class="govuk-visually-hidden">Building and street line 2 of 2</span>
+    length: Enter line 2 of the building and street using 500 characters or less.
+  town:
+    label: Town or city
+    required: Enter the town or city.
+    length: Enter the town or city using 500 characters or less.
+  county:
+    label: County
+    length: Enter the county using 500 characters or less.
+  postcode:
+    label: Postcode
+    required: Enter the postcode.
+    format: Enter a real postcode.

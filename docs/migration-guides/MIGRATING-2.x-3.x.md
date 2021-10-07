@@ -27,7 +27,7 @@ With the possibility of multiple review pages being littered around multiple Use
 
 For example, you will now need to generate the journey form as follows:
 
-```nunjucks
+```jinja
 {% call casaJourneyForm({
   csrfToken: csrfToken,
   inEditMode: inEditMode,

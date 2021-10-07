@@ -1,0 +1,43 @@
+{% extends "layouts/journey.njk" %}
+
+{% from "casa/components/radios/macro.njk" import casaGovukRadios with context %}
+
+{% block casaPageTitle %}
+  {{ t("country:pageTitle") }} - {{ t("common:serviceName") }}
+{% endblock %}
+
+{% block journey_form %}
+  {{ casaGovukRadios({
+    name: "country",
+    fieldset: {
+      legend: {
+        text: t("country:pageTitle"),
+        isPageHeading: true,
+        classes: "govuk-fieldset__legend--xl"
+      }
+    },
+    items: [{
+      value: "ENGLAND",
+      text: t("country:field.country.options.ENGLAND")
+    }, {
+      value: "SCOTLAND",
+      text: t("country:field.country.options.SCOTLAND")
+    }, {
+      value: "WALES",
+      text: t("country:field.country.options.WALES")
+    }, {
+      value: "NORTHERN_IRELAND",
+      text: t("country:field.country.options.NORTHERN_IRELAND")
+    }, {
+      value: "somewhereElse",
+      text: t("country:field.country.options.somewhereElse")
+    }],
+    casaWithAnalytics: true,
+    casaValue: formData.country,
+    casaErrors: formErrors
+  }) }}
+
+  <p class="govuk-body">
+    An example of how to <a id="skip-waypoint" href="{{ waypointUrl({ waypoint: casa.waypoint, skipTo: 'how-we-use-your-info' }) }}">skip the current waypoint</a>
+  </p>
+{% endblock %}

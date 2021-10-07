@@ -1,0 +1,7 @@
+pageTitle: What is your date of birth?
+field:
+  dateOfBirth:
+    hint: For example 31 3 1948.
+    required: Enter your date of birth.
+    format: Enter a real date of birth.
+    future: Enter a date of birth that is in the past.

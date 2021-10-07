@@ -1,0 +1,57 @@
+{% extends "layouts/journey.njk" %}
+
+{% from "casa/components/date-input/macro.njk" import casaGovukDateInput with context %}
+{% from "casa/components/radios/macro.njk" import casaGovukRadios with context %}
+
+{% block casaPageTitle %}
+  {{ t("live-with-partner:pageTitle") }} - {{ t("common:serviceName") }}
+{% endblock %}
+
+{% block journey_form %}
+  {% set partnerDateOfBirth %}
+    {{ casaGovukDateInput({
+      namePrefix: "partnerDateOfBirth",
+      fieldset: {
+        legend: {
+          text: t("live-with-partner:field.partnerDateOfBirth.legend"),
+          classes: "govuk-fieldset__legend--m"
+        }
+      },
+      hint: {
+        text: t("live-with-partner:field.partnerDateOfBirth.hint")
+      },
+      casaErrors: formErrors,
+      casaValue: formData.partnerDateOfBirth
+    }) }}
+  {% endset %}
+
+  {{ casaGovukRadios({
+    name: "havePartner",
+    fieldset: {
+      legend: {
+        text: t("live-with-partner:pageTitle"),
+        isPageHeading: true,
+        classes: "govuk-fieldset__legend--xl"
+      }
+    },
+    hint: {
+      text: t("live-with-partner:field.havePartner.hint")
+    },
+    items: [{
+      value: "yes",
+      text: t("live-with-partner:field.havePartner.options.yes"),
+      hint: {
+        "text": t("live-with-partner:field.havePartner.optionHints.yes")
+      },
+      conditional: {
+        html: partnerDateOfBirth
+      }
+    }, {
+      value: "no",
+      text: t("live-with-partner:field.havePartner.options.no")
+    }],
+    casaWithAnalytics: true,
+    casaValue: formData.havePartner,
+    casaErrors: formErrors
+  }) }}
+{% endblock %}

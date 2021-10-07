@@ -1,0 +1,18 @@
+single:
+  pageTitle: Tell us what accounts or investments you have
+joint:
+  pageTitle: Tell us what accounts or investments you and your partner have
+field:
+  accounts:
+    hint: Select any that apply.
+    options:
+      currentSavingsAccounts: Current, savings or deposit accounts with a bank, building society, credit union or the Post Office
+      isas: Investment ISAs or cash ISAs
+      premiumBondsSavingsCertificates: National Savings and Investments products, such as Premium Bonds or Savings Certificates
+      shares: Shares
+      unitTrusts: Money invested in unit trusts
+      capitalBonds: Income or capital bonds
+      moneyAtHome: Money at home in cash
+      moneyOverseas: Money overseas
+      other: Other accounts or investments
+      noneSelected: None

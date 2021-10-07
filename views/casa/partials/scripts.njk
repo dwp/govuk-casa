@@ -1,5 +1,10 @@
 <!-- CASA -->
-<script src="{{ casa.mountUrl }}govuk/frontend/js/all.js?{{ casa.packageVersions.govukFrontend }}"></script>
-<script src="{{ casa.mountUrl }}govuk/frontend/js/govuk-template.js?{{ casa.packageVersions.govukTemplateJinja }}"></script>
-<script src="{{ casa.mountUrl }}govuk/casa/js/casa.js?{{ casa.packageVersions.casaMain }}"></script>
+<script src="{{ casa.mountUrl }}govuk/assets/js/all.js?{{ casaVersion }}"></script>
+<script nonce="{{ cspNonce }}">
+window.GOVUKFrontend.initAll();
+if (window.history.replaceState) {
+  // Prevent re-submission of POST on refreshing page
+  window.history.replaceState(null, null, window.location.href);
+};
+</script>
 <!-- /CASA -->

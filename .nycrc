@@ -16,15 +16,13 @@
     "branches": [60, 80]
   },
   "include": [
-    "definitions/**/*.js",
-    "lib/**/*.js",
-    "middleware/**/*.js"
+    "src/**/*.js"
   ],
   "exclude": [
-    "lib/Validation.js",
-    "middleware/page/index.js",
     "node_modules/**",
-    "test/**"
+    "src/lib/**/index.js",
+    "src/casa.js",
+    "tests/**"
   ],
   "reporter": [
     "text",

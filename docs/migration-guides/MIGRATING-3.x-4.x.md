@@ -20,12 +20,12 @@ So the changes you'll need to make are ..
 Wherever you are importing any of CASA's Nunjucks macros, be sure to add `with context` to the end of that import. For example:
 
 **Previous method:**
-```nunjucks
+```jinja
 {% from "casa/components/date-input/macro.njk" import casaGovukDateInput %}
 ```
 
 **New method:**
-```nunjucks
+```jinja
 {% from "casa/components/date-input/macro.njk" import casaGovukDateInput with context %}
 ```
 
@@ -70,7 +70,7 @@ The built-in review page wrapper template now implements the [GOVUK Summary List
 
 Previously your review blocks may have looked a bit like this:
 
-```nunjucks
+```jinja
 {% block reviewBlock %}
 <tbody>
   <tr>
@@ -87,7 +87,7 @@ Previously your review blocks may have looked a bit like this:
 
 The equivalent in version 4 would look like this:
 
-```nunjucks
+```jinja
 {% from "components/summary-list/macro.njk" import govukSummaryList %}
 
 {% block reviewBlock %}

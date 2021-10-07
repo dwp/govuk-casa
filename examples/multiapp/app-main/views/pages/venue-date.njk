@@ -1,0 +1,28 @@
+{% extends "layouts/journey.njk" %}
+
+{% from "casa/components/date-input/macro.njk" import casaGovukDateInput with context %}
+
+
+{% block casaPageTitle %}
+  {{ t('venue-date:pageTitle') }}
+{% endblock %}
+
+
+{% block journey_form %}
+  <h1 class="govuk-heading-xl">
+    {{ t('venue-date:pageTitle') }}
+  </h1>
+
+  {{ casaGovukDateInput({
+    namePrefix: 'venueDate',
+    casaValue: formData.venueDate,
+    fieldset: {
+      legend: {
+        text: t('venue-date:field.venueDate.label'),
+        isPageHeading: false,
+        classes: 'govuk-fieldset__legend--m'
+      }
+    },
+    casaErrors: formErrors
+  }) }}
+{% endblock %}

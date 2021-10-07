@@ -16,6 +16,7 @@
   id: params.id if params.id else 'f-' + params.name + '-wrapper' | safe
 }) %}
 
+
 {# Add checked flag to chosen inputs #}
 {% set mergedItems = [] %}
 {% for item in params.items %}
@@ -30,6 +31,7 @@
   {% set mergedItems = (mergedItems.push(item), mergedItems) %}
 {% endfor %}
 
+
 {# Merge parameters #}
 {% set mergedParams = mergeObjects(params, {
   name: fieldName,
@@ -43,11 +45,12 @@
 
 {# Ensure that the first item has the id matching `f-<name>` in order for error summary linkage to work #}
 {% if not mergedParams.items[0].id %}
-  {% set mergedParams = mergeObjectsDeep(mergedParams, {
+  {% set mergedParams = mergeObjects(mergedParams, {
     items: [{
       id: 'f-' + params.name
     }]
   }) %}
 {% endif %}
+
 
 {{ govukCheckboxes(mergedParams) }}
