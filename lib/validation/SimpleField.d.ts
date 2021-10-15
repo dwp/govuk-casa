@@ -1,4 +1,5 @@
 import { ValidatorConditionFunction, ValidatorFunction } from '../../index';
+import ValidatorFactory from './ValidatorFactory';
 
 export = SimpleField;
 
