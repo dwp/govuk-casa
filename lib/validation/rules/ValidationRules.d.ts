@@ -1,22 +1,14 @@
-import DateObject from './dateObject';
-import Email from './email';
-import InArray from './inArray';
-import Nino from './nino';
-import PostalAddressObject from './postalAddressObject';
-import Regex from './dateObject';
-import Required from './required';
-import Strlen from './strlen';
-import WordCount from './wordCount';
+import ValidationError from '../ValidationError';
 
 export namespace ValidationRules {
-  export type dateObject = DateObject;
-  export type email = Email;
-  export type inArray = InArray;
-  export type nino = Nino;
-  export function optional(value: any):boolean;
-  export type postalAddressObject = PostalAddressObject;
-  export type regex = Regex;
-  export type required = Required;
-  export type strlen = Strlen;
-  export type wordCount = WordCount;
+  export function dateObject(): Promise<ValidationError | void>;
+  export function email(): Promise<ValidationError | void>;
+  export function inArray(): Promise<ValidationError | void>;
+  export function nino(): Promise<ValidationError | void>;
+  export function optional(): boolean;
+  export function postalAddressObject(): Promise<ValidationError | void>;
+  export function regex(): Promise<ValidationError | void>;
+  export function required(): Promise<ValidationError | void>;
+  export function strlen(): Promise<ValidationError | void>;
+  export function wordCount(): Promise<ValidationError | void>;
 }
