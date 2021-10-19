@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.0.7](https://github.com/dwp/govuk-casa/compare/7.0.6...7.0.7) (2021-10-19)
+
+
+### Bug Fixes
+
+* **typescript:** add import for type definition ([c7bc531](https://github.com/dwp/govuk-casa/commit/c7bc531c9cab7c202dc0f6d34ac374128cf284ed))
+* **typescript:** correct types for validation rules ([69d70c6](https://github.com/dwp/govuk-casa/commit/69d70c69a408c6ba42d3f4e075430659d97ffbeb))
+
 ### [7.0.6](https://github.com/dwp/govuk-casa/compare/7.0.5...7.0.6) (2021-09-28)
 
 ### [7.0.5](https://github.com/dwp/govuk-casa/compare/7.0.4...7.0.5) (2021-08-06)
