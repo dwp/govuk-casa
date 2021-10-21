@@ -28,7 +28,7 @@ const myEphemeralContext = JourneyContext.fromContext(req.casa.journeyContext);
 myEphemeralContext.name = 'my-context';
 
 // Optionally, attach some identifying tags so you can group contexts together
-myEphemeralContext.tags = [ 'group1' ];
+myEphemeralContext.identity.tags = [ 'group1' ];
 
 // Store in session library
 // This may throw an exception if there are any name clashes
