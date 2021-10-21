@@ -175,7 +175,7 @@ pages['hobby-frequency'] = {
     postvalidate: (req, res, next) => {
       // These may be one and the same, but the logic still works
       const ephemeralData = req.casa.journeyContext.data;
-      const defaultContext = JourneyContext.getContextByName(req.session, 'default');
+      const defaultContext = JourneyContext.getContextById(req.session, 'default');
 
       // Update or add to the hobbies list
       const hobby = { ...ephemeralData['hobby-details'], ...ephemeralData['hobby-frequency'] };
