@@ -6,7 +6,7 @@ import deepmerge from 'deepmerge';
 import yaml from 'js-yaml';
 import logger from '../lib/logger.js';
 
-const log = logger('middleware.i18n');
+const log = logger('middleware:i18n');
 
 const loadJson = (file) => {
   // Strip out newlines (this is a legacy feature which we're keeping for

@@ -28,7 +28,7 @@ The following changes are **optional**:
 - [Nunjucks variables remove](#nunjucks-variables-removed)
 
 And some other notes:
-- [bfcache fix removed][(#bfcache-fix-removed]
+- [bfcache fix removed](#bfcache-fix-removed)
 - [CASA scss sources removed](#scss-sources-removed)
 
 

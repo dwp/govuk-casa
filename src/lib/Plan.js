@@ -2,7 +2,7 @@ import { Graph } from 'graphlib';
 import JourneyContext from './JourneyContext.js';
 import logger from './logger.js';
 
-const log = logger('class:plan');
+const log = logger('lib:plan');
 
 /**
  * Will check if the source waypoint has specifically passed validation, i.e

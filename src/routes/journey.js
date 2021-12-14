@@ -10,7 +10,7 @@ import waypointUrl from '../lib/waypoint-url.js';
 import logger from '../lib/logger.js';
 import { resolveMiddlewareHooks } from '../lib/utils.js';
 
-const log = logger('router:journey');
+const log = logger('routes:journey');
 
 const renderMiddlewareFactory = (view, contextFactory) => [
   (req, res, next) => {

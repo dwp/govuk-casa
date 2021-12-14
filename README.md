@@ -35,4 +35,4 @@ CASA is maintained by the [DWP Engineering Practice](mailto:open-source@engineer
 
 ## Contributing
 
-If you'd like to contribute any changes, enhancements or report issues, please take a look at our [contribution guide](CONTRIBUTING.md) and [design guidelines](docs/contributors/index.md). 
+If you'd like to contribute any changes, enhancements or report issues, please take a look at our [contribution notes](CONTRIBUTING.md) and [in-depth guidance](docs/contributors/index.md). 

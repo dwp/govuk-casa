@@ -1,10 +1,23 @@
 import { urlencoded as expressBodyParser } from 'express';
 
-export default function bodyParserMiddleware() {
-  const rProto = /__proto__/i;
-  const rPrototype = /prototype[='"[\]]/i;
-  const rConstructor = /constructor[='"[\]]/i;
+const rProto = /__proto__/i;
+const rPrototype = /prototype[='"[\]]/i;
+const rConstructor = /constructor[='"[\]]/i;
 
+export function verifyBody(req, res, buf, encoding) {
+  const body = decodeURI(buf.toString(encoding));
+  if (rProto.test(body)) {
+    throw new Error('Request body verification failed (__proto__)');
+  }
+  if (rPrototype.test(body)) {
+    throw new Error('Request body verification failed (prototype)');
+  }
+  if (rConstructor.test(body)) {
+    throw new Error('Request body verification failed (constructor)');
+  }
+}
+
+export default function bodyParserMiddleware() {
   return [
     expressBodyParser({
       extended: true,
@@ -12,12 +25,7 @@ export default function bodyParserMiddleware() {
       inflate: true,
       parameterLimit: 25, // TODO: make configurable?
       limit: 1024 * 50, // TODO: make configurable?
-      verify: (req, res, buf, encoding) => {
-        const body = decodeURI(buf.toString(encoding));
-        if (rProto.test(body) || rPrototype.test(body) || rConstructor.test(body)) {
-          throw new Error('Request body verification failed');
-        }
-      },
+      verify: verifyBody,
     }),
   ];
 }

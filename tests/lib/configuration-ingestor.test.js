@@ -59,7 +59,7 @@ describe('ConfigIngestor', () => {
     it('should contain the expected defaults', () => {
       const config = ingest(minimalConfig);
 
-      expect(config.sessions.cookieSameSite).to.equal('Strict');
+      expect(config.session.cookieSameSite).to.equal('Strict');
     });
   });
 
@@ -150,14 +150,14 @@ describe('ConfigIngestor', () => {
     });
 
     it('should throw if an invalid default flag is provided', () => {
-      const err = 'validateSessionCookieSameSite() default flag must be set to one of true, false, Strict, Lax or None (sessions.cookieSameSite)';
+      const err = 'validateSessionCookieSameSite() default flag must be set to one of true, false, Strict, Lax or None (session.cookieSameSite)';
       expect(() => validateSessionCookieSameSite('Strict', 'BadValue')).to.throw(TypeError, err);
       expect(() => validateSessionCookieSameSite('Strict', [])).to.throw(TypeError, err);
       expect(() => validateSessionCookieSameSite('Strict', 'Lax')).to.not.throw();
     });
 
     it('should throw if not provided with a valid value', () => {
-      const err = 'SameSite flag must be set to one of true, false, Strict, Lax or None (sessions.cookieSameSite)';
+      const err = 'SameSite flag must be set to one of true, false, Strict, Lax or None (session.cookieSameSite)';
       expect(() => validateSessionCookieSameSite('BadValue', false)).to.throw(TypeError, err);
       expect(() => validateSessionCookieSameSite([], false)).to.throw(TypeError, err);
       expect(() => validateSessionCookieSameSite(false, 'Lax')).to.not.throw();
@@ -178,11 +178,11 @@ describe('ConfigIngestor', () => {
 
   describe('validateSessionName()', () => {
     it('should throw an ReferenceError if no value is specified', () => {
-      expect(() => validateSessionName()).to.throw(ReferenceError, 'Session name is missing (sessions.name)');
+      expect(() => validateSessionName()).to.throw(ReferenceError, 'Session name is missing (session.name)');
     });
 
     it('should throw a TypeError if the value is not a string', () => {
-      expect(() => validateSessionName([])).to.throw(TypeError, 'Session name must be a string (sessions.name)');
+      expect(() => validateSessionName([])).to.throw(TypeError, 'Session name must be a string (session.name)');
     });
 
     it('should return a valid value', () => {
@@ -192,11 +192,11 @@ describe('ConfigIngestor', () => {
 
   describe('validateSessionSecret()', () => {
     it('should throw an ReferenceError if no value is specified', () => {
-      expect(() => validateSessionSecret()).to.throw(ReferenceError, 'Session secret is missing (sessions.secret)');
+      expect(() => validateSessionSecret()).to.throw(ReferenceError, 'Session secret is missing (session.secret)');
     });
 
     it('should throw a TypeError if the value is not a string', () => {
-      expect(() => validateSessionSecret([])).to.throw(TypeError, 'Session secret must be a string (sessions.secret)');
+      expect(() => validateSessionSecret([])).to.throw(TypeError, 'Session secret must be a string (session.secret)');
     });
 
     it('should return a valid value', () => {
@@ -206,11 +206,11 @@ describe('ConfigIngestor', () => {
 
   describe('validateSessionSecure()', () => {
     it('should throw an ReferenceError if no value is specified', () => {
-      expect(() => validateSessionSecure()).to.throw(ReferenceError, 'Session secure flag is missing (sessions.secure)');
+      expect(() => validateSessionSecure()).to.throw(ReferenceError, 'Session secure flag is missing (session.secure)');
     });
 
     it('should throw a TypeError if the value is not a string', () => {
-      expect(() => validateSessionSecure([])).to.throw(TypeError, 'Session secure flag must be boolean (sessions.secure)');
+      expect(() => validateSessionSecure([])).to.throw(TypeError, 'Session secure flag must be boolean (session.secure)');
     });
 
     it('should return a valid value', () => {
@@ -231,11 +231,11 @@ describe('ConfigIngestor', () => {
 
   describe('validateSessionTtl()', () => {
     it('should throw an ReferenceError if no value is specified', () => {
-      expect(() => validateSessionTtl()).to.throw(ReferenceError, 'Session ttl is missing (sessions.ttl)');
+      expect(() => validateSessionTtl()).to.throw(ReferenceError, 'Session ttl is missing (session.ttl)');
     });
 
     it('should throw a TypeError if the value is not an integer', () => {
-      expect(() => validateSessionTtl([])).to.throw(TypeError, 'Session ttl must be an integer (sessions.ttl)');
+      expect(() => validateSessionTtl([])).to.throw(TypeError, 'Session ttl must be an integer (session.ttl)');
     });
 
     it('should return a valid value', () => {

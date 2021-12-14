@@ -2,6 +2,8 @@
 
 We're glad you want to contribute to this project! This document will help answer common questions you may have during your first contribution.
 
+Rerfer to our [contribution guidance](docs/contributors/index.md) for more in-depth information on how to create a good working contribution.
+
 ## Submitting Issues
 
 Not every contribution comes in the form of code. Submitting, confirming, and triaging issues is an important task for any project.

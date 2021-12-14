@@ -15,7 +15,7 @@ const {
   cloneDeep, isPlainObject, isObject, has, isEqual,
 } = lodash; // CommonJS
 
-const log = logger('class:journey-context');
+const log = logger('lib:journey-context');
 
 /**
  * @typedef {import('./configuration-ingestor').Page} Page

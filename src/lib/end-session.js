@@ -1,6 +1,6 @@
 import logger from './logger.js';
 
-const log = logger('function:end-session');
+const log = logger('lib:end-session');
 
 /**
  * A convenience for ending the current session, but retaining some data in it,

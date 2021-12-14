@@ -201,9 +201,9 @@ export function validateViews(dirs) {
  */
 export function validateSessionSecret(secret) {
   if (typeof secret === 'undefined') {
-    throw ReferenceError('Session secret is missing (sessions.secret)')
+    throw ReferenceError('Session secret is missing (session.secret)')
   } else if (typeof secret !== 'string') {
-    throw new TypeError('Session secret must be a string (sessions.secret)');
+    throw new TypeError('Session secret must be a string (session.secret)');
   }
   return secret;
 }
@@ -218,9 +218,9 @@ export function validateSessionSecret(secret) {
  */
 export function validateSessionTtl(ttl) {
   if (typeof ttl === 'undefined') {
-    throw ReferenceError('Session ttl is missing (sessions.ttl)')
+    throw ReferenceError('Session ttl is missing (session.ttl)')
   } else if (typeof ttl !== 'number') {
-    throw new TypeError('Session ttl must be an integer (sessions.ttl)');
+    throw new TypeError('Session ttl must be an integer (session.ttl)');
   }
   return ttl;
 }
@@ -235,9 +235,9 @@ export function validateSessionTtl(ttl) {
  */
 export function validateSessionName(name) {
   if (typeof name === 'undefined') {
-    throw ReferenceError('Session name is missing (sessions.name)')
+    throw ReferenceError('Session name is missing (session.name)')
   } else if (typeof name !== 'string') {
-    throw new TypeError('Session name must be a string (sessions.name)');
+    throw new TypeError('Session name must be a string (session.name)');
   }
   return name;
 }
@@ -252,9 +252,9 @@ export function validateSessionName(name) {
  */
 export function validateSessionSecure(secure) {
   if (typeof secure === 'undefined') {
-    throw ReferenceError('Session secure flag is missing (sessions.secure)')
+    throw ReferenceError('Session secure flag is missing (session.secure)')
   } else if (typeof secure !== 'boolean') {
-    throw new TypeError('Session secure flag must be boolean (sessions.secure)');
+    throw new TypeError('Session secure flag must be boolean (session.secure)');
   }
   return secure;
 }
@@ -306,12 +306,12 @@ export function validateSessionCookieSameSite(cookieSameSite, defaultFlag) {
   if (defaultFlag === undefined) {
     throw new TypeError('validateSessionCookieSameSite() requires an explicit default flag');
   } else if (!validValues.includes(defaultFlag)) {
-    throw new TypeError('validateSessionCookieSameSite() default flag must be set to one of true, false, Strict, Lax or None (sessions.cookieSameSite)');
+    throw new TypeError('validateSessionCookieSameSite() default flag must be set to one of true, false, Strict, Lax or None (session.cookieSameSite)');
   }
 
   const value = cookieSameSite !== undefined ? cookieSameSite : defaultFlag;
   if (!validValues.includes(value)) {
-    throw new TypeError('SameSite flag must be set to one of true, false, Strict, Lax or None (sessions.cookieSameSite)');
+    throw new TypeError('SameSite flag must be set to one of true, false, Strict, Lax or None (session.cookieSameSite)');
   }
 
   return value;
@@ -447,7 +447,7 @@ export default function ingest(config = {}) {
     mountUrl: validateMountUrl(config.mountUrl),
 
     // Session
-    sessions: validateSessionObject(config.session, (session) => ({
+    session: validateSessionObject(config.session, (session) => ({
       name: validateSessionName(session.name),
       secret: validateSessionSecret(session.secret),
       secure: validateSessionSecure(session.secure),

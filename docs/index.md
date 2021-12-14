@@ -20,3 +20,4 @@ Guides
 * [Strategies for handling stale data](guides/handling-stale-data.md)
 * [Running behind a proxy](guides/setup-behind-a-proxy.md)
 * [Migrating between CASA versions](migration-guides/)
+* [Debugging a CASA app](guides/debugging.md)

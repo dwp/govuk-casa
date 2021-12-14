@@ -40,7 +40,7 @@ export default function sessionMiddleware({
   };
 
   const touchCookie = (res) => {
-    // Touch cookie expiry is 3a short period after the session ttl. This gives
+    // Touch cookie expiry is a short period after the session ttl. This gives
     // a small period of time where a user will see the session-timeout message,
     // which is important to avoid the confusion of simply being redirected back
     // to the start of their journey.
