@@ -3,17 +3,17 @@ const { field, validators: r } = require('@dwp/govuk-casa');
 module.exports = () => [
   field('moreDifficult').validators([
     r.required.make({
-      errorMsg: 'work-impact:moreDifficult.empty'
+      errorMsg: 'work-impact:field.moreDifficult.empty'
     }),
     r.inArray.make({
       source: ['yes', 'no'],
-      errorMsg: 'work-impact:moreDifficult.empty'
+      errorMsg: 'work-impact:field.moreDifficult.empty'
     })
   ]),
 
   field('harderHow').validators([
     r.required.make({
-      errorMsg: 'work-impact:harderHow.empty'
+      errorMsg: 'work-impact:field.harderHow.empty'
     }),
     r.strlen.make({
       max: 10000,
@@ -26,11 +26,11 @@ module.exports = () => [
 
   field('getAroundProblems').validators([
     r.required.make({
-      errorMsg: 'work-impact:getAroundProblems.empty'
+      errorMsg: 'work-impact:field.getAroundProblems.empty'
     }),
     r.inArray.make({
       source: ['yes', 'no'],
-      errorMsg: 'work-impact:getAroundProblems.empty'
+      errorMsg: 'work-impact:field.getAroundProblems.empty'
     })
   ]).condition(({ waypoint, journeyContext }) => {
     const formData = journeyContext.getDataForPage(waypoint);
@@ -39,7 +39,7 @@ module.exports = () => [
 
   field('problemSolutions').validators([
     r.required.make({
-      errorMsg: 'work-impact:problemSolutions.empty'
+      errorMsg: 'work-impact:field.problemSolutions.empty'
     }),
     r.strlen.make({
       max: 10000,
@@ -52,11 +52,11 @@ module.exports = () => [
 
   field('knowWhatWouldHelp').validators([
     r.required.make({
-      errorMsg: 'work-impact:knowWhatWouldHelp.empty'
+      errorMsg: 'work-impact:field.knowWhatWouldHelp.empty'
     }),
     r.inArray.make({
       source: ['yes', 'no'],
-      errorMsg: 'work-impact:knowWhatWouldHelp.empty'
+      errorMsg: 'work-impact:field.knowWhatWouldHelp.empty'
     })
   ]).condition(({ waypoint, journeyContext }) => {
     const formData = journeyContext.getDataForPage(waypoint);
@@ -65,7 +65,7 @@ module.exports = () => [
 
   field('whatWouldHelp').validators([
     r.required.make({
-      errorMsg: 'work-impact:whatWouldHelp.empty'
+      errorMsg: 'work-impact:field.whatWouldHelp.empty'
     }),
     r.strlen.make({
       max: 10000,

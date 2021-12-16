@@ -44,8 +44,8 @@
   }) }}
 
   {{ casaGovukInput({
-    name: 'first-name',
-    value: formData['first-name'],
+    name: 'firstName',
+    value: formData['firstName'],
     label: {
       text: t('personal-details:field.firstName.label'),
       classes: 'govuk-label--m'
@@ -55,10 +55,10 @@
   }) }}
 
   {{ casaGovukInput({
-    name: 'middle-name',
-    value: formData['middle-name'],
+    name: 'middleName',
+    value: formData['middleName'],
     label: {
-      text: t('personal-details:field.middleNames.label')
+      text: t('personal-details:field.middleName.label')
     },
     casaErrors: formErrors
   }) }}

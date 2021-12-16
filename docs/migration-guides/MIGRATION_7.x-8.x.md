@@ -30,6 +30,7 @@ The following changes are **optional**:
 And some other notes:
 - [bfcache fix removed](#bfcache-fix-removed)
 - [CASA scss sources removed](#scss-sources-removed)
+- [`govuk-frontend` updated to v4](#govuk-fronted-updated)
 
 
 ## Highlights
@@ -495,14 +496,14 @@ For anyone using _Ephemeral Contexts_, you may also want to consider using sub-a
 
 ### "Check your answers" removed
 
-CASA comes with a built-in solution for the "check your answers" solution. However, this functionality is limited and unloved, so we've removed it from the core framework and into a plugin.
+CASA comes with a built-in solution for the "check your answers" solution. However, this functionality is limited and unloved, so we've removed it from the core framework and started moving it into a plugin.
 
-TODO: Build the plugin!
+The first variant of this plugin is currently held in the `examples/barebones/plugins/check-your-answers/` directory, but will be refined and extracted into a separate npm package in due course.
 
 
 ### Request metadata changes
 
-The follwoing have moved:
+The following have moved:
 
 | Old location | New location | Notes |
 |--------------|--------------|-------|
@@ -535,7 +536,7 @@ hook = {
 
 ### Always call `putContext()`
 
-After making _any_ modifications to `req.casa.journeyContext`, and you are not confident about the page request reaching the redirect stage, then you must be sure to call `JourneyContext.putContext(req.session, req.casa.journeyContext)`. This will place the journey context data into the right place in the session, and the session will be persisted to the store after the `preredirect` hook has completed.
+After making _any_ modifications to `req.casa.journeyContext`, then you must be sure to call `JourneyContext.putContext(req.session, req.casa.journeyContext)`. This will place the journey context data into the right place in the session, and the session will be persisted to the store after the `preredirect` hook has completed.
 
 
 ### Default Journey form
@@ -627,3 +628,8 @@ Back/forward cache behaviour has been disabled via the `Cache-control: no-store`
 These files have been removed:
 
 * `src/scss/_casaElements.scss`
+
+
+### `govuk-frontend` updated
+
+The `govuk-frontend` module has been updated to version 4, which includes some breaking changes [as detailed in their release notes](https://github.com/alphagov/govuk-frontend/releases/tag/v4.0.0).

@@ -5,6 +5,11 @@
 {% from "casa/components/character-count/macro.njk" import casaGovukCharacterCount with context %}
 
 
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ casa.mountUrl }}assets/work-impact.css" />
+{% endblock %}
+
 {% block bodyEnd %}
   {{ super() }}
   <script src="{{ casa.mountUrl }}assets/work-impact.js"></script>
@@ -18,7 +23,7 @@
 
 {% block journey_form %}
   <h1 class="govuk-heading-xl">
-    {{ t('work-impact:h1') }}
+    {{ t('work-impact:h1') }}xxxx
   </h1>
 
   <p class="govuk-body">
@@ -26,7 +31,7 @@
   </p>
 
   <p class="govuk-body">
-    The <code>govukRadios()</code> macro allows you to define conditional HTML/text content based on the selection you make, but this is always shown immediately after the radio buttons. This example shows CASA's alternative method, which allows you to place the conditional content anywhere else in the page, by specifying a <code>items.{}.attibutes['data-target']</code> attribute on the <code>item</code> that toggles it.
+    The <code>govukRadios()</code> macro allows you to define conditional HTML/text content based on the selection you make, but this is always shown immediately after the radio buttons. This example shows an alternative, custom method, which allows you to place the conditional content anywhere else in the page, by specifying a <code>items.{}.attibutes['data-target']</code> attribute on the <code>item</code> that toggles it. This is <b>not</b> built into CASA itself.
   </p>
 
   {{ casaGovukRadios({
@@ -52,7 +57,7 @@
       value: formData.harderHow,
       maxlength: 100,
       label: {
-        text: t('work-impact:harderHow.label'),
+        text: t('work-impact:field.harderHow.label'),
         classes: 'govuk-label--m'
       },
       casaErrors: formErrors
@@ -64,7 +69,7 @@
       casaValue: formData.getAroundProblems,
       fieldset: {
         legend: {
-          text: t('work-impact:getAroundProblems.label'),
+          text: t('work-impact:field.getAroundProblems.label'),
           isPageHeading: false,
           classes: "govuk-fieldset__legend--m"
         }
@@ -87,7 +92,7 @@
         name: 'problemSolutions',
         value: formData.problemSolutions,
         label: {
-          text: t('work-impact:problemSolutions.label'),
+          text: t('work-impact:field.problemSolutions.label'),
           classes: 'govuk-label--m'
         },
         casaErrors: formErrors
@@ -100,7 +105,7 @@
       casaValue: formData.knowWhatWouldHelp,
       fieldset: {
         legend: {
-          text: t('work-impact:knowWhatWouldHelp.label'),
+          text: t('work-impact:field.knowWhatWouldHelp.label'),
           isPageHeading: false,
           classes: "govuk-fieldset__legend--m"
         }
@@ -123,7 +128,7 @@
         name: 'whatWouldHelp',
         value: formData.whatWouldHelp,
         label: {
-          text: t('work-impact:whatWouldHelp.label'),
+          text: t('work-impact:field.whatWouldHelp.label'),
           classes: 'govuk-label--m'
         },
         casaErrors: formErrors

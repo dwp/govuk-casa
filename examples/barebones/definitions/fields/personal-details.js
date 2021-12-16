@@ -16,13 +16,13 @@ module.exports = () => [
     },
   ]),
 
-  field('first-name').validators([
+  field('firstName').validators([
     r.required.make({
       errorMsg: 'personal-details:field.firstName.empty'
     }),
   ]),
 
-  field('middle-name', { optional: true }).validators([
+  field('middleName', { optional: true }).validators([
     r.regex.make({
       pattern: /^[a-z ]+$/i
     }),

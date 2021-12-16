@@ -43,10 +43,10 @@ module.exports = function({
             traversed.forEach((wp) => {
               // TODO: Need to handle exit nodes (e.g. waypoints using `url://` protocol)
               sections.push({
-                waypoint: wp,
+                waypoint: req.t(`${slug(wp)}:pageTitle`),
                 rows: (pages?.[wp]?.fields ?? []).filter(f => f.meta.persist).map((field) => ({
                   key: {
-                    text: req.t(`check-your-answers:${slug(wp)}.${field.name}.label`),
+                    text: req.t(`${slug(wp)}:field.${field.name}.label`),
                   },
                   value: {
                     text: stringify(req.casa.journeyContext.data?.[wp]?.[field.name]),
@@ -65,7 +65,7 @@ module.exports = function({
                         }),
                       }) + `#f-${field.name}`,
                       text: req.t('check-your-answers:change'),
-                      visuallyHiddenText: req.t(`check-your-answers:${slug(wp)}.${field.name}.label`),
+                      visuallyHiddenText: req.t(`${slug(wp)}:field.${field.name}.label`),
                       classes: 'govuk-link--no-visited-state',
                     }],
                   },

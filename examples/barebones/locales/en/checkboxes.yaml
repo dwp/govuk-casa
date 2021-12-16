@@ -1,13 +1,14 @@
 pageTitle: Checkbox validation
 h1: Checkbox Validation
-boxes:
-  label: Choose your preference
-  hint: You must choose at least 3
-  options:
-    twistedflax: Twisted Flax
-    tworeeds: Two Reeds
-    water: Water
-    horus: Horus
+field:
+  boxes:
+    label: Choose your preference
+    hint: You must choose at least 3
+    options:
+      twistedflax: Twisted Flax
+      tworeeds: Two Reeds
+      water: Water
+      horus: Horus
 errors:
   min:
     inline: "You must choose at least 3, but have only chosen {{ count }}"

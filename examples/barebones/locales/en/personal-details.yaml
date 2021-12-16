@@ -10,7 +10,7 @@ field:
     empty: Enter first name
     tooLong: First name is too long
     invalid: Enter only valid characters in first name
-  middleNames:
+  middleName:
     label: Middle name(s)
     tooLong: Middle name is too long
     invalid: Enter only valid characters in middle names
