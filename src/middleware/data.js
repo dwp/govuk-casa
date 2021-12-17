@@ -50,6 +50,8 @@ export default function dataMiddleware({
       // CASA and userland templates
       res.locals.casa = {
         mountUrl,
+        editMode: req.casa.editMode,
+        editOrigin: req.casa.editOrigin,
       };
       res.locals.locale = req.language;
 
@@ -57,15 +59,18 @@ export default function dataMiddleware({
       // - req.language is provided by i18n-http-middleware
       res.locals.htmlLang = req.language;
 
-      // Function for building URLs. This will be curried with the `mountUrl`
-      // and `journeyContext` for convenience
+      // Function for building URLs. This will be curried with the `mountUrl`,
+      // `journeyContext`, `edit` and `editOrigin` for convenience. This means
+      // the template author does not have to be concerned about the current
+      // "state" when generating URLs, but still has the ability to override
+      // these curried defaults if needs be.
       res.locals.waypointUrl = (args) => waypointUrl({
         mountUrl,
         journeyContext: req.casa.journeyContext,
+        edit: req.casa.editMode,
+        editOrigin: req.casa.editOrigin,
         ...args,
       });
-
-      // req.editSearchParams
 
       next();
     },

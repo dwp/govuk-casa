@@ -22,7 +22,7 @@ As a request gets passed through CASA's routes and middleware, it will modify th
 ||
 | **bodyParser** | Request body parsed and verified | `body` | |
 ||
-| **data** | Setup various data items on the request and template | `casa.plan`<br/>`casa.journeyContext`<br/>`casa.editMode`<br/>`casa.editOrigin` | `casa.mountUrl`<br/>`casa.locale`<br/>`htmlLang`<br/>`waypointUrl()` |
+| **data** | Setup various data items on the request and template | `casa.plan`<br/>`casa.journeyContext`<br/>`casa.editMode`<br/>`casa.editOrigin` | `casa.mountUrl`<br/>`casa.locale`<br/>`casa.editMode`<br/>`casa.editOrigin`<br/>`htmlLang`<br/>`waypointUrl()` |
 | |
 | **ancillaryRouter** | [GET] Mount `/session-timeout` route handler | | |
 ||

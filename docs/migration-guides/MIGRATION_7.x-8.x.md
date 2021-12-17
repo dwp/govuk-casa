@@ -356,8 +356,8 @@ Some Nunjucks filters and variables have been deprecated and removed.
 
 | Deprecated | Alternative |
 |------------|-------------|
-| `mergeObjectsDeep()` | `mergeObjects` |
-| `makeLink()`| `waypointUrl` |
+| `mergeObjectsDeep()` | `mergeObjects()` |
+| `makeLink()`| `waypointUrl()` |
 | `serviceName` | Store service name in `common.yaml` locale dictionary, and use `t('common:serviceName')` in templates |
 
 

@@ -30,8 +30,8 @@ export default ({
     const redirectUrl = waypointUrl({
       mountUrl,
       waypoint: skipTo,
-      edit: req.editMode,
-      editOrigin: req.editOriginUrl,
+      edit: req.casa.editMode,
+      editOrigin: req.casa.editOrigin,
       journeyContext: req.casa.journeyContext,
     });
     log.debug(`Will redirect to "${redirectUrl}" after skipping "${waypoint}"`);

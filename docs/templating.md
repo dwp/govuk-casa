@@ -99,4 +99,4 @@ A small number of [function/filters](../src/lib/nunjucks-filters.js) are made av
 | `includes()` | Function to determine if an array includes a value |
 | `formatDateObject()` | Function to format a date |
 | `renderAsAttributes()` | Function to render an object as an HTML attibute string |
-| `waypointUrl()` | For generating URLs. Pre-configured with `mountUrl` and `journeyContext` parameters. See [source](../src/lib/waypoint-url.js) for more details |
+| `waypointUrl()` | For generating URLs. Pre-configured with `mountUrl`, `journeyContext`, `edit` and `editOrigin` parameters for your convenience, but can be overriden in template if needed. See [source](../src/lib/waypoint-url.js) for more details |
