@@ -481,30 +481,3 @@ export default function ingest(config = {}) {
   Object.freeze(parsed);
   return parsed;
 }
-
-// module.exports = {
-//   ingest,
-//   validateAllowPageEdit,
-//   validateUseStickyEdit,
-//   validateContentSecurityPolicies,
-//   validateHeadersObject,
-//   validateHeadersDisabled,
-//   validateI18nObject,
-//   validateI18nDirs,
-//   validateI18nLocales,
-//   validateMountController,
-//   validateMountUrl,
-//   validatePhase,
-//   validateServiceName,
-//   validateSessionExpiryController,
-//   validateSessionObject,
-//   validateSessionCookiePath,
-//   validateSessionCookieSameSite,
-//   validateSessionName,
-//   validateSessionSecret,
-//   validateSessionSecure,
-//   validateSessionStore,
-//   validateSessionTtl,
-//   validateViewsObject,
-//   validateViews,
-// };

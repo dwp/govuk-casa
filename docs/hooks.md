@@ -71,3 +71,5 @@ Page hooks are always run _after_ global hooks.
 | `journey.prevalidate` / `journey.postvalidate` | Runs before & after data in `req.casa.journeyContext` is validated. If validation fails, a `req.casa.validationErrors` object will be present to hooks on `journey.postvalidate`. In this case, your hook should still call `next()` so the errors can be presented to the user. |
 | `journey.preredirect` | Runs before the user is redirected to the next waypoint in their journey |
 | `journey.prerender` | Runs before the a waypoint's page is rendered |
+
+See the [request lifecycle](docs/request-lifecycle.md) for more information on when these hooks are run.

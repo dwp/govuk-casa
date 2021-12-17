@@ -37,7 +37,7 @@ The form template may look something like the below (note the use of a CSRF toke
 {% extends "casa/layouts.main.njk" %}
 
 {% block content %}
-  <form method="post" action="{{ casa.mountUrl }}feedback|>
+  <form method="post" action="{{ casa.mountUrl }}feedback">
     <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
     <textarea name="feedback"></textarea>

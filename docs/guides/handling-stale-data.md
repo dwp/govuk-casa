@@ -38,7 +38,7 @@ There are 4 options:
 
 ```javascript
 // Applicartion config
-new Plan();
+const plan = new Plan();
 
 // Example of using it directly
 plan.traversePrevRoutes(journeyContext);
@@ -50,7 +50,7 @@ Traversal will stop at the first point where mutliple choices are present.
 
 ```javascript
 // Plan config
-new Plan({
+const plan = new Plan({
   arbiter: 'auto',
 });
 
@@ -66,7 +66,7 @@ For smaller services with fewer waypoints, this is a good bet. However, for larg
 
 ```javascript
 // Plan config
-new Plan({
+const plan = new Plan({
   arbiter: (target, options) => {
     // Reduce `targets` array to one element and return. If neither looks good,
     // return the original targets `targets`

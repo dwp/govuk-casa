@@ -6,7 +6,7 @@ const reSlugger = /[^a-z0-9\-]+/ig;
 const slug = (waypoint) => waypoint.replace(reSlugger, '-');
 
 const stringify = (value) => {
-  // TODO: Handle all data types
+  // TODO: Handle all data types. See issue #63
   return value;
 };
 

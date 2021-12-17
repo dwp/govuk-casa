@@ -14,7 +14,7 @@ variables:
 
 node-coverage:
   variables:
-    TEST_EXECUTABLE: 'npm run test:combined'
+    TEST_EXECUTABLE: 'npm run test'
 
 # This is an OSS project so the @dwp scope point to public npm registry. However
 # for publishing to the internal GitLab we need to remove that specific config.

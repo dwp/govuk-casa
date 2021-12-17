@@ -13,7 +13,7 @@ This comes with a few challenges, but the aims are:
 * By using ES6 we are keeping up with the direction of travel in NodeJS
 * By supporting CommonJS we are bringing existing users with us
 
-> TODO: Note about using `createRequire()` to create a cross-compatible way to require modules and use resolution
+The `npm run build` command will compile the ESM source into a CommonJS format that can be used by consumers using either ESM or CommonJS. An important file into this process is `scripts/esm-wrapper.js`. Whenever you makechanges to `src/casa.js`, those changes must be reflected in `esm-wrapper.js` too. This wrapper is used during compilation.
 
 References:
 

@@ -4,12 +4,12 @@ If using this for local framework development purposes:
 
 ```bash
 # Install the framework first
-npm i
+npm ci
 npm link
 
 # Install and run this example
 cd examples/barebones/
-npm ci
+npm i
 npm link @dwp/govuk-casa
 DEBUG=casa* PORT=3000 npm start
 ```

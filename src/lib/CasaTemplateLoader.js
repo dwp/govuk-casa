@@ -4,6 +4,22 @@ import { FileSystemLoader } from 'nunjucks';
  * @typedef {import('nunjucks').FileSystemLoaderOptions} FileSystemLoaderOptions
  */
 
+const VALID_BLOCKS = [
+  'beforeContent',
+  'bodyEnd',
+  'bodyStart',
+  'casaPageTitle',
+  'content',
+  'footer',
+  'head',
+  'header',
+  'headIcons',
+  'journey_form',
+  'main',
+  'pageTitle',
+  'skipLink',
+];
+
 /**
  * @callback BlockModifier
  * @param {string} templateName Path to the template being modified
@@ -42,9 +58,14 @@ export default class CasaTemplateLoader extends FileSystemLoader {
    * @param {string} block Block name, e.g. `bodyStart`
    * @param {BlockModifier} modifier Modifier function
    * @returns {void}
+   * @throws {Error} If provided with an unrecognised block
    */
   modifyBlock(block, modifier) {
     // TODO: Limit to only known block so the user can't do general string replacements
+    if (!VALID_BLOCKS.includes(block)) {
+      throw new Error(`Block "${String(block)}" is not a recognised template block.`);
+    }
+
     this.#blockModifiers.push({
       block,
       modifier,

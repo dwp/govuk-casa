@@ -2,7 +2,7 @@
 
 When looking for templates to render, CASA will look in the following directories, in this order (using the first match it finds):
 
-* User templates (those you control)
+* User templates (those you control, i.e. those in directories you pass into the `views` array of `configure()`)
 * CASA's internal `views/` directory
 * The `govuk-frontend` module directory
 
@@ -28,7 +28,7 @@ There are some special CASA-specific blocks that you can use in these templates:
 | `journey_form` | Available to templates using the `casa/layouts/journey.njk` layout, this is where the body of your HTML form will go |
 
 
-## Errors pages
+## Error pages
 
 Some default error pages are used by CASA. You can override these as needed:
 

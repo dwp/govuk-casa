@@ -25,8 +25,6 @@ See [hooks](hooks.md), and [fields](fields.md) documentation for more details on
 Passing your Page definitions into `configure()`:
 
 ```javascript
-import pages from './definitions/pages.js';
-
 configure({
   pages: [{
     waypoint: 'details',

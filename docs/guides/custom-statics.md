@@ -1,6 +1,6 @@
 # Adding custom static assets
 
-There's 3 elements in adding some static assets to your CASA app.
+There are 3 elements in adding some static assets to your CASA app.
 
 * The asset files themselves (.js, .css, .png, etc)
 * The ExpressJS route to serve them (always mounted on CASA's `staticRouter`)

@@ -66,7 +66,6 @@ export default function configure(config = {}) {
   });
 
   // Extract config
-  // TODO: Validate/sanitise and deep-freeze object
   const {
     mountUrl = '/',
     views = [],
@@ -74,7 +73,7 @@ export default function configure(config = {}) {
       secret: 'secret',
       name: 'casasession',
       secure: false,
-      ttl: 60 * 60,
+      ttl: 3600,
       cookieSameSite: true,
       cookiePath: '/',
       store: undefined,

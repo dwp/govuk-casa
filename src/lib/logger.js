@@ -2,8 +2,8 @@ import debug from 'debug';
 
 const casaDebugger = debug('casa');
 
-export default (ns) => {
-  const logger = casaDebugger.extend(ns);
+export default (namespace) => {
+  const logger = casaDebugger.extend(namespace);
 
   return {
     trace: logger.extend('trace'),

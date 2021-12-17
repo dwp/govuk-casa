@@ -27,7 +27,7 @@ const application = ({
     session: {
       name: 'myappsessionid',
       secret: 'secret',
-      ttl: 60 * 60,
+      ttl: 3600,
       secure: false
     },
     hooks: globalHooks,

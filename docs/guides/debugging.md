@@ -12,7 +12,7 @@ export DEBUG=casa*
 npm start
 ```
 
-If you're interested in a specific file, it's useful to know that casa uses the debug prefix syntax `path:to:file` for any logs related to a specific file. For e3xample, to capture logs from the `src/middleware/session.js` file, you'd use:
+If you're interested in a specific file, it's useful to know that casa uses the debug prefix syntax `path:to:file` for any logs related to a specific file. For example, to capture logs from the `src/middleware/session.js` file, you'd use:
 
 ```bash
 export DEBUG=casa:middleware:session*

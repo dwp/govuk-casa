@@ -15,7 +15,7 @@ D -> E
 A -> B -> C -> D -> E -> F -> G
 ```
 
-For simplicity, each app in this example is entirely separate, but you could configure them to use a shared `views/` directory in order to share things like layout templates and locales for example.
+For simplicity, each app in this example is entirely separate, but you could configure them to use a shared `views/` directory in order to share things like layout templates and a `locales/` directory for shared locales, for example.
 
 Potential use cases for this pattern:
 
@@ -29,12 +29,12 @@ If using this for local framework development purposes:
 
 ```bash
 # Install the framework first
-npm i
+npm ci
 npm link
 
 # Install and run this example
 cd examples/barebones/
-npm ci
+npm i
 npm link @dwp/govuk-casa
 DEBUG=casa* PORT=3000 npm start
 ```

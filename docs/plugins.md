@@ -75,7 +75,7 @@ function bootstrap({ nunjucksEnv }) {
     return 'This will add some content from another template at the beginning of the blockName block: {% include "my-plugin/thing.njk" %}';
   });
 
-  // !!!!! NOT YET IMPLEMENTED !!!!!
+  // !!!!! `modifyTemplate()` NOT YET IMPLEMENTED !!!!!
 
   // // This has access to the whole template source, which you can modify freely
   // nunjucksEnv.modifyTemplate('template-name.njk', (source) => {

@@ -42,12 +42,6 @@ export default ({
     req.casa.journeyContext.removeValidationStateForPage(waypoint);
     JourneyContext.putContext(req.session, req.casa.journeyContext);
 
-    // TODO: Once feature we might like here is to invalidate specific pages
-    // based on the change that has just happened, to force those pages to be
-    // visited again. The main use case is to cater for a change in content on
-    // those pages that fundamentally alter the context of the question being asked,
-    // and so should be asked again. For example, "Your address" vs "You and your partner's address"
-
     next();
   },
 ];

@@ -78,7 +78,7 @@ This has many benefits, including:
 * You can more easily attach custom global functions/filters to the `nunjucksEnv` as this is a returned artifact
 * We can do away with the `proxyMountUrl` as you can now define explicitly which path to mount any routers on
 
-A [series of middleware](#todo-link-to-docs) are also returned which you can make use of in building your own custom routes that mimic some of CASA's behaviours.
+A [series of middleware](docs/setup.md) are also returned which you can make use of in building your own custom routes that mimic some of CASA's behaviours.
 
 
 **View directories**
@@ -270,7 +270,7 @@ The `simpleFieldValidation()` function has been replaced with a new `field()` fu
 
 ```javascript
 // old
-const { simpleFieldValidation: sf} = require('@dwp/govuk-casa');
+const { simpleFieldValidation: sf } = require('@dwp/govuk-casa');
 
 pages = {
   title: sf([
@@ -299,7 +299,7 @@ pages = [
 
 Gather modifiers have been replaced with field "processor" functions, and their signature changed (now accepts the field value directly rather than as part of an object). These are also used by validators to sanitise field values.
 
-```javascript:
+```javascript
 // old
 page = {
   fieldGatherModifiers: {
@@ -347,7 +347,7 @@ Note that `createGetRequest()` has been superceded by `waypointUrl()`.
 
 ### Cookie banner removed
 
-The built-in cookie banner has been removed and moved to a new plugin. You will need to include this plugin yourself.
+The built-in cookie banner has been removed and moved to a new plugin. This plugin is currently under development however, but once availabnle you will simply need to include this plugin in your config and it should "just work".
 
 
 ### Nunjucks filters/variables deprecated
@@ -383,7 +383,7 @@ ref: https://www.i18next.com/translation-function/interpolation
 
 When injecting dynamic values into your translation strings, you can no longer use the _sprintf_ format for interpolation. Although i18next does offer a [post processor](https://github.com/i18next/i18next-sprintf-postProcessor) to support this, it's an either-or decision between _sprintf_ and named variables. On balance, the named variables approach gives us more flexibility, despite being a little more verbose. You can also achieve the same formatting coercion using i18next's [formatting](https://www.i18next.com/translation-function/formatting) features.
 
-```
+```jinja
 {# old - where `welcome:intro = "Welcome, %s"` #}
 {{ t('welcome:intro', name) }}
 
@@ -393,7 +393,7 @@ When injecting dynamic values into your translation strings, you can no longer u
 
 To avoid confusion with i18next's `$t()` nested interpolation function, we've also adopted i18next's default interpolation braces, `{{ ... }}`. This also aligns with Nunjucks' syntax so it's a little less of a mental leap between dictionaries and templates.
 
-```
+```json
 # old
 {
   "intro": "Welcome, ${name}"
@@ -530,13 +530,15 @@ hook = {
     }
     next();
   },
-},;
+};
 ```
 
 
 ### Always call `putContext()`
 
-After making _any_ modifications to `req.casa.journeyContext`, then you must be sure to call `JourneyContext.putContext(req.session, req.casa.journeyContext)`. This will place the journey context data into the right place in the session, and the session will be persisted to the store after the `preredirect` hook has completed.
+After making _any_ modifications to `req.casa.journeyContext`, then you must be sure to call `JourneyContext.putContext(req.session, req.casa.journeyContext)`. This will place the journey context data into the right place in the session.
+
+You must still then call `req.session.save(next)` to persist those changes to the session store.
 
 
 ### Default Journey form
@@ -546,7 +548,7 @@ CASA now comes with a default journey form, so you no longer need to create one 
 
 ### Journey form URL
 
-The `casaJourneyForm()` Nunjucks macro now requires a `formUrl` parameter, which sets the "action" attribute on the HTML form. If you are using the built-in `casa/layouts/journey.njk` template, you needn't make any changes.
+The `casaJourneyForm()` Nunjucks macro now requires a `formUrl` parameter, which sets the "action" attribute on the HTML form. This makes things more explicit, but also gives you the opportunity to customise the URL if needs be. If you are using the built-in `casa/layouts/journey.njk` template (recommended), you needn't make any changes.
 
 ```jinja
 {# OLD #}
@@ -563,7 +565,7 @@ The `casaJourneyForm()` Nunjucks macro now requires a `formUrl` parameter, which
 ```jinja
 {# NEW #}
 {% call casaJourneyForm({
-  formUrl: formUrl,
+  formUrl: waypointUrl({ casa.waypoint }),
   csrfToken: casa.csrfToken,
   inEditMode: inEditMode,
   editOriginUrl: editOriginUrl,
@@ -613,7 +615,7 @@ The Nunjucks object `govuk.components` has been removed. This was used mainly fo
 
 **`casa.packageVersions`**
 
-This object is replaced with a simple string held in `casaVersion`, holding the current version odf CASA.
+This object is replaced with a simple string held in `casaVersion`, holding the current version of CASA.
 
 
 ## Additional notes

@@ -18,12 +18,10 @@ const renderMiddlewareFactory = (view, contextFactory) => [
       // Common template variables for both GET and POST requests
       inEditMode: req.casa.editMode,
       editOriginUrl: req.casa.editOrigin,
-      // editSearchParams: req.editSearchParams,
       activeContextId: req.casa.journeyContext.identity.id,
       ...contextFactory(req),
     }, (err, templateString) => {
       if (err) {
-        // logger.error(err);
         next(err);
       } else {
         res.send(templateString);
