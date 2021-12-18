@@ -35,6 +35,14 @@ const log = logger('lib:journey-context');
  * @property {ContextEventHandler} handler Handler to invoke when change happens
  */
 
+export function validateObjectKey(key = '') {
+  const keyLower = String.prototype.toLowerCase.call(key);
+  if (keyLower === 'prototype' || keyLower === '__proto__' || keyLower === 'constructor') {
+    throw new SyntaxError(`Invalid object key used, ${key}`);
+  }
+  return String(key);
+}
+
 export default class JourneyContext {
   // Private properties
   #data;
@@ -145,10 +153,10 @@ export default class JourneyContext {
    */
   getDataForPage(page) {
     if (typeof page === 'string') {
-      return this.#data[page];
+      return this.#data[validateObjectKey(page)];
     }
     if (isPlainObject(page)) {
-      return this.#data[page.waypoint];
+      return this.#data[validateObjectKey(page.waypoint)];
     }
     throw new TypeError(`Page must be a string or Page object. Got ${typeof page}`);
   }
@@ -183,9 +191,9 @@ export default class JourneyContext {
    */
   setDataForPage(page, webFormData) {
     if (typeof page === 'string') {
-      this.#data[page] = webFormData;
+      this.#data[validateObjectKey(page)] = webFormData;
     } else if (isPlainObject(page)) {
-      this.#data[page.waypoint] = webFormData;
+      this.#data[validateObjectKey(page.waypoint)] = webFormData;
     } else {
       throw new TypeError(`Page must be a string or Page object. Got ${typeof page}`)
     }
@@ -226,7 +234,7 @@ export default class JourneyContext {
    * @returns {JourneyContext} Chain.
    */
   clearValidationErrorsForPage(pageId) {
-    this.#validation[pageId] = null;
+    this.#validation[validateObjectKey(pageId)] = null;
     return this;
   }
 
@@ -249,7 +257,7 @@ export default class JourneyContext {
       }
     });
 
-    this.#validation[pageId] = errors;
+    this.#validation[validateObjectKey(pageId)] = errors;
 
     return this;
   }
@@ -262,18 +270,23 @@ export default class JourneyContext {
    * @returns {ValidationError[]} An array of errors
    */
   getValidationErrorsForPage(pageId) {
-    return this.#validation[pageId] || [];
+    return this.#validation[validateObjectKey(pageId)] ?? [];
   }
 
   getValidationErrorsForPageByField(pageId) {
     const errors = this.getValidationErrorsForPage(pageId);
     const obj = Object.create(null);
+
+    // ESLint disabled as `i` is an integer
+    /* eslint-disable security/detect-object-injection */
     for (let i = 0, l = errors.length; i < l; i++) {
       if (!obj[errors[i].field]) {
         obj[errors[i].field] = [];
       }
       obj[errors[i].field].push(errors[i]);
     }
+    /* eslint-enable security/detect-object-injection */
+
     return obj;
   }
 
@@ -285,7 +298,7 @@ export default class JourneyContext {
    * @returns {boolean} Result.
    */
   hasValidationErrorsForPage(pageId) {
-    return this.#validation?.[pageId]?.length > 0;
+    return this.#validation?.[validateObjectKey(pageId)]?.length > 0;
   }
 
   /**
@@ -306,7 +319,7 @@ export default class JourneyContext {
    * @returns {boolean} True if the page is valid.
    */
   isPageValid(pageId) {
-    return this.#validation[pageId] === null;
+    return this.#validation[validateObjectKey(pageId)] === null;
   }
 
   /**
@@ -318,10 +331,15 @@ export default class JourneyContext {
     const newData = Object.create(null);
     const newValidation = Object.create(null);
     const toKeep = Object.keys(this.data).filter((w) => !waypoints.includes(w));
+
+    // ESLint disabled as `i` is an integer
+    /* eslint-disable security/detect-object-injection */
     for (let i = 0, l = toKeep.length; i < l; i++) {
       newData[toKeep[i]] = this.#data[toKeep[i]];
       newValidation[toKeep[i]] = this.#validation[toKeep[i]];
     }
+    /* eslint-enable security/detect-object-injection */
+
     this.#data = { ...newData };
     this.#validation = { ...newValidation };
   }
@@ -335,6 +353,8 @@ export default class JourneyContext {
    */
   invalidate(waypoints = []) {
     for (let i = 0, l = waypoints.length; i < l; i++) {
+      // ESLint disabled as `i` is an integer
+      /* eslint-disable-next-line security/detect-object-injection */
       this.removeValidationStateForPage(waypoints[i]);
     }
   }
@@ -365,6 +385,10 @@ export default class JourneyContext {
     const previousContext = JourneyContext.fromObject(this.#eventListenerPreState);
     const listeners = this.#eventListeners.filter((l) => l.event === event);
 
+    // ESLint disabled as `listeners[i]` uses an integer key, and the other keys
+    // are derived from the list of `listeners`, which are not manipulated at
+    // runtime (only set by dev in code).
+    /* eslint-disable security/detect-object-injection */
     for (let i = 0, l = listeners.length; i < l; i++) {
       const { waypoint, field, handler } = listeners[i];
 
@@ -393,6 +417,7 @@ export default class JourneyContext {
         handler({ journeyContext: this, previousContext });
       }
     }
+    /* eslint-enable security/detect-object-injection */
 
     return this;
   }
@@ -477,6 +502,8 @@ export default class JourneyContext {
    */
   static getContextById(session, id) {
     if (has(session?.journeyContextList, id)) {
+      // ESLint disabled as `id` has been verified as an "own" property
+      /* eslint-disable-next-line security/detect-object-injection */
       return JourneyContext.fromObject(session.journeyContextList[id]);
     }
 
@@ -588,7 +615,8 @@ export default class JourneyContext {
 
   static removeContextById(session, id) {
     if (session && has(session.journeyContextList, id)) {
-      /* eslint-disable-next-line no-param-reassign */
+      // ESLint disabled as `id` has been verified as an "own" property
+      /* eslint-disable-next-line security/detect-object-injection, no-param-reassign */
       delete session.journeyContextList[id];
     }
   }

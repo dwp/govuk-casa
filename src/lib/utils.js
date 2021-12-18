@@ -48,6 +48,8 @@ export function isEmpty(val) {
     return true;
   }
   if (Array.isArray(val) || typeof val === 'object') {
+    // ESLint disabled as `k` is an "own property" (thanks to `Object.keys()`)
+    /* eslint-disable-next-line security/detect-object-injection */
     return Object.keys(val).filter((k) => !isEmpty(val[k])).length === 0;
   }
   return false;

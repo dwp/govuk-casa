@@ -45,6 +45,7 @@ function validateRouteName(val) {
   } else if (!['next', 'prev'].includes(val)) {
     throw new ReferenceError(`Expected route name to be one of next or prev. Got ${val}`)
   }
+  return val;
 }
 
 function validateRouteCondition(val) {
@@ -183,7 +184,7 @@ export default class Plan {
   }
 
   getRouteCondition(src, tgt, name) {
-    return priv.get(this).follows[name][`${src}/${tgt}`];
+    return priv.get(this).follows[validateRouteName(name)][`${src}/${tgt}`];
   }
 
   /**
@@ -214,6 +215,8 @@ export default class Plan {
   addSequence(...waypoints) {
     // Setup simple double routes (next/prev) between all waypoints in this list
     for (let i = 0, l = waypoints.length - 1; i < l; i += 1) {
+      // ESLint disabled as `i` is an integer
+      /* eslint-disable-next-line security/detect-object-injection */
       this.setRoute(waypoints[i], waypoints[i + 1]);
     }
   }
@@ -329,6 +332,9 @@ export default class Plan {
     } else {
       followFunc = defaultPrevFollow;
     }
+
+    // ESLint disabled as `name` has been validated further above
+    /* eslint-disable-next-line security/detect-object-injection */
     self.follows[name][`${src}/${tgt}`] = followFunc;
 
     return this;
@@ -393,9 +399,7 @@ export default class Plan {
       throw new ReferenceError(`Plan does not contain waypoint '${startWaypoint}'`);
     }
 
-    if (routeName === undefined) {
-      throw new ReferenceError('Route name must be provided');
-    }
+    validateRouteName(routeName);
 
     const history = new Map();
 
@@ -406,6 +410,8 @@ export default class Plan {
         }
         const route = makeRouteObject(self.dgraph, e);
         try {
+          // ESLint disabled as `routeName` has been validated further above
+          /* eslint-disable-next-line security/detect-object-injection */
           return self.follows[routeName][`${e.v}/${e.w}`](route, context);
         } catch (ex) {
           log.warn('Route follow function threw an exception, "%s" (%s)', ex.message, `${e.v}/${e.w}`);
@@ -450,6 +456,8 @@ export default class Plan {
           results[0] = route;
 
           for (let i = 0; i < totalTrav; i++) {
+            // ESLint disabled as `i` is an integer
+            /* eslint-disable-next-line security/detect-object-injection */
             results[i + 1] = traversed[i];
           }
 

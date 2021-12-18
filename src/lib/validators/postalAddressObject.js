@@ -73,6 +73,8 @@ export default class PostalAddressObject extends ValidatorFactory {
     const reqF = Object.create(null);
     const reqC = cfg.requiredFields;
     ['address1', 'address2', 'address3', 'address4', 'postcode'].forEach((k) => {
+      // ESLint disabled as `k` is a known value from a constant list
+      /* eslint-disable-next-line security/detect-object-injection */
       reqF[k] = reqC.indexOf(k) > -1;
     });
 
@@ -84,9 +86,7 @@ export default class PostalAddressObject extends ValidatorFactory {
       const reAddrLine1 = /^\d+|[^\s]+[a-z0-9\-,.&#()/\\:;'" ]+$/i;
       // UK Postcode regex taken from the dwp java pc checker
       // https://github.com/dwp/postcode-format-validation
-      const pc = /^(?![QVX])[A-Z]((?![IJZ])[A-Z][0-9](([0-9]?)|([ABEHMNPRVWXY]?))|([0-9]([0-9]?|[ABCDEFGHJKPSTUW]?))) ?[0-9]((?![CIKMOV])[A-Z]){2}$|^(BFPO)[ ]?[0-9]{1,4}$/i;
-
-      const rePostcode = new RegExp(pc, 'i');
+      const rePostcode = new RegExp(/^(?![QVX])[A-Z]((?![IJZ])[A-Z][0-9](([0-9]?)|([ABEHMNPRVWXY]?))|([0-9]([0-9]?|[ABCDEFGHJKPSTUW]?))) ?[0-9]((?![CIKMOV])[A-Z]){2}$|^(BFPO)[ ]?[0-9]{1,4}$/i, 'i');
 
       // [required, regex, strlenmax, error message]
       const attributes = {
@@ -96,6 +96,8 @@ export default class PostalAddressObject extends ValidatorFactory {
         address4: [reqF.address4, reAddr, cfg.strlenmax, cfg.errorMsgAddress4],
         postcode: [reqF.postcode, rePostcode, null, cfg.errorMsgPostcode],
       };
+      // ESLint disabled as `k` is a known value from the constant list above
+      /* eslint-disable security/detect-object-injection */
       Object.keys(attributes).forEach((k) => {
         const attr = attributes[k];
         const hasProperty = Object.prototype.hasOwnProperty.call(value, k);
@@ -113,6 +115,7 @@ export default class PostalAddressObject extends ValidatorFactory {
           }));
         }
       });
+      /* eslint-enable security/detect-object-injection */
     } else {
       valid = false;
       errorMsgs.push(cfg.errorMsg);

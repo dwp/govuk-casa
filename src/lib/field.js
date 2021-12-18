@@ -191,10 +191,13 @@ export class PageField {
 
     let errors = [];
     for (let i = 0, l = this.#validators.length; i < l; i++) {
+      // ESLint disabled as `i` is an integer
+      /* eslint-disable security/detect-object-injection */
       const fieldErrors = this.#validators[i].validate(value, context).map((e) => e.withContext({
         ...context,
         validator: this.#validators[i].name,
       }));
+      /* eslint-enable security/detect-object-injection */
 
       errors = [
         ...errors,
@@ -216,13 +219,18 @@ export class PageField {
 
     // Some of the validators may have their own "sanitise()" methods. These
     // should be run before any other processors
+    // ESLint disabled as `i` is an integer
+    /* eslint-disable security/detect-object-injection */
     for (let i = 0, l = this.#validators.length; i < l; i++) {
       if (isFunction(this.#validators[i].sanitise)) {
         processedValue = this.#validators[i].sanitise(processedValue);
       }
     }
+    /* eslint-enable security/detect-object-injection */
 
     for (let i = 0, l = this.#processors.length; i < l; i++) {
+      // ESLint disabled as `i` is an integer
+      /* eslint-disable-next-line security/detect-object-injection */
       processedValue = this.#processors[i](processedValue);
     }
     return processedValue;
@@ -248,6 +256,8 @@ export class PageField {
 
     let result = true;
     for (let i = 0, l = this.#conditions.length; i < l; i++) {
+      // ESLint disabled as `i` is an integer
+      /* eslint-disable-next-line security/detect-object-injection */
       result = result && this.#conditions[i](context);
     }
     return result;

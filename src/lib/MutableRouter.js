@@ -84,6 +84,9 @@ export default class MutableRouter {
     }
 
     this.#stack.forEach(({ method, args }) => {
+      // ESLint disabled as `#router` is dev-controlled, and `seal()` is only
+      // run at boot-time before any user interaction
+      /* eslint-disable-next-line security/detect-object-injection */
       this.#router[method].call(this.#router, ...args);
     });
 

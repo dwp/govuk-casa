@@ -165,11 +165,11 @@ describe('Plan', () => {
       }).to.throw(ReferenceError, 'Plan does not contain waypoint \'missing-waypoint\'');
     });
 
-    it('should throw a ReferenceError when no route name has been specified', () => {
+    it('should throw a TypeError when no route name has been specified', () => {
       plan.setRoute('origin-waypoint', 'next-waypoint');
       expect(() => {
         plan.traverseRoutes(stubContext, { startWaypoint: 'origin-waypoint' });
-      }).to.throw(ReferenceError, 'Route name must be provided');
+      }).to.throw(TypeError, 'Expected route name to be a string, got undefined');
     });
 
     it('should call all follow-condition functions on the discovered routes, passing context arguments', () => {

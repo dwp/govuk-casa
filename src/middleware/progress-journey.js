@@ -33,7 +33,7 @@ export default ({
       currentIndex < 0 ? traversed.length - 1 : 0,
       Math.min(currentIndex + 1, traversed.length - 1),
     );
-    const nextWaypoint = traversed[nextIndex];
+    const nextWaypoint = traversed[parseInt(nextIndex, 10)];
     log.trace(`currentIndex = ${currentIndex}, nextIndex = ${nextIndex}, currentWaypoint = ${waypoint}, nextWaypoint = ${nextWaypoint}`);
 
     // Edit mode

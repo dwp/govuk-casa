@@ -161,9 +161,11 @@ export default function journeyRouter({
         // errors in that format.
         // Where there are multiple errors against a particular field, only the
         // first one is shown.
+        // Disabling security/detect-object-injection rule because both `errors`
+        // and the `k` property are known entities
         const govukErrors = Object.keys(errors).map((k) => ({
-          text: req.t(errors[k][0].summary, errors[k][0].variables),
-          href: errors[k][0].fieldHref,
+          text: req.t(errors[k][0].summary, errors[k][0].variables), /* eslint-disable-line security/detect-object-injection */
+          href: errors[k][0].fieldHref, /* eslint-disable-line security/detect-object-injection */
         }));
 
         return {

@@ -72,6 +72,7 @@
     "commitlint": "15.0.0",
     "eslint": "7.32.0",
     "eslint-plugin-no-unsafe-regex": "1.0.0",
+    "eslint-plugin-security": "1.4.0",
     "eslint-plugin-sonarjs": "0.11.0",
     "fast-check": "2.20.0",
     "husky": "7.0.4",

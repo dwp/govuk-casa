@@ -26,7 +26,7 @@ export default class InArray extends ValidatorFactory {
     if (value !== null && typeof value !== 'undefined') {
       const search = Array.isArray(value) ? value : [value];
       for (let i = 0, l = search.length; i < l; i += 1) {
-        if (source.indexOf(search[i]) > -1) {
+        if (source.indexOf(search[parseInt(i, 10)]) > -1) {
           valid = true;
         } else {
           valid = false;

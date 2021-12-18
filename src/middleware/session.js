@@ -6,6 +6,59 @@ import logger from '../lib/logger.js';
 
 const log = logger('middleware:session');
 
+const sessionExpiryMiddleware = (
+  mountUrl,
+  ttl,
+  getCookie,
+  touchCookie,
+  removeCookie,
+) => (req, res, next) => {
+  const lastModified = getCookie(req);
+  const age = Math.floor(Date.now() * 0.001) - lastModified;
+
+  if (lastModified === 0) {
+    // New session, or grace period cookie no longer available after
+    // expiring; generate a new session, and create grace-period cookie.
+    // This will invalidate any CSRF tokens, so by letting the request POST
+    // requests through the user may see a 500 error response.
+    log.info('Session is new, or grace period has expired. Regenerating session.');
+    req.session.regenerate((err) => {
+      if (err) {
+        next(err);
+      } else {
+        touchCookie(res);
+        if (req.method === 'POST') {
+          log.info('The CSRF token for this POST request will now be invalid for this regenerated session. Redirecting to app mount point.');
+          res.redirect(302, mountUrl);
+        } else {
+          next();
+        }
+      }
+    });
+  } else if (age > ttl) {
+    // Cookie has become stale and server session will have been removed;
+    // redirect to session-timeout
+    log.info('Session has timed out within grace period. Destroying session and redirecting to timeout page.');
+    const language = req.session.language ?? 'en';
+    req.session.destroy((err) => {
+      if (err) {
+        next(err);
+      } else {
+        removeCookie(res);
+        const params = new URLSearchParams({
+          referrer: req.originalUrl,
+          lang: language,
+        });
+        res.redirect(302, `${mountUrl}session-timeout?${params.toString()}`);
+      }
+    });
+  } else {
+    // Touch cookie and continue
+    touchCookie(res);
+    next();
+  }
+};
+
 // 3 middleware:
 // - set the session cookie
 // - parse request cookies
@@ -39,6 +92,13 @@ export default function sessionMiddleware({
     signed: true,
   };
 
+  const getCookie = (req) => {
+    // Disabled eslint as `touchCookieName` is a constant, known value
+    /* eslint-disable-next-line security/detect-object-injection */
+    const lastModified = Date.parse(String(req.signedCookies[touchCookieName] ?? '1970-01-01T00:00:00+0000'));
+    return Number.isNaN(lastModified) ? 0 : Math.floor(lastModified * 0.001);
+  }
+
   const touchCookie = (res) => {
     // Touch cookie expiry is a short period after the session ttl. This gives
     // a small period of time where a user will see the session-timeout message,
@@ -64,52 +124,6 @@ export default function sessionMiddleware({
       store,
     }),
     cookieParserMiddleware,
-    (req, res, next) => {
-      let lastModified = Date.parse(String(req.signedCookies[touchCookieName] ?? '1970-01-01T00:00:00+0000'));
-      lastModified = Number.isNaN(lastModified) ? 0 : Math.floor(lastModified * 0.001);
-      const age = Math.floor(Date.now() * 0.001) - lastModified;
-
-      if (lastModified === 0) {
-        // New session, or grace period cookie no longer available after
-        // expiring; generate a new session, and create grace-period cookie.
-        // This will invalidate any CSRF tokens, so by letting the request POST
-        // requests through the user may see a 500 error response.
-        log.info('Session is new, or grace period has expired. Regenerating session.');
-        req.session.regenerate((err) => {
-          if (err) {
-            next(err);
-          } else {
-            touchCookie(res);
-            if (req.method === 'POST') {
-              log.info('The CSRF token for this POST request will now be invalid for this regenerated session. Redirecting to app mount point.');
-              res.redirect(302, mountUrl);
-            } else {
-              next();
-            }
-          }
-        });
-      } else if (age > ttl) {
-        // Cookie has become stale and server session will have been removed;
-        // redirect to session-timeout
-        log.info('Session has timed out within grace period. Destroying session and redirecting to timeout page.');
-        const language = req.session.language ?? 'en';
-        req.session.destroy((err) => {
-          if (err) {
-            next(err);
-          } else {
-            removeCookie(res);
-            const params = new URLSearchParams({
-              referrer: req.originalUrl,
-              lang: language,
-            });
-            res.redirect(302, `${mountUrl}session-timeout?${params.toString()}`);
-          }
-        });
-      } else {
-        // Touch cookie and continue
-        touchCookie(res);
-        next();
-      }
-    },
+    sessionExpiryMiddleware(mountUrl, ttl, getCookie, touchCookie, removeCookie),
   ];
 }

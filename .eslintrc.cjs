@@ -1,9 +1,10 @@
 module.exports = {
   root: true,
-  extends: ['@dwp/eslint-config-base', 'plugin:sonarjs/recommended'],
+  extends: ['@dwp/eslint-config-base', 'plugin:sonarjs/recommended', 'plugin:security/recommended'],
   plugins: [
     'no-unsafe-regex',
     'sonarjs',
+    'security',
   ],
   rules: {
     indent: [2, 2],

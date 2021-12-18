@@ -19,6 +19,9 @@ export default function endSession(req, next) {
 
   Object.entries(req.session).forEach(([k]) => {
     if (!['cookie'].includes(k)) {
+      // ESLint disabled as `Object.entries()` returns "own" properties, and
+      // all values are being null'd, so not assigned any user-controlled values
+      /* eslint-disable-next-line security/detect-object-injection */
       req.session[k] = null;
     }
   });

@@ -31,6 +31,9 @@ const loadResources = (languages, directories) => {
   const store = Object.create(null);
 
   languages.forEach((language) => {
+    // ESLint disabled as `store`, `language` and `ns` are all dev-controlled,
+    // and this function is only called once, at boot-time.
+    /* eslint-disable security/detect-object-injection */
     store[language] = Object.create(null);
 
     directories.forEach((basedir) => {
@@ -50,6 +53,7 @@ const loadResources = (languages, directories) => {
         store[language][ns] = deepmerge(store[language][ns], data);
       });
     });
+    /* eslint-enable security/detect-object-injection */
   });
 
   return store;

@@ -21,25 +21,25 @@ export default ({
     (req, res, next) => {
       // First, prune all undefined, or unknown fields from `req.body` (i.e.
       // those that do not have an entry in `fields`)
+      // EsLint disabled as `fields`, `i` & `name` are only controlled by dev
+      /* eslint-disable security/detect-object-injection */
       const prunedBody = Object.create(null);
       for (let i = 0, l = fields.length; i < l; i++) {
         if (_.has(req.body, fields[i].name) && req.body[fields[i].name] !== undefined) {
           prunedBody[fields[i].name] = req.body[fields[i].name];
         }
       }
+      /* eslint-enable security/detect-object-injection */
 
-      // TODO: the journey context passed to the processors and conditions, with
-      // data set to the "prunedBody"
       const journeyContext = JourneyContext.fromContext(req.casa.journeyContext);
       journeyContext.setDataForPage(waypoint, prunedBody);
-      // const journeyContext = {};
 
       // Second, prune any fields that do not pass the validation conditional,
       // and process those that do.
       const sanitisedBody = Object.create(null);
       for (let i = 0, l = fields.length; i < l; i++) {
-        const field = fields[i];
-        const fieldValue = field.getValue(prunedBody) // prunedBody[field.name];
+        const field = fields[i]; /* eslint-disable-line security/detect-object-injection */
+        const fieldValue = field.getValue(prunedBody);
 
         if (fieldValue !== undefined && field.testConditions({
           fieldValue,

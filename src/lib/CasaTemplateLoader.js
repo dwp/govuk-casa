@@ -61,7 +61,7 @@ export default class CasaTemplateLoader extends FileSystemLoader {
    * @throws {Error} If provided with an unrecognised block
    */
   modifyBlock(block, modifier) {
-    // TODO: Limit to only known block so the user can't do general string replacements
+    // Limit to only known block so the user can't do general string replacements
     if (!VALID_BLOCKS.includes(block)) {
       throw new Error(`Block "${String(block)}" is not a recognised template block.`);
     }
@@ -80,9 +80,9 @@ export default class CasaTemplateLoader extends FileSystemLoader {
    * @returns {string} The modified source
    */
   #applyBlockModifiers(name, source) {
-    // TODO: This is open to abuse by plugin authors, e,g
-    // `{% block bodyStart %}{% endblock %} <script src="evil.js"></script>`. Problem, or no?
     for (let i = 0, l = this.#blockModifiers.length; i < l; i++) {
+      // ESLint disabled as `i` is an integer
+      /* eslint-disable-next-line security/detect-object-injection */
       const { block, modifier } = this.#blockModifiers[i];
       if (source.src.indexOf(`block ${block}`) > -1) {
         /* eslint-disable-next-line no-param-reassign */

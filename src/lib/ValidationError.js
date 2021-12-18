@@ -120,11 +120,15 @@ export default class ValidationError {
     // the values that will be readable, and reflect any context that may have
     // been applied
     Object.keys(originals).forEach((o) => {
+      // ESLint disabled as `o` is an "own" property of `originals`, which is
+      // dev-controlled
+      /* eslint-disable security/detect-object-injection */
       Object.defineProperty(this, o, {
         value: originals[o],
         enumerable: true,
         writable: true,
       });
+      /* eslint-enable security/detect-object-injection */
     });
   }
 

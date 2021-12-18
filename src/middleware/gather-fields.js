@@ -30,12 +30,15 @@ export default ({
     req.casa.archivedJourneyContext = JourneyContext.fromContext(req.casa.journeyContext);
 
     // Ignore data for any non-persistent fields
+    // ESLint disabled as `fields`, `i` and `name` are dev-controlled
+    /* eslint-disable security/detect-object-injection */
     const persistentBody = Object.create(null);
     for (let i = 0, l = fields.length; i < l; i++) {
       if (fields[i].meta.persist && fields[i].getValue(req.body) !== undefined) {
         persistentBody[fields[i].name] = fields[i].getValue(req.body);
       }
     }
+    /* eslint-enable security/detect-object-injection */
 
     // Update data and validation context in the current request, and store
     req.casa.journeyContext.setDataForPage(waypoint, persistentBody);

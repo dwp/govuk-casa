@@ -11,6 +11,8 @@ const combineMerge = (target, source, options) => {
   const destination = target.slice()
 
   source.forEach((item, index) => {
+    // ESLint disabled as `index` is only an integer
+    /* eslint-disable security/detect-object-injection */
     if (typeof destination[index] === 'undefined') {
       destination[index] = options.cloneUnlessOtherwiseSpecified(item, options)
     } else if (options.isMergeableObject(item)) {
@@ -18,6 +20,7 @@ const combineMerge = (target, source, options) => {
     } else if (target.indexOf(item) === -1) {
       destination.push(item)
     }
+    /* eslint-enable security/detect-object-injection */
   })
   return destination
 }
@@ -74,6 +77,10 @@ function renderAsAttributes(attrsObject) {
   const attrsList = [];
   if (typeof attrsObject === 'object') {
     Object.keys(attrsObject).forEach((key) => {
+      // ESLint disable as `attrsObject` is dev-controlled, `Object.keys()` has
+      // been used (to get "own" properties) and `m` is one of the characters
+      // found by the regex.
+      /* eslint-disable security/detect-object-injection */
       const value = String(attrsObject[key]).replace(/[<>"'&]/g, (m) => ({
         '<': '&lt;',
         '>': '&gt;',
@@ -81,6 +88,7 @@ function renderAsAttributes(attrsObject) {
         '\'': '&#039;',
         '&': '&amp;',
       }[m]));
+      /* eslint-enable security/detect-object-injection */
       attrsList.push(`${key}="${value}"`);
     });
   }

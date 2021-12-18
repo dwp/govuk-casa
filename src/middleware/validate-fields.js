@@ -27,6 +27,8 @@ export default ({
   (req, res, next) => {
     let errors = [];
     for (let i = 0, l = fields.length; i < l; i++) {
+      /* eslint-disable security/detect-object-injection */
+      // Dynamic object keys are only used on known entities (fields, waypoint)
       const field = fields[i];
       const fieldName = field.name;
       const fieldValue = req.casa.journeyContext.data?.[waypoint]?.[fieldName];
@@ -36,6 +38,7 @@ export default ({
         waypoint,
         journeyContext: req.casa.journeyContext,
       };
+      /* eslint-enable security/detect-object-injection */
 
       if (field.testConditions(context)) {
         errors = [
