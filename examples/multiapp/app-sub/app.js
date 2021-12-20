@@ -43,15 +43,6 @@ const application = ({
 
   // Ensure we start on the first waypoint in the journey
   ancillaryRouter.use(/^\/$/, (req, res, next) => {
-    // // TODO: make this a utility function or something so consumers don't have to copy/pasta
-
-    // // In multi-app services, we need to also make sure we pass on any request
-    // // params as `casareferrer` may be present, and needed for navigation
-    // const searchParams = new URLSearchParams(req.query);
-    // const u = new URL(`${mountUrl}genres`, 'https://placeholder.test');
-    // u.search = searchParams.toString();
-    
-    // res.redirect(302, `${u.pathname}${u.search}`);
     res.redirect(302, `${mountUrl}genres`);
   });
 

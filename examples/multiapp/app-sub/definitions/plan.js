@@ -6,7 +6,7 @@ module.exports = ({ mainAppMountUrl }) => {
   plan.addSequence(
     'genres',
     'moves-limit',
-    `url://${mainAppMountUrl}`, // TODO: we want to continue the main journey ... how do we indidcate this?
+    `url://${mainAppMountUrl}`,
   );
 
   return plan;

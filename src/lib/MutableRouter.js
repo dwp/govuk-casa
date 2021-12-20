@@ -164,7 +164,6 @@ export default class MutableRouter {
   }
 
   /* -------------------------------------------------------------- replacers */
-  // TODO: How do we handle multiple routes on the same path?
 
   /**
    * Replace middleware function(s) that were mounted using the `all()` method.

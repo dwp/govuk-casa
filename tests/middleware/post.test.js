@@ -1,11 +1,11 @@
 import { expect } from 'chai';
-import express from 'express';
+import ExpressJS from 'express';
 import request from 'supertest';
 
 import postMiddleware from '../../src/middleware/post.js';
 
 const makeErroringApp = (thrownError) => {
-  const app = express();
+  const app = ExpressJS();
 
   app.use((req, res, next) => {
     res.render = (tpl, vars = {}) => {

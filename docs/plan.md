@@ -226,4 +226,3 @@ plan.setRoute('start', 'field', walkTo('west'));
 
 ## Traversing a Plan
 
-TODO: Note about arriving at a waypoint via multiple routes - ie.. when a user goes back to change answers and ends up arriving at AX via a different route. If the data for the previous route is still there, then multiple "prev" routes can be satisified. One way around this is to clear onward data after changing data. Or there is the "arbiter" option in Plan.traverse()

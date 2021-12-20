@@ -60,7 +60,7 @@ In this example, we combine multiple aub-apps to effectively form one larger, li
 * Entrypoint conditions _must_ be defined for each app except the one you want to act as the starting point
 
 ```javascript
-import express from 'express';
+import ExpressJS from 'express';
 import { configure } from '@dwp/govuk-casa';
 const { MemoryStore } = express;
 
@@ -72,7 +72,7 @@ function createApp(mountUrl, store, entrypointCondition) {
       name: 'session-name',
     },
   });
-  const app = express();
+  const app = ExpressJS();
   acillaryRouter.use(entrypointCondition);
   return mount(app);
 }
@@ -87,7 +87,7 @@ const app2 = createApp('/two/', store, (req, res, next) => {
   }
 });
 
-const parent = express();
+const parent = ExpressJS();
 parent.use('/one/', app1);
 parent.use('/two/', app2);
 

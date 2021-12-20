@@ -21,17 +21,17 @@ In this case your app will need to ...
 And here's the setup to do that:
 
 ```javascript
-import express from 'express';
+import ExpressJS from 'express';
 import { configure } from '@dwp/govuk-casa';
 
 const { mount } = configure({
   mountUrl: '/app/',
 });
 
-const casaApp = express();
+const casaApp = ExpressJS();
 mount(casaApp);
 
-const app = express();
+const app = ExpressJS();
 app.use('/host', casaApp);
 
 app.listen();
@@ -49,7 +49,7 @@ Browser --(https)--> Nginx proxy --(http)--> Your app
 In this case, you will need to tell Express to trust that the proxy is serving TLS requests:
 
 ```javascript
-import express from 'express';
+import ExpressJS from 'express';
 import { configure } from '@dwp/govuk-casa';
 
 const { mount } = configure({
@@ -58,11 +58,11 @@ const { mount } = configure({
   },
 });
 
-const casaApp = express();
+const casaApp = ExpressJS();
 casaApp.set('trust proxy', 1);
 mount(casaApp);
 
-const app = express();
+const app = ExpressJS();
 app.use('/', casaApp);
 
 app.listen();

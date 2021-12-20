@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import request from 'supertest';
-import express from 'express';
+import ExpressJS from 'express';
 
 import MutableRouter from '../../src/lib/MutableRouter.js';
 
@@ -21,7 +21,7 @@ describe('MutableRouter', () => {
       const camelClassMethod = `${classMethod[0].toUpperCase()}${classMethod.slice(1)}`;
 
       it(`places "${classMethod}" routes in order once sealed`, (done) => {
-        const app = express();
+        const app = ExpressJS();
         const tracer = makeRouteTracer(app);
 
         const router = new MutableRouter();
@@ -46,7 +46,7 @@ describe('MutableRouter', () => {
 
   describe('removing methods', () => {
     it('orders routes after replacing some', (done) => {
-      const app = express();
+      const app = ExpressJS();
       const tracer = makeRouteTracer(app);
 
       const router = new MutableRouter();
