@@ -2,15 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [8.0.0](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/compare/7.0.8...8.0.0) (2021-12-21)
+## [8.0.0](https://github.com/dwp/govuk-casa/compare/7.0.8...8.0.0) (2021-12-21)
 
 
 ### ⚠ BREAKING CHANGES
 
 * The framework has been rewritten. Refer to
 docs/migration-guides/MIGRATION_7.x-8.x.md for more details.
-
-Signed-off-by: james.gauld <james.gauld@engineering.digital.dwp.gov.uk>
 
 * rewrite framework ([48c44ec](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/commit/48c44ec78d9a93eb736e74f7b23b62b0898a1e1c))
 

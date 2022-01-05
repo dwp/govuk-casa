@@ -2,6 +2,10 @@
   "name": "@dwp/govuk-casa",
   "version": "8.0.0",
   "description": "A framework for building GOVUK Collect-And-Submit-Applications",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:dwp/govuk-casa.git"
+  },
   "main": "dist/casa.js",
   "module": "dist/mjs/casa.js",
   "exports": {
