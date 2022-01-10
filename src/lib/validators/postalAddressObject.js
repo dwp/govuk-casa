@@ -86,7 +86,7 @@ export default class PostalAddressObject extends ValidatorFactory {
       const reAddrLine1 = /^\d+|[^\s]+[a-z0-9\-,.&#()/\\:;'" ]+$/i;
       // UK Postcode regex taken from the dwp java pc checker
       // https://github.com/dwp/postcode-format-validation
-      const rePostcode = new RegExp(/^(?![QVX])[A-Z]((?![IJZ])[A-Z][0-9](([0-9]?)|([ABEHMNPRVWXY]?))|([0-9]([0-9]?|[ABCDEFGHJKPSTUW]?))) ?[0-9]((?![CIKMOV])[A-Z]){2}$|^(BFPO)[ ]?[0-9]{1,4}$/i, 'i');
+      const rePostcode = /^(?![QVX])[A-Z]((?![IJZ])[A-Z][0-9](([0-9]?)|([ABEHMNPRVWXY]?))|([0-9]([0-9]?|[ABCDEFGHJKPSTUW]?))) ?[0-9]((?![CIKMOV])[A-Z]){2}$|^(BFPO)[ ]?[0-9]{1,4}$/i;
 
       // [required, regex, strlenmax, error message]
       const attributes = {

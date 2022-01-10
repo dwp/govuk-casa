@@ -108,7 +108,7 @@ export class PageField {
     throw new Error('Not yet supporting complex field types');
   }
 
-  putValue(obj = Object.create(null), value) {
+  putValue(obj = Object.create(null), value = undefined) {
     if (!this.#meta.complex) {
       /* eslint-disable-next-line no-param-reassign */
       obj[this.#name] = value;
