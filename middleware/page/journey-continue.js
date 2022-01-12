@@ -93,6 +93,11 @@ module.exports = (pageMeta = {}, mountUrl = '/', useStickyEdit = false) => (req,
             break;
           }
         }
+
+        // If we've exhausted all comparisons, we're done
+        if (compareIndex > compareIndexMax && nextWaypoint !== editOriginWaypoint) {
+          break;
+        }
       }
 
       // Ensure the user remains in edit mode after redirecting, unless they're
