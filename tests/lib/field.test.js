@@ -71,6 +71,21 @@ describe('PageField', () => {
   });
 
 
+  it('does not execute validators if conditions are not met', () => {
+    const f = field('test');
+    f.validators([
+      { validate: () => [ValidationError.make({ errorMsg: 'error1' })] },
+      { validate: () => [ValidationError.make({ errorMsg: 'error2' })] },
+    ]);
+    f.conditions([
+      () => (false),
+    ]);
+
+    const errors = f.runValidators('testValue');
+    expect(errors).to.have.length(0);
+  });
+
+
   it('applies all processors to a field value and returns result', () => {
     const f = field('test');
     f.processors([
@@ -93,6 +108,13 @@ describe('PageField', () => {
 
     expect(f.testConditions({ fieldValue: 'x' })).to.be.false;
     expect(f.testConditions({ fieldValue: 'y' })).to.be.true;
+  });
+
+
+  it('satisfies conditions if none are set', () => {
+    const f = field('test');
+
+    expect(f.testConditions({ fieldValue: 'x' })).to.be.true;
   });
 
 });

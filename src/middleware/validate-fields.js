@@ -40,12 +40,10 @@ export default ({
       };
       /* eslint-enable security/detect-object-injection */
 
-      if (field.testConditions(context)) {
-        errors = [
-          ...errors,
-          ...field.runValidators(fieldValue, context),
-        ];
-      }
+      errors = [
+        ...errors,
+        ...field.runValidators(fieldValue, context),
+      ];
     }
 
     // Validation passed with no errors

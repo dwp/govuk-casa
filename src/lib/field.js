@@ -183,9 +183,16 @@ export class PageField {
    * @param {ValidateContext} context Contextual information
    * @returns {ValidationError[]} Errors, or an empty array if all valid
    */
-  runValidators(value, context) {
+  runValidators(value, context = Object.create(null)) {
     // Skip validation if the field is empty and optional
     if (this.#meta.optional && isEmpty(value)) {
+      return [];
+    }
+
+    // Skip validation if conditions are not met
+    // We duplicate value in context.fieldValue for historical reasons
+    context.fieldValue = context.fieldValue ?? value;
+    if (!this.testConditions(context)) {
       return [];
     }
 
