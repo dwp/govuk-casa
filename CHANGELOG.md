@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.0.9](https://github.com/dwp/govuk-casa/compare/7.0.8...7.0.9) (2022-01-13)
+
+
+### Bug Fixes
+
+* correction on journey comparisons ([17dea07](https://github.com/dwp/govuk-casa/commit/17dea07d970053bc9af37e4b7efdefdb6d2c6cc7))
+
 ### [7.0.8](https://github.com/dwp/govuk-casa/compare/7.0.7...7.0.8) (2021-12-10)
 
 ### [7.0.7](https://github.com/dwp/govuk-casa/compare/7.0.6...7.0.7) (2021-10-19)

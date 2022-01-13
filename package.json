@@ -1,6 +1,6 @@
 {
   "name": "@dwp/govuk-casa",
-  "version": "7.0.8",
+  "version": "7.0.9",
   "description": "Framework for creating basic GOVUK Collect-And-Submit-Applications",
   "main": "casa.js",
   "files": [
