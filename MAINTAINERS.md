@@ -64,11 +64,7 @@ npx standard-version
 git push -u origin head
 ```
 
-On merging that MR, the following happens:
-
-* The commit is tagged
-* The new version of the package will be published internally
-* A few minutes later, the code will be automatically to the [GitHub repo](https://github.com/dwp/govuk-casa).
+On merging that MR, you must then tag the `maintain/7.x` branch manually with the corresponding version. This is easiest done through the GitLab GUI.
 
 Finally, to publish to the public npm registry:
 
@@ -77,12 +73,10 @@ Finally, to publish to the public npm registry:
 npm whoami
 npm adduser --scope=@dwp
 
-# Dry-run the publication to check all looks ok
+# Dry-run the publication to check all looks ok (ensure there's no files listed
+# there that shouldn't be)
 npm publish --dry-run
 
-# Publish the npm package, using the appropriate tag:
-# - For `main` branch, use `latest` tag
-# - For `maintain/6.x` branch, use `maintain6x` tag
-# - For an upcoming major bump, use `next` tag
-npm publish --tag latest
+# Publish the npm package, using the appropriate tag
+npm publish --tag maintain7x
 ```
