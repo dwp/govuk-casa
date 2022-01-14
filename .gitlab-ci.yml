@@ -46,6 +46,8 @@ dast:
 
 # Manipulate publishing process to Gitlab
 node-publish-gitlab:
+  variables:
+    DIST_TAG: "maintain7x"
   before_script:
     # Job runs as root, so we need to allow hooks to run in the general case
     - npm set "unsafe-perm" "true"
