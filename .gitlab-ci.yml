@@ -21,3 +21,8 @@ node-modules:
       - artifact.tgz
       - node_modules/
       - dist/
+
+# Manipulate publishing process to Gitlab
+node-publish-gitlab:
+  variables:
+    DIST_TAG: "maintain6x"
