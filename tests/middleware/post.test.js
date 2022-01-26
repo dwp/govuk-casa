@@ -15,9 +15,11 @@ const makeErroringApp = (thrownError) => {
     next();
   });
 
-  app.use(() => {
-    throw thrownError;
-  });
+  if (thrownError instanceof Error) {
+    app.use(() => {
+      throw thrownError;
+    });
+  }
 
   return app;
 }
@@ -33,7 +35,17 @@ describe('post middleware', () => {
       .expect(200, done);
   });
 
-  it('renders a 403 page for a bad  CSRF token', (done) => {
+  it('renders a 404 page for an unknown URL', (done) => {
+    const app = makeErroringApp();
+    app.use(postMiddleware({ mountUrl: '/' }));
+
+    request(app)
+      .get('/')
+      .expect((res) => expect(res.text).to.equal('casa/errors/404.njk'))
+      .expect(404, done);
+  });
+
+  it('renders a 403 page for a bad CSRF token', (done) => {
     const err = new Error();
     err.code = 'EBADCSRFTOKEN';
     const app = makeErroringApp(err);

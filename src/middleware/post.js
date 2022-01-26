@@ -8,7 +8,7 @@ export default function postMiddleware({
 }) {
   return [
     (req, res) => {
-      res.render('casa/errors/404.njk');
+      res.status(404).render('casa/errors/404.njk');
     },
     /* eslint-disable-next-line no-unused-vars */
     (err, req, res, next) => {
