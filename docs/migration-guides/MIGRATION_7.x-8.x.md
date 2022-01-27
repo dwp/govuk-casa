@@ -72,7 +72,7 @@ app.use('/some/mount-url/', casaApp);
 
 This has many benefits, including:
 
-* Calling `configure()` no longer has any side effects untikl you call `mount()`; it's more like an artifact factory
+* Calling `configure()` no longer has any side effects until you call `mount()`; it's more like an artifact factory
 * You can create multiple CASA instances and attach them to different ExpressJS apps within the same service
 * It's clearer where you can inject your own middleware/routes
 * You can more easily attach custom global functions/filters to the `nunjucksEnv` as this is a returned artifact
