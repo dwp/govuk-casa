@@ -1,6 +1,8 @@
 import { randomBytes } from 'crypto';
 import helmet from 'helmet';
 
+const GA_DOMAIN = 'www.google-analytics.com';
+const GTM_DOMAIN = 'www.googletagmanager.com';
 export default () => [
   // Only allow certain request methods
   (req, res, next) => {
@@ -38,9 +40,15 @@ export default () => [
     contentSecurityPolicy: {
       useDefaults: true,
       directives: {
-        'script-src': ["'self'", 'www.google-analytics.com', 'www.googletagmanager.com', (req, res) => `'nonce-${res.locals.cspNonce}'`],
-        'style-src': ["'self'", 'https:', (req, res) => `'nonce-${res.locals.cspNonce}'`],
+        'default-src': ["'none'"],
+        'script-src': ["'self'", GA_DOMAIN, GTM_DOMAIN, (req, res) => `'nonce-${res.locals.cspNonce}'`],
+        'img-src': ["'self'", GA_DOMAIN],
+        'connect-src': ["'self'", GA_DOMAIN],
+        'frame-src': ["'self'", GTM_DOMAIN],
+        'frame-ancestors': ["'self'"],
         'form-action': ["'self'"],
+        'style-src': ["'self'", (req, res) => `'nonce-${res.locals.cspNonce}'`],
+        'font-src': ["'self'"],
       },
     },
 
