@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [8.0.3](https://github.com/dwp/govuk-casa/compare/8.0.2...8.0.3) (2022-02-04)
+
+
+### Bug Fixes
+
+* add google analytics to default CSP ([6408140](https://github.com/dwp/govuk-casa/commit/6408140501c124221219def66094af9121935a1e))
+* correct typo ([56e0c8d](https://github.com/dwp/govuk-casa/commit/56e0c8d5e1ae8843c4f309ddf5cb8299faf7aaa4))
+* set 404 status code on 404 page render response ([2296a9d](https://github.com/dwp/govuk-casa/commit/2296a9dc01ae8aa00d5cb28c71e5ae718e782386))
+
 ### [8.0.2](https://github.com/dwp/govuk-casa/compare/8.0.1...8.0.2) (2022-01-14)
 
 ### [8.0.1](https://github.com/dwp/govuk-casa/compare/8.0.0...8.0.1) (2022-01-12)
