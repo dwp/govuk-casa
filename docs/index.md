@@ -4,7 +4,7 @@
 * [The request lifecycle](request-lifecycle.md)
 * [The Plan](plan.md)
 * [Pages](pages.md)
-* [Fields](fields.md)
+* [Fields and Validation](fields.md)
 * [Hooks](hooks.md)
 * [Events](events.md)
 * [Plugins](plugins.md)

@@ -28,7 +28,17 @@ field('name').processors([ processor1 ]);
 
 ## Built-in validators
 
-TODO
+You can use any of these [built-in validation rules](src/lib/validators/)
+
+* [dateObject](src/lib/validators/dateObject.README.md)
+* [email](src/lib/validators/email.README.md)
+* [inArray](src/lib/validators/inArray.README.md)
+* [nino](src/lib/validators/nino.README.md)
+* [postalAddressObject](src/lib/validators/postalAddressObject.README.md)
+* [regex](src/lib/validators/regex.README.md)
+* [required](src/lib/validators/required.README.md)
+* [strlen](src/lib/validators/strlen.README.md)
+* [wordCount](src/lib/validators/wordCount.README.md)
 
 
 ## Writing custom validators
