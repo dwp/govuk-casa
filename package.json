@@ -74,6 +74,7 @@
     "babel-eslint": "10.1.0",
     "c8": "7.11.0",
     "chai": "4.3.6",
+    "cheerio": "1.0.0-rc.10",
     "commitlint": "16.2.1",
     "eslint": "8.11.0",
     "eslint-plugin-no-unsafe-regex": "1.0.0",

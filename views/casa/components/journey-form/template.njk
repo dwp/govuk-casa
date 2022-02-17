@@ -1,6 +1,6 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-<form action="{{ params.formUrl }}" method="post" autocomplete="off" novalidate class="casa-journey-form">
+<form action="{{ params.formUrl }}" method="post" autocomplete="{{ params.autoComplete | default('off', true) }}" novalidate class="casa-journey-form">
   <input type="hidden" name="_csrf" value="{{ params.csrfToken }}" />
   {% if params.inEditMode %}<input type="hidden" name="edit" value="true" />{% endif %}
   {% if params.inEditMode and params.editOriginUrl %}<input type="hidden" name="editorigin" value="{{ params.editOriginUrl }}" />{% endif %}
