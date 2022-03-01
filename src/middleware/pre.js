@@ -3,7 +3,21 @@ import helmet from 'helmet';
 
 const GA_DOMAIN = 'www.google-analytics.com';
 const GTM_DOMAIN = 'www.googletagmanager.com';
-export default () => [
+
+/**
+ * @typedef {import('../lib/configuration-ingestor').HelmetConfigurator} HelmetConfigurator
+ */
+
+/**
+ * Pre middleware.
+ *
+ * @param {object} opts Options
+ * @param {HelmetConfigurator} opts.helmetConfigurator Function to customise Helmet configuration
+ * @returns {Function[]} List of middleware
+ */
+export default ({
+  helmetConfigurator = (config) => (config),
+} = {}) => [
   // Only allow certain request methods
   (req, res, next) => {
     if (req.method !== 'GET' && req.method !== 'POST') {
@@ -35,7 +49,7 @@ export default () => [
   },
 
   // Helmet suite of headers
-  helmet({
+  helmet(helmetConfigurator({
     // Allows GA which is typically used, and a known inline script nonce
     contentSecurityPolicy: {
       useDefaults: true,
@@ -54,5 +68,5 @@ export default () => [
 
     // // Require referrer to aid navigation
     // referrerPolicy: 'no-referrer, same-origin',
-  }),
+  })),
 ];

@@ -80,6 +80,10 @@ Listeners for handling various events on state held in the Journey Context.
 
 Read more about [configuring a Plan](plan.md) for your service.
 
+* `helmetConfigurator` **`function`** Function to modify CASA's default Helmet configuration
+
+Read more about [configuring Helmet](guides/helmet.md) for your service.
+
 
 ## Returned values
 

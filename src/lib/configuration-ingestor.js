@@ -51,6 +51,12 @@ import {
  */
 
 /**
+ * @callback HelmetConfigurator
+ * @param {object} config A default Helmet configuration provided by CASA
+ * @returns {object} The modified configuration object
+ */
+
+/**
  * Configure some middleware for use in creating a new CASA app.
  *
  * `mountUrl` is used to ensure the CSS content uses the correct reference to
@@ -429,6 +435,21 @@ export function validateEvents(events) {
 }
 
 /**
+ * Validates helmet configuration function.
+ *
+ * @param {HelmetConfigurator} helmetConfigurator Configuration function
+ * @returns {HelmetConfigurator} Validated configuration function
+ * @throws {TypeError} when passed a non-function
+ */
+export function validateHelmetConfigurator(helmetConfigurator) {
+  if (helmetConfigurator !== undefined && !(helmetConfigurator instanceof Function)) {
+    throw new TypeError('Helmet configurator must be a function');
+  }
+
+  return helmetConfigurator;
+}
+
+/**
  * Ingest, validate, sanitise and manipulate configuration parameters.
  *
  * @param {ConfigurationOptions} config Config to ingest.
@@ -474,6 +495,9 @@ export default function ingest(config = {}) {
 
     // Events
     events: validateEvents(config.events),
+
+    // Helmet configuration
+    helmetConfigurator: validateHelmetConfigurator(config.helmetConfigurator),
 
   };
 
