@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 
 import JourneyContext from '../../src/lib/JourneyContext.js';
+import ValidationError from '../../src/lib/ValidationError.js';
 
 const DEFAULT_CONTEXT_ID = JourneyContext.DEFAULT_CONTEXT_ID;
 
@@ -426,6 +427,34 @@ describe('JourneyContext', () => {
       JourneyContext.putContext(session, context);
       expect(initSpy).to.be.calledOnceWithExactly(session);
       initSpy.restore();
+    });
+  });
+
+
+  describe('serialisation', () => {
+    it('deserialises validation data into ValidationError instances', () => {
+      // Prepare a context that contains validation errors, and "null" validation
+      // states.
+      const context = new JourneyContext();
+      context.setValidationErrorsForPage('test', [
+        ValidationError.make({ errorMsg: 'error' }),
+      ]);
+      context.clearValidationErrorsForPage('test-two');
+
+      // Mimic the storage of data in a session store, which basically converts
+      // the object to a string.
+      const sessionObject = JSON.parse(JSON.stringify(context.toObject()));
+
+      // Re-create a context based on that session data and check that all
+      // validation errors are correctly deserialised to ValidationError instances
+      const newContext = JourneyContext.fromObject(sessionObject);
+      const errors = newContext.getValidationErrorsForPage('test');
+      const errorsTwo = newContext.getValidationErrorsForPage('test-two');
+
+      expect(errors).to.have.length(1);
+      expect(errors[0]).to.be.an.instanceOf(ValidationError);
+      expect(errorsTwo).to.have.length(0);
+      expect(newContext.isPageValid('test-two')).to.be.true
     });
   });
 });

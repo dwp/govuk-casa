@@ -119,3 +119,17 @@ export function validateHookPath(path) {
     throw new TypeError('Hook path must be a string or RegExp');
   }
 }
+
+/**
+ * Checks if the given string can be used as an object key.
+ *
+ * @param {string} key Proposed Object key
+ * @returns {string} Same key if it's valid
+ * @throws {Error} if proposed key is an invalid keyword
+ */
+export function notProto(key) {
+  if (['__proto__', 'constructor', 'prototype'].includes(String(key).toLowerCase())) {
+    throw new Error('Attempt to use prototype key disallowed');
+  }
+  return key;
+}

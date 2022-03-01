@@ -10,6 +10,7 @@ import { v4 as uuidv4, validate as uuidValidate } from 'uuid';
 import lodash from 'lodash';
 import ValidationError from './ValidationError.js';
 import logger from './logger.js';
+import { notProto } from './utils.js';
 
 const {
   cloneDeep, isPlainObject, isObject, has, isEqual,
@@ -121,7 +122,20 @@ export default class JourneyContext {
     nav = Object.create(null),
     identity = Object.create(null),
   } = {}) {
-    return new JourneyContext(data, validation, nav, identity);
+    // As we're constructing a JourneyContext from a plain JS object, we need to
+    // ensure any validation errors are instances of ValidationError.
+    const deserialisedValidation = Object.create(null);
+    for (const [waypoint, errors] of Object.entries(validation)) {
+      let dErrors = errors;
+
+      if (Array.isArray(errors)) {
+        dErrors = errors.map((e) => (e instanceof ValidationError ? e : new ValidationError(e)));
+      }
+
+      deserialisedValidation[notProto(waypoint)] = dErrors;
+    }
+
+    return new JourneyContext(data, deserialisedValidation, nav, identity);
   }
 
   get data() {
