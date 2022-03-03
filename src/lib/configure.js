@@ -87,6 +87,7 @@ export default function configure(config = {}) {
       dirs: [],
       locales: ['en', 'cy'],
     },
+    helmetConfigurator = undefined,
   } = configurationIngestor(config);
 
   // Prepare all page hooks so they are prefixed with the `journey.` scope.
@@ -109,7 +110,7 @@ export default function configure(config = {}) {
   // Prepare mandatory middleware
   // These _must_ be added to the ExpressJS application at the start and end
   // of all other middleware respectively.
-  const preMiddleware = preMiddlewareFactory();
+  const preMiddleware = preMiddlewareFactory({ helmetConfigurator });
   const postMiddleware = postMiddlewareFactory({ mountUrl });
 
   // Prepare common middleware mounted prior to the ancillaryRouter
