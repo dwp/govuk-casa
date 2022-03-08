@@ -13,7 +13,6 @@ const oneDay = 86400000;
 
 /**
  * @typedef {object} StaticOptions Options to configure static router
- * @property {string} [mountUrl=/] URL prefix for govuk-frontend static assets (optional, default /)
  * @property {number} [maxAge=3600000] Cache TTL for all assets (optional, default 1 hour)
  */
 
@@ -24,9 +23,8 @@ const oneDay = 86400000;
  * @returns {MutableRouter} ExpressJS Router instance
  */
 export default function staticRouter({
-  mountUrl = '/',
   maxAge = 3600000,
-}) {
+} = {}) {
   const router = new MutableRouter();
 
   const notFoundHandler = (req, res, next) => {
@@ -58,8 +56,8 @@ export default function staticRouter({
   // The CASA CSS source contains the placeholder `~~~CASA_MOUNT_URL~~~` which
   // must be replaced with the dynamic `mountUrl` to ensure govuk-frontend
   // assets are served from the correct location.
-  const casaCss = readFileSync(resolve(dirname, '../../dist/assets/css/casa.css'), { encoding: 'utf8' }).replace(/~~~CASA_MOUNT_URL~~~/g, mountUrl);
-  const casaCssIe8 = readFileSync(resolve(dirname, '../../dist/assets/css/casa-ie8.css'), { encoding: 'utf8' }).replace(/~~~CASA_MOUNT_URL~~~/g, mountUrl);
+  const casaCss = readFileSync(resolve(dirname, '../../dist/assets/css/casa.css'), { encoding: 'utf8' });
+  const casaCssIe8 = readFileSync(resolve(dirname, '../../dist/assets/css/casa-ie8.css'), { encoding: 'utf8' });
 
   // The static middleware will only server GET/HEAD requests, so we can mount
   // the middleware using `use()` rather than resorting to `get()`
@@ -69,8 +67,8 @@ export default function staticRouter({
   router.use('/govuk/assets', ExpressStatic(`${govukFrontendDirectory}/govuk/assets`, staticConfig));
   router.use('/govuk/assets', notFoundHandler);
 
-  router.use('/casa/assets/css/casa.css', setHeaders, (req, res) => res.send(casaCss));
-  router.use('/casa/assets/css/casa-ie8.css', setHeaders, (req, res) => res.send(casaCssIe8));
+  router.get('/casa/assets/css/casa.css', setHeaders, (req, res) => res.send(casaCss.replace(/~~~CASA_MOUNT_URL~~~/g, `${req.baseUrl}/`)));
+  router.get('/casa/assets/css/casa-ie8.css', setHeaders, (req, res) => res.send(casaCssIe8.replace(/~~~CASA_MOUNT_URL~~~/g, `${req.baseUrl}/`)));
   router.use('/casa/assets', notFoundHandler);
 
   return router;

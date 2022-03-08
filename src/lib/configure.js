@@ -1,3 +1,4 @@
+import { Router } from 'express';
 import { MemoryStore } from 'express-session';
 import { resolve } from 'path';
 import { createRequire } from 'module';
@@ -22,6 +23,10 @@ import bodyParserMiddlewareFactory from '../middleware/body-parser.js';
 import csrfMiddlewareFactory from '../middleware/csrf.js';
 
 /**
+ * @typedef {import('express').Express} ExpressJS
+ */
+
+/**
  * @typedef {import('express').RequestHandler} ExpressRequestHandler
  */
 
@@ -31,6 +36,14 @@ import csrfMiddlewareFactory from '../middleware/csrf.js';
 
 /**
  * @typedef {import('./configuration-ingestor').ConfigurationOptions} ConfigurationOptions
+ */
+
+/**
+ * @callback Mounter
+ * @param {ExpressJS} app Express application
+ * @param {object} opts Mounting options
+ * @param {string} [opts.route=/] Optional route to attach all middleware/routers too
+ * @returns {ExpressJS} The prepared ExpressJS app instance
  */
 
 /**
@@ -46,14 +59,11 @@ import csrfMiddlewareFactory from '../middleware/csrf.js';
  * @property {ExpressRequestHandler[]} cookieParserMiddleware Cookie-parsing middleware
  * @property {ExpressRequestHandler[]} i18nMiddleware I18n preparation middleware
  * @property {ExpressRequestHandler} bodyParserMiddleware Body parsing middleware
- * @property {Function} mount Function used to mount all CASA artifacts onto an ExpressJS app
+ * @property {Mounter} mount Function used to mount all CASA artifacts onto an ExpressJS app
  */
 
 /**
  * Configure some middleware for use in creating a new CASA app.
- *
- * `mountUrl` is used to ensure the CSS content uses the correct reference to
- * static assets in the `govuk-frontend` module.
  *
  * @param {ConfigurationOptions} config Configuration options
  * @returns {ConfigureResult} Result
@@ -99,7 +109,6 @@ export default function configure(config = {}) {
   // Prepare a Nunjucks environment for rendering all templates.
   // Resolve priority: userland templates > CASA templates > GOVUK templates > Plugin templates
   const nunjucksEnv = nunjucks({
-    mountUrl,
     views: [
       ...views,
       resolve(dirname, '../../views'),
@@ -111,7 +120,7 @@ export default function configure(config = {}) {
   // These _must_ be added to the ExpressJS application at the start and end
   // of all other middleware respectively.
   const preMiddleware = preMiddlewareFactory({ helmetConfigurator });
-  const postMiddleware = postMiddlewareFactory({ mountUrl });
+  const postMiddleware = postMiddlewareFactory();
 
   // Prepare common middleware mounted prior to the ancillaryRouter
   const cookieParserMiddleware = cookieParserFactory(session.secret);
@@ -123,7 +132,6 @@ export default function configure(config = {}) {
     ttl: session.ttl,
     cookieSameSite: session.cookieSameSite,
     cookiePath: session.cookiePath,
-    mountUrl,
     store: session.store ?? new MemoryStore(),
   });
   const i18nMiddleware = i18nMiddlewareFactory({
@@ -136,7 +144,6 @@ export default function configure(config = {}) {
   });
   const dataMiddleware = dataMiddlewareFactory({
     plan,
-    mountUrl,
     events,
   });
 
@@ -146,9 +153,7 @@ export default function configure(config = {}) {
   const csrfMiddleware = csrfMiddlewareFactory();
 
   // Setup router to serve up bundled static assets
-  const staticRouter = staticRoutes({
-    mountUrl,
-  });
+  const staticRouter = staticRoutes();
 
   // Setup ancillary router default stand-alone pages.
   const ancillaryRouter = ancillaryRoutes({
@@ -161,7 +166,6 @@ export default function configure(config = {}) {
     pages,
     plan,
     csrfMiddleware,
-    mountUrl,
   });
 
   // Mount function
@@ -169,19 +173,59 @@ export default function configure(config = {}) {
   // the given ExpressJS app.
   // Once this is called, you will not be able to modify any of the routers as
   // they will be "sealed".
-  const mount = (app) => {
+
+  /**
+   * Mounting function.
+   *
+   * @type {Mounter} mount
+   */
+  const mount = (app, { route = '/' } = {}) => {
     nunjucksEnv.express(app);
     app.set('view engine', 'njk');
 
-    app.use(preMiddleware);
-    app.use(staticRouter.seal());
-    app.use(sessionMiddleware); // A session is useful to all pages, so always mounted
-    app.use(i18nMiddleware);
-    app.use(bodyParserMiddleware);
-    app.use(dataMiddleware);
-    app.use(ancillaryRouter.seal());
-    app.use(journeyRouter.seal());
-    app.use(postMiddleware);
+    // !!! DEPRECATION NOTICE !!!
+    // This provides a non-breaking pathway to replacing `mountUrl` with
+    // `req.baseUrl` in all internal route handlers/middleware for services
+    // that use a proxy path in their mount point.
+    //
+    // In some cases, the URL on which `app` instance is mounted might include a
+    // proxy path so that it can handle incoming requests that have had a path
+    // prepended to it by an intermediary, such as nginx. This would be common
+    // in a hosting environment that serves several separate applications.
+    //
+    // This bit of middleware removes that proxy path segment from the request
+    // so that all subsequent middleware behave as if it was never present.
+    //
+    // e.g. Where the proxy path is `my-proxy`, then a request to
+    // `/my-proxy/app` will be seen as `/app` in all subsequent middleware, and
+    // all URLs generated for the browser will use `/app`.
+    //
+    // Using `config.mountUrl` rather than `mountUrl` here to test whether the
+    // consumer explicitly set a `mountUrl`, in which case we're dealing with
+    // backwards-compatibility mode.
+    if (config.mountUrl) {
+      app.use((req, res, next) => {
+        req.baseUrl = mountUrl.replace(/\/$/, '');
+        next();
+      });
+    }
+
+    const router = Router({
+      // Required so that any parameters in the URL are propagated to middleware
+      mergeParams: true,
+    });
+
+    router.use(preMiddleware);
+    router.use(staticRouter.seal());
+    router.use(sessionMiddleware);
+    router.use(i18nMiddleware);
+    router.use(bodyParserMiddleware);
+    router.use(dataMiddleware);
+    router.use(ancillaryRouter.seal());
+    router.use(journeyRouter.seal());
+    router.use(postMiddleware);
+
+    app.use(route, router);
 
     return app;
   };

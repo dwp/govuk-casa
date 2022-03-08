@@ -44,8 +44,16 @@ export default function waypointUrl({
     url.pathname = `${mountUrl}${waypoint}`;
   }
 
-  // Attach context id for non-default contexts
-  if (journeyContext && !journeyContext.isDefault() && journeyContext.identity.id) {
+  // Attach context ID as query parameter for non-default contexts.
+  // To avoid messy URLs with duplicated content, this parameter will _not_ be
+  // added if the context ID already appears in the url path, i.e. to avoid
+  // `/path/1234-abcd/waypoint?contextid=1234-abcd` scenarios
+  if (
+    journeyContext
+    && !journeyContext.isDefault()
+    && journeyContext.identity.id
+    && !mountUrl.includes(journeyContext.identity.id)
+  ) {
     url.searchParams.append('contextid', journeyContext.identity.id);
   }
 

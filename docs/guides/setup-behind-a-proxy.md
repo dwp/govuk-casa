@@ -10,32 +10,39 @@ If your proxy manipulates the URL before reaching your app, then there's some co
 Given this request pathway:
 
 ```
-User (/app/) -> Reverse Proxy (rewrites to /host/app/) -> Your app
+Browser (/app/) -> Reverse Proxy (rewrites to /host/app/) -> Your app
 ```
 
 In this case your app will need to ...
 
-* Serve all ExpressJS routes from the base URL `/host/app/`
-* Use the `/app/` URL when writing out any links to resources in your web pages
+* Setup an ExpressJS handler to strip the proxy prefix off the URL, before anything else, and
+* Mount your CASA app on the `/app/` URL
 
-And here's the setup to do that:
+And here's the minimal setup to do that:
 
 ```javascript
 import ExpressJS from 'express';
 import { configure } from '@dwp/govuk-casa';
 
-const { mount } = configure({
-  mountUrl: '/app/',
-});
-
-const casaApp = ExpressJS();
-mount(casaApp);
+const { mount } = configure();
 
 const app = ExpressJS();
-app.use('/host', casaApp);
+
+app.use('/host', (req, res, next) => {
+  // Strip off proxy, leaving just the desired mount path
+  req.baseUrl = '/app/';
+
+  // This re-issues the request, and this time it will be picked up by the first
+  // middleware attached to `/app/`
+  req.app.handle(req, res, next);
+});
+
+app.use('/app/', mount(ExpressJS()));
 
 app.listen();
 ```
+
+> NOTE: For users on v8.1.x who are already mounting their CASA app directly on the proxy path, this will still work, but the above method will be mandatory in the next major release.
 
 
 ## Setting secure cookies

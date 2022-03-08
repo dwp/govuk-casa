@@ -4,9 +4,7 @@ const contactDetailsFields = require('./fields/contact-details.js');
 const secretAgentFields = require('./fields/secret-agent.js');
 const workImpactFields = require('./fields/work-impact.js');
 
-module.exports = ({
-  mountUrl,
-}) => [{
+module.exports = () => [{
   waypoint: 'personal-details',
   view: 'pages/personal-details.njk',
   fields: personalDetailsFields(),
@@ -49,7 +47,7 @@ module.exports = ({
         if (err) {
           console.error(err);
         }
-        res.status(302).redirect(`${mountUrl}what-happens-next`);
+        res.status(302).redirect(`${req.baseUrl}/what-happens-next`);
       });
     },
   }],

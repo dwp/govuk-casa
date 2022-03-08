@@ -3,9 +3,7 @@ import logger from '../lib/logger.js';
 
 const log = logger('middleware:post');
 
-export default function postMiddleware({
-  mountUrl,
-}) {
+export default function postMiddleware() {
   return [
     (req, res) => {
       res.status(404).render('casa/errors/404.njk');
@@ -20,7 +18,7 @@ export default function postMiddleware({
         res.locals.t = () => ('');
         res.locals.casa = {
           ...res.locals?.casa,
-          mountUrl,
+          mountUrl: `${req.baseUrl}/`,
         };
         TEMPLATE = 'casa/errors/static.njk';
       }

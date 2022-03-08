@@ -9,7 +9,6 @@ import {
 
 /**
  * @typedef {object} NunjucksOptions
- * @property {string} [mountUrl=/] Mount URL (optional, default /)
  * @property {string[]} [views=[]] Template file directories (optional, default [])
  */
 
@@ -20,7 +19,6 @@ import {
  * @returns {Environment} Nunjucks Environment instance
  */
 export default function nunjucksConfig({
-  mountUrl = '/',
   views = [],
 }) {
   // Prepare a single Nunjucks environment for all responses to use. Note that
@@ -43,7 +41,6 @@ export default function nunjucksConfig({
 
   // Globals
   // These can't be modified once set. But they can be overridden by res.locals.
-  env.addGlobal('assetPath', `${mountUrl}govuk/assets`); // Required by govuk-frontend layout template
   env.addGlobal('casaVersion', JSON.parse(readFileSync(resolve(dirname, '../../package.json'))).version);
 
   env.addGlobal('mergeObjects', mergeObjects);

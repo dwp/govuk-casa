@@ -35,7 +35,6 @@ export default function journeyRouter({
   pages,
   plan,
   csrfMiddleware,
-  mountUrl,
 }) {
   // Router
   const router = new MutableRouter();
@@ -43,6 +42,7 @@ export default function journeyRouter({
   // Special "_" route which handles redirecting the user between sub-apps
   // /app1/_/?refmount=app2&route=prev
   router.all('/_', (req, res) => {
+    const mountUrl = `${req.baseUrl}/`;
     const refmount = req.query?.refmount;
     const route = req.query?.route;
     log.trace(`App root ${mountUrl}: refmount = ${refmount}, route = ${route}`);
@@ -86,7 +86,6 @@ export default function journeyRouter({
 
   pages.forEach((page) => {
     const { waypoint, view, hooks: pageHooks = [], fields } = page;
-    const formUrl = waypointUrl({ mountUrl, waypoint });
     const waypointPath = `/${waypoint}`;
 
     let commonWaypointMiddleware = [
@@ -101,7 +100,7 @@ export default function journeyRouter({
       log.info(`Configuring "${waypoint}" as a skippable waypoint`);
       commonWaypointMiddleware = [
         ...commonWaypointMiddleware,
-        ...skipWaypointMiddlewareFactory({ mountUrl, waypoint }),
+        ...skipWaypointMiddlewareFactory({ waypoint }),
       ];
     }
 
@@ -111,12 +110,12 @@ export default function journeyRouter({
       ...commonWaypointMiddleware,
 
       ...resolveMiddlewareHooks('journey.presteer', waypointPath, [...globalHooks, ...pageHooks]),
-      ...steerJourneyMiddlewareFactory({ waypoint, mountUrl, plan }),
+      ...steerJourneyMiddlewareFactory({ waypoint, plan }),
       ...resolveMiddlewareHooks('journey.poststeer', waypointPath, [...globalHooks, ...pageHooks]),
 
       ...resolveMiddlewareHooks('journey.prerender', waypointPath, [...globalHooks, ...pageHooks]),
       renderMiddlewareFactory(view, (req) => ({
-        formUrl,
+        formUrl: waypointUrl({ mountUrl: `${req.baseUrl}/`, waypoint }),
         formData: req.casa.journeyContext.getDataForPage(waypoint),
       })),
     );
@@ -127,7 +126,7 @@ export default function journeyRouter({
       ...commonWaypointMiddleware,
 
       ...resolveMiddlewareHooks('journey.presteer', waypointPath, [...globalHooks, ...pageHooks]),
-      ...steerJourneyMiddlewareFactory({ waypoint, mountUrl, plan }),
+      ...steerJourneyMiddlewareFactory({ waypoint, plan }),
       ...resolveMiddlewareHooks('journey.poststeer', waypointPath, [...globalHooks, ...pageHooks]),
 
       ...resolveMiddlewareHooks('journey.presanitise', waypointPath, [...globalHooks, ...pageHooks]),
@@ -139,7 +138,7 @@ export default function journeyRouter({
       ...resolveMiddlewareHooks('journey.postgather', waypointPath, [...globalHooks, ...pageHooks]),
 
       ...resolveMiddlewareHooks('journey.prevalidate', waypointPath, [...globalHooks, ...pageHooks]),
-      ...validateFieldsMiddlewareFactory({ waypoint, fields, mountUrl, plan }),
+      ...validateFieldsMiddlewareFactory({ waypoint, fields, plan }),
       ...resolveMiddlewareHooks('journey.postvalidate', waypointPath, [...globalHooks, ...pageHooks]),
 
       // If there were validation errors, jump out of this route and into the
@@ -147,7 +146,7 @@ export default function journeyRouter({
       (req, res, next) => (req.casa.journeyContext.hasValidationErrorsForPage(waypoint) ? next('route') : next()),
 
       ...resolveMiddlewareHooks('journey.preredirect', waypointPath, [...globalHooks, ...pageHooks]),
-      ...progressJourneyMiddlewareFactory({ waypoint, plan, mountUrl }),
+      ...progressJourneyMiddlewareFactory({ waypoint, plan }),
     );
 
     router.post(
@@ -169,7 +168,7 @@ export default function journeyRouter({
         }));
 
         return {
-          formUrl,
+          formUrl: waypointUrl({ mountUrl: `${req.baseUrl}/`, waypoint }),
           formData: req.body,
           formErrors: Object.keys(errors).length ? errors : null,
           formErrorsGovukArray: govukErrors.length ? govukErrors : null,

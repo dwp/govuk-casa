@@ -2,14 +2,9 @@ const { resolve } = require('path');
 
 module.exports = function(options) {
 
-  let mountUrl;
-
   const configure = (config) => {
     // Add a views directory
     config.views.push(resolve(__dirname, 'views'));
-
-    // Store some of the config for later use
-    mountUrl = config.mountUrl;
   };
 
   const bootstrap = ({ nunjucksEnv, ancillaryRouter, cookieParserMiddleware }) => {
@@ -39,11 +34,11 @@ module.exports = function(options) {
     // on all routes.
     ancillaryRouter.post('/cookie-consent/accept', cookieParserMiddleware, (req, res, next) => {
       res.cookie('cookie_consent', 'accept');
-      res.redirect(302, mountUrl);  // TODO: needs to go back to the page user came from
+      res.redirect(302, `${req.baseUrl}/`);  // TODO: needs to go back to the page user came from
     });
     ancillaryRouter.post('/cookie-consent/reject', cookieParserMiddleware, (req, res, next) => {
       res.cookie('cookie_consent', 'reject');
-      res.redirect(302, mountUrl);
+      res.redirect(302, `${req.baseUrl}/`);
     });
 
     // Inject cookie banner template into the `bodyStart` block

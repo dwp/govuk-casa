@@ -457,4 +457,64 @@ describe('JourneyContext', () => {
       expect(newContext.isPageValid('test-two')).to.be.true
     });
   });
+
+  describe('extractContextFromRequest()', () => {
+    let initContextStoreStub;
+    let validateStub;
+    let getContextByIdStub;
+
+    beforeEach(() => {
+      initContextStoreStub = sinon.stub(JourneyContext, 'initContextStore');
+      validateStub = sinon.stub(JourneyContext, 'validateContextId').callsFake((cid) => (cid));
+      getContextByIdStub = sinon.stub(JourneyContext, 'getContextById').callsFake((_, cid) => (cid));
+    });
+
+    afterEach(() => {
+      initContextStoreStub.restore();
+      validateStub.restore();
+      getContextByIdStub.restore();
+    });
+
+    it('finds a context id in req.params before query or body', () => {
+      JourneyContext.extractContextFromRequest({
+        params: { contextid: 'params' },
+        query: { contextid: 'query' },
+        body: { contextid: 'body' },
+      });
+
+      expect(validateStub).to.be.calledWithExactly('params');
+    });
+
+    it('finds a context id in req.query before body', () => {
+      JourneyContext.extractContextFromRequest({
+        query: { contextid: 'query' },
+        body: { contextid: 'body' },
+      });
+
+      expect(validateStub).to.be.calledWithExactly('query');
+    });
+
+    it('finds a context id in req.body', () => {
+      JourneyContext.extractContextFromRequest({
+        body: { contextid: 'body' },
+      });
+
+      expect(validateStub).to.be.calledWithExactly('body');
+    });
+
+    it('defaults to "default" context ID', () => {
+      JourneyContext.extractContextFromRequest({});
+
+      expect(validateStub).to.be.calledWithExactly(JourneyContext.DEFAULT_CONTEXT_ID);
+    });
+
+    it('falls back to context ID is not a valid format', () => {
+      validateStub.restore();
+      const context = JourneyContext.extractContextFromRequest({
+        query: { contextid: 'invalid' },
+      });
+
+      expect(context).to.equal('default');
+    });
+  });
 });

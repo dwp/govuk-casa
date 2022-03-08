@@ -656,7 +656,10 @@ export default class JourneyContext {
     JourneyContext.initContextStore(req.session);
 
     let contextId;
-    if (has(req.query, 'contextid')) {
+    if (has(req?.params, 'contextid')) {
+      log.trace('Context ID found in req.params.contextid');
+      contextId = String(req.params.contextid);
+    } else if (has(req.query, 'contextid')) {
       log.trace('Context ID found in req.query.contextid');
       contextId = String(req.query.contextid);
     } else if (has(req?.body, 'contextid')) {

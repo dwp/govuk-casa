@@ -17,15 +17,15 @@ const log = logger('middleware:steer-journey');
  * @param {object} obj Options
  * @param {string} obj.waypoint Current waypoint
  * @param {Plan} obj.plan CASA Plan
- * @param {string} obj.mountUrl Mount URL
  * @returns {void}
  */
 export default ({
   waypoint,
   plan,
-  mountUrl,
 }) => [
   (req, res, next) => {
+    const mountUrl = `${req.baseUrl}/`;
+
     // If the requested waypoint doesn't exist in the traversed journey, send
     // the user back to the last good waypoint.
     const traversed = plan.traverse(req.casa.journeyContext);

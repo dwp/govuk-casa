@@ -53,7 +53,7 @@ The `configure()` method does a _lot_, most of which is opaque to the developer.
 
 ```javascript
 // Configure the artifacts that make up a CASA application
-const { staticRouter, ancillaryRouter, mount } = configure({ mountUrl, ... });
+const { staticRouter, ancillaryRouter, mount } = configure({ ... });
 
 // Add your own custom static routes
 staticRouter.get('/path/to/some.css', (req, res, next) => { ... });
@@ -62,8 +62,7 @@ staticRouter.get('/path/to/some.css', (req, res, next) => { ... });
 ancillaryRouter.post('/some/page', (req, res, next) => { ... });
 
 // Finally, create your CASA ExpressJS app, and mount all the artifacts
-const casaApp = express();
-mount(casaApp);
+const casaApp = mount(express());
 
 // Optionally, mount your CASA app onto a specific mount point in a parent app
 const app = express();
@@ -163,20 +162,29 @@ CASA no longer needs to write files to the filesystem at boot time, so this opti
 
 **`proxyMountUrl` option removed**
 
-This was used to support cases where an upstream proxy used url-rewriting to direct traffic to multiple downstram services. As you can now mount CASA as a sub app on any parent app route you wish, this option has become redundant. For example:
+This was used to support cases where an upstream proxy uses url-rewriting to direct traffic to multiple downstream services. As you can now mount CASA as a sub app on any parent app route you wish, this option has become redundant.
+
+Instead, you now need to add a little middleware that strips off the proxy prefix. For example:
 
 ```javascript
 const proxyMountUrl = '/some-proxy-path';
 const mountUrl = '/context-path';
 
-const { mount } = configure({ mountUrl });
-const casaApp = express();
-mount(casaApp);
+const { mount } = configure();
 
-// Mount the CASA app on a proxy parent
 const app = express();
-app.use(`${proxyMountUrl}${mountUrl}`, casaApp);
+
+app.use(proxyMountUrl, (req, res, next) => {
+  req.baseUrl = '';
+  req.app.handle(req, res, next);
+});
+
+app.use(mountUrl, mount(express()));
+
+app.listen();
 ```
+
+See the [proxy guide](../guides/setup-behind-a-proxy.md) for more details.
 
 
 ***`sessionExpiryController` option removed**

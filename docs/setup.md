@@ -31,10 +31,6 @@ This is the entrypoint for setting up a CASA app. There are no side-effects on t
 
 ## Options
 
-* `string` **`mountUrl`** Mount URL (must begin and end with `/`)
-
-The absolute URL path from which your CASA app is served. All routers and middleware will be mounted on this path.
-
 * `string[]` **`views`** _(required)_ Nunjucks views directories
 
 Nunjucks will search for templates in the order: user templates (defined in `configure()`) > CASA template > `govuk-frontend` templates > plugin templates
@@ -104,12 +100,13 @@ const {
 
   // Middleware
   preMiddleware,
+  sessionMiddleware,
+  i18nMiddleware,
+  bodyParserMiddleware,
+  dataMiddleware,
   postMiddleware
   csrfMiddleware,
   cookieParserMiddleware,
-  sessionMiddleware,
-  bodyParserMiddleware,
-  i18nMiddleware,
   
   // Function
   mount,
@@ -122,23 +119,26 @@ const {
 | `ancillaryRouter` | `MutableRouter` or `Router` | Serves all general-purpose pages |
 | `journeyRouter` | `MutableRouter` or `Router` | Serves all pages that represent waypoints in a user's journey |
 
-All these routers are mutable (new routes/middleware can be appended or prepended to them) prior to calling `mount()` (see below) and immutable thereafter. Note that when they do get mounted, they are mounted in the order above.
+All these routers are mutable (new routes/middleware can be appended or prepended to them) prior to calling `mount()` ([see below](#mutable-routers)) and immutable thereafter. Note that when they do get mounted, they are mounted in the order above.
 
 | Artifact | Type | Description |
 |----------|------|-------------|
 | `preMiddleware` | `function[]` | Middleware that must come before all other routes/middleware. General these are security related. |
+| `sessionMiddleware` | `function[]` | Initialises or loads session data |
+| `i18nMiddleware` | `function[]` | Initialises i18n support on the request |
+| `bodyParserMiddleware` | `function[]` | Parses `url-encoded` request bodies and makes them available on `req.body` |
+| `dataMiddleware` | `function[]` | Adds various properties to the `req` and `res.locals` objects |
 | `postMiddleware` | `function[]` | Middleware that must come after everything else. Generally, these are 40*/50* error handlers. |
 | `csrfMiddleware` | `function[]` | Useful for POST forms |
 | `cookieParserMiddleware` | `function[]` | Parses request cookies into the `req.signedCookies` object |
-| `sessionMiddleware` | `function[]` | Initialises or loads session data |
-| `bodyParserMiddleware` | `function[]` | Parses `url-encoded` request bodies and makes them available on `req.body` |
-| `i18nMiddleware` | `function[]` | Initialises i18n support on the request |
+
+All these middleware are also mutable before `mount()` is called (at which point they aree mounted in the order above). They are just arrays of middleware, so you can `push()`/`unshift()` your own middleware functions to these arrays as you need.
 
 | Artifact | Type | Description |
 |----------|------|-------------|
 | `mount` | `function` | Calling this will mount all the CASA routers/middleware and effectively prevent any further modification |
 
-Call the `mount()` function as the last thing you do, once you're setup all the routers as you wish.
+Call the `mount()` function as the last thing you do, once you've setup all the routers/middleware as you wish.
 
 
 ## Mutable routers

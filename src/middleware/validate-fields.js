@@ -21,10 +21,11 @@ const updateContext = ({
 export default ({
   waypoint,
   fields = [],
-  mountUrl,
   plan,
 }) => [
   (req, res, next) => {
+    const mountUrl = `${req.baseUrl}/`;
+
     let errors = [];
     for (let i = 0, l = fields.length; i < l; i++) {
       /* eslint-disable security/detect-object-injection */

@@ -27,6 +27,8 @@ npm -E @dwp/govuk-casa
 
 A series of migration guides are provided in [`docs/migration-guides/`](docs/migration-guides/) that should help you upgrade between major versions of CASA.
 
+Also see our [list of upcoming deprecations](DEPRECATIONS.md) that are planned for delivery in the next major version.
+
 
 ## Support
 

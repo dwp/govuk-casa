@@ -15,7 +15,6 @@ const application = ({
 }) => {
   // Configure some CASA routes and other middleware for use in our CASA app
   const { staticRouter, ancillaryRouter, csrfMiddleware, mount } = configure({
-    mountUrl: MOUNT_URL,
     views: [
       resolve(__dirname, 'views'),
     ],
@@ -43,7 +42,7 @@ const application = ({
       dirs: [ resolve(__dirname, 'locales') ],
       locales: [ 'en', 'cy' ]
     },
-    pages: pages({ mountUrl: MOUNT_URL }),
+    pages: pages(),
     plan,
     events,
   });
@@ -82,7 +81,7 @@ const application = ({
   // Example of how to mount a handler for the `/` index route. Need to use a
   // regex for the specific match to only `/`.
   ancillaryRouter.use(/^\/$/, (req, res, next) => {
-    res.redirect(302, `${MOUNT_URL}start`);
+    res.redirect(302, `${req.baseUrl}/start`);
   });
 
   // Now mount all CASA's routers and middleware
@@ -91,8 +90,7 @@ const application = ({
   const casaApp = ExpressJS();
   mount(casaApp);
 
-  // Finally, mount our CASA app on the desired mountUrl. Here, you could also
-  // specify a proxy prefix if you were using nginx rewriting, for example.
+  // Finally, mount our CASA app on the desired mountUrl.
   const app = ExpressJS();
   app.use(MOUNT_URL, casaApp);
 

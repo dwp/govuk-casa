@@ -56,12 +56,12 @@ module.exports = function({
                       href: waypointUrl({
                         journeyContext: req?.casa?.journeyContext,
                         waypoint: wp,
-                        mountUrl: config.mountUrl,
+                        mountUrl: `${req.baseUrl}/`,
                         edit: true,
                         editOrigin: waypointUrl({
                           journeyContext: req?.casa?.journeyContext,
                           waypoint,
-                          mountUrl: config.mountUrl,
+                          mountUrl: `${req.baseUrl}/`,
                         }),
                       }) + `#f-${field.name}`,
                       text: req.t('check-your-answers:change'),

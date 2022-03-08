@@ -7,22 +7,22 @@ As a request gets passed through CASA's routes and middleware, it will modify th
 
 | Middleware/router stage | Description | `req.*` additions | `res.locals.*` additions |
 |------------------|-------------|-----------------|------------------------|
-| **pre** | Default no-cache headers are set | | |
+| **preMiddleware** | Default no-cache headers are set | | |
 | | General-purpose CSP nonce generated | | `cspNonce` |
 | | Helmet headers applied | | |
 | |
 | **staticRouter** | [GET] Route handlers setup for `/govuk/assets/` and `/casa/assets/` resources | | |
 | |
-| **session** | Session initialised or loaded | `session` | |
+| **sessionMiddleware** | Session initialised or loaded | `session` | |
 | | Cookies parsed | `signedCookies` | |
 | | Session expiration logic; at this point you may be redirected to `session-timeout` | | |
 | |
-| **i18n** | Language detected and stored in session | `session.language` | |
-| | i18next handler attached | `t()` | |
+| **i18nMiddleware** | Language detected and stored in session | `session.language` | |
+| | i18next handler attached | `t()` | `t()` |
 ||
-| **bodyParser** | Request body parsed and verified | `body` | |
+| **bodyParserMiddleware** | Request body parsed and verified | `body` | |
 ||
-| **data** | Setup various data items on the request and template | `casa.plan`<br/>`casa.journeyContext`<br/>`casa.editMode`<br/>`casa.editOrigin` | `casa.mountUrl`<br/>`casa.locale`<br/>`casa.editMode`<br/>`casa.editOrigin`<br/>`htmlLang`<br/>`waypointUrl()` |
+| **dataMiddleware** | Setup various data items on the request and template | `casa.plan`<br/>`casa.journeyContext`<br/>`casa.editMode`<br/>`casa.editOrigin` | `assetPath`<br/>`casa.mountUrl`<br/>`casa.locale`<br/>`casa.editMode`<br/>`casa.editOrigin`<br/>`htmlLang`<br/>`waypointUrl()` |
 | |
 | **ancillaryRouter** | [GET] Mount `/session-timeout` route handler | | |
 ||
@@ -47,7 +47,7 @@ As a request gets passed through CASA's routes and middleware, it will modify th
 | | [GET/POST] `journey.prerender` hooks executed | | |
 | | [GET/POST] Render the form | | |
 | |
-| **post** | Handle all other requests as a 404 response | | |
+| **postMiddleware** | Handle all other requests as a 404 response | | |
 | | Handle all errors as a 5** or 4** response | | |
 
 
@@ -55,7 +55,6 @@ The following globals are always available to the Nunjucks templates. Refer to t
 
 | Property | Description |
 |----------|-------------|
-| `assetPath` | URL from which all `govuk-frontend` assets are served |
 | `casaVersion` | Current version of CASA (used for cache-busting) CASA resources |
 | `mergeObjects()` | Function to deep-merge objects |
 | `includes()` | Function to determine if an array includes a value |
@@ -106,7 +105,8 @@ The following globals are always available to the Nunjucks templates. Refer to t
 
 | Property | Description |
 |----------|-------------|
-| `casa.mountUrl` | Configured mount URL |
+| `assetPath` | URL from which all `govuk-frontend` assets are served. Used by the main `govuk-frontend` template |
+| `casa.mountUrl` | Configured mount URL. Note that if using a paramterized mount point (e.g. `/base/:someId`) then this URL will contain the parameter value(s) |
 | `htmlLang` | Detected language (required by `govuk-frontend` template) |
 | `locale` | Detected language |
 | `waypointUrl()` | A method for generating URLs, curried with the `mountUrl` and `journeyContext` parameters (see [waypointUrl()](../src/lib/waypoint-url.js)) |
@@ -115,10 +115,10 @@ The following globals are always available to the Nunjucks templates. Refer to t
 
 | Property | Description |
 |----------|-------------|
-| `plan` | The CASA Plan |
-| `journeyContext` | User's journey context |
-| `editMode` | Whether the request is in edit mode or not |
-| `editOrigin` | Send user back to this URL after they have finished editing |
+| `casa.plan` | The CASA Plan |
+| `casa.journeyContext` | User's journey context |
+| `casa.editMode` | Whether the request is in edit mode or not |
+| `casa.editOrigin` | Send user back to this URL after they have finished editing |
 
 
 ## "Journey" router

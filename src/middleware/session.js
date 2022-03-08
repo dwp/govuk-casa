@@ -7,7 +7,6 @@ import logger from '../lib/logger.js';
 const log = logger('middleware:session');
 
 const sessionExpiryMiddleware = (
-  mountUrl,
   ttl,
   getCookie,
   touchCookie,
@@ -29,7 +28,7 @@ const sessionExpiryMiddleware = (
         touchCookie(res);
         if (req.method === 'POST') {
           log.info('The CSRF token for this POST request will now be invalid for this regenerated session. Redirecting to app mount point.');
-          res.redirect(302, mountUrl);
+          res.redirect(302, `${req.baseUrl}/`);
         } else {
           next();
         }
@@ -49,7 +48,7 @@ const sessionExpiryMiddleware = (
           referrer: req.originalUrl,
           lang: language,
         });
-        res.redirect(302, `${mountUrl}session-timeout?${params.toString()}`);
+        res.redirect(302, `${req.baseUrl}/session-timeout?${params.toString()}`);
       }
     });
   } else {
@@ -69,7 +68,6 @@ export default function sessionMiddleware({
   name,
   secure,
   ttl,
-  mountUrl = '/',
   cookieSameSite = true,
   cookiePath = '/',
   store = new MemoryStore(),
@@ -124,6 +122,6 @@ export default function sessionMiddleware({
       store,
     }),
     cookieParserMiddleware,
-    sessionExpiryMiddleware(mountUrl, ttl, getCookie, touchCookie, removeCookie),
+    sessionExpiryMiddleware(ttl, getCookie, touchCookie, removeCookie),
   ];
 }

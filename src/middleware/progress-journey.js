@@ -23,7 +23,6 @@ const saveAndRedirect = (session, journeyContext, url, res, next) => {
 export default ({
   waypoint,
   plan,
-  mountUrl,
 }) => [
   (req, res, next) => {
     // Determine the next available waypoint after the current one
@@ -80,7 +79,7 @@ export default ({
     // Construct the next url
     const nextUrl = waypointUrl({
       waypoint: nextWaypoint,
-      mountUrl,
+      mountUrl: `${req.baseUrl}/`,
       journeyContext: req.casa.journeyContext,
       edit: req.casa.editMode,
       editOrigin: req.casa.editOrigin,

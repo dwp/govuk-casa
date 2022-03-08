@@ -30,19 +30,18 @@ However, you can disable this behaviour by defining an **entrypoint condition** 
 
 In this example, each CASA app is entirely independent. They do not share a session store.
 
-* Each app _may_ use the same session store (waypoints must be unique if so)
+* Each app _may_ use the same session store (waypoints must be unique among all Plans if so)
 
 ```javascript
 import { configure } from '@dwp/govuk-casa';
 
-function createApp(mountUrl) {
-  const { mount } = configure({ mountUrl });
-  const app = express();
-  return mount(app);
+function createApp() {
+  const { mount } = configure();
+  return mount(express());
 }
 
-const app1 = createApp('/one/');
-const app2 = createApp('/two/');
+const app1 = createApp();
+const app2 = createApp();
 
 const parent = express();
 parent.use('/one/', app1);
@@ -64,9 +63,8 @@ import ExpressJS from 'express';
 import { configure } from '@dwp/govuk-casa';
 const { MemoryStore } = express;
 
-function createApp(mountUrl, store, entrypointCondition) {
+function createApp(store, entrypointCondition) {
   const { mount, ancillaryRouter } = configure({
-    mountUrl,
     session: {
       store,
       name: 'session-name',
@@ -78,8 +76,8 @@ function createApp(mountUrl, store, entrypointCondition) {
 }
 
 const store = new MemoryStore();
-const app1 = createApp('/one/', store);
-const app2 = createApp('/two/', store, (req, res, next) => {
+const app1 = createApp(store);
+const app2 = createApp(store, (req, res, next) => {
   if (someCondition === true) {
     next(); // let user through
   } else {

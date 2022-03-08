@@ -6,7 +6,6 @@ import ingest, {
   validateI18nObject,
   validateI18nDirs,
   validateI18nLocales,
-  validateMountUrl,
   validateSessionObject,
   validateSessionCookiePath,
   validateSessionCookieSameSite,
@@ -103,24 +102,6 @@ describe('ConfigIngestor', () => {
     it('should return a valid value', () => {
       const testLocales = ['en', 'cy'];
       expect(validateI18nLocales(testLocales)).to.equal(testLocales);
-    });
-  });
-
-  describe('validateMountUrl()', () => {
-    it('should default to / when a value is not specified', () => {
-      expect(validateMountUrl()).to.equal('/');
-    });
-
-    it('should throw an Error if a trailing slash is missing', () => {
-      expect(() => validateMountUrl('/missing-trailing-slash')).to.throw(Error, 'Mount URL must include a trailing slash (/)');
-    });
-
-    it('should return a valid value', () => {
-      expect(validateMountUrl('/this-is/my/mount-url/')).to.equal('/this-is/my/mount-url/');
-    });
-
-    it('should include a custom name in the error message', () => {
-      expect(() => validateMountUrl('/missing-trailing-slash', 'CUSTOM')).to.throw(Error, 'CUSTOM must include a trailing slash (/)');
     });
   });
 

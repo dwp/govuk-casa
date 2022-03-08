@@ -1,4 +1,4 @@
-export default (mountUrl) => [{
+export default () => [{
   hook: 'presanitise',
   middleware: (req, res, next) => {
     // Prepare all the gathered data and send it to an upstream service
@@ -9,7 +9,7 @@ export default (mountUrl) => [{
       if (err) {
         console.error(err);
       }
-      res.status(302).redirect(`${mountUrl}what-happens-next`);
+      res.status(302).redirect(`${req.baseUrl}/what-happens-next`);
     });
   },
 }];

@@ -19,7 +19,6 @@ const editOrigin = (req) => {
 
 export default function dataMiddleware({
   plan,
-  mountUrl,
   events,
 }) {
   return [
@@ -47,6 +46,9 @@ export default function dataMiddleware({
 
       /* ------------------------------------------------- Template variables */
 
+      // Figure out the mount URL of the current request
+      const mountUrl = `${req.baseUrl}/`.replace(/\/+/, '/');
+
       // CASA and userland templates
       res.locals.casa = {
         mountUrl,
@@ -56,8 +58,10 @@ export default function dataMiddleware({
       res.locals.locale = req.language;
 
       // Used by govuk-frontend template
-      // - req.language is provided by i18n-http-middleware
+      //   htmlLang = req.language is provided by i18n-http-middleware
+      //   assetPath = used for linking to static assets in the govuk-frontend module
       res.locals.htmlLang = req.language;
+      res.locals.assetPath = `${mountUrl}govuk/assets`;
 
       // Function for building URLs. This will be curried with the `mountUrl`,
       // `journeyContext`, `edit` and `editOrigin` for convenience. This means

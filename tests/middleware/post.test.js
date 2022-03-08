@@ -27,7 +27,7 @@ const makeErroringApp = (thrownError) => {
 describe('post middleware', () => {
   it('renders a 500 page for generic errors', (done) => {
     const app = makeErroringApp(new Error());
-    app.use(postMiddleware({ mountUrl: '/' }));
+    app.use(postMiddleware());
 
     request(app)
       .get('/')
@@ -37,7 +37,7 @@ describe('post middleware', () => {
 
   it('renders a 404 page for an unknown URL', (done) => {
     const app = makeErroringApp();
-    app.use(postMiddleware({ mountUrl: '/' }));
+    app.use(postMiddleware());
 
     request(app)
       .get('/')
@@ -49,7 +49,7 @@ describe('post middleware', () => {
     const err = new Error();
     err.code = 'EBADCSRFTOKEN';
     const app = makeErroringApp(err);
-    app.use(postMiddleware({ mountUrl: '/' }));
+    app.use(postMiddleware());
 
     request(app)
       .get('/')
@@ -61,7 +61,7 @@ describe('post middleware', () => {
     const err = new Error();
     err.type = 'entity.verify.failed';
     const app = makeErroringApp(err);
-    app.use(postMiddleware({ mountUrl: '/' }));
+    app.use(postMiddleware());
 
     request(app)
       .get('/')
@@ -73,7 +73,7 @@ describe('post middleware', () => {
     const err = new Error();
     err.type = 'parameters.too.many';
     const app = makeErroringApp(err);
-    app.use(postMiddleware({ mountUrl: '/' }));
+    app.use(postMiddleware());
 
     request(app)
       .get('/')
@@ -85,7 +85,7 @@ describe('post middleware', () => {
     const err = new Error();
     err.type = 'entity.too.large';
     const app = makeErroringApp(err);
-    app.use(postMiddleware({ mountUrl: '/' }));
+    app.use(postMiddleware());
 
     request(app)
       .get('/')
@@ -97,7 +97,7 @@ describe('post middleware', () => {
     const err = new Error();
     err.code = 'unaccepted_request_method';
     const app = makeErroringApp(err);
-    app.use(postMiddleware({ mountUrl: '/' }));
+    app.use(postMiddleware());
 
     request(app)
       .get('/')

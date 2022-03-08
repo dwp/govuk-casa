@@ -9,9 +9,7 @@ import accountsFields from './fields/accounts.js';
 import checkYourAnswersHooks from './page-hooks/check-your-answers.js';
 import submitHooks from './page-hooks/submit.js';
 
-export default ({
-  mountUrl,
-}) => [{
+export default () => [{
   waypoint: 'country',
   view: 'pages/country.njk',
   fields: countryFields(),
@@ -48,9 +46,9 @@ export default ({
 }, {
   waypoint: 'check-your-answers',
   view: 'pages/check-your-answers.njk',
-  hooks: checkYourAnswersHooks(mountUrl),
+  hooks: checkYourAnswersHooks(),
 }, {
   waypoint: 'submit',
   view: 'pages/submit.njk',
-  hooks: submitHooks(mountUrl),
+  hooks: submitHooks(),
 }];

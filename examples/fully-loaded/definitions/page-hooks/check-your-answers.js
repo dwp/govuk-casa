@@ -4,8 +4,8 @@ const { formatDateObject } = nunjucksFilters;
 
 const makeAddress = ({ addressLine1, addressLine2, town, county, postcode }) => `${addressLine1},${addressLine2},${town},${county},${postcode}`.replace(/,+/g, ',  ');
 
-export default (mountUrl) => {
-  const rowFactory = (t) => (waypoint, fieldName, value, key = `${waypoint}:pageTitle`) => ({
+export default () => {
+  const rowFactory = (t, mountUrl) => (waypoint, fieldName, value, key = `${waypoint}:pageTitle`) => ({
     key: { text: t(key) },
     value: { text: value },
     actions: {
@@ -27,7 +27,7 @@ export default (mountUrl) => {
     middleware: (req, res, next) => {
       console.log('calling cya page hook');
       const d = req.casa.journeyContext.data;
-      const row = rowFactory(req.t);
+      const row = rowFactory(req.t, `${req.baseUrl}/`);
 
       res.locals.rows = [
         row('country', 'country', d.country.country ?? req.t('country:unspecified')),

@@ -11,7 +11,6 @@ const log = logger('middleware:skip-waypoint');
 
 export default ({
   waypoint,
-  mountUrl,
 }) => [
   (req, res, next) => {
     if (!has(req.query, 'skipto')) {
@@ -28,7 +27,7 @@ export default ({
     JourneyContext.putContext(req.session, req.casa.journeyContext);
 
     const redirectUrl = waypointUrl({
-      mountUrl,
+      mountUrl: `${req.baseUrl}/`,
       waypoint: skipTo,
       edit: req.casa.editMode,
       editOrigin: req.casa.editOrigin,

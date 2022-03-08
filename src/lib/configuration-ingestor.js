@@ -464,6 +464,9 @@ export default function ingest(config = {}) {
       locales: validateI18nLocales(i18n.locales),
     })),
 
+    // !!! DEPRECATION NOTICE !!!
+    // This will be removed in next major version
+    //
     // Public URL from which the app will be served
     mountUrl: validateMountUrl(config.mountUrl),
 

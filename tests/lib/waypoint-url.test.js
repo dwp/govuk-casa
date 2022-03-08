@@ -55,6 +55,14 @@ describe('waypointUrl()', () => {
   });
 
 
+  it('excludes the "contextid" parameter when it is already present in the mountUrl', () => {
+    const journeyContext = new JourneyContext();
+    journeyContext.identity.id = 'test-context';
+
+    expect(waypointUrl({ mountUrl: '/path/test-context/', journeyContext })).to.not.contain('contextid=');
+  });
+
+
   it('includes an "edit" parameter when required', () => {
     expect(waypointUrl({ edit: true })).to.equal('/?edit=true');
     expect(waypointUrl({ edit: 1 })).to.equal('/');
