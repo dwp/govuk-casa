@@ -63,10 +63,6 @@ describe('ConfigIngestor', () => {
   });
 
   describe('validateI18nObject()', () => {
-    it('should throw a TypeError when not given an object', () => {
-      expect(() => validateI18nObject()).to.throw(TypeError, 'I18n must be an object');
-    });
-
     it('should call the callback, passing a valid value, and return its result', () => {
       const stubCallback = sinon.stub().returns('test-response');
       const testInput = {};
@@ -76,10 +72,6 @@ describe('ConfigIngestor', () => {
   });
 
   describe('validateI18nDirs()', () => {
-    it('should throw an Error if no value is specified', () => {
-      expect(() => validateI18nDirs()).to.throw(ReferenceError, 'I18n directories are missing (i18n.dirs)');
-    });
-
     it('should throw an Error if the value is not an Array', () => {
       expect(() => validateI18nDirs('not an array')).to.throw(TypeError, 'I18n directories must be an array (i18n.dirs)');
     });
@@ -91,10 +83,6 @@ describe('ConfigIngestor', () => {
   });
 
   describe('validateI18nLocales()', () => {
-    it('should throw an Error if no value is specified', () => {
-      expect(() => validateI18nLocales()).to.throw(ReferenceError, 'I18n locales are missing (i18n.locales)');
-    });
-
     it('should throw an Error if the value is not an Array', () => {
       expect(() => validateI18nLocales('not an array')).to.throw(TypeError, 'I18n locales must be an array (i18n.locales)');
     });
@@ -158,10 +146,6 @@ describe('ConfigIngestor', () => {
   });
 
   describe('validateSessionName()', () => {
-    it('should throw an ReferenceError if no value is specified', () => {
-      expect(() => validateSessionName()).to.throw(ReferenceError, 'Session name is missing (session.name)');
-    });
-
     it('should throw a TypeError if the value is not a string', () => {
       expect(() => validateSessionName([])).to.throw(TypeError, 'Session name must be a string (session.name)');
     });
@@ -186,10 +170,6 @@ describe('ConfigIngestor', () => {
   });
 
   describe('validateSessionSecure()', () => {
-    it('should throw an ReferenceError if no value is specified', () => {
-      expect(() => validateSessionSecure()).to.throw(ReferenceError, 'Session secure flag is missing (session.secure)');
-    });
-
     it('should throw a TypeError if the value is not a string', () => {
       expect(() => validateSessionSecure([])).to.throw(TypeError, 'Session secure flag must be boolean (session.secure)');
     });
@@ -211,10 +191,6 @@ describe('ConfigIngestor', () => {
   });
 
   describe('validateSessionTtl()', () => {
-    it('should throw an ReferenceError if no value is specified', () => {
-      expect(() => validateSessionTtl()).to.throw(ReferenceError, 'Session ttl is missing (session.ttl)');
-    });
-
     it('should throw a TypeError if the value is not an integer', () => {
       expect(() => validateSessionTtl([])).to.throw(TypeError, 'Session ttl must be an integer (session.ttl)');
     });
@@ -225,10 +201,6 @@ describe('ConfigIngestor', () => {
   });
 
   describe('validateViews()', () => {
-    it('should throw an Error if no value is specified', () => {
-      expect(() => validateViews()).to.throw(ReferenceError, 'View directories are missing (views)');
-    });
-
     it('should throw an Error if the value is not an Array', () => {
       expect(() => validateViews('not an array')).to.throw(TypeError, 'View directories must be an array (views)');
     });
@@ -258,7 +230,7 @@ describe('ConfigIngestor', () => {
     });
 
     it('throws if not an array', () => {
-      expect(() => validatePages()).to.throw(TypeError, 'Pages must be an array (pages)');
+      expect(() => validatePages(null)).to.throw(TypeError, 'Pages must be an array (pages)');
     });
 
     it('throws if waypoint is invalid', () => {

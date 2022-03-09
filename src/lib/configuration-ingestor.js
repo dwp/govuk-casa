@@ -86,7 +86,7 @@ const echo = (a) => (a);
  * @throws {TypeError} For invalid object.
  * @returns {object} Sanitised i18n object.
  */
-export function validateI18nObject(i18n, cb = echo) {
+export function validateI18nObject(i18n = Object.create(null), cb = echo) {
   if (Object.prototype.toString.call(i18n) !== '[object Object]') {
     throw new TypeError('I18n must be an object');
   }
@@ -101,10 +101,8 @@ export function validateI18nObject(i18n, cb = echo) {
  * @throws {TypeError} For invalid type.
  * @returns {Array} Array of directories.
  */
-export function validateI18nDirs(dirs) {
-  if (typeof dirs === 'undefined') {
-    throw ReferenceError('I18n directories are missing (i18n.dirs)')
-  } else if (!Array.isArray(dirs)) {
+export function validateI18nDirs(dirs = []) {
+  if (!Array.isArray(dirs)) {
     throw new TypeError('I18n directories must be an array (i18n.dirs)');
   }
   dirs.forEach((dir, i) => {
@@ -123,10 +121,8 @@ export function validateI18nDirs(dirs) {
  * @throws {TypeError} For invalid type.
  * @returns {Array} Array of locales.
  */
-export function validateI18nLocales(locales) {
-  if (typeof locales === 'undefined') {
-    throw ReferenceError('I18n locales are missing (i18n.locales)')
-  } else if (!Array.isArray(locales)) {
+export function validateI18nLocales(locales = ['en', 'cy']) {
+  if (!Array.isArray(locales)) {
     throw new TypeError('I18n locales must be an array (i18n.locales)');
   }
   locales.forEach((locale, i) => {
@@ -163,7 +159,7 @@ export function validateMountUrl(mountUrl, name = 'Mount URL') {
  * @throws {TypeError} For invalid object.
  * @returns {object} Sanitised sessions object.
  */
-export function validateSessionObject(session, cb = echo) {
+export function validateSessionObject(session = Object.create(null), cb = echo) {
   if (session === undefined) {
     return cb(session);
   }
@@ -183,10 +179,8 @@ export function validateSessionObject(session, cb = echo) {
  * @throws {TypeError} For invalid type.
  * @returns {Array} Array of directories.
  */
-export function validateViews(dirs) {
-  if (typeof dirs === 'undefined') {
-    throw ReferenceError('View directories are missing (views)')
-  } else if (!Array.isArray(dirs)) {
+export function validateViews(dirs = []) {
+  if (!Array.isArray(dirs)) {
     throw new TypeError('View directories must be an array (views)');
   }
   dirs.forEach((dir, i) => {
@@ -222,10 +216,8 @@ export function validateSessionSecret(secret) {
  * @throws {TypeError} For invalid value.
  * @returns {number} Ttl.
  */
-export function validateSessionTtl(ttl) {
-  if (typeof ttl === 'undefined') {
-    throw ReferenceError('Session ttl is missing (session.ttl)')
-  } else if (typeof ttl !== 'number') {
+export function validateSessionTtl(ttl = 3600) {
+  if (typeof ttl !== 'number') {
     throw new TypeError('Session ttl must be an integer (session.ttl)');
   }
   return ttl;
@@ -234,15 +226,13 @@ export function validateSessionTtl(ttl) {
 /**
  * Validates and sanitises sessions name.
  *
- * @param {string} name Session name.
+ * @param {string} [name=casa-session] Session name.
  * @throws {ReferenceError} For missing value type.
  * @throws {TypeError} For invalid value.
  * @returns {string} Name.
  */
-export function validateSessionName(name) {
-  if (typeof name === 'undefined') {
-    throw ReferenceError('Session name is missing (session.name)')
-  } else if (typeof name !== 'string') {
+export function validateSessionName(name = 'casa-session') {
+  if (typeof name !== 'string') {
     throw new TypeError('Session name must be a string (session.name)');
   }
   return name;
@@ -251,15 +241,13 @@ export function validateSessionName(name) {
 /**
  * Validates and sanitises sessions secure flag.
  *
- * @param {boolean} secure Session secure flag.
+ * @param {boolean} [secure=false] Session secure flag.
  * @throws {ReferenceError} For missing value type.
  * @throws {TypeError} For invalid value.
  * @returns {string} Name.
  */
-export function validateSessionSecure(secure) {
-  if (typeof secure === 'undefined') {
-    throw ReferenceError('Session secure flag is missing (session.secure)')
-  } else if (typeof secure !== 'boolean') {
+export function validateSessionSecure(secure = false) {
+  if (typeof secure !== 'boolean') {
     throw new TypeError('Session secure flag must be boolean (session.secure)');
   }
   return secure;
@@ -378,7 +366,7 @@ const validatePage = (page, index) => {
   }
 }
 
-export function validatePages(pages) {
+export function validatePages(pages = []) {
   if (!Array.isArray(pages)) {
     throw new TypeError('Pages must be an array (pages)');
   }
