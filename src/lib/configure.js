@@ -3,6 +3,7 @@ import { MemoryStore } from 'express-session';
 import { resolve } from 'path';
 import { createRequire } from 'module';
 import cookieParserFactory from 'cookie-parser';
+import { pathToRegexp } from 'path-to-regexp';
 import dirname from './dirname.cjs';
 
 import configurationIngestor from './configuration-ingestor.js';
@@ -214,6 +215,11 @@ export default function configure(config = {}) {
       // Required so that any parameters in the URL are propagated to middleware
       mergeParams: true,
     });
+
+    if (plan) {
+      const re = pathToRegexp(`${route}`.replace(/\/+/g, '/'));
+      app.use(re, (req, res) => res.redirect(302, `${req.baseUrl}${req.url}${plan.getWaypoints()[0]}`));
+    }
 
     router.use(preMiddleware);
     router.use(staticRouter.seal());
