@@ -149,6 +149,17 @@ describe('JourneyContext', () => {
     });
   });
 
+  describe('createEphemeralContext()', () => {
+    it('should generate a new JourneyContext, with a unique ID', () => {
+      const newInstance = JourneyContext.createEphemeralContext();
+
+      expect(newInstance).to.be.an.instanceof(JourneyContext);
+      expect(newInstance.identity.id).not.be.empty.and.not.to.equal(
+        JourneyContext.DEFAULT_CONTEXT_ID,
+      );
+    });
+  });
+
   describe('fromContext()', () => {
     it('should throw if provided with an invalid source context', () => {
       expect(() => {

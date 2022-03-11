@@ -439,7 +439,20 @@ export default class JourneyContext {
   /* ----------------------------------------------- session context handling */
 
   /**
-   * Construct a new JourneyContext instance frmo another instance.
+   * Construct a new ephemeral JourneyContext instance with a unique ID.
+   *
+   * @returns {JourneyContext} Constructed JourneyContext instance
+   */
+  static createEphemeralContext() {
+    return JourneyContext.fromObject({
+      identity: {
+        id: uuidv4(),
+      },
+    });
+  }
+
+  /**
+   * Construct a new JourneyContext instance from another instance.
    *
    * @param {JourneyContext} context Context to copy from
    * @returns {JourneyContext} Constructed JourneyContext instance
