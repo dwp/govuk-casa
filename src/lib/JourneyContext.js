@@ -391,7 +391,7 @@ export default class JourneyContext {
     return this;
   }
 
-  applyEventListeners({ event }) {
+  applyEventListeners({ event, session }) {
     if (!this.#eventListeners.length) {
       return this;
     }
@@ -428,7 +428,7 @@ export default class JourneyContext {
 
       if (runHandler) {
         log.trace(logMessage);
-        handler({ journeyContext: this, previousContext });
+        handler({ journeyContext: this, previousContext, session });
       }
     }
     /* eslint-enable security/detect-object-injection */
@@ -615,12 +615,12 @@ export default class JourneyContext {
     // Apply context events
     context.applyEventListeners({
       event: 'waypoint-change',
-      previousContextObject: session.journeyContextList[context.identity.id],
+      session,
     });
 
     context.applyEventListeners({
       event: 'context-change',
-      previousContextObject: session.journeyContextList[context.identity.id],
+      session,
     });
 
     /* eslint-disable-next-line no-param-reassign */

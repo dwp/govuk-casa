@@ -11,32 +11,35 @@ You can attach listeners to these events as so:
 configure({
   events: [{
     event: 'waypoint-change',
-    handler: ({ journeyContext, previousContext }) => {
+    handler: ({ journeyContext, previousContext, session}) => {
       // This will fire for all waypoints
     },
   }, {
     event: 'waypoint-change',
     waypoint: 'contact-details',
-    handler: ({ journeyContext, previousContext }) => {
+    handler: ({ journeyContext, previousContext, session }) => {
       // This will fire if data has changed on the `contact-details` waypoint
     },
   }, {
     event: 'waypoint-change',
     waypoint: 'contact-details',
     field: 'tel',
-    handler: ({ journeyContext, previousContext }) => {
+    handler: ({ journeyContext, previousContext, session }) => {
       // This will fire if the `tel` field has changed on the `contact-details` waypoint
     },
   }, {
     event: 'context-change',
-    handler: ({ journeyContext, previousContext }) => {
+    handler: ({ journeyContext, previousContext, session }) => {
       // This will be fired on every save to the session, after all other `waypoint-change` events have completed
     },
   }],
 });
 ```
 
-Where `journeyContext` is the newly updated context, and `previousContext` is a snapshot of the context as it was at the beginning of the request lifecycle.
+Where:
+* `journeyContext` is the newly updated context,
+* `previousContext` is a snapshot of the context as it was at the beginning of the request lifecycle, and
+* `session` the current session to which the change has been written
 
 Note that the `waypoint-change` events are only triggered if data has actually _changed_. If there was no data previously stored for a waypoint, then no event is triggered. If you need an alternative to this mechanism, then consider using the `context-change` event instead as this will be triggered on _every_ persisted change to the context.
 
