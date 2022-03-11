@@ -1,0 +1,9 @@
+pageTitle: What type of hobby is it?
+field:
+  type:
+    required: Select a type
+    options:
+      PHYSICAL: Physical
+      MENTAL: Mental
+      SKILL: Skill
+      MYSTERY: Mystery

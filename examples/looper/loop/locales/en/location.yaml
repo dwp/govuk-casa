@@ -1,0 +1,9 @@
+pageTitle: Which zone do you perform this hobby in?
+field:
+  zone:
+    required: Select a zone
+    options:
+      AZTEC: Aztec
+      INDUSTRIAL: Industrial
+      FUTURISTIC: Futuristic
+      MEDIEVAL: Medieval

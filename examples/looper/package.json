@@ -1,0 +1,17 @@
+{
+  "name": "govuk-casa-looper-example",
+  "version": "1.0.0",
+  "description": "CASA Example: Looper journey",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node --preserve-symlinks server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@dwp/casa-looper-plugin": "1.0.2",
+    "@dwp/govuk-casa": ">=8.2.0"
+  }
+}

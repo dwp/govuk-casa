@@ -1,0 +1,36 @@
+{% extends "casa/layouts/journey.njk" %}
+
+{% from "casa/components/radios/macro.njk" import casaGovukRadios with context %}
+
+{% block casaPageTitle %}
+  {{ t("hobby:pageTitle") }} - {{ t("common:serviceName") }}
+{% endblock %}
+
+{% block journey_form %}
+  {{ casaGovukRadios({
+    name: "type",
+    fieldset: {
+      legend: {
+        text: t("hobby:pageTitle"),
+        isPageHeading: true,
+        classes: "govuk-fieldset__legend--xl"
+      }
+    },
+    items: [{
+      value: "PHYSICAL",
+      text: t("hobby:field.type.options.PHYSICAL")
+    }, {
+      value: "MENTAL",
+      text: t("hobby:field.type.options.MENTAL")
+    }, {
+      value: "SKILL",
+      text: t("hobby:field.type.options.SKILL")
+    }, {
+      value: "MYSTERY",
+      text: t("hobby:field.type.options.MYSTERY")
+    }],
+    casaWithAnalytics: true,
+    casaValue: formData.type,
+    casaErrors: formErrors
+  }) }}
+{% endblock %}
