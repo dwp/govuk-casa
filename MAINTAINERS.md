@@ -64,8 +64,9 @@ The following can be applied to either the `main` branch, or any of the `maintai
 
 ```bash
 # Package
+# We can't use `npx standard-version` yet due to ES6 compatibility issues
 git checkout -b chore/package
-npx standard-version
+node ./scripts/standard-version.js
 git push -u origin head
 
 # Create an MR from this branch, seek approval and merge. A new version will be
@@ -75,6 +76,9 @@ git push -u origin head
 Presently, publishing to the public npm registry is a manual process:
 
 ```bash
+# Dry run first to check it all looks good
+npm publish --dry-run
+
 # For the `main` branch
 npm publish
 
