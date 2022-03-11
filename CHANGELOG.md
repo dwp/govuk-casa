@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.1.0](https://github.com/dwp/govuk-casa/compare/8.0.3...8.1.0) (2022-03-11)
+
+
+### Features
+
+* add option to configure Helmet headers ([490ca73](https://github.com/dwp/govuk-casa/commit/490ca73854d59ea10c56b065828692bf65efd74c)), closes [#85](https://github.com/dwp/govuk-casa/issues/85)
+
+
+### Bug Fixes
+
+* ensure validation state deserialises to ValidationError instances ([e4dd0a9](https://github.com/dwp/govuk-casa/commit/e4dd0a9cb343da6629664a45c8d026d27089dc78)), closes [#86](https://github.com/dwp/govuk-casa/issues/86)
+
 ### [8.0.3](https://github.com/dwp/govuk-casa/compare/8.0.2...8.0.3) (2022-02-04)
 
 
