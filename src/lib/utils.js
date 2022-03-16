@@ -78,6 +78,22 @@ export function validateWaypoint(waypoint) {
   }
 }
 
+export function validateUrlPath(path) {
+  if (typeof path !== 'string') {
+    throw new TypeError('URL path must be a string');
+  }
+
+  if (path.match(/[^/a-z0-9_-]/)) {
+    throw new SyntaxError('URL path must contain only a-z, 0-9, -, _ and / characters');
+  }
+
+  if (path.match(/\/{2,}/)) {
+    throw new SyntaxError('URL path must not contain consecutive /');
+  }
+
+  return path;
+}
+
 export function validateView(view) {
   if (typeof view !== 'string') {
     throw new TypeError('View must be a string');

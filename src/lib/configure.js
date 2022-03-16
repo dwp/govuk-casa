@@ -6,6 +6,8 @@ import cookieParserFactory from 'cookie-parser';
 import { pathToRegexp } from 'path-to-regexp';
 import dirname from './dirname.cjs';
 
+import { validateUrlPath } from './utils.js';
+
 import configurationIngestor from './configuration-ingestor.js';
 import nunjucks from './nunjucks.js';
 
@@ -190,7 +192,13 @@ export default function configure(config = {}) {
 
     if (plan) {
       const re = pathToRegexp(`${route}`.replace(/\/+/g, '/'));
-      app.use(re, (req, res) => res.redirect(302, `${req.baseUrl}${req.url}${plan.getWaypoints()[0]}`));
+      app.use(re, (req, res) => {
+        const reqUrl = new URL(req.url, 'https://placeholder.test/');
+        const reqPath = validateUrlPath(`${req.baseUrl}${reqUrl.pathname}${plan.getWaypoints()[0]}`);
+        let reqParams = reqUrl.searchParams.toString();
+        reqParams = reqParams ? `?${reqParams}` : '';
+        res.redirect(302, `${reqPath}${reqParams}`);
+      });
     }
 
     router.use(preMiddleware);

@@ -3,6 +3,7 @@
 // interrupting their journey.
 import expressSession, { MemoryStore } from 'express-session';
 import logger from '../lib/logger.js';
+import { validateUrlPath } from '../lib/utils.js';
 
 const log = logger('middleware:session');
 
@@ -28,7 +29,7 @@ const sessionExpiryMiddleware = (
         touchCookie(res);
         if (req.method === 'POST') {
           log.info('The CSRF token for this POST request will now be invalid for this regenerated session. Redirecting to app mount point.');
-          res.redirect(302, `${req.baseUrl}/`);
+          res.redirect(302, validateUrlPath(`${req.baseUrl}/`));
         } else {
           next();
         }
@@ -48,7 +49,8 @@ const sessionExpiryMiddleware = (
           referrer: req.originalUrl,
           lang: language,
         });
-        res.redirect(302, `${req.baseUrl}/session-timeout?${params.toString()}`);
+        /* eslint-disable-next-line prefer-template */
+        res.redirect(302, validateUrlPath(`${req.baseUrl}/session-timeout`) + `?${params.toString()}`);
       }
     });
   } else {

@@ -6,6 +6,7 @@ import { createRequire } from 'module';
 
 import dirname from './dirname.cjs';
 import MutableRouter from '../lib/MutableRouter.js';
+import { validateUrlPath } from '../lib/utils.js';
 
 const { static: ExpressStatic } = ExpressJS; // CommonJS
 
@@ -67,8 +68,8 @@ export default function staticRouter({
   router.use('/govuk/assets', ExpressStatic(`${govukFrontendDirectory}/govuk/assets`, staticConfig));
   router.use('/govuk/assets', notFoundHandler);
 
-  router.get('/casa/assets/css/casa.css', setHeaders, (req, res) => res.send(casaCss.replace(/~~~CASA_MOUNT_URL~~~/g, `${req.baseUrl}/`)));
-  router.get('/casa/assets/css/casa-ie8.css', setHeaders, (req, res) => res.send(casaCssIe8.replace(/~~~CASA_MOUNT_URL~~~/g, `${req.baseUrl}/`)));
+  router.get('/casa/assets/css/casa.css', setHeaders, (req, res) => res.send(casaCss.replace(/~~~CASA_MOUNT_URL~~~/g, validateUrlPath(`${req.baseUrl}/`))));
+  router.get('/casa/assets/css/casa-ie8.css', setHeaders, (req, res) => res.send(casaCssIe8.replace(/~~~CASA_MOUNT_URL~~~/g, validateUrlPath(`${req.baseUrl}/`))));
   router.use('/casa/assets', notFoundHandler);
 
   return router;
