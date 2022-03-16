@@ -24,43 +24,15 @@ import bodyParserMiddlewareFactory from '../middleware/body-parser.js';
 import csrfMiddlewareFactory from '../middleware/csrf.js';
 
 /**
- * @typedef {import('express').Express} ExpressJS
+ * @typedef {import('../casa').ConfigurationOptions} ConfigurationOptions
  */
 
 /**
- * @typedef {import('express').RequestHandler} ExpressRequestHandler
+ * @typedef {import('../casa').ConfigurationOptions} ConfigureResult
  */
 
 /**
- * @typedef {import('./index').MutableRouter} MutableRouter
- */
-
-/**
- * @typedef {import('./configuration-ingestor').ConfigurationOptions} ConfigurationOptions
- */
-
-/**
- * @callback Mounter
- * @param {ExpressJS} app Express application
- * @param {object} opts Mounting options
- * @param {string} [opts.route=/] Optional route to attach all middleware/routers too
- * @returns {ExpressJS} The prepared ExpressJS app instance
- */
-
-/**
- * @typedef {object} ConfigureResult Result of a call to configure() function
- * @property {nunjucks.Environment} nunjucksEnv Nunjucks environment
- * @property {MutableRouter} staticRouter Router handling all static assets
- * @property {MutableRouter} ancillaryRouter Router handling ancillary routes
- * @property {MutableRouter} journeyRouter Router handling all waypoint requests
- * @property {ExpressRequestHandler[]} preMiddleware Middleware mounted before anything else
- * @property {ExpressRequestHandler[]} postMiddleware Middleware mounted after everything else
- * @property {ExpressRequestHandler[]} csrfMiddleware CSRF get/set middleware (useful for forms)
- * @property {ExpressRequestHandler} sessionMiddleware Session middleware
- * @property {ExpressRequestHandler[]} cookieParserMiddleware Cookie-parsing middleware
- * @property {ExpressRequestHandler[]} i18nMiddleware I18n preparation middleware
- * @property {ExpressRequestHandler} bodyParserMiddleware Body parsing middleware
- * @property {Mounter} mount Function used to mount all CASA artifacts onto an ExpressJS app
+ * @typedef {import('../casa').Mounter} Mounter
  */
 
 /**

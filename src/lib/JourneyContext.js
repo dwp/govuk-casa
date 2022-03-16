@@ -19,21 +19,15 @@ const {
 const log = logger('lib:journey-context');
 
 /**
- * @typedef {import('./configuration-ingestor').Page} Page
+ * @typedef {import('../casa').Page} Page
  */
 
 /**
- * @callback ContextEventHandler
- * @param {JourneyContext} journeyContext Context including changes
- * @param {JourneyContext} previousContext Context prior to changes
- * @returns {void}
+ * @typedef {import('../casa').ContextEventHandler} ContextEventHandler
  */
 
 /**
- * @typedef {object} ContextEvent
- * @property {string} waypoint Waypoint to watch for changes
- * @property {string} [field] Field to watch for changes
- * @property {ContextEventHandler} handler Handler to invoke when change happens
+ * @typedef {import('../casa').ContextEvent} ContextEvent
  */
 
 export function validateObjectKey(key = '') {

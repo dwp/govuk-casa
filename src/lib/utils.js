@@ -1,13 +1,5 @@
 /**
- * @typedef {import('./configuration-ingestor').GlobalHook} GlobalHook
- */
-
-/**
- * @typedef {import('./configuration-ingestor').PageHook} PageHook
- */
-
-/**
- * @typedef {GlobalHook | PageHook} Hook
+ * @typedef {import('../casa').GlobalHook | import('../casa').PageHook} Hook
  */
 
 /**

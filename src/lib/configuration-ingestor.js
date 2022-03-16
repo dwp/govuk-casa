@@ -10,68 +10,11 @@ import {
 } from './utils.js';
 
 /**
- * @typedef {import('./index').ContextEvent} ContextEvent
+ * @typedef {import('../casa').ConfigurationOptions} ConfigurationOptions
  */
 
 /**
- * @typedef {object} SessionOptions
- * @property {string} [name=casasession] Session name
- * @property {string} [secret=secret] Encryption secret
- * @property {number} [ttl=3600] Session ttl (seconds)
- * @property {boolean} [secure=false] Whether to use secure session cookies
- * @property {boolean|string} [cookieSameSite=true] SameSite (true = Strict)
- * @property {object} [store] Session store (default MemoryStore)
- */
-
-/**
- * @typedef {object} I18nOptions
- * @property {string[]} dirs Directories to search for locale dictionaries
- * @property {string[]} [locales=['en', 'cy']] Supported locales
- */
-
-/**
- * @typedef {object} GlobalHook Hook configuration
- * @property {string} hook Hook name in format `<router>.<hook>`
- * @property {Function} middleware Middleware function to insert at the hook point
- * @property {string|RegExp} [path=undefined] Only run if route path matches this string/regexp
- */
-
-/**
- * @typedef {object} PageHook (extends GlobalHook)
- * @property {string} hook Hook name (without a scope prefix)
- * @property {Function} middleware Middleware function to insert at the hook point
- */
-
-/**
- * @typedef {object} Page Page configuration. A Page is the interactive representation of a waypoint
- * @property {string} waypoint The waypoint with which this page is associated
- * @property {string} view Template path
- * @property {PageHook[]} [hooks=[]] Page-specific hooks (optional, default [])
- * @property {PageField[]} [fields=[]] Fields to be managed on this page (optional, default [])
- */
-
-/**
- * @callback HelmetConfigurator
- * @param {object} config A default Helmet configuration provided by CASA
- * @returns {object} The modified configuration object
- */
-
-/**
- * Configure some middleware for use in creating a new CASA app.
- *
- * `mountUrl` is used to ensure the CSS content uses the correct reference to
- * static assets in the `govuk-frontend` module.
- *
- * @typedef {object} ConfigurationOptions Configuration options
- * @property {string} [mountUrl=/] URL path to root of CASA app
- * @property {string[]} [views=[]] Template directories
- * @property {SessionOptions} [session] Session configuration
- * @property {Page[]} [pages=[]] Pages the represent waypoints
- * @property {GlobalHook[]} [hooks=[]] Hooks to apply
- * @property {object[]} [plugins=[]] Plugins
- * @property {I18nOptions[]} [i18n] I18n configuration
- * @property {Plan} plan CASA Plan
- * @property {ContextEvent[]} [events=[]] Handlers for JourneyContext events
+ * @typedef {import('../casa').HelmetConfigurator} HelmetConfigurator
  */
 
 const log = logger('lib:configuration-ingestor');

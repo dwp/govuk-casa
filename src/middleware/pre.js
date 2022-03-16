@@ -5,7 +5,7 @@ const GA_DOMAIN = 'www.google-analytics.com';
 const GTM_DOMAIN = 'www.googletagmanager.com';
 
 /**
- * @typedef {import('../lib/configuration-ingestor').HelmetConfigurator} HelmetConfigurator
+ * @typedef {import('../casa').HelmetConfigurator} HelmetConfigurator
  */
 
 /**
