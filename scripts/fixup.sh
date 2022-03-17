@@ -9,7 +9,7 @@ cp scripts/esm-wrapper.js dist/mjs/
 # Copy all src/**/*.cjs files as tsc will ignore them
 # These files need the .cjs extension so we can import them directly from our
 # ES6 code, and have them be recognised as CommonJS modules.
-find src -name '*.cjs' | xargs -t -I {} echo cp {} {} | sed 's/src/dist/2' | sh
+find src -name '*.cjs' -print0 | xargs -0 -t -I {} echo cp {} {} | sed 's/src/dist/2' | sh
 
 # # Merge all type definitions into one
 # cat ./dist/**/*.d.ts > ./dist/typings
