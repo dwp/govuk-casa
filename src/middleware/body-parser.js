@@ -5,7 +5,7 @@ const rPrototype = /prototype[='"[\]]/i;
 const rConstructor = /constructor[='"[\]]/i;
 
 export function verifyBody(req, res, buf, encoding) {
-  const body = decodeURI(buf.toString(encoding));
+  const body = decodeURI(buf.toString(encoding)).replace(/[\s\u200B-\u200D\uFEFF]/g, '');
   if (rProto.test(body)) {
     throw new Error('Request body verification failed (__proto__)');
   }
