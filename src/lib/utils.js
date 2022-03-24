@@ -141,3 +141,30 @@ export function notProto(key) {
   }
   return key;
 }
+
+/**
+ * Remove any path segments from the URL that are present in the `mountpath`,
+ * but not in the `baseUrl`. Those segments are considered to be part of an
+ * internal proxying arrangement, and should not be used by CASA.
+ *
+ * @param {import('express').Request} req Express request
+ * @throws {Error} When multiple mountpaths are present
+ * @returns {string} URL path with any proxy prefixes removed
+ */
+export function stripProxyFromUrlPath(req) {
+  if (typeof req.app.mountpath !== 'string') {
+    throw new Error('CASA does not currently support multiple mountpaths');
+  }
+
+  let stripped = '/';
+  const mountPathParts = req.app.mountpath.replace(/^\/+/, '').replace(/\/+$/, '').split('/');
+  const baseUrlParts = req.baseUrl.replace(/^\/+/, '').replace(/\/+$/, '').split('/');
+  for (let i = 0, l = mountPathParts.length; i < l; i++) {
+    /* eslint-disable-next-line security/detect-object-injection */
+    if (baseUrlParts.length && mountPathParts[i] === baseUrlParts[0]) {
+      stripped = `${stripped}${baseUrlParts.shift()}/`;
+    }
+  }
+
+  return stripped;
+}

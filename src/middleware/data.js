@@ -3,6 +3,7 @@
 
 import lodash from 'lodash';
 import JourneyContext from '../lib/JourneyContext.js';
+import { validateUrlPath, stripProxyFromUrlPath } from '../lib/utils.js';
 import waypointUrl from '../lib/waypoint-url.js';
 
 const { has } = lodash;
@@ -47,11 +48,17 @@ export default function dataMiddleware({
       /* ------------------------------------------------- Template variables */
 
       // Figure out the mount URL of the current request
-      const mountUrl = `${req.baseUrl}/`.replace(/\/+/, '/');
+      const mountUrl = validateUrlPath(`${req.baseUrl}/`.replace(/\/+/g, '/'));
+
+      // For browser performance reasons, CASA's static assets are potentially
+      // delivered over a different route to the `mountUrl` if this CASA app has
+      // been mounted on a parameterised route.
+      const staticMountUrl = validateUrlPath(`${stripProxyFromUrlPath(req)}`.replace(/\/+/g, '/'));
 
       // CASA and userland templates
       res.locals.casa = {
         mountUrl,
+        staticMountUrl,
         editMode: req.casa.editMode,
         editOrigin: req.casa.editOrigin,
       };
@@ -61,7 +68,7 @@ export default function dataMiddleware({
       //   htmlLang = req.language is provided by i18n-http-middleware
       //   assetPath = used for linking to static assets in the govuk-frontend module
       res.locals.htmlLang = req.language;
-      res.locals.assetPath = `${mountUrl}govuk/assets`;
+      res.locals.assetPath = `${staticMountUrl}govuk/assets`;
 
       // Function for building URLs. This will be curried with the `mountUrl`,
       // `journeyContext`, `edit` and `editOrigin` for convenience. This means

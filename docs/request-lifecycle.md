@@ -22,7 +22,7 @@ As a request gets passed through CASA's routes and middleware, it will modify th
 ||
 | **bodyParserMiddleware** | Request body parsed and verified | `body` | |
 ||
-| **dataMiddleware** | Setup various data items on the request and template | `casa.plan`<br/>`casa.journeyContext`<br/>`casa.editMode`<br/>`casa.editOrigin` | `assetPath`<br/>`casa.mountUrl`<br/>`casa.locale`<br/>`casa.editMode`<br/>`casa.editOrigin`<br/>`htmlLang`<br/>`waypointUrl()` |
+| **dataMiddleware** | Setup various data items on the request and template | `casa.plan`<br/>`casa.journeyContext`<br/>`casa.editMode`<br/>`casa.editOrigin` | `assetPath`<br/>`casa.mountUrl`<br/>`casa.staticMountUrl`<br/>`casa.locale`<br/>`casa.editMode`<br/>`casa.editOrigin`<br/>`htmlLang`<br/>`waypointUrl()` |
 | |
 | **ancillaryRouter** | [GET] Mount `/session-timeout` route handler | | |
 ||
@@ -107,6 +107,7 @@ The following globals are always available to the Nunjucks templates. Refer to t
 |----------|-------------|
 | `assetPath` | URL from which all `govuk-frontend` assets are served. Used by the main `govuk-frontend` template |
 | `casa.mountUrl` | Configured mount URL. Note that if using a paramterized mount point (e.g. `/base/:someId`) then this URL will contain the parameter value(s) |
+| `casa.staticMountUrl` | Configured mount URL for serving static assets. This is generally the same as `casa.mountUrl`, but with any parameterised values removed. |
 | `htmlLang` | Detected language (required by `govuk-frontend` template) |
 | `locale` | Detected language |
 | `waypointUrl()` | A method for generating URLs, curried with the `mountUrl` and `journeyContext` parameters (see [waypointUrl()](../src/lib/waypoint-url.js)) |

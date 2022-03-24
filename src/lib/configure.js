@@ -25,6 +25,10 @@ import dataMiddlewareFactory from '../middleware/data.js';
 import bodyParserMiddlewareFactory from '../middleware/body-parser.js';
 import csrfMiddlewareFactory from '../middleware/csrf.js';
 
+import logger from './logger.js';
+
+const log = logger('lib:configure');
+
 /**
  * @typedef {import('../casa').ConfigurationOptions} ConfigurationOptions
  */
@@ -179,17 +183,15 @@ export default function configure(config = {}) {
     // consumer explicitly set a `mountUrl`, in which case we're dealing with
     // backwards-compatibility mode.
     if (config.mountUrl) {
+      log.warn('[DEPRECATION WARNING] Using configuration attribute, mountUrl. This will be removed in an upcoming major version');
       app.use((req, res, next) => {
         req.baseUrl = mountUrl.replace(/\/$/, '');
         next();
       });
     }
 
-    const router = Router({
-      // Required so that any parameters in the URL are propagated to middleware
-      mergeParams: true,
-    });
-
+    // Attach a handler to redirect requests for `/` to the first waypoint in
+    // the plan
     if (plan) {
       const re = pathToRegexp(`${route}`.replace(/\/+/g, '/'));
       app.use(re, (req, res) => {
@@ -201,8 +203,26 @@ export default function configure(config = {}) {
       });
     }
 
+    // Service static assets from the `app` rather than the `router`. The router
+    // may contain paramaterised path segments which would mean serving static
+    // assets over a dynamic URL each time, thus causing lots of cache misses on
+    // the browser.
+    const sealedStaticRouter = staticRouter.seal();
+    app.use(preMiddleware);
+    app.use(sealedStaticRouter);
+
+    const router = Router({
+      // Required so that any parameters in the URL are propagated to middleware
+      mergeParams: true,
+    });
+
     router.use(preMiddleware);
-    router.use(staticRouter.seal());
+    // !!! DEPRECATE in v9 !!! For performance reasons, static assets will
+    // always be handled via the `app` middleware rather than `router`.
+    // Anywhere `mountUrl` is used in templates to service static assets must be
+    // changed to use `staticMountUrl`.
+    // TASK: remove this line below
+    router.use(sealedStaticRouter);
     router.use(sessionMiddleware);
     router.use(i18nMiddleware);
     router.use(bodyParserMiddleware);

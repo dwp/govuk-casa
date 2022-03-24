@@ -21,7 +21,7 @@ The best place to include CSS `<link>` tags is in the `<head>`, which is exposed
 ```jinja
 {% block head %}
   {{ super() }}
-  <link rel="stylesheet" href="/css/application.css" />
+  <link rel="stylesheet" href="{{ staticMountUrl }}css/application.css" />
 {% endblock %}
 ```
 
@@ -30,7 +30,7 @@ The best place to include JS `<script>` tags is just before the closing `</body>
 ```jinja
 {% block bodyEnd %}
   {{ super() }}
-  <script src="/js/application.js"></script>
+  <script src="{{ staticMountUrl }}js/application.js"></script>
 {% endblock %}
 ```
 

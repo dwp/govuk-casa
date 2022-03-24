@@ -613,7 +613,7 @@ The Nunjucks object `govuk.components` has been removed. This was used mainly fo
 ```jinja
 {% block header %}
   {{ govukHeader({
-    assetsPath: casa.mountUrl + "govuk/assets/images",
+    assetsPath: casa.staticMountUrl + "govuk/assets/images",
     serviceName: t('common:serviceName'),
     serviceUrl: casa.mountUrl,
     homepageUrl: "https://www.gov.uk/"
