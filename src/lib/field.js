@@ -12,11 +12,15 @@ const { isFunction } = lodash;
  */
 
 /**
- * @typedef {import('./index').ValidateFunction} ValidateFunction
+ * @typedef {import('../casa').ValidateFunction} ValidateFunction
  */
 
 /**
- * @typedef {import('./index').ValidateContext} ValidateContext
+ * @typedef {import('../casa').ValidateContext} ValidateContext
+ */
+
+/**
+ * @typedef {import('../casa').FieldProcessorFunction} FieldProcessorFunction
  */
 
 /**
@@ -24,19 +28,19 @@ const { isFunction } = lodash;
  */
 
 /**
- * @callback ProcessorFunction
- * @param {any} value Value to be processed
- * @returns {any}
+ * @typedef {object} ConditionFunctionParams
+ * @property {string} fieldName Field name
+ * @property {any} fieldValue Field value
+ * @property {string} waypoint Waypoint
+ * @property {string} waypointId [DEPRECATED] Waypoint (for backwards compatibility with v7)
+ * @property {JourneyContext} journeyContext Journey Context
  */
 
 /**
+ * Condition functions are executed unbound.
+ *
  * @callback ConditionFunction
- * @param {Object} context Value to be processed
- * @param {string} context.fieldName Field name
- * @param {any} context.fieldValue Field value
- * @param {string} context.waypoint Waypoint
- * @param {string} context.waypointId [DEPRECATED] Waypoint (for backwards compatibility with v7)
- * @param {JourneyContext} journeyContext Journey Context
+ * @param {ConditionFunctionParams} context Value to be processed
  * @returns {boolean} True if the validators should be run
  */
 
@@ -46,8 +50,12 @@ const reComplexType = /\[/;
 
 const reInvalidName = /[^a-z0-9_.\-[\]]/i;
 
-// This is never exposed via a public API, and instead users are encouraged to
-// use the `field()` factory instead
+/**
+ * This class is not exposed via the public API. Instances should instead be
+ * instantiated through the `field()` factory function.
+ *
+ * @class
+ */
 export class PageField {
   /*
    * @type {string}
@@ -55,7 +63,7 @@ export class PageField {
   #name;
 
   /**
-   * @type {ProcessorFunction[]}
+   * @type {FieldProcessorFunction[]}
    */
   #processors;
 
@@ -74,6 +82,14 @@ export class PageField {
    */
   #meta;
 
+  /**
+   * Create a field.
+   *
+   * @param {string} name Field name
+   * @param {object} opts Options
+   * @param {boolean} [opts.optional=false] Whether this field is optional
+   * @param {boolean} [opts.persist=true] Whether this field will persist in `req.body`
+   */
   constructor(name, { optional = false, persist = true } = Object.create(null)) {
     if (!name) {
       throw new SyntaxError('A name for this field is required, i.e. "field(\'myField\')".');
@@ -94,12 +110,14 @@ export class PageField {
   }
 
   /**
-   * For complex fields, we need may need to drill into an object to extract the
+   * Extract this field's value from the given object.
+   *
+   * For complex fields, we may need to drill into an object to extract the
    * value.
    *
    * @param {object} obj Object from which to extract the value
    * @returns {any} Value extracted from object
-   * @throws {Error} When run on a complex field
+   * @throws {Error} When run on a complex field (not yet supported)
    */
   getValue(obj = Object.create(null)) {
     if (!this.#meta.complex) {
@@ -108,6 +126,14 @@ export class PageField {
     throw new Error('Not yet supporting complex field types');
   }
 
+  /**
+   * Store this field's value in the given object, using its name as the key.
+   *
+   * @param {object} obj Object from which to extract the value
+   * @param {any} value Value to be stored
+   * @returns {any} Value extracted from object
+   * @throws {Error} When run on a complex field (not yet supported)
+   */
   putValue(obj = Object.create(null), value = undefined) {
     if (!this.#meta.complex) {
       /* eslint-disable-next-line no-param-reassign */
@@ -146,8 +172,8 @@ export class PageField {
    * Add/get value pre-processors
    * This is most often used to sanitise values to a particular data type.
    *
-   * @param {ProcessorFunction[]} items Processor functions
-   * @returns {PageField | ProcessorFunction[]} Chain or return all processors
+   * @param {FieldProcessorFunction[]} items Processor functions
+   * @returns {PageField | FieldProcessorFunction[]} Chain or return all processors
    */
   processors(items = []) {
     if (!items.length) {
@@ -180,7 +206,7 @@ export class PageField {
    * Run all validators and return array of errors, if applicable.
    *
    * @param {any} value Value to validate
-   * @param {ValidateContext} context Contextual information
+   * @param {ValidateContext} context Contextual validation information
    * @returns {ValidationError[]} Errors, or an empty array if all valid
    */
   runValidators(value, context = Object.create(null)) {
@@ -191,6 +217,8 @@ export class PageField {
 
     // Skip validation if conditions are not met
     // We duplicate value in context.fieldValue for historical reasons
+    // @todo explain these historical reasons! And deprecate the need for
+    // `value` altogether
     context.fieldValue = context.fieldValue ?? value;
     if (!this.testConditions(context)) {
       return [];
@@ -200,6 +228,7 @@ export class PageField {
     for (let i = 0, l = this.#validators.length; i < l; i++) {
       // ESLint disabled as `i` is an integer
       /* eslint-disable security/detect-object-injection */
+      // TODO: Replace `value` with `context.fieldValue` here
       const fieldErrors = this.#validators[i].validate(value, context).map((e) => e.withContext({
         ...context,
         validator: this.#validators[i].name,
@@ -215,7 +244,7 @@ export class PageField {
     return errors;
   }
 
-  /*
+  /**
    * Apply all the processors to the given value.
    *
    * @param {any} value Value to process
@@ -244,12 +273,9 @@ export class PageField {
   }
 
   /**
-   * Apply all conditions to get the resulting boolean
+   * All conditions must return true to be considered a successful test.
    *
-   * @param {object} params Parameters
-   * @param {string} params.fieldValue Field value
-   * @param {string} params.waypoint Waypoint
-   * @param {object} params.journeyContext JourneyContext
+   * @param {ValidateContext} context Contextual validation information
    * @returns {boolean} True if all conditions pass
    */
   testConditions({ fieldValue, waypoint, journeyContext }) {
@@ -272,24 +298,57 @@ export class PageField {
 
   /* ---------------------------------------------------------------- aliases */
 
+  /**
+   * Add a single validator.
+   *
+   * @param {ValidateFunction} validator Validation function
+   * @returns {PageField} Chain
+   */
   validator(validator) {
     return this.validators([validator]);
   }
 
+  /**
+   * Add a single pre-processors
+   *
+   * @param {FieldProcessorFunction} processor Processor function
+   * @returns {PageField} Chain
+   */
   processor(processor) {
     return this.processors([processor]);
   }
 
+  /**
+   * Add a single condition.
+   *
+   * @param {ConditionFunction} condition Condition function
+   * @returns {PageField} Chain
+   */
   condition(condition) {
     return this.conditions([condition]);
   }
 
+  /**
+   * Alias for <code>conditions()</code>.
+   *
+   * @param {...ConditionFunction} args Condition functions
+   * @returns {PageField} Chain
+   */
   if(...args) {
     return this.conditions(...args);
   }
 }
 
-// Factory for convenience
-export default function field(...args) {
-  return new PageField(...args);
+/**
+ * Factory for creating PageField instances.
+ *
+ * @memberof module:@dwp/govuk-casa
+ * @param {string} name Field name
+ * @param {object} opts Options
+ * @param {boolean} [opts.optional=false] Whether this field is optional
+ * @param {boolean} [opts.persist=true] Whether this field will persist in `req.body`
+ * @returns {PageField} A PageField
+ */
+export default function field(name, opts) {
+  return new PageField(name, opts);
 }

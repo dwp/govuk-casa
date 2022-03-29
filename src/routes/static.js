@@ -20,6 +20,7 @@ const oneDay = 86400000;
 /**
  * Create a router for serving CASA's static assets.
  *
+ * @access private
  * @param {StaticOptions} options Options
  * @returns {MutableRouter} ExpressJS Router instance
  */

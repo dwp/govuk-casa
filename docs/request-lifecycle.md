@@ -1,6 +1,6 @@
 # Request lifecycle
 
-As a request gets passed through CASA's routes and middleware, it will modify the `req` and `res` objects on the way. This process is described below, including which piece of middleware is responsible for generating those changes.
+As a request gets passed through CASA's routes and middleware, it will modify the `req` and `res.locals` objects along the way (`res.locals` is used to add variables and functions to Nunjucks templates). This process is described below, including which piece of middleware is responsible for generating those changes.
 
 
 ## Order of execution
@@ -14,7 +14,7 @@ As a request gets passed through CASA's routes and middleware, it will modify th
 | **staticRouter** | [GET] Route handlers setup for `/govuk/assets/` and `/casa/assets/` resources | | |
 | |
 | **sessionMiddleware** | Session initialised or loaded | `session` | |
-| | Cookies parsed | `signedCookies` | |
+| _cookieParserMiddleware_ | Cookies parsed | `signedCookies` | |
 | | Session expiration logic; at this point you may be redirected to `session-timeout` | | |
 | |
 | **i18nMiddleware** | Language detected and stored in session | `session.language` | |
@@ -27,7 +27,7 @@ As a request gets passed through CASA's routes and middleware, it will modify th
 | **ancillaryRouter** | [GET] Mount `/session-timeout` route handler | | |
 ||
 | **journeyRouter** | [all] Mount special `/_/` route handler to handle redirections between sub-apps | | |
-| | [GET/POST] Get/set and verify CSRF token | | `casa.csrfToken` |
+| _csrfMiddleware_ | [GET/POST] Get/set and verify CSRF token | | `casa.csrfToken` |
 | | [GET/POST] Set current waypoint | `casa.waypoint` | `casa.waypoint` |
 | | [GET/POST] Handle `skipto` links | | |
 | | [GET/POST] `journey.presteer` hooks executed | | |

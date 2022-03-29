@@ -12,6 +12,26 @@ import { resolveMiddlewareHooks } from '../lib/utils.js';
 
 const log = logger('routes:journey');
 
+/**
+ * @param {import('../casa.js').GlobalHook} GlobalHook
+ */
+
+/**
+ * @param {import('../casa.js').Page} Page
+ */
+
+/**
+ * @param {import('../casa.js').Plan} Plan
+ */
+
+/**
+ * @typedef {object} JourneyRouterOptions Options to configure static router
+ * @property {GlobalHook[]} globalHooks Global hooks
+ * @property {Page[]} pages Page definitions
+ * @property {Plan} plan Plan
+ * @property {Function[]} csrfMiddleware Middleware for providing CSRF controls
+ */
+
 const renderMiddlewareFactory = (view, contextFactory) => [
   (req, res, next) => {
     res.render(view, {
@@ -30,6 +50,14 @@ const renderMiddlewareFactory = (view, contextFactory) => [
   },
 ];
 
+/**
+ * Create an instance of the router for all waypoints visited during a Journey
+ * through the Plan.
+ *
+ * @access private
+ * @param {JourneyRouterOptions} opts Options
+ * @returns {MutableRouter} Router
+ */
 export default function journeyRouter({
   globalHooks,
   pages,

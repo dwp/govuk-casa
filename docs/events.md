@@ -37,13 +37,15 @@ configure({
 ```
 
 Where:
+
 * `journeyContext` is the newly updated context,
 * `previousContext` is a snapshot of the context as it was at the beginning of the request lifecycle, and
 * `session` the current session to which the change has been written
 
 Note that the `waypoint-change` events are only triggered if data has actually _changed_. If there was no data previously stored for a waypoint, then no event is triggered. If you need an alternative to this mechanism, then consider using the `context-change` event instead as this will be triggered on _every_ persisted change to the context.
 
-You could achieve similar integration by using one of the `journey.*` middleware hooks (for example, `journey.postgather`), but this could potentially miss out on changes made to the context elsewhere in the request stack, such as plugins, or other hooks. Events on the other hand are guaranteed to run at the point of calling `putContext()`, so as long as session data is not being manipulated directly, events are a good place for context events.
+You could achieve similar integration by using one of the `journey.*` middleware hooks (for example, `journey.postgather`), but this could potentially miss out on changes made to the journey context elsewhere in the request stack, such as plugins, or other hooks. Events on the other hand are guaranteed to run at the point of calling `putContext()`, so as long as session data is not being manipulated directly, events are a good place to handle journey context changes.
+
 
 ## Use cases
 

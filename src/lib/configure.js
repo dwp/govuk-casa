@@ -42,6 +42,7 @@ import csrfMiddlewareFactory from '../middleware/csrf.js';
 /**
  * Configure some middleware for use in creating a new CASA app.
  *
+ * @memberof module:@dwp/govuk-casa
  * @param {ConfigurationOptions} config Configuration options
  * @returns {ConfigureResult} Result
  */

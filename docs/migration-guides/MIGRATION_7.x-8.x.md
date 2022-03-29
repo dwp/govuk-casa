@@ -294,7 +294,7 @@ pages = [
     r.required.make({
       errorMsg: 'personal-details:field.title.empty'
     }),
-  ]).conditions((value, { journeyContext, waypoint }) => true),
+  ]).conditions(({ fieldValue, journeyContext, waypoint }) => true),
 ];
 ```
 

@@ -26,6 +26,8 @@ export default ({
   (req, res, next) => {
     const mountUrl = `${req.baseUrl}/`;
 
+    // Run validators for every field to build up a compelte list of errors
+    // currently associated with this waypoint.
     let errors = [];
     for (let i = 0, l = fields.length; i < l; i++) {
       /* eslint-disable security/detect-object-injection */
@@ -33,6 +35,8 @@ export default ({
       const field = fields[i];
       const fieldName = field.name;
       const fieldValue = req.casa.journeyContext.data?.[waypoint]?.[fieldName];
+
+      // (type = ValidateContext)
       const context = {
         fieldName,
         fieldValue,

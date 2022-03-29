@@ -8,6 +8,7 @@ const log = logger('lib:plan');
  * Will check if the source waypoint has specifically passed validation, i.e
  * there is a "null" validation entry for the route source.
  *
+ * @access private
  * @param {object} r Route meta.
  * @param {JourneyContext} context Journey Context.
  * @returns {boolean} Condition result.
@@ -21,6 +22,7 @@ function defaultNextFollow(r, context) {
  * Will check if the target waypoint (the one we're moving back to) has
  * specifically passed validation.
  *
+ * @access private
  * @param {object} r Route meta.
  * @param {JourneyContext} context Journey context.
  * @returns {boolean} Condition result.
@@ -59,6 +61,7 @@ function validateRouteCondition(val) {
  * be used in userland. This is the object that will be passed into follow
  * functions too as the "route" parameter.
  *
+ * @access private
  * @param {object} dgraph Directed graph instance.
  * @param {object} edge Graph edge object.
  * @returns {object} Route.
@@ -76,11 +79,16 @@ const makeRouteObject = (dgraph, edge) => {
 
 /**
  * Exit nodes begin with a protocol format, such as `url://`, `http://`, etc
+ *
+ * @access private
  */
 const reExitNodeProtocol = /^[a-z]+:\/\//i;
 
 const priv = new WeakMap();
 
+/**
+ * @memberof module:@dwp/govuk-casa
+ */
 export default class Plan {
   /**
    * @type {string[]} These waypoints can be skipped

@@ -28,7 +28,14 @@ const combineMerge = (target, source, options) => {
 function mergeObjects(...objects) {
   return deepmergeAll([Object.create(null), ...objects], { arrayMerge: combineMerge });
 }
-
+/**
+ * Determine whether a value exists in a list.
+ *
+ * @memberof NunjucksFilters
+ * @param {any[]} source List of items to search
+ * @param {any} search Item to search within the `source`
+ * @returns {boolean} True if the search item was found
+ */
 function includes(source = [], search = '') {
   return source.includes(search);
 }
@@ -41,6 +48,7 @@ function includes(source = [], search = '') {
  * `date` may be any of the following types:
  *   object - {dd:'', mm:'', yyyy:''}
  *
+ * @memberof NunjucksFilters
  * @param  {object} date Date (see supported formats above)
  * @param  {object} config Holds locale
  * @returns {string} Formatted date
@@ -70,7 +78,8 @@ function formatDateObject(date, config = {}) {
  *   Given: {class: 'basic', 'data-ga': 3}
  *   Output: class="basic" data-ga="3"
  *
- * @param  {object} attrsObject Attributes object (in name:value pairs)
+ * @memberof NunjucksFilters
+ * @param {object} attrsObject Attributes object (in name:value pairs)
  * @returns {string} Formatted
  */
 function renderAsAttributes(attrsObject) {
@@ -95,6 +104,9 @@ function renderAsAttributes(attrsObject) {
   return new nunjucks.runtime.SafeString(attrsList.join(' '));
 }
 
+/**
+ * @namespace NunjucksFilters
+ */
 export {
   mergeObjects,
   includes,

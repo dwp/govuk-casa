@@ -1,10 +1,4 @@
 /* eslint-disable class-methods-use-this */
-/**
- * Test is value is present.
- *
- * Value is required. The following values will fail this rule:
- *  (all values that satisify `isEmpty()`) plus '\s'
- */
 import lodash from 'lodash';
 import { isEmpty, isStringable, stringifyInput } from '../utils.js';
 import ValidatorFactory from '../ValidatorFactory.js';
@@ -12,6 +6,26 @@ import ValidationError from '../ValidationError.js';
 
 const { isPlainObject } = lodash; // CommonJS
 
+/**
+ * @typedef {import('../../casa').ErrorMessageConfig} ErrorMessageConfig
+ */
+
+/**
+ * @typedef {object} RequiredConfigOptions
+ * @property {ErrorMessageConfig} errorMsg Error message config
+ */
+
+/**
+ * Test if value is present.
+ *
+ * Value is required. The following values will fail this rule:
+ *  (all values that satisify `isEmpty()`) plus '\s'
+ *
+ * See {@link RequiredConfigOptions} for <code>make()</code> options.
+ *
+ * @memberof Validators
+ * @augments ValidatorFactory
+ */
 export default class Required extends ValidatorFactory {
   name = 'required';
 

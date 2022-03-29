@@ -38,6 +38,9 @@ export function validateObjectKey(key = '') {
   return String(key);
 }
 
+/**
+ * @memberof module:@dwp/govuk-casa
+ */
 export default class JourneyContext {
   // Private properties
   #data;
@@ -186,11 +189,6 @@ export default class JourneyContext {
 
   /**
    * Write field form data from a page HTML form, into the `data` model.
-   *
-   * By default this will store the data as-is, keyed against the page's
-   * waypoint ID. However, when passing a `Page` instance, its
-   * `fieldWriter()` method will be called to transform the provided formData
-   * before storing in `data`
    *
    * @param {string | Page} page Page waypoint ID, or Page object
    * @param {object} webFormData Data to overwrite with
@@ -512,6 +510,17 @@ export default class JourneyContext {
     }
 
     return id;
+  }
+
+  /**
+   * Retrieve the default Journey Context. This is just a convenient wrapper
+   * around <code>getContextById()</code>.
+   *
+   * @param {object} session Request session
+   * @returns {JourneyContext} The default Journey Context
+   */
+  static getDefaultContext(session) {
+    return JourneyContext.getContextById(session, JourneyContext.DEFAULT_CONTEXT_ID);
   }
 
   /**

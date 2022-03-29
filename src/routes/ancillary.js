@@ -1,11 +1,16 @@
 import MutableRouter from '../lib/MutableRouter.js';
 
 /**
+ * @typedef {object} AncillaryRouterOptions Options to configure static router
+ * @property {number} sessionTtl Session timeout (seconds)
+ */
+
+/**
  * Create an instance of the ancillary router.
  *
- * @param {Object} options = Optiona
- * @param {number} options.sessionTtl Session timeout (seconds)
- * @returns {MutableRouter} Mutable router
+ * @access private
+ * @param {AncillaryRouterOptions} options Options
+ * @returns {MutableRouter} ExpressJS Router instance
  */
 export default function ancillaryRouter({
   sessionTtl,

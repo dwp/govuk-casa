@@ -24,6 +24,7 @@ const echo = (a) => (a);
 /**
  * Validates and sanitises i18n obejct.
  *
+ * @access private
  * @param {object} i18n Object to validate.
  * @param {Function} cb Callback function that receives the validated value.
  * @throws {TypeError} For invalid object.
@@ -39,6 +40,7 @@ export function validateI18nObject(i18n = Object.create(null), cb = echo) {
 /**
  * Validates and sanitises i18n directory.
  *
+ * @access private
  * @param {Array} dirs Array of directories.
  * @throws {SyntaxError} For invalid directories.
  * @throws {TypeError} For invalid type.
@@ -59,6 +61,7 @@ export function validateI18nDirs(dirs = []) {
 /**
  * Validates and sanitises i18n locales.
  *
+ * @access private
  * @param {Array} locales Array of locales.
  * @throws {SyntaxError} For invalid locales.
  * @throws {TypeError} For invalid type.
@@ -79,6 +82,7 @@ export function validateI18nLocales(locales = ['en', 'cy']) {
 /**
  * Validates and sanitises mount url.
  *
+ * @access private
  * @param {string} mountUrl Prefix for all URLs in the browser address bar
  * @throws {SyntaxError} For invalid URL.
  * @returns {string|undefined} Sanitised URL.
@@ -96,6 +100,7 @@ export function validateMountUrl(mountUrl) {
 /**
  * Validates and sanitises sessions object.
  *
+ * @access private
  * @param {object} session Object to validate.
  * @param {Function} cb Callback function that receives the validated value.
  * @throws {TypeError} For invalid object.
@@ -116,6 +121,7 @@ export function validateSessionObject(session = Object.create(null), cb = echo) 
 /**
  * Validates and sanitises view directory.
  *
+ * @access private
  * @param {Array} dirs Array of directories.
  * @throws {SyntaxError} For invalid directories.
  * @throws {TypeError} For invalid type.
@@ -136,6 +142,7 @@ export function validateViews(dirs = []) {
 /**
  * Validates and sanitises sessions secret.
  *
+ * @access private
  * @param {string} secret Session secret.
  * @throws {ReferenceError} For missing value type.
  * @throws {TypeError} For invalid value.
@@ -153,6 +160,7 @@ export function validateSessionSecret(secret) {
 /**
  * Validates and sanitises sessions ttl.
  *
+ * @access private
  * @param {number} ttl Session ttl (seconds).
  * @throws {ReferenceError} For missing value type.
  * @throws {TypeError} For invalid value.
@@ -168,6 +176,7 @@ export function validateSessionTtl(ttl = 3600) {
 /**
  * Validates and sanitises sessions name.
  *
+ * @access private
  * @param {string} [name=casa-session] Session name.
  * @throws {ReferenceError} For missing value type.
  * @throws {TypeError} For invalid value.
@@ -183,6 +192,7 @@ export function validateSessionName(name = 'casa-session') {
 /**
  * Validates and sanitises sessions secure flag.
  *
+ * @access private
  * @param {boolean} [secure=false] Session secure flag.
  * @throws {ReferenceError} For missing value type.
  * @throws {TypeError} For invalid value.
@@ -198,6 +208,7 @@ export function validateSessionSecure(secure = false) {
 /**
  * Validates and sanitises sessions store.
  *
+ * @access private
  * @param {Function} store Session store.
  * @returns {Function} Store.
  */
@@ -212,6 +223,7 @@ export function validateSessionStore(store) {
 /**
  * Validates and sanitises sessions cookie url path.
  *
+ * @access private
  * @param {string} cookiePath Session cookie url path.
  * @param {string} defaultPath Default path if none specified.
  * @returns {string} Cookie path.
@@ -231,6 +243,7 @@ export function validateSessionCookiePath(cookiePath, defaultPath = '/') {
  * Lax
  * None
  *
+ * @access private
  * @param {any} cookieSameSite Session cookie "sameSite" flag
  * @param {any} defaultFlag Default path if none specified
  * @returns {boolean} cookie path
@@ -367,6 +380,7 @@ export function validateEvents(events) {
 /**
  * Validates helmet configuration function.
  *
+ * @access private
  * @param {HelmetConfigurator} helmetConfigurator Configuration function
  * @returns {HelmetConfigurator} Validated configuration function
  * @throws {TypeError} when passed a non-function
@@ -382,6 +396,7 @@ export function validateHelmetConfigurator(helmetConfigurator) {
 /**
  * Ingest, validate, sanitise and manipulate configuration parameters.
  *
+ * @access private
  * @param {ConfigurationOptions} config Config to ingest.
  * @throws {Error|SyntaxError|TypeError} For invalid config values.
  * @returns {object} Immutable config object.

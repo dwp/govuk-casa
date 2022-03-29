@@ -1,17 +1,28 @@
 /* eslint-disable class-methods-use-this */
-/**
- * Test the number of words in a string.
- *
- * Config options:
- *   string|object errorMsgMax = Error message to use on max length failure
- *   string|object errorMsgMin = Error message to use on min length failure
- *   int max = Maximum word count allowed
- *   int min = Minimum word count required
- */
 import ValidatorFactory from '../ValidatorFactory.js';
 import ValidationError from '../ValidationError.js';
 import { stringifyInput } from '../utils.js';
 
+/**
+ * @typedef {import('../../casa').ErrorMessageConfig} ErrorMessageConfig
+ */
+
+/**
+ * @typedef {object} WordcountConfigOptions
+ * @property {ErrorMessageConfig} errorMsgMax Error message to use on max length failure
+ * @property {ErrorMessageConfig} errorMsgMin Error message to use on min length failure
+ * @property {number} max Maximum string length allowed
+ * @property {number} min Minimum string length required
+ */
+
+/**
+ * Test the number of words in a string.
+ *
+ * See {@link WordcountConfigOptions} for <code>make()</code> options.
+ *
+ * @memberof Validators
+ * @augments ValidatorFactory
+ */
 export default class WordCount extends ValidatorFactory {
   name = 'wordCount';
 

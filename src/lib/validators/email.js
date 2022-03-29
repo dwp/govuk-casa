@@ -1,13 +1,4 @@
 /* eslint-disable class-methods-use-this */
-/**
- * Email address.
- *
- * This is not an exhaustive validation, and is permissive.
- *
- * Config options:
- *   string|object errorMsg = Error message to use on validation failure
- */
-
 import validatorPkg from 'validator';
 import ValidationError from '../ValidationError.js';
 import ValidatorFactory from '../ValidatorFactory.js';
@@ -15,7 +6,27 @@ import { stringifyInput } from '../utils.js';
 
 const { isEmail } = validatorPkg; // CommonJS
 
+/**
+ * @typedef {import('../../casa').ErrorMessageConfig} ErrorMessageConfig
+ */
+
+/**
+ * @typedef {object} EmailConfigOptions
+ * @property {ErrorMessageConfig} errorMsg Error message config
+ */
+
+/**
+ * Email address.
+ *
+ * This is not an exhaustive validation, and is permissive.
+ *
+ * See {@link EmailConfigOptions} for <code>make()</code> options.
+ *
+ * @memberof Validators
+ * @augments ValidatorFactory
+ */
 export default class Email extends ValidatorFactory {
+  /** @property {string} name Validator name ("email") */
   name = 'email';
 
   validate(value, dataContext = {}) {

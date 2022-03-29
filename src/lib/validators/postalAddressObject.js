@@ -1,21 +1,4 @@
 /* eslint-disable class-methods-use-this */
-/**
- * Works hand in hand with the core CASA `postalAddressObject` form macro.
- *
- * The errors sent back from this validator are specific to each subfield. For
- * example, if the field name being tested is "address", any errors related to
- * the "postcode" component would be associated with "address[postcode]".
- *
- * Config options:
- *   string|object errorMsg = General error message for the entire address block
- *   string|object errorMsgAddress1 = Error message for address1 part
- *   string|object errorMsgAddress2 = Error message for address2 part
- *   string|object errorMsgAddress3 = Error message for address3 part
- *   string|object errorMsgAddress4 = Error message for address4 part
- *   string|object errorMsgPostcode = Error message for postcode part
- *   int strlenmax = Max. String length for each of the inputs appress[1-4]
- *   array requiredFields = Field parts required (others become optional)
- */
 import lodash from 'lodash';
 import ValidationError from '../ValidationError.js';
 import ValidatorFactory from '../ValidatorFactory.js';
@@ -23,6 +6,36 @@ import { stringifyInput } from '../utils.js';
 
 const { isPlainObject } = lodash; // CommonjS
 
+/**
+ * @typedef {import('../../casa').ErrorMessageConfig} ErrorMessageConfig
+ */
+
+/**
+ * @typedef {object} PostalAddressObjectConfigOptions
+ * @property {ErrorMessageConfig} [errorMsg] General error message for the entire address block
+ * @property {string|object} [errorMsgAddress1] Error message for address1 part
+ * @property {string|object} [errorMsgAddress2] Error message for address2 part
+ * @property {string|object} [errorMsgAddress3] Error message for address3 part
+ * @property {string|object} [errorMsgAddress4] Error message for address4 part
+ * @property {string|object} [errorMsgPostcode] Error message for postcode part
+ * @property {number} [strlenmax] Max. String length for each of the inputs appress[1-4]
+ * @property {string[]} [requiredFields] Field parts required (others become optional). One of
+ * 'address1'|'address2'|'address3'|'address4'|'postcode'
+ */
+
+/**
+ * Works hand in hand with the core CASA <code>postalAddressObject</code> form
+ * macro.
+ *
+ * The errors sent back from this validator are specific to each subfield. For
+ * example, if the field name being tested is "address", any errors related to
+ * the "postcode" component would be associated with "address[postcode]".
+ *
+ * See {@link PostalAddressObjectConfigOptions} for <code>make()</code> options.
+ *
+ * @memberof Validators
+ * @augments ValidatorFactory
+ */
 export default class PostalAddressObject extends ValidatorFactory {
   name = 'postalAddressObject';
 

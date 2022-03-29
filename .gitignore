@@ -3,5 +3,6 @@
 .junit/
 .nyc_output/
 dist/
+docs/api/
 node_modules/
 examples/**/package-lock.json

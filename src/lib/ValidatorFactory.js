@@ -4,7 +4,7 @@ import lodash from 'lodash';
 const { isPlainObject } = lodash; // CommonJS
 
 /**
- * @typedef {import('./index').ProcessorFunction} ProcessorFunction
+ * @typedef {import('../casa').ErrorMessageConfig} ErrorMessageConfig
  */
 
 /**
@@ -16,33 +16,28 @@ const { isPlainObject } = lodash; // CommonJS
  */
 
 /**
- * @typedef {object} Validator
- * @property {ValidateFunction} validate Validation function
- * @property {ProcessorFunction} sanitise Sanitise a given value prior to validation
- * @property {object} config Configuration
- * @property {string} name Validator name
+ * @typedef {import('../casa').ValidateContext} ValidateContext
  */
 
 /**
- * @callback ValidateFunction
- * @param {any} value
- * @param {ValidateContext} context
- * @returns {ValidationError[]}
+ * @typedef {import('../casa').Validator} Validator
  */
 
 /**
- * @typedef {object} ValidateContext Context passed to validate function
- * @property {JourneyContext} journeyContext Journey context
- * @property {string} waypoint Waypoint
- * @property {string} fieldName Name of field being processed
+ * @typedef {object} ValidatorFactoryOptions
+ * @property {ErrorMessageConfig} errorMsg Error message
  */
 
+/**
+ * @class
+ * @memberof module:@dwp/govuk-casa
+ */
 export default class ValidatorFactory {
   /**
    * This is a convenience method that will return a consistently object
    * structure containing validation and sanitisation methods.
    *
-   * @param {object} config Validator config (custom to the validator being created)
+   * @param {ValidatorFactoryOptions} config Validator config (custom to each validator)
    * @returns {Validator} Validator object
    * @throws {TypeError} When configurarion is invalid.
    */
@@ -105,12 +100,28 @@ export default class ValidatorFactory {
     this.config = config;
   }
 
-  /* eslint-disable-next-line no-unused-vars */
+  /* eslint-disable no-unused-vars */
+
+  /* eslint-disable-next-line jsdoc/require-returns-check */
+  /**
+   * Validate the given value.
+   *
+   * @param {any} fieldValue Value to validate
+   * @param {ValidateContext} context Contextual information
+   * @returns {ValidationError[]} A list of errors (empty if no errors found)
+   * @throws {Error}
+   */
   validate(fieldValue, context) {
     throw new Error('validate() method has not been implemented');
   }
 
-  /* eslint-disable-next-line no-unused-vars */
+  /* eslint-disable-next-line jsdoc/require-returns-check */
+  /**
+   * Sanitise the given value.
+   *
+   * @param {any} fieldValue Value to validate
+   * @returns {any} The sanitised value
+   */
   sanitise(fieldValue) {
     return fieldValue;
   }

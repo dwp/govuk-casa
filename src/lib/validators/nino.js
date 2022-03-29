@@ -1,19 +1,30 @@
 /* eslint-disable class-methods-use-this */
-/**
- * UK National Insurance number.
- *
- * Config options:
- *   string|object errorMsg = Error message to use on validation failure
- *   boolean allowWhitespace = will permit input values that contain spaces.
- *
- * Ref:
- * https://en.wikipedia.org/wiki/National_Insurance_number#Format
- * https://design-system.service.gov.uk/patterns/national-insurance-numbers/
- */
 import ValidationError from '../ValidationError.js';
 import ValidatorFactory from '../ValidatorFactory.js';
 import { stringifyInput } from '../utils.js';
 
+/**
+ * @typedef {import('../../casa').ErrorMessageConfig} ErrorMessageConfig
+ */
+
+/**
+ * @typedef {object} NinoConfigOptions
+ * @property {ErrorMessageConfig} errorMsg Error message config
+ * @property {boolean} allowWhitespace Will permit input values that contain spaces.
+ */
+
+/**
+ * UK National Insurance number.
+ *
+ * Ref:
+ * https://en.wikipedia.org/wiki/National_Insurance_number#Format
+ * https://design-system.service.gov.uk/patterns/national-insurance-numbers/
+ *
+ * See {@link NinoConfigOptions} for <code>make()</code> options.
+ *
+ * @memberof Validators
+ * @augments ValidatorFactory
+ */
 export default class Nino extends ValidatorFactory {
   name = 'nino';
 

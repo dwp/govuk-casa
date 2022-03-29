@@ -2,3 +2,4 @@ assets/**/*
 dist/**/*
 examples/**/*
 scripts/**/*
+docs/api/**/*

@@ -13,7 +13,7 @@ Custom parameters:
 Basic example:
 
 ```nunjucks
-{% from "casa/components/radios/macro.njk" import casaGovukRadios %}
+{% from "casa/components/radios/macro.njk" import casaGovukRadios with context %}
 
 {{ casaGovukRadios({
   name: 'myInput',
@@ -32,7 +32,7 @@ Basic example:
 If you want one of the radio items to toggle the display of an element:
 
 ```nunjucks
-{% from "casa/components/radios/macro.njk" import casaGovukRadios %}
+{% from "casa/components/radios/macro.njk" import casaGovukRadios with context %}
 
 {% set panel %}
   This panel will remain hidden until the "Yes" radio button is chosen

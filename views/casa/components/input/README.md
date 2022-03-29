@@ -11,7 +11,7 @@ Custom parameters:
 Basic example:
 
 ```nunjucks
-{% from "casa/components/input/macro.njk" import casaGovukInput %}
+{% from "casa/components/input/macro.njk" import casaGovukInput with context %}
 
 casaGovukInput({
   name: "name",

@@ -26,6 +26,10 @@ const VALID_BLOCKS = [
  * @returns {string} The modified template source
  */
 
+/**
+ * @access private
+ * @augments FileSystemLoader
+ */
 export default class CasaTemplateLoader extends FileSystemLoader {
   #blockModifiers;
 

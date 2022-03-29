@@ -15,6 +15,7 @@ import {
 /**
  * Create a Nunjucks environment.
  *
+ * @access private
  * @param {NunjucksOptions} options Nunjucks options
  * @returns {Environment} Nunjucks Environment instance
  */

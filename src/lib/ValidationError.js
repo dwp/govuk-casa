@@ -5,41 +5,41 @@ const { isPlainObject } = lodash; // CommonJS
 const params = new WeakMap();
 
 /**
- * @typedef {import('./ValidatorFactory').ValidateContext} ValidateContext
+ * @typedef {import('../casa').ValidateContext} ValidateContext
  */
 
+/**
+ * @typedef {import('../casa').ErrorMessageConfig} ErrorMessageConfig
+ */
+
+/**
+ * @typedef {import('../casa').ErrorMessageConfigObject} ErrorMessageConfigObject
+ */
+
+/**
+ * @class
+ * @memberof module:@dwp/govuk-casa
+ */
 export default class ValidationError {
   /**
    * Make a ValidationError instance from a primitive object (or a function that
    * returns a primitive object) that is specific to the given journey context.
+   * <br/><br/>
    *
-   * The returned `error` (or the function that returns the equivalent) must
-   * match the structure required by the ValidationError constructor.
+   * In the case of `errorMsg` being a function, this will be called at runtime,
+   * at the point that errors are generated within the <code>validate()</code>,
+   * methods, and will be passed the `dataContext`.
+   * <br/><br/>
    *
-   * `errorMsg` can be one of these formats:
-   *   String => 'common:errors.my-error-message'
-   *   Object => (see constructor argument for structure of this object)
-   *   Function => Function returns object suitable for constructor (see example below)
-   *   Error => A JavaScript error. It's `message` will be used as the error.
+   * <code>dataContext</code> is an object containing the same data passed to all
+   * validators' <code>validate()</code> methods. In the case of `errorMsg` being
+   * a function, this data is passed to that function in order to help resolve to
+   * an error message config object.
    *
-   * `dataContext` is an object containing the same data passed to all validator
-   * functions, and contains:
-   *   waypointId => The current waypoint being requested
-   *   fieldName => Name of the field being validated
-   *   journeyContext => The full JourneyContext of the current request.
-   *
-   * Example function signature that can be used for `errorMsg`:
-   *   ({ waypointId, fieldName, journeyContext }) => ({
-   *     summary: 'my-waypoint:some.key.to.say.hello',
-   *     variables: {
-   *       name: journeyContext.getDataForPage(waypointId).name,
-   *     }
-   *   });
-   *
-   * @param {object} args See args above
-   * @param {any} args.errorMsg Error message to seed the ValidationError
-   * @param {object} args.dataContext Validation context
-   * @returns {object} Primitive error matching structure above
+   * @param {object} args Arguments
+   * @param {ErrorMessageConfig} args.errorMsg Error message config to seed ValidationError
+   * @param {ValidateContext} [args.dataContext={}] Data for error msg function
+   * @returns {ValidationError} Error instance
    * @throws {TypeError} If errorMsg is not in a valid type
    */
   static make({ errorMsg, dataContext = {} }) {
@@ -78,22 +78,9 @@ export default class ValidationError {
   }
 
   /**
-   * `error` may be a simple string, in which case that string reppresents the
-   * error mesaage (equivalent to `error.summary` in the structure below).
+   * Create a ValidationError.
    *
-   * `error`, when passed as an object, must match this structure:
-   *
-   * {
-   *   summary: "",         // required
-   *   inline: "",          // optional, may be deprecated in future
-   *   focusSuffix: "",     // optional
-   *   fieldKeySuffix: "",  // optional
-   *   variables: {         // optional
-   *     myVariable: 'a value'
-   *   }
-   * }
-   *
-   * @param {object|string} errorParam See object structure above
+   * @param {string|ErrorMessageConfigObject} errorParam Error configuration
    */
   constructor(errorParam = {}) {
     if (!isPlainObject(errorParam) && typeof errorParam !== 'string') {
@@ -133,7 +120,7 @@ export default class ValidationError {
   }
 
   /**
-   * Modifies the error to reflect the given context.
+   * Modifies this instance to reflect the given validation context.
    *
    * @param {ValidateContext} context See structure above
    * @returns {ValidationError} Chain

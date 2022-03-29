@@ -1,16 +1,27 @@
 /* eslint-disable class-methods-use-this */
-/**
- * Match a string pattern.
- *
- * Config options:
- *   string|object errorMsg = Error message to use on validation failure
- *   RegExp pattern = Regular expression to test against
- *   boolean invert = return reject on positive regex match
- */
 import ValidatorFactory from '../ValidatorFactory.js';
 import ValidationError from '../ValidationError.js';
 import { stringifyInput } from '../utils.js';
 
+/**
+ * @typedef {import('../../casa').ErrorMessageConfig} ErrorMessageConfig
+ */
+
+/**
+ * @typedef {object} RegexConfigOptions
+ * @property {ErrorMessageConfig} errorMsg Error message config
+ * @property {RegExp} pattern Regular expression to test against
+ * @property {boolean} invert Return error on positive regex match
+ */
+
+/**
+ * Match a string pattern.
+ *
+ * See {@link RegexConfigOptions} for <code>make()</code> options.
+ *
+ * @memberof Validators
+ * @augments ValidatorFactory
+ */
 export default class Regex extends ValidatorFactory {
   name = 'regex';
 

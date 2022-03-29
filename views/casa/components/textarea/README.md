@@ -11,7 +11,7 @@ Custom parameters:
 Basic example:
 
 ```nunjucks
-{% from "casa/components/textarea/macro.njk" import casaGovukTextarea %}
+{% from "casa/components/textarea/macro.njk" import casaGovukTextarea with context %}
 
 casaGovukTextarea({
   name: "name",

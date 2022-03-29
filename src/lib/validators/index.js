@@ -8,6 +8,9 @@ import required from './required.js';
 import strlen from './strlen.js';
 import wordCount from './wordCount.js';
 
+/**
+ * @namespace Validators
+ */
 export default {
   dateObject,
   email,

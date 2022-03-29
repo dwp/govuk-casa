@@ -1,17 +1,28 @@
 /* eslint-disable class-methods-use-this */
-/**
- * Test the length of a string.
- *
- * Config options:
- *   string|object errorMsgMax = Error message to use on max length failure
- *   string|object errorMsgMin = Error message to use on min length failure
- *   int max = Maximum string length allowed
- *   int min = Minimum string length required
- */
 import ValidatorFactory from '../ValidatorFactory.js';
 import ValidationError from '../ValidationError.js';
 import { stringifyInput } from '../utils.js';
 
+/**
+ * @typedef {import('../../casa').ErrorMessageConfig} ErrorMessageConfig
+ */
+
+/**
+ * @typedef {object} StrlenConfigOptions
+ * @property {ErrorMessageConfig} errorMsgMax Error message to use on max length failure
+ * @property {ErrorMessageConfig} errorMsgMin Error message to use on min length failure
+ * @property {number} max Maximum string length allowed
+ * @property {number} min Minimum string length required
+ */
+
+/**
+ * Test the length of a string.
+ *
+ * See {@link StrlenConfigOptions} for <code>make()</code> options.
+ *
+ * @memberof Validators
+ * @augments ValidatorFactory
+ */
 export default class Strlen extends ValidatorFactory {
   name = 'strlen';
 

@@ -15,7 +15,7 @@ Hooks are scoped to one of the core CASA routers:
 
 Each router exposes its own unique hooks, named in the format `<scope>.<hook>`.
 
-For example, to create a hook on the `journey.prerender` hook that will run for every route in the `journeyRouter`:
+For example, to create a hook on the `journey.prerender` hook that will run for every route in the `journeyRouter` router:
 
 ```javascript
 configure({

@@ -11,7 +11,7 @@ Custom parameters:
 Basic example:
 
 ```nunjucks
-{% from "casa/components/character-count/macro.njk" import casaGovukCharacterCount %}
+{% from "casa/components/character-count/macro.njk" import casaGovukCharacterCount with context %}
 
 casaGovukCharacterCount({
   name: "name",

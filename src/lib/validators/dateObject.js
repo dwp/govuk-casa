@@ -1,26 +1,4 @@
 /* eslint-disable class-methods-use-this */
-/**
- * Date object format:
- *  {
- *    dd: <string>,
- *    mm: <string>,
- *    yyyy: <string>
- *  }.
- *
- * Note that the time part of any injected "DateTime" objects will be zero'ed, as
- * we are only interested in the date component (minimum day resolution).
- *
- * Config options:
- *   string|object errorMsg = Error message to use on validation failure
- *   object|luxon.Duration afterOffsetFromNow = Date must be after offset from now
- *   string|object errorMsgAfterOffset = Error for afterOffsetFromNow failure
- *   object|luxon.Duration beforeOffsetFromNow = Date must be before offset from now
- *   string|object errorMsgBeforeOffset = Error for beforeOffsetFromNow failure
- *   bool allowMonthNames = Allow "Jan", "January", etc (default = false)
- *   bool allowSingleDigitDay = Allow "1" rather than "01" (default = false)
- *   bool allowSingleDigitMonth = Allow "1" rather than "01" (default = false)
- *   luxon.DateTime now = Override the notion of "now" (useful for testing)
- */
 import { DateTime } from 'luxon';
 import lodash from 'lodash';
 import ValidationError from '../ValidationError.js';
@@ -29,7 +7,41 @@ import { stringifyInput } from '../utils.js';
 
 const { isPlainObject } = lodash;
 
+/**
+ * @typedef {import('../../casa').ErrorMessageConfig} ErrorMessageConfig
+ */
+
+/**
+ * @typedef {object} DateObjectConfigOptions
+ * @property {ErrorMessageConfig} errorMsg Error message config
+ * @property {object} [afterOffsetFromNow] Offset from now
+ * @property {ErrorMessageConfig} [errorMsgAfterOffset] Error if date is after this offset
+ * @property {object} [beforeOffsetFromNow] Offset from now
+ * @property {ErrorMessageConfig} [errorMsgBeforeOffset] Error if date is before this offset
+ * @property {boolean} [allowMonthNames=false] Allow "Jan", "January", etc
+ * @property {boolean} [allowSingleDigitDay=false] Allow "1" rather than "01"
+ * @property {boolean} [allowSingleDigitMonth=false] Allow "1" rather than "01"
+ * @property {DateTime} [now=false] Override the notion of "now" (useful for testing)
+ */
+
+/**
+ * Date object format:
+ *  {
+ *    dd: <string>,
+ *    mm: <string>,
+ *    yyyy: <string>
+ *  }.
+ *
+ * Note that the time part will be zero'ed, as we are only interested in the
+ * date component (minimum day resolution).
+ *
+ * See {@link DateObjectConfigOptions} for <code>make()</code> options.
+ *
+ * @memberof Validators
+ * @augments ValidatorFactory
+ */
 export default class DateObject extends ValidatorFactory {
+  /** @property {string} name Validator name ("dateObject") */
   name = 'dateObject';
 
   validate(value, dataContext = {}) {

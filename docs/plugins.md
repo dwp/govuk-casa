@@ -87,13 +87,13 @@ function bootstrap({ nunjucksEnv }) {
 
 This design was settled on as having the best chance of injecting content into the right place, so is the default behaviour. If we instead used a **pull** approach - where a series of hooks we included in each block, e.g. `{% block body %} {{ pullContentHere() }} {% endblock %}` - then there would be no guarantee that any overrides of that block would still include that pull function.
 
-However, it isn't foolproof, so all plugins should be sure to offer both this automatic insertion behaiour, but also a manual insertion option so developers can inject the content in exactly the right place as they wish. The convention for this is to support a `disableContent` option, and accompanying documentation on how to manually inject the content instead, eg
+However, it isn't foolproof, so all plugins should be sure to offer both this automatic insertion behaviour, but also a manual insertion option so developers can inject the content in exactly the right place as they wish. The convention for this is to support a `disableContentModification` option, and accompanying documentation on how to manually inject the content instead. For example:
 
 ```javascript
 configure({
   plugins: [
     somePlugin({
-      disableContent: true,
+      disableContentModification: true,
     }),
   ],
 });

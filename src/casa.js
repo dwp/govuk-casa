@@ -10,6 +10,7 @@ import waypointUrl from './lib/waypoint-url.js';
 import endSession from './lib/end-session.js';
 import * as nunjucksFilters from './lib/nunjucks-filters.js';
 
+/** @module @dwp/govuk-casa */
 export {
   configure,
   validators,
@@ -143,4 +144,94 @@ export {
  * @property {import('express').RequestHandler[]} i18nMiddleware I18n preparation middleware
  * @property {import('express').RequestHandler} bodyParserMiddleware Body parsing middleware
  * @property {Mounter} mount Function used to mount all CASA artifacts onto an ExpressJS app
+ */
+
+/**
+ * Configuration for generating a ValidationError.
+ * i.e. <code>new ValidationError(configObject)</code>
+ * <br/><br/>
+ *
+ * The <code>fieldKeySuffix</code> is used to differentiate errors attached to
+ * the same field name. For example, given these fields inputs ...
+ *
+ * <pre>
+ * &lt;input name="dateOfBirth[dd]" /&gt;
+ * &lt;input name="dateOfBirth[mm]" /&gt;
+ * &lt;input name="dateOfBirth[yyyy]" /&gt;
+ * </pre>
+ *
+ * If we wanted to generate an error specifically for the <code>dd</code>
+ * element, then we'd include <code>{ fieldKeySuffix: '[dd]' }</code> in this
+ * config.
+ * <br/><br/>
+ *
+ * We can also use <code>focusSuffix</code> to control which properties of an
+ * object field should be highlighted with a red border when in error. Looking
+ * again at the <code>dateOfBirth</code> example above, if we did not specify
+ * any <code>focusSuffix</code>, then all three inputs would be highlighted.
+ * However, if we use <code>{ focusSuffix: ['[dd]', '[yyyy]'] }</code> then only
+ * the <code>[dd]</code> and <code>[yyyy]</code> inputs would be highlighted.
+ * <br/><br/>
+ *
+ * The <code>fieldHref</code> and <code>field</code> properties are strictly for
+ * internal use only and public access may be removed at any point.
+ *
+ * @typedef {object} ErrorMessageConfigObject
+ * @property {string} summary Summary message
+ * @property {string} [inline] Inline message (@deprecated now uses summary everywhere)
+ * @property {string|string[]} [focusSuffix] String(s) to append to URL hash for focusing inputs
+ * @property {string} [fieldKeySuffix] Object fields may use this to show errors per sub-property
+ * @property {object|ErrorMessageVariablesGenerator} [variables] Interpolation variables
+ * @property {string} [validator] Name of the validator
+ * @property {string} [fieldHref] (internal) URL hash to link to field in UI, i.e <code>#f-..</code>
+ * @property {string} [field] (internal) Field name, including any focus suffix
+ */
+
+/**
+ * Function to generate interpolation variables for injecting into the error
+ * message string.
+ *
+ * @callback ErrorMessageVariablesGenerator
+ * @param {ValidateContext} dataContext Data context
+ * @returns {object} Variables name:value hash
+ */
+
+/**
+ * @callback ErrorMessageConfigGenerator
+ * @param {ValidateContext} dataContext Data context
+ * @returns {string|ErrorMessageConfigObject} Compiled error mesasge config
+ */
+
+/**
+ * @typedef {string|ErrorMessageConfigObject|ErrorMessageConfigGenerator|Error} ErrorMessageConfig
+ */
+
+/**
+ * @typedef {object} ValidateContext Context passed to validate function
+ * @property {JourneyContext} journeyContext Journey context
+ * @property {string} waypoint Waypoint
+ * @property {string} fieldName Name of field being processed
+ * @property {any} [fieldValue] Current value of the field being validated
+ * @property {string} [validator] Name of the validator
+ */
+
+/**
+ * @callback ValidateFunction
+ * @param {any} value
+ * @param {ValidateContext} context Vaildation context
+ * @returns {ValidationError[]}
+ */
+
+/**
+ * @callback FieldProcessorFunction
+ * @param {any} value Value to be processed
+ * @returns {any}
+ */
+
+/**
+ * @typedef {object} Validator
+ * @property {ValidateFunction} validate Validation function
+ * @property {FieldProcessorFunction} sanitise Sanitise a given value prior to validation
+ * @property {object} config Configuration
+ * @property {string} name Validator name
  */

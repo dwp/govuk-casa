@@ -5,6 +5,7 @@
 /**
  * Test is a value can be stringifed (numbers or strings)
  *
+ * @access private
  * @param {any} value Item to test
  * @returns {boolean} Whether the value is stringable or not
  */
@@ -15,6 +16,7 @@ export function isStringable(value) {
 /**
  * Coerce an input to a string.
  *
+ * @access private
  * @param {any} input Input to be stringified
  * @param {string} fallback Fallback to use if input can't be stringified
  * @returns {string} The stringified input
@@ -28,6 +30,7 @@ export function stringifyInput(input, fallback) {
 /**
  * Determine if value is empty. Recurse over objects.
  *
+ * @access private
  * @param  {any} val Value to check
  * @returns {boolean} True if the object is empty
  */
@@ -51,6 +54,7 @@ export function isEmpty(val) {
  * Extract the middleware functions that are relevant for the given hook and
  * path.
  *
+ * @access private
  * @param {string} hookName Hook name (including scope prefix)
  * @param {string} path URL path to match (relative to mountUrl)
  * @param {Hook[]} hooks Hooks to be applied at the page level
@@ -131,6 +135,7 @@ export function validateHookPath(path) {
 /**
  * Checks if the given string can be used as an object key.
  *
+ * @access private
  * @param {string} key Proposed Object key
  * @returns {string} Same key if it's valid
  * @throws {Error} if proposed key is an invalid keyword
@@ -147,6 +152,7 @@ export function notProto(key) {
  * but not in the `baseUrl`. Those segments are considered to be part of an
  * internal proxying arrangement, and should not be used by CASA.
  *
+ * @access private
  * @param {import('express').Request} req Express request
  * @throws {Error} When multiple mountpaths are present
  * @returns {string} URL path with any proxy prefixes removed

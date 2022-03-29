@@ -10,6 +10,7 @@ const log = logger('lib:end-session');
  * Note: this will not remove the session from server-side storage, which will
  * instead be left up to the storage mechanism to clean up.
  *
+ * @memberof module:@dwp/govuk-casa
  * @param {object} req HTTP request
  * @param {Function} next Chain
  * @returns {void}

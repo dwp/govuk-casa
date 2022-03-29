@@ -12,7 +12,29 @@ import ValidationError from '../ValidationError.js';
 import ValidatorFactory from '../ValidatorFactory.js';
 import { stringifyInput, isStringable } from '../utils.js';
 
+/**
+ * @typedef {import('../../casa').ErrorMessageConfig} ErrorMessageConfig
+ */
+
+/**
+ * @typedef {object} ArrayConfigOptions
+ * @property {ErrorMessageConfig} errorMsg Error message config
+ * @property {string[]} source Array of values to test against
+ */
+
+/**
+ * Test if a value is present in an array.
+ *
+ * If the value itself is an array, all values within that array must be present
+ * in the `source` array in order to pass validation.
+ *
+ * See {@link ArrayConfigOptions} for <code>make()</code> options.
+ *
+ * @memberof Validators
+ * @augments ValidatorFactory
+ */
 export default class InArray extends ValidatorFactory {
+  /** @property {string} name Validator name ("inArray") */
   name = 'inArray';
 
   validate(value, dataContext = {}) {

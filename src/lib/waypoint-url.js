@@ -2,13 +2,22 @@
  * @typedef {import('./index').JourneyContext} JourneyContext
  */
 
+/** @access private */
 const reUrlProtocolExtract = /^url:\/\/(.+)$/i
 
+/**
+ * Sanitise a waypoint string.
+ *
+ * @access private
+ * @param {string} w Waypoint
+ * @returns {string} Sanitised waypoint
+ */
 const sanitiseWaypoint = (w) => w.replace(/[^/a-z0-9_-]/ig, '').replace(/\/+/g, '/');
 
 /**
  * Generate a URL pointing at a particular waypoint.
  *
+ * @memberof module:@dwp/govuk-casa
  * @param {object} obj Options
  * @param {string} obj.waypoint Waypoint
  * @param {string} obj.mountUrl Mount URL
