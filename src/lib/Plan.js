@@ -17,6 +17,16 @@ const log = logger('lib:plan');
  */
 
 /**
+ * @typedef {import('../casa').PlanArbiter} PlanArbiter
+ */
+
+/**
+ * @typedef {object} PlanConstructorOptions
+ * @property {boolean} [validateBeforeRouteCondition=true] Check page validity before conditions
+ * @property {string|PlanArbiter} [arbiter=undefined] Arbitration mechanism
+ */
+
+/**
  * Will check if the source waypoint has specifically passed validation, i.e
  * there is a "null" validation entry for the route source.
  *
@@ -149,9 +159,7 @@ export default class Plan {
   /**
    * Create a Plan.
    *
-   * @param {object} opts Options
-   * @param {boolean} [opts.validateBeforeRouteCondition=true] Check page validity before conditions
-   * @param {Function|string} [opts.arbiter=undefined] Arbitration mechanism
+   * @param {PlanConstructorOptions} opts Options
    */
   constructor(opts = {}) {
     // This is our directed, multigraph representation
@@ -187,7 +195,7 @@ export default class Plan {
   /**
    * Retrieve the options set on this Plan.
    *
-   * @returns {object} Options map
+   * @returns {PlanConstructorOptions} Options map
    */
   getOptions() {
     return priv.get(this).options;
@@ -206,7 +214,7 @@ export default class Plan {
    * Add one or more skippable waypoints.
    *
    * @param  {...string} waypoints Waypoints
-   * @returns {Plan}{ Chain}
+   * @returns {Plan} Chain
    */
   addSkippables(...waypoints) {
     this.#skippableWaypoints = [...this.#skippableWaypoints, ...waypoints];
@@ -270,7 +278,7 @@ export default class Plan {
    *
    * @param {string} src Source waypoint.
    * @param {string} [tgt] Target waypoint.
-   * @returns {Array<object>} Route objects found.
+   * @returns {PlanRoute[]} Route objects found.
    */
   getOutwardRoutes(src, tgt = null) {
     const self = priv.get(this);
@@ -349,7 +357,7 @@ export default class Plan {
    * @param {string} tgt Target waypoint.
    * @param {PlanRouteCondition} [followNext] Follow test function.
    * @param {PlanRouteCondition} [followPrev] Follow test function.
-   * @returns {Plan} Self.
+   * @returns {Plan} Chain
    */
   setRoute(src, tgt, followNext = undefined, followPrev = undefined) {
     this.setNamedRoute(src, tgt, 'next', followNext);
@@ -387,7 +395,7 @@ export default class Plan {
    * @param {string} src Source waypoint.
    * @param {string} tgt Target waypoint.
    * @param {string} name Name of the route (must be unique for this waypoint pairing).
-   * @param {Function} follow Test function to determine if route can be followed.
+   * @param {PlanRouteCondition} follow Test function to determine if route can be followed.
    * @returns {Plan} Chain
    * @throws {Error} If attempting to create a "next" route from an exit node
    */
@@ -444,9 +452,9 @@ export default class Plan {
    * This is a convenience method for traversing all "next" routes, and returning
    * the IDs of all waypoints visited along the way.
    *
-   * @param {JourneyContext} context Journey Context.
-   * @param {object} options Options.
-   * @returns {Array<string>} List of traversed waypoints.
+   * @param {JourneyContext} context Journey Context
+   * @param {PlanTraverseOptions} options Options
+   * @returns {string[]} List of traversed waypoints
    */
   traverse(context, options = {}) {
     return this.traverseNextRoutes(context, options).map((e) => e.source);
@@ -456,9 +464,9 @@ export default class Plan {
    * Traverse the Plan by following all "next" routes, and returning the IDs of
    * all waypoints visited along the way.
    *
-   * @param {JourneyContext} context Journey Context.
-   * @param {object} options Options.
-   * @returns {Array<string>} List of traversed waypoints.
+   * @param {JourneyContext} context Journey Context
+   * @param {PlanTraverseOptions} options Options
+   * @returns {PlanRoute[]} List of traversed waypoints
    */
   traverseNextRoutes(context, options = {}) {
     return this.traverseRoutes(context, { ...options, routeName: 'next' })
@@ -468,9 +476,9 @@ export default class Plan {
    * Traverse the Plan by following all "prev" routes, and returning the IDs of
    * all waypoints visited along the way.
    *
-   * @param {JourneyContext} context Journey Context.
-   * @param {object} options Options.
-   * @returns {Array<string>} List of traversed waypoints.
+   * @param {JourneyContext} context Journey Context
+   * @param {PlanTraverseOptions} options Options
+   * @returns {PlanRoute[]} List of traversed waypoints
    */
   traversePrevRoutes(context, options = {}) {
     return this.traverseRoutes(context, { ...options, routeName: 'prev' })
@@ -486,16 +494,9 @@ export default class Plan {
    * If a cyclical set of routes are encountered, traversal will stop after
    * reaching the first repeated waypoint.
    *
-   * Options:
-   * string startWaypoint = Waypoint from which to start traversal
-   * string routeName = Follow routes matching this name (next | prev)
-   * Map history = Used to detect loops in traversal (internal use)
-   * function stopCondition = Condition that, if true, will stop traversal (useful for performance)
-   * function|string arbiter = If mutliple target routes found, this decides which to use (if any)
-   *
    * @param {JourneyContext} context Journey context
    * @param {PlanTraverseOptions} options Options
-   * @returns {Array<object>} Routes that were traversed
+   * @returns {PlanRoute[]} Routes that were traversed
    * @throws {TypeError} When context is not a JourneyContext
    */
   traverseRoutes(context, options = {}) {
@@ -504,6 +505,8 @@ export default class Plan {
     }
 
     const self = priv.get(this);
+
+    /** @type {PlanTraverseOptions} */
     const {
       startWaypoint = this.getWaypoints()[0],
       stopCondition = () => (false),
@@ -550,7 +553,14 @@ export default class Plan {
           target = target.filter((t) => t.w === resolved.source);
         } else if (arbiter instanceof Function) {
           log.debug('Using custom arbitration process');
-          target = arbiter(target, { context, ...options });
+          // Convert to routeObject and back to edge object so that only the
+          // routeObject is used in the public API
+          target = arbiter({
+            targets: target.map((t) => makeRouteObject(self.dgraph, t)),
+            journeyContext: context,
+            travereOptions: options,
+          });
+          target = target.map((r) => ({ v: r.source, w: r.target, name: r.name }));
         } else {
           log.warn('Unable to arbitrate');
           target = [];

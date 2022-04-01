@@ -67,7 +67,7 @@ For smaller services with fewer waypoints, this is a good bet. However, for larg
 ```javascript
 // Plan config
 const plan = new Plan({
-  arbiter: (target, options) => {
+  arbiter: ({ targets, journeyContext, traverseOptions }) => {
     // Reduce `targets` array to one element and return. If neither looks good,
     // return the original targets `targets`
   },

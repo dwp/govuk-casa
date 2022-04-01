@@ -272,7 +272,20 @@ export {
  * @typedef PlanTraverseOptions
  * @property {string} [startWaypoint] Waypoint from which to start (defaults to first in list)
  * @property {string} routeName Follow routes matching this name (next | prev)
- * @property {Map}  history Used to detect loops in traversal (INTERNAL USE ONLY)
- * @property {Function} stopCondition If true, traversal will be stopped (useful for performance)
- * @property {string|Function} arbiter If mutliple target routes found, this decides which to use
+ * @property {Map} history Used to detect loops in traversal (INTERNAL USE ONLY)
+ * @property {Function} [stopCondition] If true, traversal will be stopped (useful for performance)
+ * @property {string|PlanArbiter} [arbiter] Mutliple target routes found, this decides which to use
+ */
+
+/**
+ * @typedef {object} PlanArbiterParams
+ * @property {PlanRoute[]} targets Potential target routes that need arbitration
+ * @property {JourneyContext} journeyContext Journey Context
+ * @property {PlanTraverseOptions} traverseOptions Original traverse options passed to `traverse()`
+ */
+
+/**
+ * @callback PlanArbiter
+ * @param {PlanArbiterParams} route Route metadata
+ * @returns {PlanRoute[]} Returns all routes, excluding those that the arbiter could eliminate
  */
