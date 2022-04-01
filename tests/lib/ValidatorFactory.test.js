@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import { expect } from 'chai';
 
 import ValidatorFactory from '../../src/lib/ValidatorFactory.js';
@@ -41,37 +40,6 @@ describe('Validation: ValidatorFactory', () => {
       const instance = StubSubClass.make(config);
 
       expect(instance.config).to.deep.equal(config);
-    });
-  });
-
-  describe('coerceToValidatorObject()', () => {
-    it('should call make() on an uninstantied ValidatorFactory class', () => {
-      const spyMake = sinon.spy(ValidatorFactory, 'make');
-
-      const obj = ValidatorFactory.coerceToValidatorObject(StubSubClass);
-
-      expect(spyMake).to.be.calledOnceWithExactly();
-      expect(obj).to.have.keys('validate', 'sanitise', 'config', 'name');
-    });
-
-    it('should set a validate property when given a plain function', () => {
-      const plainFunction = sinon.stub().returns('test-executed');
-
-      const obj = ValidatorFactory.coerceToValidatorObject(plainFunction);
-
-      expect(obj).to.have.keys('validate', 'sanitise', 'config', 'name');
-      expect(obj.validate()).to.equal('test-executed');
-    });
-
-    it('should override all properties when given an object', () => {
-      const plainObject = {
-        name: 'w', validate: 'x', sanitise: 'y', config: 'z',
-      };
-
-      const obj = ValidatorFactory.coerceToValidatorObject(plainObject);
-
-      expect(obj).to.have.keys('validate', 'sanitise', 'config', 'name');
-      expect(obj).to.deep.equal(plainObject);
     });
   });
 
