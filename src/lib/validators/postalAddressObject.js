@@ -7,6 +7,7 @@ import { stringifyInput } from '../utils.js';
 const { isPlainObject } = lodash; // CommonjS
 
 /**
+ * @access private
  * @typedef {import('../../casa').ErrorMessageConfig} ErrorMessageConfig
  */
 

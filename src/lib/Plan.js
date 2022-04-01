@@ -5,18 +5,22 @@ import logger from './logger.js';
 const log = logger('lib:plan');
 
 /**
+ * @access private
  * @typedef {import('../casa').PlanRoute} PlanRoute
  */
 
 /**
+ * @access private
  * @typedef {import('../casa').PlanRouteCondition} PlanRouteCondition
  */
 
 /**
+ * @access private
  * @typedef {import('../casa').PlanTraverseOptions} PlanTraverseOptions
  */
 
 /**
+ * @access private
  * @typedef {import('../casa').PlanArbiter} PlanArbiter
  */
 

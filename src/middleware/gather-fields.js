@@ -6,6 +6,7 @@
 import JourneyContext from '../lib/JourneyContext.js';
 
 /**
+ * @access private
  * @typedef {import('../lib/field').PageField} PageField
  */
 

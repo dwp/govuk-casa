@@ -8,6 +8,7 @@ import { stringifyInput } from '../utils.js';
 const { isPlainObject } = lodash;
 
 /**
+ * @access private
  * @typedef {import('../../casa').ErrorMessageConfig} ErrorMessageConfig
  */
 

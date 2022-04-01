@@ -4,5 +4,32 @@
       "node_modules/@ckeditor/jsdoc-plugins/lib/relation-fixer/",
       "node_modules/jsdoc-tsimport-plugin/",
       "plugins/markdown"
-  ]
+  ],
+  "docdash": {
+    "static": true,
+    "sort": true,
+    "sectionOrder": [
+      "Modules",
+      "Namespaces",
+      "Classes"
+    ],
+    "meta": {
+      "title": "CASA API Documentation"
+    },
+    "search": true,
+    "collapse": false,
+    "typedefs": true,
+    "scripts": [],
+    "menu": {
+      "GitHub": {
+        "href": "https://github.com/dwp/govuk-casa",
+        "target": "_blank",
+        "class": "",
+        "id": ""
+      }
+    },
+    "scopeInOutputPath": false,
+    "nameInOutputPath": false,
+    "versionInOutputPath": false
+  }
 }

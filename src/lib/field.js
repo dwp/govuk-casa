@@ -4,26 +4,32 @@ import { isEmpty } from './utils.js';
 const { isFunction } = lodash;
 
 /**
+ * @access private
  * @typedef {import('./index').JourneyContext} JourneyContext
  */
 
 /**
+ * @access private
  * @typedef {import('../casa').Validator} Validator
  */
 
 /**
+ * @access private
  * @typedef {import('../casa').ValidateContext} ValidateContext
  */
 
 /**
+ * @access private
  * @typedef {import('../casa').ValidatorConditionFunction} ValidatorConditionFunction
  */
 
 /**
+ * @access private
  * @typedef {import('../casa').FieldProcessorFunction} FieldProcessorFunction
  */
 
 /**
+ * @access private
  * @typedef {import('./index').ValidationError} ValidationError
  */
 

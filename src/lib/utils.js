@@ -1,4 +1,5 @@
 /**
+ * @access private
  * @typedef {import('../casa').GlobalHook | import('../casa').PageHook} Hook
  */
 

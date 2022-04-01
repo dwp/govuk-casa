@@ -10,10 +10,12 @@ import {
 } from './utils.js';
 
 /**
+ * @access private
  * @typedef {import('../casa').ConfigurationOptions} ConfigurationOptions
  */
 
 /**
+ * @access private
  * @typedef {import('../casa').HelmetConfigurator} HelmetConfigurator
  */
 

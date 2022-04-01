@@ -19,18 +19,22 @@ const {
 const log = logger('lib:journey-context');
 
 /**
+ * @access private
  * @typedef {import('../casa').Page} Page
  */
 
 /**
+ * @access private
  * @typedef {import('../casa').ContextEventHandler} ContextEventHandler
  */
 
 /**
+ * @access private
  * @typedef {import('../casa').ContextEvent} ContextEvent
  */
 
 /**
+ * @access private
  * @typedef {import('express').Request} ExpressRequest
  */
 

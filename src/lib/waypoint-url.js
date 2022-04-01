@@ -1,4 +1,5 @@
 /**
+ * @access private
  * @typedef {import('./index').JourneyContext} JourneyContext
  */
 

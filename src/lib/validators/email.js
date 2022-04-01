@@ -7,6 +7,7 @@ import { stringifyInput } from '../utils.js';
 const { isEmail } = validatorPkg; // CommonJS
 
 /**
+ * @access private
  * @typedef {import('../../casa').ErrorMessageConfig} ErrorMessageConfig
  */
 

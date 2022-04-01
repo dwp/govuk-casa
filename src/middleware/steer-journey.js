@@ -7,6 +7,7 @@ import logger from '../lib/logger.js';
 const log = logger('middleware:steer-journey');
 
 /**
+ * @access private
  * @typedef {import('../lib/Plan')} Plan
  */
 

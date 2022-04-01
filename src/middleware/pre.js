@@ -6,6 +6,7 @@ const GA_ANALYTICS_DOMAIN = '*.analytics.google.com';
 const GTM_DOMAIN = 'www.googletagmanager.com';
 
 /**
+ * @access private
  * @typedef {import('../casa').HelmetConfigurator} HelmetConfigurator
  */
 

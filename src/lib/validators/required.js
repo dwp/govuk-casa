@@ -7,6 +7,7 @@ import ValidationError from '../ValidationError.js';
 const { isPlainObject } = lodash; // CommonJS
 
 /**
+ * @access private
  * @typedef {import('../../casa').ErrorMessageConfig} ErrorMessageConfig
  */
 

@@ -1,6 +1,7 @@
 import { FileSystemLoader } from 'nunjucks';
 
 /**
+ * @access private
  * @typedef {import('nunjucks').FileSystemLoaderOptions} FileSystemLoaderOptions
  */
 

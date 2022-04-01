@@ -4,22 +4,27 @@ import lodash from 'lodash';
 const { isPlainObject } = lodash; // CommonJS
 
 /**
+ * @access private
  * @typedef {import('../casa').ErrorMessageConfig} ErrorMessageConfig
  */
 
 /**
+ * @access private
  * @typedef {import('./index').JourneyContext} JourneyContext
  */
 
 /**
+ * @access private
  * @typedef {import('./index').ValidationError} ValidationError
  */
 
 /**
+ * @access private
  * @typedef {import('../casa').ValidateContext} ValidateContext
  */
 
 /**
+ * @access private
  * @typedef {import('../casa').Validator} Validator
  */
 

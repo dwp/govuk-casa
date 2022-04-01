@@ -4,6 +4,7 @@ import ValidatorFactory from '../ValidatorFactory.js';
 import { stringifyInput } from '../utils.js';
 
 /**
+ * @access private
  * @typedef {import('../../casa').ErrorMessageConfig} ErrorMessageConfig
  */
 

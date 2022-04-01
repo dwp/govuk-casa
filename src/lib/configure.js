@@ -28,14 +28,17 @@ import bodyParserMiddlewareFactory from '../middleware/body-parser.js';
 import csrfMiddlewareFactory from '../middleware/csrf.js';
 
 /**
+ * @access private
  * @typedef {import('../casa').ConfigurationOptions} ConfigurationOptions
  */
 
 /**
+ * @access private
  * @typedef {import('../casa').ConfigurationOptions} ConfigureResult
  */
 
 /**
+ * @access private
  * @typedef {import('../casa').Mounter} Mounter
  */
 

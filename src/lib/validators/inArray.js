@@ -13,6 +13,7 @@ import ValidatorFactory from '../ValidatorFactory.js';
 import { stringifyInput, isStringable } from '../utils.js';
 
 /**
+ * @access private
  * @typedef {import('../../casa').ErrorMessageConfig} ErrorMessageConfig
  */
 

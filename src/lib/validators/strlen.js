@@ -4,6 +4,7 @@ import ValidationError from '../ValidationError.js';
 import { stringifyInput } from '../utils.js';
 
 /**
+ * @access private
  * @typedef {import('../../casa').ErrorMessageConfig} ErrorMessageConfig
  */
 

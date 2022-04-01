@@ -13,14 +13,17 @@ import { resolveMiddlewareHooks } from '../lib/utils.js';
 const log = logger('routes:journey');
 
 /**
+ * @access private
  * @param {import('../casa.js').GlobalHook} GlobalHook
  */
 
 /**
+ * @access private
  * @param {import('../casa.js').Page} Page
  */
 
 /**
+ * @access private
  * @param {import('../casa.js').Plan} Plan
  */
 

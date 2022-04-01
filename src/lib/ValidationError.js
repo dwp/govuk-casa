@@ -5,14 +5,17 @@ const { isPlainObject } = lodash; // CommonJS
 const params = new WeakMap();
 
 /**
+ * @access private
  * @typedef {import('../casa').ValidateContext} ValidateContext
  */
 
 /**
+ * @access private
  * @typedef {import('../casa').ErrorMessageConfig} ErrorMessageConfig
  */
 
 /**
+ * @access private
  * @typedef {import('../casa').ErrorMessageConfigObject} ErrorMessageConfigObject
  */
 

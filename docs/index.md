@@ -22,3 +22,13 @@ Guides
 * [Migrating between CASA versions](migration-guides/)
 * [Debugging a CASA app](guides/debugging.md)
 * [Customising `Content-Security-Policy`](guides/helmet.md)
+
+## API Reference
+
+You can build a set of API reference documentation locally as so:
+
+```bash
+npm run build:api-docs
+```
+
+This will produce a set of HTML pages, the entry point to which is `docs/api/index.html`.
