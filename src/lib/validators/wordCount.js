@@ -18,7 +18,7 @@ import { stringifyInput } from '../utils.js';
 /**
  * Test the number of words in a string.
  *
- * See {@link WordcountConfigOptions} for <code>make()</code> options.
+ * See {@link WordcountConfigOptions} for `make()` options.
  *
  * @memberof Validators
  * @augments ValidatorFactory

@@ -18,7 +18,7 @@ import { stringifyInput } from '../utils.js';
 /**
  * Test the length of a string.
  *
- * See {@link StrlenConfigOptions} for <code>make()</code> options.
+ * See {@link StrlenConfigOptions} for `make()` options.
  *
  * @memberof Validators
  * @augments ValidatorFactory

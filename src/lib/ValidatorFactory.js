@@ -60,39 +60,11 @@ export default class ValidatorFactory {
     return instance;
   }
 
-  static coerceToValidatorObject(input) {
-    let validator = Object.create(null);
-    validator.validate = () => (Promise.reject(
-      new Error('validate() method has not been defined'),
-    ));
-    validator.sanitise = (val) => (val);
-    validator.config = Object.create(null);
-
-    // An uninstantied Validator subclass
-    if (typeof input === 'function' && Reflect.getPrototypeOf(input) === ValidatorFactory) {
-      validator = input.make();
-    } else if (typeof input === 'function') {
-      // A plain function is assumed to be just the validation logic. We do not
-      // bind the function to `validator` here because it may already be bound to
-      // another context in userland.
-      validator.name = input.name || input.constructor.name || 'unknown';
-      validator.validate = input;
-    } else if (isPlainObject(input)) {
-      // A plain object
-      validator = {
-        validate: input.validate || validator.validate,
-        sanitise: input.sanitise || validator.sanitise,
-        config: input.config || validator.config,
-        name: input.name || validator.name,
-      };
-    } else {
-      // An unsupported scenario
-      throw new TypeError(`Cannot coerce input to a validator object (typeof = ${typeof input})`);
-    }
-
-    return validator;
-  }
-
+  /**
+   * NEVER CALL THIS DIRECTLY. USE `make()`.
+   *
+   * @param {ValidatorFactoryOptions} config Validator config (custom to each validator)
+   */
   constructor(config = {}) {
     if (new.target === ValidatorFactory) {
       throw new TypeError('Cannot instantiate the abstract class, ValidatorFactory');

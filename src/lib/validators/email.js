@@ -20,7 +20,7 @@ const { isEmail } = validatorPkg; // CommonJS
  *
  * This is not an exhaustive validation, and is permissive.
  *
- * See {@link EmailConfigOptions} for <code>make()</code> options.
+ * See {@link EmailConfigOptions} for `make()` options.
  *
  * @memberof Validators
  * @augments ValidatorFactory

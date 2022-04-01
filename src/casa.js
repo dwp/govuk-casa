@@ -148,10 +148,10 @@ export {
 
 /**
  * Configuration for generating a ValidationError.
- * i.e. <code>new ValidationError(configObject)</code>
+ * i.e. `new ValidationError(configObject)`
  * <br/><br/>
  *
- * The <code>fieldKeySuffix</code> is used to differentiate errors attached to
+ * The `fieldKeySuffix` is used to differentiate errors attached to
  * the same field name. For example, given these fields inputs ...
  *
  * <pre>
@@ -160,20 +160,20 @@ export {
  * &lt;input name="dateOfBirth[yyyy]" /&gt;
  * </pre>
  *
- * If we wanted to generate an error specifically for the <code>dd</code>
- * element, then we'd include <code>{ fieldKeySuffix: '[dd]' }</code> in this
+ * If we wanted to generate an error specifically for the `dd`
+ * element, then we'd include `{ fieldKeySuffix: '[dd]' }` in this
  * config.
  * <br/><br/>
  *
- * We can also use <code>focusSuffix</code> to control which properties of an
+ * We can also use `focusSuffix` to control which properties of an
  * object field should be highlighted with a red border when in error. Looking
- * again at the <code>dateOfBirth</code> example above, if we did not specify
- * any <code>focusSuffix</code>, then all three inputs would be highlighted.
- * However, if we use <code>{ focusSuffix: ['[dd]', '[yyyy]'] }</code> then only
- * the <code>[dd]</code> and <code>[yyyy]</code> inputs would be highlighted.
+ * again at the `dateOfBirth` example above, if we did not specify
+ * any `focusSuffix`, then all three inputs would be highlighted.
+ * However, if we use `{ focusSuffix: ['[dd]', '[yyyy]'] }` then only
+ * the `[dd]` and `[yyyy]` inputs would be highlighted.
  * <br/><br/>
  *
- * The <code>fieldHref</code> and <code>field</code> properties are strictly for
+ * The `fieldHref` and `field` properties are strictly for
  * internal use only and public access may be removed at any point.
  *
  * @typedef {object} ErrorMessageConfigObject
@@ -183,7 +183,7 @@ export {
  * @property {string} [fieldKeySuffix] Object fields may use this to show errors per sub-property
  * @property {object|ErrorMessageVariablesGenerator} [variables] Interpolation variables
  * @property {string} [validator] Name of the validator
- * @property {string} [fieldHref] (internal) URL hash to link to field in UI, i.e <code>#f-..</code>
+ * @property {string} [fieldHref] (internal) URL hash to link to field in UI, i.e `#f-..`
  * @property {string} [field] (internal) Field name, including any focus suffix
  */
 
@@ -234,4 +234,45 @@ export {
  * @property {FieldProcessorFunction} sanitise Sanitise a given value prior to validation
  * @property {object} config Configuration
  * @property {string} name Validator name
+ */
+
+/**
+ * @typedef {object} ValidatorConditionFunctionParams
+ * @property {string} fieldName Field name
+ * @property {any} fieldValue Field value
+ * @property {string} waypoint Waypoint
+ * @property {string} waypointId [DEPRECATED] Waypoint (for backwards compatibility with v7)
+ * @property {JourneyContext} journeyContext Journey Context
+ */
+
+/**
+ * Condition functions are executed unbound.
+ *
+ * @callback ValidatorConditionFunction
+ * @param {ValidatorConditionFunctionParams} context Value to be processed
+ * @returns {boolean} True if the validators should be run
+ */
+
+/**
+ * @typedef {object} PlanRoute
+ * @property {string} source Source waypoint
+ * @property {string} target Target waypoint
+ * @property {string} name Name
+ * @property {string} label Label
+ */
+
+/**
+ * @callback PlanRouteCondition
+ * @param {PlanRoute} route Route metadata
+ * @param {JourneyContext} context Journey Context
+ * @returns {boolean} Returns true is route should be followed
+ */
+
+/**
+ * @typedef PlanTraverseOptions
+ * @property {string} [startWaypoint] Waypoint from which to start (defaults to first in list)
+ * @property {string} routeName Follow routes matching this name (next | prev)
+ * @property {Map}  history Used to detect loops in traversal (INTERNAL USE ONLY)
+ * @property {Function} stopCondition If true, traversal will be stopped (useful for performance)
+ * @property {string|Function} arbiter If mutliple target routes found, this decides which to use
  */

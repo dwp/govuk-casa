@@ -8,15 +8,15 @@ const { isFunction } = lodash;
  */
 
 /**
- * @typedef {import('./index').Validator} Validator
- */
-
-/**
- * @typedef {import('../casa').ValidateFunction} ValidateFunction
+ * @typedef {import('../casa').Validator} Validator
  */
 
 /**
  * @typedef {import('../casa').ValidateContext} ValidateContext
+ */
+
+/**
+ * @typedef {import('../casa').ValidatorConditionFunction} ValidatorConditionFunction
  */
 
 /**
@@ -25,23 +25,6 @@ const { isFunction } = lodash;
 
 /**
  * @typedef {import('./index').ValidationError} ValidationError
- */
-
-/**
- * @typedef {object} ConditionFunctionParams
- * @property {string} fieldName Field name
- * @property {any} fieldValue Field value
- * @property {string} waypoint Waypoint
- * @property {string} waypointId [DEPRECATED] Waypoint (for backwards compatibility with v7)
- * @property {JourneyContext} journeyContext Journey Context
- */
-
-/**
- * Condition functions are executed unbound.
- *
- * @callback ConditionFunction
- * @param {ConditionFunctionParams} context Value to be processed
- * @returns {boolean} True if the validators should be run
  */
 
 // Quick check to see if the field name corresponds to a non-primitive complex
@@ -57,7 +40,7 @@ const reInvalidName = /[^a-z0-9_.\-[\]]/i;
  * @class
  */
 export class PageField {
-  /*
+  /**
    * @type {string}
    */
   #name;
@@ -68,12 +51,12 @@ export class PageField {
   #processors;
 
   /**
-   * @type {ValidateFunction[]}
+   * @type {Validator[]}
    */
   #validators;
 
   /**
-   * @type {ConditionFunction[]}
+   * @type {ValidatorConditionFunction[]}
    */
   #conditions;
 
@@ -144,6 +127,7 @@ export class PageField {
   }
 
   /* -------------------------------------------------------------- configure */
+
   get name() {
     return this.#name;
   }
@@ -157,8 +141,8 @@ export class PageField {
    * Some validators will include a `sanitise()` method which will be run at the
    * same time as other "processors".
    *
-   * @param {ValidateFunction[]} items Validation functions
-   * @returns {PageField | ValidateFunction[]} Chain or return all validators
+   * @param {Validator[]} items Validation functions
+   * @returns {PageField | Validator[]} Chain or return all validators
    */
   validators(items = []) {
     if (!items.length) {
@@ -189,8 +173,8 @@ export class PageField {
    * All conditions must be met in order for this field to be considered
    * "actionable".
    *
-   * @param {ConditionFunction[]} items Condition functions
-   * @returns {PageField | ConditionFunction[]} Chain or return all conditions
+   * @param {ValidatorConditionFunction[]} items Condition functions
+   * @returns {PageField | ValidatorConditionFunction[]} Chain or return all conditions
    */
   conditions(items = []) {
     if (!items.length) {
@@ -301,7 +285,7 @@ export class PageField {
   /**
    * Add a single validator.
    *
-   * @param {ValidateFunction} validator Validation function
+   * @param {Validator} validator Validation function
    * @returns {PageField} Chain
    */
   validator(validator) {
@@ -321,7 +305,7 @@ export class PageField {
   /**
    * Add a single condition.
    *
-   * @param {ConditionFunction} condition Condition function
+   * @param {ValidatorConditionFunction} condition Condition function
    * @returns {PageField} Chain
    */
   condition(condition) {
@@ -329,9 +313,9 @@ export class PageField {
   }
 
   /**
-   * Alias for <code>conditions()</code>.
+   * Alias for `conditions()`.
    *
-   * @param {...ConditionFunction} args Condition functions
+   * @param {...ValidatorConditionFunction} args Condition functions
    * @returns {PageField} Chain
    */
   if(...args) {

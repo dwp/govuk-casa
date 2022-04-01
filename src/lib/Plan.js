@@ -5,13 +5,23 @@ import logger from './logger.js';
 const log = logger('lib:plan');
 
 /**
+ * @typedef {import('../casa').PlanRoute} PlanRoute
+ */
+
+/**
+ * @typedef {import('../casa').PlanRouteCondition} PlanRouteCondition
+ */
+
+/**
+ * @typedef {import('../casa').PlanTraverseOptions} PlanTraverseOptions
+ */
+
+/**
  * Will check if the source waypoint has specifically passed validation, i.e
  * there is a "null" validation entry for the route source.
  *
  * @access private
- * @param {object} r Route meta.
- * @param {JourneyContext} context Journey Context.
- * @returns {boolean} Condition result.
+ * @type {PlanRouteCondition}
  */
 function defaultNextFollow(r, context) {
   const { validation: v = {} } = context.toObject();
@@ -23,15 +33,22 @@ function defaultNextFollow(r, context) {
  * specifically passed validation.
  *
  * @access private
- * @param {object} r Route meta.
- * @param {JourneyContext} context Journey context.
- * @returns {boolean} Condition result.
+ * @type {PlanRouteCondition}
  */
 function defaultPrevFollow(r, context) {
   const { validation: v = {} } = context.toObject();
   return Object.prototype.hasOwnProperty.call(v, r.target) && v[r.target] === null;
 }
 
+/**
+ * Validate a given waypoint ID.
+ *
+ * @access private
+ * @param {string} val Waypoint ID
+ * @returns {void}
+ * @throws {TypeError} If waypoint ID is not a string
+ * @throws {SyntaxError} If waypoint ID is incorrectly formatted
+ */
 function validateWaypointId(val) {
   if (typeof val !== 'string') {
     throw new TypeError(`Expected waypoint id to be a string, got ${typeof val}`);
@@ -41,6 +58,15 @@ function validateWaypointId(val) {
   }
 }
 
+/**
+ * Validate a given route name.
+ *
+ * @access private
+ * @param {string} val Route name
+ * @returns {string} The route name
+ * @throws {TypeError} If route name is not a string
+ * @throws {ReferenceError} If route name is neither "next" or "prev"
+ */
 function validateRouteName(val) {
   if (typeof val !== 'string') {
     throw new TypeError(`Expected route name to be a string, got ${typeof val}`);
@@ -50,6 +76,14 @@ function validateRouteName(val) {
   return val;
 }
 
+/**
+ * Validate a given route condition.
+ *
+ * @access private
+ * @param {PlanRouteCondition} val The condition function
+ * @returns {void}
+ * @throws {TypeError} If condition is not a string
+ */
 function validateRouteCondition(val) {
   if (!(val instanceof Function)) {
     throw new TypeError(`Expected route condition to be a function, got ${typeof val}`);
@@ -64,7 +98,7 @@ function validateRouteCondition(val) {
  * @access private
  * @param {object} dgraph Directed graph instance.
  * @param {object} edge Graph edge object.
- * @returns {object} Route.
+ * @returns {PlanRoute} Route.
  */
 const makeRouteObject = (dgraph, edge) => {
   const label = dgraph.edge(edge) || {};
@@ -84,6 +118,12 @@ const makeRouteObject = (dgraph, edge) => {
  */
 const reExitNodeProtocol = /^[a-z]+:\/\//i;
 
+/**
+ * For storing private properties for each instance
+ *
+ * @access private
+ * @todo Use property private class properties.
+ */
 const priv = new WeakMap();
 
 /**
@@ -144,6 +184,11 @@ export default class Plan {
     this.#skippableWaypoints = [];
   }
 
+  /**
+   * Retrieve the options set on this Plan.
+   *
+   * @returns {object} Options map
+   */
   getOptions() {
     return priv.get(this).options;
   }
@@ -178,19 +223,43 @@ export default class Plan {
     return this.#skippableWaypoints.indexOf(waypoint) > -1;
   }
 
+  /**
+   * Retrieve all waypoints in this Plan (order is arbitrary).
+   *
+   * @returns {string[]} List of waypoints
+   */
   getWaypoints() {
     return priv.get(this).dgraph.nodes();
   }
 
+  /**
+   * Determine if the given waypoint exists in this Plan.
+   *
+   * @param {string} waypoint Waypoint to search for
+   * @returns {boolean} Result
+   */
   containsWaypoint(waypoint) {
     return this.getWaypoints().includes(waypoint);
   }
 
+  /**
+   * Get all route information.
+   *
+   * @returns {PlanRoute[]} Routes
+   */
   getRoutes() {
     const self = priv.get(this);
     return self.dgraph.edges().map((edge) => makeRouteObject(self.dgraph, edge));
   }
 
+  /**
+   * Get the condition function for the given parameters.
+   *
+   * @param {string} src Source waypoint
+   * @param {string} tgt Target waypoint
+   * @param {string} name Route name
+   * @returns {PlanRouteCondition} Route condition function
+   */
   getRouteCondition(src, tgt, name) {
     return priv.get(this).follows[validateRouteName(name)][`${src}/${tgt}`];
   }
@@ -200,7 +269,7 @@ export default class Plan {
    * optional target waypoint.
    *
    * @param {string} src Source waypoint.
-   * @param {string} tgt Target waypoint (optional).
+   * @param {string} [tgt] Target waypoint.
    * @returns {Array<object>} Route objects found.
    */
   getOutwardRoutes(src, tgt = null) {
@@ -213,13 +282,20 @@ export default class Plan {
    * optional target waypoint, matching the "prev" name.
    *
    * @param {string} src Source waypoint.
-   * @param {string} tgt Target waypoint (optional).
-   * @returns {Array<object>} Route objects found.
+   * @param {string} [tgt] Target waypoint.
+   * @returns {PlanRoute[]} Route objects found.
    */
   getPrevOutwardRoutes(src, tgt = null) {
     return this.getOutwardRoutes(src, tgt).filter((r) => r.name === 'prev');
   }
 
+  /**
+   * Add a sequence of waypoints that will follow on from each other, with no
+   * routing logic between them.
+   *
+   * @param  {...string} waypoints Waypoints to add
+   * @returns {void}
+   */
   addSequence(...waypoints) {
     // Setup simple double routes (next/prev) between all waypoints in this list
     for (let i = 0, l = waypoints.length - 1; i < l; i += 1) {
@@ -229,10 +305,26 @@ export default class Plan {
     }
   }
 
+  /**
+   * Create a new directed route between two waypoints, labelled as "next".
+   *
+   * @param {string} src Source waypoint
+   * @param {string} tgt Target waypoint
+   * @param {PlanRouteCondition} follow Route condition function
+   * @returns {Plan} Chain
+   */
   setNextRoute(src, tgt, follow) {
     return this.setNamedRoute(src, tgt, 'next', follow);
   }
 
+  /**
+   * Create a new directed route between two waypoints, labelled as "prev".
+   *
+   * @param {string} src Source waypoint
+   * @param {string} tgt Target waypoint
+   * @param {PlanRouteCondition} follow Route condition function
+   * @returns {Plan} Chain
+   */
   setPrevRoute(src, tgt, follow) {
     return this.setNamedRoute(src, tgt, 'prev', follow);
   }
@@ -240,12 +332,12 @@ export default class Plan {
   /**
    * Adds both a "next" and "prev" route between the two waypoints.
    *
-   * By default, the "prev" route will use the same "follow" test as the "next"
-   * route. This makes sense in that in order to get the target, the test must
-   * have been true, and so to reverse the direction we also need that same test
-   * to be true.
+   * By default, the "prev" route will use the same "follow" condition as the
+   * "next" route. This makes sense in that in order to get to the target, the
+   * condition must be true, and so to reverse the direction we also need that
+   * same condition to be true.
    *
-   * However, if the condition function uses the `source`/`target`
+   * However, if the condition function uses the `source`/`target` property
    * of the route in some way, then we must reverse these before passing to the
    * condition on the "prev" route because `source` in the condition will almost
    * certainly be referring to the source of the "next" route.
@@ -255,8 +347,8 @@ export default class Plan {
    *
    * @param {string} src Source waypoint.
    * @param {string} tgt Target waypoint.
-   * @param {Function} followNext Follow test function.
-   * @param {Function} followPrev Follow test function.
+   * @param {PlanRouteCondition} [followNext] Follow test function.
+   * @param {PlanRouteCondition} [followPrev] Follow test function.
    * @returns {Plan} Self.
    */
   setRoute(src, tgt, followNext = undefined, followPrev = undefined) {
@@ -360,10 +452,26 @@ export default class Plan {
     return this.traverseNextRoutes(context, options).map((e) => e.source);
   }
 
+  /**
+   * Traverse the Plan by following all "next" routes, and returning the IDs of
+   * all waypoints visited along the way.
+   *
+   * @param {JourneyContext} context Journey Context.
+   * @param {object} options Options.
+   * @returns {Array<string>} List of traversed waypoints.
+   */
   traverseNextRoutes(context, options = {}) {
     return this.traverseRoutes(context, { ...options, routeName: 'next' })
   }
 
+  /**
+   * Traverse the Plan by following all "prev" routes, and returning the IDs of
+   * all waypoints visited along the way.
+   *
+   * @param {JourneyContext} context Journey Context.
+   * @param {object} options Options.
+   * @returns {Array<string>} List of traversed waypoints.
+   */
   traversePrevRoutes(context, options = {}) {
     return this.traverseRoutes(context, { ...options, routeName: 'prev' })
   }
@@ -386,7 +494,7 @@ export default class Plan {
    * function|string arbiter = If mutliple target routes found, this decides which to use (if any)
    *
    * @param {JourneyContext} context Journey context
-   * @param {object} options Options
+   * @param {PlanTraverseOptions} options Options
    * @returns {Array<object>} Routes that were traversed
    * @throws {TypeError} When context is not a JourneyContext
    */

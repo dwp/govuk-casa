@@ -30,6 +30,10 @@ const log = logger('lib:journey-context');
  * @typedef {import('../casa').ContextEvent} ContextEvent
  */
 
+/**
+ * @typedef {import('express').Request} ExpressRequest
+ */
+
 export function validateObjectKey(key = '') {
   const keyLower = String.prototype.toLowerCase.call(key);
   if (keyLower === 'prototype' || keyLower === '__proto__' || keyLower === 'constructor') {
@@ -172,6 +176,11 @@ export default class JourneyContext {
     throw new TypeError(`Page must be a string or Page object. Got ${typeof page}`);
   }
 
+  /**
+   * Get all data.
+   *
+   * @returns {object} Page data
+   */
   getData() {
     return this.#data;
   }
@@ -279,6 +288,14 @@ export default class JourneyContext {
     return this.#validation[validateObjectKey(pageId)] ?? [];
   }
 
+  /**
+   * Same as `getValidationErrorsForPage()`, but the return value is
+   * an object whose keys are the field names, and values are the list of errors
+   * associated with that particular field.
+   *
+   * @param {string} pageId Page ID.
+   * @returns {object} Object indexed by field names; values containing list of errors
+   */
   getValidationErrorsForPageByField(pageId) {
     const errors = this.getValidationErrorsForPage(pageId);
     const obj = Object.create(null);
@@ -383,6 +400,14 @@ export default class JourneyContext {
     return this;
   }
 
+  /**
+   * Execute all listeners for the given event.
+   *
+   * @param {object} params Params
+   * @param {string} params.event Event (waypoint-change | context-change)
+   * @param {object} params.session Session
+   * @returns {JourneyContext} Chain
+   */
   applyEventListeners({ event, session }) {
     if (!this.#eventListeners.length) {
       return this;
@@ -514,7 +539,7 @@ export default class JourneyContext {
 
   /**
    * Retrieve the default Journey Context. This is just a convenient wrapper
-   * around <code>getContextById()</code>.
+   * around `getContextById()`.
    *
    * @param {object} session Request session
    * @returns {JourneyContext} The default Journey Context
@@ -643,6 +668,13 @@ export default class JourneyContext {
     }
   }
 
+  /**
+   * Remove context from session using the ID.
+   *
+   * @param {object} session Request session
+   * @param {string} id Context ID
+   * @returns {void}
+   */
   static removeContextById(session, id) {
     if (session && has(session.journeyContextList, id)) {
       // ESLint disabled as `id` has been verified as an "own" property
@@ -651,6 +683,13 @@ export default class JourneyContext {
     }
   }
 
+  /**
+   * Remove context from session using the name.
+   *
+   * @param {object} session Request session
+   * @param {string} name Context name
+   * @returns {void}
+   */
   static removeContextByName(session, name) {
     JourneyContext.removeContext(
       session,
@@ -658,16 +697,39 @@ export default class JourneyContext {
     );
   }
 
+  /**
+   * Remove context from session using the tag.
+   *
+   * @param {object} session Request session
+   * @param {string} tag Context tag
+   * @returns {void}
+   */
   static removeContextsByTag(session, tag) {
     JourneyContext.getContextsByTag(session, tag).forEach(
       (c) => JourneyContext.removeContext(session, c),
     );
   }
 
+  /**
+   * Remove call contexts.
+   *
+   * @param {object} session Request session
+   * @returns {void}
+   */
   static removeContexts(session) {
     JourneyContext.getContexts(session).forEach((c) => JourneyContext.removeContext(session, c));
   }
 
+  /**
+   * Extract the Journey Context referred to in the incoming request.
+   *
+   * This will look in `req.params`, `req.query` and
+   * `req.body` for a `contextid` parameter, and use that
+   * to load the correct Journey Context from the session.
+   *
+   * @param {ExpressRequest} req ExpressJS incoming request
+   * @returns {JourneyContext} The Journey Context
+   */
   static extractContextFromRequest(req) {
     JourneyContext.initContextStore(req.session);
 

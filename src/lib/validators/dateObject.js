@@ -35,7 +35,7 @@ const { isPlainObject } = lodash;
  * Note that the time part will be zero'ed, as we are only interested in the
  * date component (minimum day resolution).
  *
- * See {@link DateObjectConfigOptions} for <code>make()</code> options.
+ * See {@link DateObjectConfigOptions} for `make()` options.
  *
  * @memberof Validators
  * @augments ValidatorFactory

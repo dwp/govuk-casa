@@ -11,7 +11,7 @@ const log = logger('lib:end-session');
  * instead be left up to the storage mechanism to clean up.
  *
  * @memberof module:@dwp/govuk-casa
- * @param {object} req HTTP request
+ * @param {import('express').Request} req HTTP request
  * @param {Function} next Chain
  * @returns {void}
  */

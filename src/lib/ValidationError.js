@@ -27,12 +27,12 @@ export default class ValidationError {
    * <br/><br/>
    *
    * In the case of `errorMsg` being a function, this will be called at runtime,
-   * at the point that errors are generated within the <code>validate()</code>,
+   * at the point that errors are generated within the `validate()`,
    * methods, and will be passed the `dataContext`.
    * <br/><br/>
    *
-   * <code>dataContext</code> is an object containing the same data passed to all
-   * validators' <code>validate()</code> methods. In the case of `errorMsg` being
+   * `dataContext` is an object containing the same data passed to all
+   * validators' `validate()` methods. In the case of `errorMsg` being
    * a function, this data is passed to that function in order to help resolve to
    * an error message config object.
    *

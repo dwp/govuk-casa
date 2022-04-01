@@ -17,7 +17,7 @@ import { stringifyInput } from '../utils.js';
 /**
  * Match a string pattern.
  *
- * See {@link RegexConfigOptions} for <code>make()</code> options.
+ * See {@link RegexConfigOptions} for `make()` options.
  *
  * @memberof Validators
  * @augments ValidatorFactory

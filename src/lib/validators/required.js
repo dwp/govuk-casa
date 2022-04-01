@@ -21,7 +21,7 @@ const { isPlainObject } = lodash; // CommonJS
  * Value is required. The following values will fail this rule:
  *  (all values that satisify `isEmpty()`) plus '\s'
  *
- * See {@link RequiredConfigOptions} for <code>make()</code> options.
+ * See {@link RequiredConfigOptions} for `make()` options.
  *
  * @memberof Validators
  * @augments ValidatorFactory

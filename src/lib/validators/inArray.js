@@ -28,7 +28,7 @@ import { stringifyInput, isStringable } from '../utils.js';
  * If the value itself is an array, all values within that array must be present
  * in the `source` array in order to pass validation.
  *
- * See {@link ArrayConfigOptions} for <code>make()</code> options.
+ * See {@link ArrayConfigOptions} for `make()` options.
  *
  * @memberof Validators
  * @augments ValidatorFactory

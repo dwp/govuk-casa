@@ -20,7 +20,7 @@ import { stringifyInput } from '../utils.js';
  * https://en.wikipedia.org/wiki/National_Insurance_number#Format
  * https://design-system.service.gov.uk/patterns/national-insurance-numbers/
  *
- * See {@link NinoConfigOptions} for <code>make()</code> options.
+ * See {@link NinoConfigOptions} for `make()` options.
  *
  * @memberof Validators
  * @augments ValidatorFactory

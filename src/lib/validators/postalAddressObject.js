@@ -24,14 +24,14 @@ const { isPlainObject } = lodash; // CommonjS
  */
 
 /**
- * Works hand in hand with the core CASA <code>postalAddressObject</code> form
+ * Works hand in hand with the core CASA `postalAddressObject` form
  * macro.
  *
  * The errors sent back from this validator are specific to each subfield. For
  * example, if the field name being tested is "address", any errors related to
  * the "postcode" component would be associated with "address[postcode]".
  *
- * See {@link PostalAddressObjectConfigOptions} for <code>make()</code> options.
+ * See {@link PostalAddressObjectConfigOptions} for `make()` options.
  *
  * @memberof Validators
  * @augments ValidatorFactory

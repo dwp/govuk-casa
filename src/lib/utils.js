@@ -68,6 +68,15 @@ export function resolveMiddlewareHooks(hookName, path, hooks = []) {
 
 /* ------------------------------------------------ validation / sanitisation */
 
+/**
+ * Validate a waypoint.
+ *
+ * @access private
+ * @param {string} waypoint Waypoint
+ * @returns {void}
+ * @throws {TypeError}
+ * @throws {SyntaxError}
+ */
 export function validateWaypoint(waypoint) {
   if (typeof waypoint !== 'string') {
     throw new TypeError('Waypoint must be a string');
@@ -82,6 +91,15 @@ export function validateWaypoint(waypoint) {
   }
 }
 
+/**
+ * Validate a URL path.
+ *
+ * @access private
+ * @param {string} path URL path
+ * @returns {string} Same string, if valid
+ * @throws {TypeError}
+ * @throws {SyntaxError}
+ */
 export function validateUrlPath(path) {
   if (typeof path !== 'string') {
     throw new TypeError('URL path must be a string');
@@ -98,6 +116,15 @@ export function validateUrlPath(path) {
   return path;
 }
 
+/**
+ * Validate a template name.
+ *
+ * @access private
+ * @param {string} view Template name
+ * @returns {void}
+ * @throws {TypeError}
+ * @throws {SyntaxError}
+ */
 export function validateView(view) {
   if (typeof view !== 'string') {
     throw new TypeError('View must be a string');
@@ -112,6 +139,15 @@ export function validateView(view) {
   }
 }
 
+/**
+ * Validate a hook name.
+ *
+ * @access private
+ * @param {string} hookName Hook name
+ * @returns {void}
+ * @throws {TypeError}
+ * @throws {SyntaxError}
+ */
 export function validateHookName(hookName) {
   if (typeof hookName !== 'string') {
     throw new TypeError('Hook name must be a string');
