@@ -30,6 +30,26 @@ describe('Middleware: static/index', () => {
     mockApp = app();
   });
 
+  it('should call prepare-assets.js when skipAssetsGeneration is false', () => {
+    mwStatic({
+      app: mockApp,
+      mountUrl: '/test-mount/',
+      compiledAssetsDir: 'test-dir',
+      skipAssetsGeneration: false,
+    });
+    expect(proxyStubs['./prepare-assets.js']).to.have.been.calledOnce;
+  });
+
+  it('should NOT call prepare-assets.js when skipAssetsGeneration is true', () => {
+    mwStatic({
+      app: mockApp,
+      mountUrl: '/test-mount/',
+      compiledAssetsDir: 'test-dir',
+      skipAssetsGeneration: true,
+    });
+    expect(proxyStubs['./prepare-assets.js']).to.not.have.been.called;
+  });
+
   describe('should throw an exception if the static assets directory is not accessible', () => {
     it('invalid directory', () => {
       proxyStubs.fs.accessSync = sinon.stub().throws(new Error());

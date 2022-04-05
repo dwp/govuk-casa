@@ -75,6 +75,7 @@ function mountCasaMiddleware(app, config, i18nUtility) {
     proxyMountUrl: config.proxyMountUrl,
     compiledAssetsDir: config.compiledAssetsDir,
     npmPackages: staticModulePaths,
+    skipAssetsGeneration: config.skipAssetsGeneration,
   });
   mwNunjucks(app, config.views.dirs, staticModulePaths.govukFrontend, config.mountUrl);
   mwSession(
