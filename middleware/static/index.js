@@ -39,6 +39,7 @@ const onehour = 3600000;
  *    govukFrontend: govuk-frontend npm package path <string>,
  *    govukTemplateJinja: govuk_template_jinja npm package path <string>
  *    govukCasa: @dwp/govuk-casa npm package path <string>
+ *  skipAssetsGeneration: boolean value to determine whether to skip the preparation of assets
  *
  * @param {object} args See above
  * @returns {void}
@@ -55,6 +56,7 @@ module.exports = (args) => {
       govukTemplateJinja = '',
       govukCasa = '',
     } = Object.create(null),
+    skipAssetsGeneration,
   } = args;
 
   const compiledAssetsDir = path.resolve(cAssetsDir);
@@ -74,13 +76,15 @@ module.exports = (args) => {
 
   const prefixCasa = `${proxyMountUrl}/govuk/casa`.replace(/\/+/g, '/');
 
-  logger.trace('Calling prepare-assets');
-  mwPrepareAssets({
-    logger,
-    npmGovukCasa: govukCasa,
-    compiledAssetsDir,
-    mountUrl,
-  });
+  if (!skipAssetsGeneration) {
+    logger.trace('Calling prepare-assets');
+    mwPrepareAssets({
+      logger,
+      npmGovukCasa: govukCasa,
+      compiledAssetsDir,
+      mountUrl,
+    });
+  }
 
   logger.trace('Calling serve-assets');
   mwServeAssets({

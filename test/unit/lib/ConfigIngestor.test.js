@@ -13,6 +13,7 @@ const {
   ingest,
   validateAllowPageEdit,
   validateUseStickyEdit,
+  validateSkipAssetsGeneration,
   validateCompiledAssetsDir,
   validateContentSecurityPolicies,
   validateHeadersObject,
@@ -115,6 +116,26 @@ describe('ConfigIngestor', () => {
     ));
   });
 
+
+  describe('validateSkipAssetsGeneration', () => {
+    it('should throw a TypeError when not given a boolean', () => {
+      // @ts-ignore
+      expect(() => validateSkipAssetsGeneration('true')).to.throw(TypeError, 'Skip assets generation flag must be a boolean (skipAssetsGeneration)');
+    });
+
+    it('should not throw when argument is a boolean', () => {
+      expect(() => validateSkipAssetsGeneration(true)).to.not.throw();
+    });
+
+    it('should default to false', () => (
+      expect(validateSkipAssetsGeneration()).to.be.false
+    ));
+
+    it('should return the passed value', () => (
+      expect(validateSkipAssetsGeneration(true)).to.be.true
+    ));
+  });
+
   describe('validateCompiledAssetsDir()', () => {
     // If these tests are being run as root, these tests will fail because
     // root cannot be restricted (simply) in accessing the assets folder
@@ -141,8 +162,14 @@ describe('ConfigIngestor', () => {
 
     itf('should throw an Error if the directory is not writeable', () => {
       const unwriteableDir = fs.mkdtempSync(path.join(os.tmpdir(), 'casa-'));
-      fs.chmodSync(unwriteableDir, 0o100);
-      expect(() => validateCompiledAssetsDir(unwriteableDir)).to.throw(Error).with.property('code', 'EACCES');
+      fs.chmodSync(unwriteableDir, 0o500);
+      expect(() => validateCompiledAssetsDir(unwriteableDir, false)).to.throw(Error).with.property('code', 'EACCES');
+    });
+
+    itf('should not throw an Error if the directory is not writeable but we are skipping asset generation', () => {
+      const unwriteableDir = fs.mkdtempSync(path.join(os.tmpdir(), 'casa-'));
+      fs.chmodSync(unwriteableDir, 0o500);
+      expect(validateCompiledAssetsDir(unwriteableDir, true)).to.be.a('string').and.satisfy(msg => msg.includes('casa-'));
     });
 
     itf('should return a valid value', () => {

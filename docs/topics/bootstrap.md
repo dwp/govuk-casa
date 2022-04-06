@@ -73,8 +73,8 @@ const casaApp = configure(expressAppInstance, {
   // mountController (Function; optional)
   // This "mount controller" gives you a chance to inject your own custom
   // route handlers and middleware before and/or after the "common middleware"
-  // that CASA mounts itself. See `docs/api/guides/0-middleware.md` for details
-  // on this common middleware.
+  // that CASA mounts itself. See `docs/topics/casa-middleware.md` for details on this
+  // common middleware.
   // Your function has access to `this.expressApp` (the main ExpressJS app
   // instance) and `this.expressRouter` (the router on which some of the CASA
   // journey and page routes are mounted).
@@ -159,6 +159,12 @@ const casaApp = configure(expressAppInstance, {
     // All directories in which CASA will try to find Nunjucks templates
     dirs: ['views/'],
   },
+  // skipAssetsGeneration (Boolean; optional; default false)
+  // Gives the ability to skip the static assets generation at runtime.
+  // If set to true, it will require the developer to manually
+  // generate the assets themselves. 
+  // See `./preparing-assets.md` for an example.
+  skipAssetsGeneration: false
 });
 
 // Returned object
