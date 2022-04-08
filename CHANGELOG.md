@@ -1,3 +1,12 @@
+# [6.9.0](https://github.com/dwp/govuk-casa/compare/6.8.6...6.9.0) (2022-04-08)
+
+
+### Features
+
+* Applied ability to disable generation of static assets ([049e678](https://github.com/dwp/govuk-casa/commit/049e678b468cf2365f77fe77c50537457dfbdc26))
+
+
+
 ## [6.8.6](https://github.com/dwp/govuk-casa/compare/6.8.5...6.8.6) (2021-09-28)
 
 
