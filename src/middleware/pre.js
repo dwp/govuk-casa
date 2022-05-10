@@ -1,7 +1,8 @@
 import { randomBytes } from 'crypto';
 import helmet from 'helmet';
 
-const GA_DOMAIN = 'www.google-analytics.com';
+const GA_DOMAIN = '*.google-analytics.com';
+const GA_ANALYTICS_DOMAIN = '*.analytics.google.com';
 const GTM_DOMAIN = 'www.googletagmanager.com';
 
 /**
@@ -56,8 +57,8 @@ export default ({
       directives: {
         'default-src': ["'none'"],
         'script-src': ["'self'", GA_DOMAIN, GTM_DOMAIN, (req, res) => `'nonce-${res.locals.cspNonce}'`],
-        'img-src': ["'self'", GA_DOMAIN],
-        'connect-src': ["'self'", GA_DOMAIN],
+        'img-src': ["'self'", GA_DOMAIN, GA_ANALYTICS_DOMAIN],
+        'connect-src': ["'self'", GA_DOMAIN, GA_ANALYTICS_DOMAIN],
         'frame-src': ["'self'", GTM_DOMAIN],
         'frame-ancestors': ["'self'"],
         'form-action': ["'self'"],
