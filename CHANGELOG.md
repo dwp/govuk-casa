@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.2.0](https://github.com/dwp/govuk-casa/compare/8.1.0...8.2.0) (2022-05-17)
+
+
+### Features
+
+* add means to create empty epehemeral context ([3e6f0da](https://github.com/dwp/govuk-casa/commit/3e6f0dad41d4150f23746bedcb46e43b8aab312d))
+* add support for a parameterised mounting point ([ecdecde](https://github.com/dwp/govuk-casa/commit/ecdecded7c69e689821afc8c5c7092e966566296)), closes [#87](https://github.com/dwp/govuk-casa/issues/87)
+* automatically send user to first waypoint in journey ([2362d1a](https://github.com/dwp/govuk-casa/commit/2362d1a864aa3e87dbd6d8abdcdb09ad14580d8f))
+* expose autocomplete attribute in form helper ([ba092b7](https://github.com/dwp/govuk-casa/commit/ba092b723389672e0ae45db149bdf5a61f2ab4f7)), closes [#60](https://github.com/dwp/govuk-casa/issues/60)
+* pass session to context event handlers ([1e8218c](https://github.com/dwp/govuk-casa/commit/1e8218cc4b9e608982c3c8a2917683b5aa7ab48f))
+
 ## [8.1.0](https://github.com/dwp/govuk-casa/compare/8.0.3...8.1.0) (2022-03-11)
 
 
