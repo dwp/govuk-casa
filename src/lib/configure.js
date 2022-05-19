@@ -182,11 +182,32 @@ export default function configure(config = {}) {
     // Using `config.mountUrl` rather than `mountUrl` here to test whether the
     // consumer explicitly set a `mountUrl`, in which case we're dealing with
     // backwards-compatibility mode.
+    //
+    // This intervention would not be needed for apps that omit `mountUrl` as if
+    // so, it's assumed they're following the guidance for setting up a proxy
+    // as described in `docs/guides/setup-behind-a-proxy.md`.
     if (config.mountUrl) {
       log.warn('[DEPRECATION WARNING] Using configuration attribute, mountUrl. This will be removed in an upcoming major version');
       app.use((req, res, next) => {
+        // Mimic what the `docs/guides/setup-behind-a-proxy.md` guidance
+        // recommends for stripping off any proxy prefixes to leave just the
+        // "mountUrl" remaining.
+        const originalBaseUrl = req.baseUrl;
         req.baseUrl = mountUrl.replace(/\/$/, '');
-        next();
+
+        // If the app has been mounted directly on the specific `mountUrl`, then
+        // there's nothing we need to do and can let this request pass-through.
+        if (req.baseUrl === originalBaseUrl) {
+          next();
+        } else if (req.__CASA_BASE_URL_REWRITTEN__) {
+          delete req.__CASA_BASE_URL_REWRITTEN__;
+          next();
+        } else {
+          // Issuing this call will re-run this same middleware, so we use this
+          // `__CASA_BASE_URL_REWRITTEN__` flag to prevent recursion.
+          req.__CASA_BASE_URL_REWRITTEN__ = true;
+          req.app.handle(req, res, next);
+        }
       });
     }
 

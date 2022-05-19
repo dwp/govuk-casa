@@ -30,14 +30,14 @@ const app = ExpressJS();
 
 app.use('/host', (req, res, next) => {
   // Strip off proxy, leaving just the desired mount path
-  req.baseUrl = '/app/';
+  req.baseUrl = '/app';
 
   // This re-issues the request, and this time it will be picked up by the first
   // middleware attached to `/app/`
   req.app.handle(req, res, next);
 });
 
-app.use('/app/', mount(ExpressJS()));
+app.use('/app', mount(ExpressJS()));
 
 app.listen();
 ```
