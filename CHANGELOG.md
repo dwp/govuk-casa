@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [8.2.1](https://github.com/dwp/govuk-casa/compare/8.2.0...8.2.1) (2022-05-20)
+
+
+### Bug Fixes
+
+* preserve compatibility with existing proxy mounting methods ([41040e6](https://github.com/dwp/govuk-casa/commit/41040e6ac891ec64ce4b70328dda333178c48b99))
+
 ## [8.2.0](https://github.com/dwp/govuk-casa/compare/8.1.0...8.2.0) (2022-05-17)
 
 
