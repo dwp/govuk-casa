@@ -33,7 +33,7 @@ This is the entrypoint for setting up a CASA app. There are no side-effects on t
 
 * `string[]` **`views`** _(required)_ Nunjucks views directories
 
-Nunjucks will search for templates in the order: user templates (defined in `configure()`) > CASA template > `govuk-frontend` templates > plugin templates
+Nunjucks will search for templates in the order: user templates (as defined in `configure()`) > CASA template > `govuk-frontend` templates > plugin templates
 
 * `string` **`session.name`** _(required)_ Session cookie name
 * `string` **`session.secret`** _(required)_ Secret used to sign cookies
@@ -42,6 +42,10 @@ Nunjucks will search for templates in the order: user templates (defined in `con
 * `object` **`session.store`** Your preferred express-session store (defaults to MemoryStore)
 
 Configuration options for session handling
+
+* `string` **`mountUrl`** _(optional; defaults to whatever path you mount your CASA app onto)_ URL prefix to use in browser address bar URLs. Setting this will enter "proxy mode", which assumes you are using an intermediate forwarding proxy, like nginx, to rewrite paths. See [proxying guide](docs/guides/setup-behind-a-proxy.md) for more info.
+
+Configuration to control the path from which requests are served
 
 * `string[]` **`i18n.dirs`** Translation search directories
 * `string[]` **`i18n.locales`** List of supported locales
@@ -60,7 +64,7 @@ Functions to alter functionality in certain points throughout the request lifecy
 
 * `string` **`pages[].waypoint`** Waypoint ID
 * `string` **`pages[].view`** Nunjucks view template file
-* `PageField[]` **pages[].fields[]`** Form field definitions
+* `PageField[]` **`pages[].fields[]`** Form field definitions
 * `object[]` **`pages[].hooks`** List of hooks specific to this page(matches structure of global hooks - see above - but without `<scope>.` prefixes)
 
 Definitions for the pages that represent an interactive form for the wach waypoint. Not every waypoint needs an accompanying page definition. For example, if you want to do something very custom with a waypoint in Plan, you can write your own routes for it and attach them to the `journeyRouter` yourself.

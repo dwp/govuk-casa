@@ -25,10 +25,6 @@ import dataMiddlewareFactory from '../middleware/data.js';
 import bodyParserMiddlewareFactory from '../middleware/body-parser.js';
 import csrfMiddlewareFactory from '../middleware/csrf.js';
 
-import logger from './logger.js';
-
-const log = logger('lib:configure');
-
 /**
  * @typedef {import('../casa').ConfigurationOptions} ConfigurationOptions
  */
@@ -56,7 +52,7 @@ export default function configure(config = {}) {
 
   // Extract config
   const {
-    mountUrl = '/',
+    mountUrl,
     views = [],
     session = {
       secret: 'secret',
@@ -162,32 +158,20 @@ export default function configure(config = {}) {
     nunjucksEnv.express(app);
     app.set('view engine', 'njk');
 
-    // !!! DEPRECATION NOTICE !!!
-    // This provides a non-breaking pathway to replacing `mountUrl` with
-    // `req.baseUrl` in all internal route handlers/middleware for services
-    // that use a proxy path in their mount point.
+    // The default "mountUrl" will be match whatever path that this CASA app
+    // instance will be mounted onto. So if you mount on `/a/b/c` then all
+    // URLs generated for the browser will be prefixed with `/a/b/c`.
     //
-    // In some cases, the URL on which `app` instance is mounted might include a
-    // proxy path so that it can handle incoming requests that have had a path
-    // prepended to it by an intermediary, such as nginx. This would be common
-    // in a hosting environment that serves several separate applications.
+    // Defining a `mountUrl` here will change that behaviour into a "proxy
+    // mode". This mode assumes you have a forwarding proxy that will alter
+    // the incoming request paths from `mountUrl` to the original path you
+    // have mounted this CASA app instance onto.
     //
-    // This bit of middleware removes that proxy path segment from the request
-    // so that all subsequent middleware behave as if it was never present.
+    // For exmaple, if you mount the app on `/a/b/c/x`, but want the browser
+    // URLs to just use the `/x` prefix, then pass a `mountUrl` of `/x`.
     //
-    // e.g. Where the proxy path is `my-proxy`, then a request to
-    // `/my-proxy/app` will be seen as `/app` in all subsequent middleware, and
-    // all URLs generated for the browser will use `/app`.
-    //
-    // Using `config.mountUrl` rather than `mountUrl` here to test whether the
-    // consumer explicitly set a `mountUrl`, in which case we're dealing with
-    // backwards-compatibility mode.
-    //
-    // This intervention would not be needed for apps that omit `mountUrl` as if
-    // so, it's assumed they're following the guidance for setting up a proxy
-    // as described in `docs/guides/setup-behind-a-proxy.md`.
-    if (config.mountUrl) {
-      log.warn('[DEPRECATION WARNING] Using configuration attribute, mountUrl. This will be removed in an upcoming major version');
+    // See docs in `docs/guides/setup-behind-a-proxy.md`
+    if (mountUrl) {
       app.use((req, res, next) => {
         // Mimic what the `docs/guides/setup-behind-a-proxy.md` guidance
         // recommends for stripping off any proxy prefixes to leave just the

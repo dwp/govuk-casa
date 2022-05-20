@@ -3,6 +3,7 @@ import sinonChai from 'sinon-chai';
 import chai, { expect } from 'chai';
 
 import ingest, {
+  validateMountUrl,
   validateI18nObject,
   validateI18nDirs,
   validateI18nLocales,
@@ -59,6 +60,16 @@ describe('ConfigIngestor', () => {
       const config = ingest(minimalConfig);
 
       expect(config.session.cookieSameSite).to.equal('Strict');
+    });
+  });
+
+  describe('validateMountUrl()', () => {
+    it('defaults to undefined', () => {
+      expect(validateMountUrl()).to.be.undefined;
+    });
+
+    it('throws if a trailing / is missing', () => {
+      expect(() => validateMountUrl('/missing-slash')).to.throw(SyntaxError, 'mountUrl must include a trailing slash (/)')
     });
   });
 

@@ -79,17 +79,16 @@ export function validateI18nLocales(locales = ['en', 'cy']) {
 /**
  * Validates and sanitises mount url.
  *
- * @param {string} mountUrl URL from which Express app will be served.
- * @param {string} name Name of the URL type (Mount URL, or Proxy Mount URL).
+ * @param {string} mountUrl Prefix for all URLs in the browser address bar
  * @throws {SyntaxError} For invalid URL.
- * @returns {string} Sanitised URL.
+ * @returns {string|undefined} Sanitised URL.
  */
-export function validateMountUrl(mountUrl, name = 'Mount URL') {
+export function validateMountUrl(mountUrl) {
   if (typeof mountUrl === 'undefined') {
-    return '/';
+    return undefined;
   }
   if (!mountUrl.match(/\/$/)) {
-    throw new SyntaxError(`${name} must include a trailing slash (/)`);
+    throw new SyntaxError('mountUrl must include a trailing slash (/)');
   }
   return mountUrl;
 }
@@ -395,10 +394,7 @@ export default function ingest(config = {}) {
       locales: validateI18nLocales(i18n.locales),
     })),
 
-    // !!! DEPRECATION NOTICE !!!
-    // This will be removed in next major version
-    //
-    // Public URL from which the app will be served
+    // URL that will prefix all URLs in the browser address bar
     mountUrl: validateMountUrl(config.mountUrl),
 
     // Session

@@ -164,22 +164,18 @@ CASA no longer needs to write files to the filesystem at boot time, so this opti
 
 This was used to support cases where an upstream proxy uses url-rewriting to direct traffic to multiple downstream services. As you can now mount CASA as a sub app on any parent app route you wish, this option has become redundant.
 
-Instead, you now need to add a little middleware that strips off the proxy prefix. For example:
+To mount behind a proxy now, you simply include the proxy prefix in the express mounting path, and specify what URL prefix you want to appear for users in their browser address bar via the `mountUrl` config option.
 
 ```javascript
 const proxyMountUrl = '/some-proxy-path';
 const mountUrl = '/context-path';
 
-const { mount } = configure();
-
-const app = express();
-
-app.use(proxyMountUrl, (req, res, next) => {
-  req.baseUrl = '';
-  req.app.handle(req, res, next);
+const { mount } = configure({
+  mountUrl: `${mountUrl}/`,
 });
 
-app.use(mountUrl, mount(express()));
+const app = express();
+app.use(`${proxyMountUrl}${mountUrl}`, mount(express()));
 
 app.listen();
 ```

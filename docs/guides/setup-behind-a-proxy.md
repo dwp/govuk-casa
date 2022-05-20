@@ -15,8 +15,8 @@ Browser (/app/) -> Reverse Proxy (rewrites to /host/app/) -> Your app
 
 In this case your app will need to ...
 
-* Setup an ExpressJS handler to strip the proxy prefix off the URL, before anything else, and
-* Mount your CASA app on the `/app/` URL
+* Specify a `mountUrl` of `/app/`
+* Mount your CASA app onto the `/host/app` path
 
 And here's the minimal setup to do that:
 
@@ -24,25 +24,17 @@ And here's the minimal setup to do that:
 import ExpressJS from 'express';
 import { configure } from '@dwp/govuk-casa';
 
-const { mount } = configure();
-
-const app = ExpressJS();
-
-app.use('/host', (req, res, next) => {
-  // Strip off proxy, leaving just the desired mount path
-  req.baseUrl = '/app';
-
-  // This re-issues the request, and this time it will be picked up by the first
-  // middleware attached to `/app/`
-  req.app.handle(req, res, next);
+// Set the specific prefix you want to appear in the browser address bar
+const { mount } = configure({
+  mountUrl: '/app/',
 });
 
-app.use('/app', mount(ExpressJS()));
+// Mount onto the full proxy path + mountUrl combo
+const app = ExpressJS();
+app.use('/host/app', mount(ExpressJS()));
 
 app.listen();
 ```
-
-> NOTE: For users on v8.1.x who are already mounting their CASA app directly on the proxy path, this will still work, but the above method will be mandatory in the next major release.
 
 
 ## Setting secure cookies

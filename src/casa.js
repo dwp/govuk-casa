@@ -119,6 +119,7 @@ export {
  * Configure some middleware for use in creating a new CASA app.
  *
  * @typedef {object} ConfigurationOptions Configuration options
+ * @property {string} [mountUrl] Prefix for all URLS in browser address bar
  * @property {string[]} [views=[]] Template directories
  * @property {SessionOptions} [session] Session configuration
  * @property {Page[]} [pages=[]] Pages the represent waypoints
