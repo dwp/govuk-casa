@@ -15,6 +15,8 @@ import staticRoutes from '../routes/static.js';
 import ancillaryRoutes from '../routes/ancillary.js';
 import journeyRoutes from '../routes/journey.js';
 
+import stripProxyPathMiddlewareFactory from '../middleware/strip-proxy-path.js';
+
 import preMiddlewareFactory from '../middleware/pre.js';
 import postMiddlewareFactory from '../middleware/post.js';
 
@@ -158,41 +160,10 @@ export default function configure(config = {}) {
     nunjucksEnv.express(app);
     app.set('view engine', 'njk');
 
-    // The default "mountUrl" will be match whatever path that this CASA app
-    // instance will be mounted onto. So if you mount on `/a/b/c` then all
-    // URLs generated for the browser will be prefixed with `/a/b/c`.
-    //
-    // Defining a `mountUrl` here will change that behaviour into a "proxy
-    // mode". This mode assumes you have a forwarding proxy that will alter
-    // the incoming request paths from `mountUrl` to the original path you
-    // have mounted this CASA app instance onto.
-    //
-    // For exmaple, if you mount the app on `/a/b/c/x`, but want the browser
-    // URLs to just use the `/x` prefix, then pass a `mountUrl` of `/x`.
-    //
-    // See docs in `docs/guides/setup-behind-a-proxy.md`
+    // If a `mountUrl` has been defined, then we're potentially in "proxy mode",
+    // in which we strip the proxy path prefix from the incoming request URLs.
     if (mountUrl) {
-      app.use((req, res, next) => {
-        // Mimic what the `docs/guides/setup-behind-a-proxy.md` guidance
-        // recommends for stripping off any proxy prefixes to leave just the
-        // "mountUrl" remaining.
-        const originalBaseUrl = req.baseUrl;
-        req.baseUrl = mountUrl.replace(/\/$/, '');
-
-        // If the app has been mounted directly on the specific `mountUrl`, then
-        // there's nothing we need to do and can let this request pass-through.
-        if (req.baseUrl === originalBaseUrl) {
-          next();
-        } else if (req.__CASA_BASE_URL_REWRITTEN__) {
-          delete req.__CASA_BASE_URL_REWRITTEN__;
-          next();
-        } else {
-          // Issuing this call will re-run this same middleware, so we use this
-          // `__CASA_BASE_URL_REWRITTEN__` flag to prevent recursion.
-          req.__CASA_BASE_URL_REWRITTEN__ = true;
-          req.app.handle(req, res, next);
-        }
-      });
+      app.use(stripProxyPathMiddlewareFactory({ mountUrl }));
     }
 
     // Attach a handler to redirect requests for `/` to the first waypoint in
