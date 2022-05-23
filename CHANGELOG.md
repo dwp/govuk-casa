@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [8.2.2](https://github.com/dwp/govuk-casa/compare/8.2.1...8.2.2) (2022-05-23)
+
+
+### Bug Fixes
+
+* escape from sticky edit on return to edit origin in a proxied app ([9303af1](https://github.com/dwp/govuk-casa/commit/9303af140ec383801741d50f3404fd7cfe930d90))
+
 ### [8.2.1](https://github.com/dwp/govuk-casa/compare/8.2.0...8.2.1) (2022-05-20)
 
 
