@@ -93,8 +93,7 @@ export {
 
 /**
  * @callback PluginConfigureFunction
- * @param {object} con Options
- * @param {}
+ * @param {object} config Options
  */
 
 /**
