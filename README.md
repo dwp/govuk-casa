@@ -20,6 +20,7 @@ npm -E @dwp/govuk-casa
 ```
 
 * [Documentation](docs/index.md)
+* [API Reference](docs/api-reference.md)
 * [Examples](examples/)
 
 
