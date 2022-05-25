@@ -3,7 +3,7 @@
 
 import lodash from 'lodash';
 import JourneyContext from '../lib/JourneyContext.js';
-import { validateUrlPath, stripProxyFromUrlPath } from '../lib/utils.js';
+import { validateUrlPath } from '../lib/utils.js';
 import waypointUrl from '../lib/waypoint-url.js';
 
 const { has } = lodash;
@@ -47,13 +47,29 @@ export default function dataMiddleware({
 
       /* ------------------------------------------------- Template variables */
 
-      // Figure out the mount URL of the current request
+      // Capture mount URL that will be used in generating all browser URLs
       const mountUrl = validateUrlPath(`${req.baseUrl}/`.replace(/\/+/g, '/'));
 
-      // For browser performance reasons, CASA's static assets are potentially
-      // delivered over a different route to the `mountUrl` if this CASA app has
-      // been mounted on a parameterised route.
-      const staticMountUrl = validateUrlPath(`${stripProxyFromUrlPath(req)}`.replace(/\/+/g, '/'));
+      // If this CASA app is mounted on a parameterised route, then all of its
+      // static assets (served by `staticRouter`) will, by default, be served
+      // from that dynamic path, for example:
+      //   markup:       <link href="{{ mountUrl }}css/static.css" />
+      //   resolved URL: /mount/<some-id-here>/css/static.css
+      //   baseUrl:      /mount/<some-id>
+      //
+      // From a performance point of view, this is very inefficient as we can't
+      // take advantage of any intermediate caches. So we instead provide am
+      // alternative URL path in the `staticMountUrl` property that excludes the
+      // parameterised element, eg:
+      //   markup:       <link href="{{ staticMountUrl }}css/static.css" />
+      //   resolved URL: /mount/css/static.css
+      //   baseUrl:      /mount
+      //
+      // As the staticRouter is mounted on both the CASA app, and its internal
+      // Router, the `baseUrl` is different in each case, so we cannot rely
+      // on it to be consistent. Hence the need for this property, which will
+      // always be the non-parameterised version of the baseUrl.
+      const staticMountUrl = validateUrlPath(`${req.unparameterisedBaseUrl}/`.replace(/\/+/g, '/'));
 
       // CASA and userland templates
       res.locals.casa = {

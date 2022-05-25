@@ -183,7 +183,17 @@ export default function configure(config = {}) {
       });
     }
 
-    // Service static assets from the `app` rather than the `router`. The router
+    // Capture the mount path of this CASA app, before any parameterised path
+    // segments exert influence over `req.baseUrl` in the `router` further below.
+    // This can later be used by middleware that wants to use the
+    // "unparameterised" version of the request's `baseUrl`, such as the static
+    // router's middleware.
+    app.use((req, res, next) => {
+      req.unparameterisedBaseUrl = req.baseUrl;
+      next();
+    });
+
+    // Serve static assets from the `app` rather than the `router`. The router
     // may contain paramaterised path segments which would mean serving static
     // assets over a dynamic URL each time, thus causing lots of cache misses on
     // the browser.

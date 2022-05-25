@@ -51,6 +51,13 @@ As a request gets passed through CASA's routes and middleware, it will modify th
 | | Handle all errors as a 5** or 4** response | | |
 
 
+The following properties are always added to the `req` object:
+
+| Property | Description |
+|----------|-------------|
+| `unparameterisedBaseUrl` | This is a copy of `req.baseUrl`, but with any subsequent parameterised path segments removed. Mainly used for serving static assets from a non-paramterised path. |
+
+
 The following globals are always available to the Nunjucks templates. Refer to the [templating documentation](templating.md) for more details.
 
 | Property | Description |

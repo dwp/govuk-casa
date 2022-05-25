@@ -22,13 +22,17 @@ export default ({
   mountUrl = '/',
 }) => [
   (req, res, next) => {
+    // TODO:
+    // We _may_ have to start tracking the various prefix in order to differentiate
+    // between a proxy prefix, and a parent app's path.
+
     // Assume everything before `mountUrl` is the proxy path prefix and remove it
-    const originalBaseUrl = req.baseUrl;
+    req.originalBaseUrl = req.originalBaseUrl ?? req.baseUrl;
     req.baseUrl = mountUrl.replace(/\/$/, '');
 
     // If the app has been mounted directly on the specific `mountUrl`, then
     // there's nothing we need to do and can let this request pass-through.
-    if (req.baseUrl === originalBaseUrl) {
+    if (req.baseUrl === req.originalBaseUrl) {
       next();
     } else if (req.__CASA_BASE_URL_REWRITTEN__) {
       delete req.__CASA_BASE_URL_REWRITTEN__;

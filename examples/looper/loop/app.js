@@ -11,6 +11,7 @@ import { looper } from '@dwp/casa-looper-plugin';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const application = ({
+  mountUrl,
   sessionStore,
   sessionSecret,
   parentMountUrl,
@@ -18,6 +19,7 @@ const application = ({
   lastWaypoint,
 }) => {
   const { mount } = configure({
+    mountUrl,
     views: [
       resolve(__dirname, 'views'),
     ],
