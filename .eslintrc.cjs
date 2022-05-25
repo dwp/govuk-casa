@@ -9,7 +9,7 @@ module.exports = {
   rules: {
     indent: [2, 2],
     semi: [0],
-    'sonarjs/cognitive-complexity': [1, 10],
+    'sonarjs/cognitive-complexity': [1],
     'jsdoc/require-description-complete-sentence': 0,
     'no-unsafe-regex/no-unsafe-regex': 2,
     'import/extensions': 0,

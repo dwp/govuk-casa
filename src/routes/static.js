@@ -38,7 +38,7 @@ export default function staticRouter({
     res.set('cache-control', 'public');
     res.set('pragma', 'cache');
     res.set('expires', new Date(Date.now() + oneDay).toUTCString());
-    const { pathname } = new URL(req?.originalUrl ?? '', 'http://placeholder.test/');
+    const { pathname } = new URL(req?.originalUrl ?? '', 'https://placeholder.test/');
     if (pathname.substr(-4) === '.css') {
       // Just needed for our in-memory CSS assets
       res.set('content-type', 'text/css');
