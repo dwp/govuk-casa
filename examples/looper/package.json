@@ -12,6 +12,6 @@
   "license": "ISC",
   "dependencies": {
     "@dwp/casa-looper-plugin": "1.0.2",
-    "@dwp/govuk-casa": ">=8.2.0"
+    "@dwp/govuk-casa": "../../"
   }
 }
