@@ -124,7 +124,7 @@ The following globals are always available to the Nunjucks templates. Refer to t
 | Property | Description |
 |----------|-------------|
 | `casa.plan` | The CASA Plan |
-| `casa.journeyContext` | User's journey context |
+| `casa.journeyContext` | User's current journey context. This is actually a reference to the relevant context held in `req.session.journeyContextList` (which you should avoid using directly), which is used to support multiple "ephemeral" contexts |
 | `casa.editMode` | Whether the request is in edit mode or not |
 | `casa.editOrigin` | Send user back to this URL after they have finished editing |
 
