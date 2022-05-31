@@ -37,8 +37,10 @@ export {
 
 /**
  * @callback ContextEventHandler
- * @param {JourneyContext} journeyContext Context including changes
- * @param {JourneyContext} previousContext Context prior to changes
+ * @param {object} opts Options
+ * @param {JourneyContext} opts.journeyContext Context including changes
+ * @param {JourneyContext} opts.previousContext Context prior to changes
+ * @param {object} opts.session Request session object
  * @returns {void}
  */
 
@@ -107,7 +109,7 @@ export {
  * @callback Mounter
  * @param {import('express').Express} app Express application
  * @param {object} opts Mounting options
- * @param {string} [opts.route=/] Optional route to attach all middleware/routers too
+ * @param {string} [opts.route='/'] Optional route to attach all middleware/routers too
  * @returns {import('express').Express} The prepared ExpressJS app instance
  */
 
@@ -126,8 +128,9 @@ export {
  * @property {GlobalHook[]} [hooks=[]] Hooks to apply
  * @property {IPlugin[]} [plugins=[]] Plugins
  * @property {I18nOptions[]} [i18n] I18n configuration
- * @property {Plan} plan CASA Plan
+ * @property {Plan} [plan] CASA Plan
  * @property {ContextEvent[]} [events=[]] Handlers for JourneyContext events
+ * @property {HelmetConfigurator} [helmetConfigurator] Helmet configuration manipulator function
  */
 
 /**
