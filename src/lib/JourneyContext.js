@@ -506,10 +506,20 @@ export default class JourneyContext {
    * @returns {void}
    */
   static initContextStore(session) {
+    // For existing sessions that were created prior to `journeyContextList`
+    // being remodelled as an array, we need to convert the "legacy" structure
+    // into an equivalent array.
+    if (isPlainObject(session?.journeyContextList)) {
+      log.trace('Session context list already initialised as an object (legacy structure). Will convert from object to array.');
+      /* eslint-disable-next-line no-param-reassign */
+      session.journeyContextList = Object.entries(session.journeyContextList);
+    }
+
+    // Initialise new context list in the session
     if (!has(session, 'journeyContextList')) {
       log.trace('Initialising session with a default journey context list');
       /* eslint-disable-next-line no-param-reassign */
-      session.journeyContextList = Object.create(null);
+      session.journeyContextList = [];
 
       const defaultContext = new JourneyContext();
       defaultContext.identity.id = JourneyContext.DEFAULT_CONTEXT_ID;
@@ -560,10 +570,11 @@ export default class JourneyContext {
    * @returns {JourneyContext} The discovered JourneyContext instance
    */
   static getContextById(session, id) {
-    if (has(session?.journeyContextList, id)) {
+    const list = new Map(session?.journeyContextList);
+    if (list.has(id)) {
       // ESLint disabled as `id` has been verified as an "own" property
       /* eslint-disable-next-line security/detect-object-injection */
-      return JourneyContext.fromObject(session.journeyContextList[id]);
+      return JourneyContext.fromObject(list.get(id));
     }
 
     return undefined;
@@ -578,7 +589,8 @@ export default class JourneyContext {
    */
   static getContextByName(session, name) {
     if (session) {
-      const context = Object.values(session.journeyContextList).find(
+      const list = new Map(session?.journeyContextList);
+      const context = [...list.values()].find(
         (c) => (c.identity.name === name),
       );
       if (context) {
@@ -598,7 +610,8 @@ export default class JourneyContext {
    */
   static getContextsByTag(session, tag) {
     if (session) {
-      return Object.values(session.journeyContextList).filter(
+      const list = new Map(session?.journeyContextList);
+      return [...list.values()].filter(
         (c) => (c.identity.tags?.includes(tag)),
       ).map((c) => (JourneyContext.fromObject(c)));
     }
@@ -614,7 +627,7 @@ export default class JourneyContext {
    */
   static getContexts(session) {
     if (has(session, 'journeyContextList')) {
-      return Object.values(session.journeyContextList).map((contextObj) => (
+      return session.journeyContextList.map(([, contextObj]) => (
         JourneyContext.fromObject(contextObj)
       ));
     }
@@ -655,8 +668,10 @@ export default class JourneyContext {
       session,
     });
 
+    const list = new Map(session.journeyContextList);
+    list.set(context.identity.id, context.toObject());
     /* eslint-disable-next-line no-param-reassign */
-    session.journeyContextList[context.identity.id] = context.toObject();
+    session.journeyContextList = [...list.entries()];
   }
 
   /**
@@ -680,10 +695,9 @@ export default class JourneyContext {
    * @returns {void}
    */
   static removeContextById(session, id) {
-    if (session && has(session.journeyContextList, id)) {
-      // ESLint disabled as `id` has been verified as an "own" property
-      /* eslint-disable-next-line security/detect-object-injection, no-param-reassign */
-      delete session.journeyContextList[id];
+    const index = (session?.journeyContextList ?? []).findIndex(([contextId]) => contextId === id);
+    if (index > -1) {
+      session.journeyContextList.splice(index, 1);
     }
   }
 
