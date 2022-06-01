@@ -158,7 +158,7 @@ export function validateHookName(hookName) {
     throw new SyntaxError('Hook name must not be empty');
   }
 
-  if (!hookName.match(/^([a-z]+\.|)[a-z]+$/i)) {
+  if (!hookName.match(/^([a-z_]+\.|)[a-z_]+$/i)) {
     throw new SyntaxError('Hook name must match either <scope>.<hookname> or <hookname> formats');
   }
 }
