@@ -90,13 +90,18 @@ export {
 
 /**
  * @typedef {object} IPlugin Plugin interface
- * @property {Function} [configure] Modify the app config
- * @property {Function} [bootstrap] Modify post-configuration artifacts
+ * @property {PluginConfigureFunction} [configure] Modify the app config
+ * @property {PluginBootstrapFunction} [bootstrap] Modify post-configuration artifacts
  */
 
 /**
  * @callback PluginConfigureFunction
- * @param {object} config Options
+ * @param {ConfigurationOptions} config Options
+ */
+
+/**
+ * @callback PluginBootstrapFunction
+ * @param {ConfigureResult} config Options
  */
 
 /**
@@ -147,6 +152,7 @@ export {
  * @property {import('express').RequestHandler[]} i18nMiddleware I18n preparation middleware
  * @property {import('express').RequestHandler} bodyParserMiddleware Body parsing middleware
  * @property {Mounter} mount Function used to mount all CASA artifacts onto an ExpressJS app
+ * @property {ConfigurationOptions} config Ingested config supplied to `configure()`
  */
 
 /**

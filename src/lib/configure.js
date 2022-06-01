@@ -57,6 +57,7 @@ export default function configure(config = {}) {
   });
 
   // Extract config
+  const ingestedConfig = configurationIngestor(config);
   const {
     mountUrl,
     views = [],
@@ -79,7 +80,7 @@ export default function configure(config = {}) {
       locales: ['en', 'cy'],
     },
     helmetConfigurator = undefined,
-  } = configurationIngestor(config);
+  } = ingestedConfig;
 
   // Prepare all page hooks so they are prefixed with the `journey.` scope.
   pages.forEach((page) => {
@@ -254,6 +255,9 @@ export default function configure(config = {}) {
 
     // Mount function
     mount,
+
+    // Ingested config
+    config: ingestedConfig,
   };
 
   // Bootstrap all plugins
