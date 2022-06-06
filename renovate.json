@@ -1,17 +1,3 @@
 {
-  "rebaseWhen": "behind-base-branch",
-  "commitMessagePrefix": "chore(renovate):",
-  "packageRules": [{
-    "matchPackagePatterns": "*",
-    "matchUpdateTypes": ["major"],
-    "groupName": "major dependencies"
-  }, {
-    "matchPackagePatterns": "*",
-    "matchUpdateTypes": ["patch", "minor"],
-    "groupName": "minor/patch dependencies"
-  }, {
-    "matchPackagePatterns": "*",
-    "matchUpdateTypes": ["pin", "digest"],
-    "groupName": "pin dependencies"
-  }]
+  "extends": ["gitlab>dwp/engineering/renovate//shared-configs/renovate-auto-merge"]
 }
