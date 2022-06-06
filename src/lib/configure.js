@@ -34,7 +34,7 @@ import csrfMiddlewareFactory from '../middleware/csrf.js';
 
 /**
  * @access private
- * @typedef {import('../casa').ConfigurationOptions} ConfigureResult
+ * @typedef {import('../casa').ConfigureResult} ConfigureResult
  */
 
 /**
