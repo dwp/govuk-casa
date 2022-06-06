@@ -1,0 +1,38 @@
+{
+  // Example debugger config file for VSCode (copy this to `.vscode/launch.json`)
+  "version": "0.2.0",
+  "configurations": [
+    // Use this to debug the running test suite (i.e. executed by `npm test`).
+    // Note this will likely cause your tests to timeout if the debugger is
+    // paused for over 2000ms.
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "Debug testsuite",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "runtimeArgs": ["--preserve-symlinks"],
+      "runtimeExecutable": "npm",
+      "program": "test",
+      "outputCapture": "std"
+    },
+
+    // Use this to debug the `fully-loaded` example app
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "Example: fully-loaded",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "env": {
+        "DEBUG": "casa*"
+      },
+      "cwd": "${workspaceFolder}/examples/fully-loaded/",
+      "runtimeArgs": ["--preserve-symlinks"],
+      "program": "server.js",
+      "outputCapture": "std"
+    }
+  ]
+}
