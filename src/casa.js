@@ -111,6 +111,14 @@ export {
  */
 
 /**
+ * Mounting function.
+ *
+ * This will mount all of the routes and middleware in the correct order on
+ * the given ExpressJS app.
+ *
+ * Once this is called, you will not be able to modify any of the routers as
+ * they will be "sealed".
+ *
  * @callback Mounter
  * @param {import('express').Express} app Express application
  * @param {object} opts Mounting options
