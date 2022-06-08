@@ -142,7 +142,7 @@ All these middleware are also mutable before `mount()` is called (at which point
 |----------|------|-------------|
 | `mount` | `function` | Calling this will mount all the CASA routers/middleware and effectively prevent any further modification |
 
-Call the `mount()` function as the last thing you do, once you've setup all the routers/middleware as you wish.
+Call the `mount()` function as the last thing you do, once you've setup all the routers/middleware as you wish. [Read more about this function](docs/mount-function.md) to see how it can be used to mount your application in various scenarios.
 
 
 ## Mutable routers

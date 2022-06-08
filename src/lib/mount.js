@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import { pathToRegexp } from 'path-to-regexp';
 
-import { validateUrlPath } from './utils.js';
 import stripProxyPathMiddlewareFactory from '../middleware/strip-proxy-path.js';
+import serveFirstWaypointMiddlewareFactory from '../middleware/serve-first-waypoint.js';
 
 /**
  * @access private
@@ -60,7 +60,13 @@ export default ({
   bodyParserMiddleware,
   dataMiddleware,
   postMiddleware,
-}) => (app, { route = '/' } = {}) => {
+}) => (
+  app,
+  {
+    route = '/',
+    serveFirstWaypoint = false,
+  } = {},
+) => {
   nunjucksEnv.express(app);
   app.set('view engine', 'njk');
 
@@ -72,15 +78,9 @@ export default ({
 
   // Attach a handler to redirect requests for `/` to the first waypoint in
   // the plan
-  if (plan) {
+  if (serveFirstWaypoint && plan) {
     const re = pathToRegexp(`${route}`.replace(/\/+/g, '/'));
-    app.use(re, (req, res) => {
-      const reqUrl = new URL(req.url, 'https://placeholder.test/');
-      const reqPath = validateUrlPath(`${req.baseUrl}${reqUrl.pathname}${plan.getWaypoints()[0]}`);
-      let reqParams = reqUrl.searchParams.toString();
-      reqParams = reqParams ? `?${reqParams}` : '';
-      res.redirect(302, `${reqPath}${reqParams}`);
-    });
+    app.use(re, serveFirstWaypointMiddlewareFactory({ plan }));
   }
 
   // Capture the mount path of this CASA app, before any parameterised path
