@@ -15,6 +15,7 @@
 Guides
 
 * [Adding custom static assets](guides/custom-statics.md)
+* [Adding custom routes](guides/custom-routes.md)
 * [Running multiple CASA sub-apps](guides/using-sub-apps.md)
 * [Mounting on a paramerterised URL](guides/parameterised-mount.md)
 * [Strategies for handling stale data](guides/handling-stale-data.md)
