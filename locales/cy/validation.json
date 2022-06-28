@@ -2,7 +2,17 @@
   "rule": {
     "dateObject": {
       "inline": "Rhowch ddyddiad dilys",
-      "summary": "Rhowch ddyddiad dilys"
+      "summary": "Rhowch ddyddiad dilys",
+
+      "afterOffset": {
+        "inline": "Rhowch ddyddiad o fewn yr ystod benodol",
+        "summary": "Rhowch ddyddiad o fewn yr ystod benodol"
+      },
+
+      "beforeOffset": {
+        "inline": "Rhowch ddyddiad o fewn yr ystod benodol",
+        "summary": "Rhowch ddyddiad o fewn yr ystod benodol"
+      }
     },
 
     "email": {
