@@ -13,7 +13,9 @@ import { static } from 'express';
 
 const { staticRouter } = configure({ ... });
 
-staticRouter.get('/css/application.css', static('/src/assets/css/application.css'));
+// Note that the URL here is relative to the path on which your CASA app is
+// mounted on its parent Express app
+staticRouter.use('/css/application.css', static('/src/assets/css/application.css'));
 ```
 
 The best place to include CSS `<link>` tags is in the `<head>`, which is exposed as a `head` block in the govuk-frontend template. Add this to your page template (if you want to add it on a per-page basis) or your layout template (if you want it added globally):
@@ -21,7 +23,7 @@ The best place to include CSS `<link>` tags is in the `<head>`, which is exposed
 ```jinja
 {% block head %}
   {{ super() }}
-  <link rel="stylesheet" href="{{ staticMountUrl }}css/application.css" />
+  <link rel="stylesheet" href="{{ casa.staticMountUrl }}css/application.css" />
 {% endblock %}
 ```
 
@@ -30,7 +32,7 @@ The best place to include JS `<script>` tags is just before the closing `</body>
 ```jinja
 {% block bodyEnd %}
   {{ super() }}
-  <script src="{{ staticMountUrl }}js/application.js"></script>
+  <script src="{{ casa.staticMountUrl }}js/application.js"></script>
 {% endblock %}
 ```
 
@@ -46,7 +48,7 @@ import { static } from 'express';
 
 const { staticRouter } = configure({ ... });
 
-staticRouter.get('/assets', static('/src/assets'));
+staticRouter.use('/assets', static('/src/assets'));
 staticRouter.use('/assets', (req, res, next) => res.status(404).send('Not found'));
 ```
 
@@ -62,7 +64,7 @@ import { static } from 'express';
 
 const { staticRouter } = configure({ ... });
 
-staticRouter.prependGet('/govuk/assets/js/all.js', static('/src/assets/my-all.js'));
+staticRouter.prependUse('/govuk/assets/js/all.js', static('/src/assets/my-all.js'));
 ```
 
 See the ['staticRouter' source](../../src/routes/static.js) for a list of all routes that can be override.

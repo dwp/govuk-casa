@@ -27,5 +27,5 @@ app.listen();
 
 Note that in your templates, the following variables will apply:
 
-* `mountUrl` = `/app/abcdef/` (where `abcdef` is the dynamic parameter)
-* `staticMountUrl` = `/app/`
+* `casa.mountUrl` = `/app/abcdef/` (where `abcdef` is the dynamic parameter)
+* `casa.staticMountUrl` = `/app/`
