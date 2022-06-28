@@ -261,11 +261,13 @@ pages = [{
   fields: [ ... ],
   // Hooks are now an array (see above)
   hooks: [ ... ],
-  // fieldGatherModifiers has been removed
+  // fieldGatherModifiers has been removed and replace with "processors" on the fields
   // fieldReader has been removed
   // fieldWriter has been removed
 };
 ```
+
+Note that `fieldGatherModifiers` have been removed and their functionality can now be replicated with [field "processors"](../fields.md).
 
 
 ### Field validator class changes

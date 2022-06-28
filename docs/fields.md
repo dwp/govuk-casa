@@ -25,7 +25,7 @@ field('name').validators([ validator1 ]).conditions([
   condition1,
 ]);
 
-// Process the field value in some way before validation
+// Process the field value in some way before validation (see further below)
 field('name').processors([ processor1 ]);
 ```
 
@@ -114,5 +114,17 @@ field('name').validators([
     // Decide whether to run validation or not
     return true;
   },
+])
+```
+
+
+## Field processors
+
+You can attach arbitrary "processors" to a field that will execute on the user input (in the order they are defined) before theinput is gathered into the session.
+
+```javascript
+// This example simply suffixes the given user input with `-processed`
+field('my-field').processors([
+  (fieldValue) => `${fieldValue}-processed`,
 ])
 ```
