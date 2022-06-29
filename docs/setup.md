@@ -40,6 +40,8 @@ Nunjucks will search for templates in the order: user templates (as defined in `
 * `number` **`session.ttl`** Session expiry time (in seconds)
 * `boolean` **`session.secure`** Whether to flag session cookie as secure or not (requires TLS)
 * `object` **`session.store`** Your preferred express-session store (defaults to MemoryStore)
+* `string|boolean` **`session.cookieSameSite`** your preferred setting for `SameSite` flag on the session cookie. Can be one of `Strict` (default), `Lax`, or `None`
+* `string` **`session.cookiePath`** the URL path on which the session cookie is valid (defaults to `/`)
 
 Configuration options for session handling
 
