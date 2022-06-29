@@ -11,6 +11,10 @@ import { field } from '@dwp/govuk-casa';
 // This returns an instance of the PageField class.
 field('name');
 
+// "complex" field names are supported to a depth of one property.
+// This will result in an object `{address: { postcode: '' } }`
+field('address[postcode]');
+
 // Mark a field as being optional
 field('name', { optional: true });
 

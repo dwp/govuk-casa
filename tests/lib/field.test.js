@@ -24,6 +24,13 @@ describe('PageField', () => {
     expect(() => field('abcdefghijklmnopqrstuvwxyz0123456789.-[]')).to.not.throw;
     expect(() => field('$')).to.throw(SyntaxError);
     expect(() => field('()')).to.throw(SyntaxError);
+    expect(() => field('ok[$not_ok]')).to.throw(SyntaxError);
+  });
+
+
+  it('throws an exception if it is a super-complex field name', () => {
+    expect(() => field('basic[complexity]')).to.not.throw;
+    expect(() => field('super[complex][name]')).to.throw(SyntaxError, 'Complex field names are only supported to 1 property depth. E.g. a[b] is ok, a[b][c] is not');
   });
 
 
@@ -43,6 +50,14 @@ describe('PageField', () => {
   });
 
 
+  it('extracts the field value from a given object, for a complex field', () => {
+    const obj = { complex: { type: 'xyz' } };
+    const f = field('complex[type]');
+
+    expect(f.getValue(obj)).to.equal('xyz');
+  });
+
+
   it('inserts the field value into a given object', () => {
     const obj = { fieldName: 'xyz' };
 
@@ -53,6 +68,19 @@ describe('PageField', () => {
     f = field('other');
     f.putValue(obj, 'other value');
     expect(obj.other).to.equal('other value');
+  });
+
+
+  it('inserts the field value into a given object, for a complex field', () => {
+    const obj = { complex: { type: 'xyz' } };
+
+    let f = field('complex[type]');
+    f.putValue(obj, 'new value');
+    expect(obj.complex.type).to.equal('new value');
+
+    f = field('not[defined]');
+    f.putValue(obj, 'other value');
+    expect(obj.not.defined).to.equal('other value');
   });
 
 

@@ -35,7 +35,7 @@ const { isFunction } = lodash;
 
 // Quick check to see if the field name corresponds to a non-primitive complex
 // type. For example, `my_field[nested]`.
-const reComplexType = /\[/;
+const reComplexType = /^([^[]+)\[([^\]]+)\]/;
 
 const reInvalidName = /[^a-z0-9_.\-[\]]/i;
 
@@ -82,11 +82,9 @@ export class PageField {
   constructor(name, { optional = false, persist = true } = Object.create(null)) {
     if (!name) {
       throw new SyntaxError('A name for this field is required, i.e. "field(\'myField\')".');
-    } else if (reInvalidName.test(String(name))) {
-      throw new SyntaxError(`Field '${String(name)}' name contains invalid characters.`);
     }
 
-    this.#name = String(name);
+    this.#name = undefined;
     this.#validators = [];
     this.#processors = [];
     this.#conditions = [];
@@ -94,8 +92,13 @@ export class PageField {
     this.#meta = {
       optional,
       persist,
-      complex: reComplexType.test(name),
+      complex: undefined,
+      complexFieldName: undefined,
+      complexFieldProperty: undefined,
     };
+
+    // Apply name
+    this.rename(name);
   }
 
   /**
@@ -106,30 +109,37 @@ export class PageField {
    *
    * @param {object} obj Object from which to extract the value
    * @returns {any} Value extracted from object
-   * @throws {Error} When run on a complex field (not yet supported)
    */
   getValue(obj = Object.create(null)) {
-    if (!this.#meta.complex) {
-      return obj[this.#name];
+    if (this.#meta.complex) {
+      return obj[this.#meta.complexFieldName]?.[this.#meta.complexFieldProperty];
     }
-    throw new Error('Not yet supporting complex field types');
+    return obj[this.#name];
   }
 
   /**
    * Store this field's value in the given object, using its name as the key.
    *
+   * For complex fields, the field object will be created if it does not yet
+   * exist, before then storing the property within that object.
+   *
    * @param {object} obj Object from which to extract the value
    * @param {any} value Value to be stored
    * @returns {any} Value extracted from object
-   * @throws {Error} When run on a complex field (not yet supported)
    */
   putValue(obj = Object.create(null), value = undefined) {
-    if (!this.#meta.complex) {
+    if (this.#meta.complex) {
+      /* eslint-disable-next-line no-param-reassign */
+      obj[this.#meta.complexFieldName] = {
+        ...(obj[this.#meta.complexFieldName] ?? {}),
+        [this.#meta.complexFieldProperty]: value,
+      };
+    } else {
       /* eslint-disable-next-line no-param-reassign */
       obj[this.#name] = value;
-      return this;
     }
-    throw new Error('Not yet supporting complex field types');
+
+    return this;
   }
 
   /* -------------------------------------------------------------- configure */
@@ -140,6 +150,38 @@ export class PageField {
 
   get meta() {
     return this.#meta;
+  }
+
+  /**
+   * Rename this field.
+   *
+   * @param {string} name New name to be applied
+   * @returns {PageField} Chain
+   * @throws {SyntaxError} When the name is invalid in some way
+   */
+  rename(name) {
+    if (reInvalidName.test(String(name))) {
+      throw new SyntaxError(`Field '${String(name)}' name contains invalid characters.`);
+    }
+
+    // Complex names are only supported to one level deep. For example,
+    // `field[prop]` is supported, whilst `field[prop][subprop]` is not. Throw
+    // early to aid developer.
+    const isComplex = reComplexType.test(name);
+    if (isComplex && name.match(/\[/g).length > 1) {
+      throw new SyntaxError('Complex field names are only supported to 1 property depth. E.g. a[b] is ok, a[b][c] is not');
+    }
+
+    this.#name = String(name);
+    this.#meta.complex = isComplex;
+
+    // Extract the field name and property from a complex type for later use
+    if (isComplex) {
+      const parts = name.match(reComplexType);
+      [, this.#meta.complexFieldName, this.#meta.complexFieldProperty] = parts;
+    }
+
+    return this;
   }
 
   /**
