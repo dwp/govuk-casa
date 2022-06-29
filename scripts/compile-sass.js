@@ -21,7 +21,6 @@ async function compileSassSources() {
     file: 'assets/scss/casa.scss',
     includePaths: [
       'assets/scss/',
-      'node_modules/govuk-frontend/govuk/',
     ],
     outputStyle: 'compressed',
     outFile: targetFile,
@@ -35,7 +34,6 @@ async function compileSassSources() {
     file: 'assets/scss/casa-ie8.scss',
     includePaths: [
       'assets/scss/',
-      'node_modules/govuk-frontend/govuk/',
     ],
     outputStyle: 'compressed',
     outFile: targetFile,
