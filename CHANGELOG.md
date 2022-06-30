@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.3.0](https://github.com/dwp/govuk-casa/compare/8.2.8...8.3.0) (2022-06-30)
+
+
+### Features
+
+* add support for complex field names ([a380b01](https://github.com/dwp/govuk-casa/commit/a380b01ce22b8b7957ad4950e4189cc404b5d9c5))
+
 ### [8.2.8](https://github.com/dwp/govuk-casa/compare/8.2.7...8.2.8) (2022-06-29)
 
 ### [8.2.7](https://github.com/dwp/govuk-casa/compare/8.2.6...8.2.7) (2022-06-15)
