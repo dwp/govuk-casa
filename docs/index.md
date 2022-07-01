@@ -23,10 +23,13 @@ Guides
 * [Migrating between CASA versions](migration-guides/)
 * [Debugging a CASA app](guides/debugging.md)
 * [Customising `Content-Security-Policy`](guides/helmet.md)
+* [Generating URLs](guides/generating-urls.md)
 
 ## API Reference
 
-You can build a set of API reference documentation locally as so:
+A lot of the functionality is described in more detail by the API reference.
+
+You can build this documentation locally as so:
 
 ```bash
 npm run build:api-docs

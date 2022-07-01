@@ -51,12 +51,28 @@ Waypoints are denoted by strings in any of the following format:
 
 ## Skippable waypoints
 
-If you want to allow the user to skip a waypoint, using the `?skipto...` mechanism, then you must tell CASA which waypoints are skippable.
+In some circumstances, you might want to allow the user to actively skip over a particular waypoint. For example, if the form is not relevant to them, or you want to link them to an alternative waypoint for collecting similar data. In such cases, you just need to send them to a URL that includes a `?skipto=...` parameter.
+
+For example, if you're on `details` waypoint and want to skip over this to the `other` waypoint, then you'd use the URL `/details?skipto=other`.
+
+If you want to allow this behaviour, then you must tell CASA which waypoints are skippable.
 
 ```javascript
 const plan = new Plan();
 
 plan.addSkippables('details', 'info', 'another');
+```
+
+And you can use the `waypointUrl()` function to generate these URLs as so:
+
+```javascript
+import waypointUrl from '@dwp/govuk-casa';
+
+const url = waypointUrl({
+  mountUrl: '/',
+  waypoint: 'details',
+  skipTo: 'other',
+});
 ```
 
 

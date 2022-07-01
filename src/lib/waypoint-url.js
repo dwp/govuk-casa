@@ -18,6 +18,15 @@ const sanitiseWaypoint = (w) => w.replace(/[^/a-z0-9_-]/ig, '').replace(/\/+/g, 
 /**
  * Generate a URL pointing at a particular waypoint.
  *
+ * @example
+ * // generates: /path/details?edit&editorigin=%2Fsomewhere%2Felse
+ * waypointUrl({
+ *   mountUrl: '/path/',
+ *   waypoint: 'details',
+ *   edit: true,
+ *   editOrigin: '/somewhere/else'
+ * })
+ *
  * @memberof module:@dwp/govuk-casa
  * @param {object} obj Options
  * @param {string} obj.waypoint Waypoint
