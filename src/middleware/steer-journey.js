@@ -65,7 +65,13 @@ export default ({
       startWaypoint: waypoint,
       stopCondition: () => (true), // stop at the first one
     });
-    res.locals.casa.journeyPreviousUrl = prevRoute.target ? waypointUrl({ mountUrl, waypoint: prevRoute.target, routeName: 'prev' }) : undefined;
+    res.locals.casa.journeyPreviousUrl = prevRoute.target ? waypointUrl({
+      mountUrl,
+      waypoint: prevRoute.target,
+      routeName: 'prev',
+      edit: req.casa.editMode,
+      editOrigin: req.casa.editOrigin,
+    }) : undefined;
 
     return next();
   },
