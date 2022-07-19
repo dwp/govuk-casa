@@ -102,6 +102,30 @@ export class PageField {
   }
 
   /**
+   * Clone this field.
+   *
+   * @returns {PageField} Cloned field
+   */
+  clone() {
+    const clone = new PageField(this.#name, {
+      optional: this.#meta.optional,
+      persist: this.#meta.persist,
+    });
+
+    if (this.validators()) {
+      clone.validators(this.validators());
+    }
+    if (this.conditions()) {
+      clone.conditions(this.conditions());
+    }
+    if (this.processors()) {
+      clone.processors(this.processors());
+    }
+
+    return clone;
+  }
+
+  /**
    * Extract this field's value from the given object.
    *
    * For complex fields, we may need to drill into an object to extract the
