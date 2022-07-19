@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.4.0](https://github.com/dwp/govuk-casa/compare/8.3.0...8.4.0) (2022-07-19)
+
+
+### Features
+
+* clone field ([916f2f2](https://github.com/dwp/govuk-casa/commit/916f2f2497c4e8177a5a3b33b9b3e70aa9cd5dd1))
+
 ## [8.3.0](https://github.com/dwp/govuk-casa/compare/8.2.8...8.3.0) (2022-06-30)
 
 
