@@ -9,6 +9,7 @@ include:
 variables:
   NODE_IMAGE: node:14.18.1@sha256:36a56dc5c28c952b77db095e986e6e65af7eb9095e38b0da7495fc83800b91af
   NODE_PUBLISH_TO_GITLAB: "true"
+  AUTO_TAG_MERGE_PREPARE_MR: "true"
 
 # ---------------------------------------------------------- blueprint overrides
 

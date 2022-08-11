@@ -60,13 +60,14 @@ If successful, merge into `main`, ensure CI build passes before finally pushing 
 
 ## Packaging a new version
 
-The following can be applied to either the `main` branch, or any of the `maintain*` branches:
+Any commits pushed to `main` will automatically trigger the creation of a packaging branch and Merge Request. To tag that packaged version, simply merge the MR. To publish the package to the public npm registry, there is still a manual process to follow (see further below).
+
+For any other branches (e.g. maintenance branches), you will currently still have to perform the following tasks to package:
 
 ```bash
 # Package
-# We can't use `npx standard-version` yet due to ES6 compatibility issues
 git checkout -b chore/package
-node ./scripts/standard-version.js
+npx standard-version
 git push -u origin head
 
 # Create an MR from this branch, seek approval and merge. A new version will be
@@ -79,7 +80,7 @@ Presently, publishing to the public npm registry is a manual process:
 # Dry run first to check it all looks good
 npm publish --dry-run
 
-# For the `main` branch
+# For the `main` branch (will publish under the "latest" dist tag)
 npm publish
 
 # For the `maintain*` branches (use the appropriate tag)

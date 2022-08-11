@@ -1,10 +1,4 @@
-/**
- * At the time of writing, standard-version does not work with modules using
- * ESM. This script is a workaround for that.
- */
-import standardVersion from 'standard-version';
-
-standardVersion({
+module.exports = {
   skip: {
     tag: true
   },
@@ -22,7 +16,4 @@ standardVersion({
       writeVersion: (contents, version) => contents.replace(/sonar.projectVersion=(.+)$/m, `sonar.projectVersion=${version}`),
     },
   }]
-}).catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+};
