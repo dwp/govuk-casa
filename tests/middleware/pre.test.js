@@ -55,6 +55,49 @@ describe('pre middleware', () => {
       .expect(200, done);
   });
 
+  it('includes all google analytics and tag manager CSP domains', (done) => {
+    const app = ExpressJS();
+    app.use(preMiddleware());
+    app.use((req, res) => res.status(200).send('ok'));
+
+    const getCspDomains = (res, directive) => {
+      const matches = res.headers['content-security-policy'].match(new RegExp(`${directive} ([^;]+);`));
+      return matches ? matches[1].split(' ') : [];
+    }
+
+    request(app)
+      .get('/')
+      .expect((res) => expect(getCspDomains(res, 'script-src')).to.include.members([
+        '*.google-analytics.com',
+        '*.googletagmanager.com',
+        'https://tagmanager.google.com',
+      ]))
+      .expect((res) => expect(getCspDomains(res, 'img-src')).to.include.members([
+        '*.analytics.google.com',
+        '*.google-analytics.com',
+        '*.googletagmanager.com',
+        'https://ssl.gstatic.com',
+        'https://www.gstatic.com',
+      ]))
+      .expect((res) => expect(getCspDomains(res, 'connect-src')).to.include.members([
+        '*.google-analytics.com',
+        '*.analytics.google.com',
+        '*.googletagmanager.com',
+      ]))
+      .expect((res) => expect(getCspDomains(res, 'frame-src')).to.include.members([
+        '*.googletagmanager.com',
+      ]))
+      .expect((res) => expect(getCspDomains(res, 'style-src')).to.include.members([
+        'https://fonts.googleapis.com',
+        'https://tagmanager.google.com',
+      ]))
+      .expect((res) => expect(getCspDomains(res, 'font-src')).to.include.members([
+        'data:',
+        'https://fonts.gstatic.com',
+      ]))
+      .expect(200, done);
+  });
+
   it('allows customisation of the Content-Security-Policy header', (done) => {
     const app = ExpressJS();
     app.use(preMiddleware({

@@ -3,7 +3,8 @@ import helmet from 'helmet';
 
 const GA_DOMAIN = '*.google-analytics.com';
 const GA_ANALYTICS_DOMAIN = '*.analytics.google.com';
-const GTM_DOMAIN = 'www.googletagmanager.com';
+const GTM_DOMAIN = '*.googletagmanager.com';
+const GTM_PREVIEW_DOMAIN = 'https://tagmanager.google.com';
 
 /**
  * @access private
@@ -57,14 +58,14 @@ export default ({
       useDefaults: true,
       directives: {
         'default-src': ["'none'"],
-        'script-src': ["'self'", GA_DOMAIN, GTM_DOMAIN, (req, res) => `'nonce-${res.locals.cspNonce}'`],
-        'img-src': ["'self'", GA_DOMAIN, GA_ANALYTICS_DOMAIN],
-        'connect-src': ["'self'", GA_DOMAIN, GA_ANALYTICS_DOMAIN],
+        'script-src': ["'self'", GA_DOMAIN, GTM_DOMAIN, GTM_PREVIEW_DOMAIN, (req, res) => `'nonce-${res.locals.cspNonce}'`],
+        'img-src': ["'self'", GA_DOMAIN, GA_ANALYTICS_DOMAIN, GTM_DOMAIN, 'https://ssl.gstatic.com', 'https://www.gstatic.com'],
+        'connect-src': ["'self'", GA_DOMAIN, GA_ANALYTICS_DOMAIN, GTM_DOMAIN],
         'frame-src': ["'self'", GTM_DOMAIN],
         'frame-ancestors': ["'self'"],
         'form-action': ["'self'"],
-        'style-src': ["'self'", (req, res) => `'nonce-${res.locals.cspNonce}'`],
-        'font-src': ["'self'"],
+        'style-src': ["'self'", 'https://fonts.googleapis.com', GTM_PREVIEW_DOMAIN, (req, res) => `'nonce-${res.locals.cspNonce}'`],
+        'font-src': ["'self'", 'data:', 'https://fonts.gstatic.com'],
       },
     },
 
