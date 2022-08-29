@@ -78,7 +78,7 @@
     "c8": "7.12.0",
     "chai": "4.3.6",
     "cheerio": "1.0.0-rc.12",
-    "commitlint": "17.1.1",
+    "commitlint": "17.1.2",
     "docdash": "1.2.0",
     "eslint": "8.23.0",
     "eslint-plugin-no-unsafe-regex": "1.0.0",
