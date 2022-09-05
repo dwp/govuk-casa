@@ -1,9 +1,9 @@
 include:
   - project: dwp/engineering/gitlab-ci-toolbox
-    ref: 3.39.0
+    ref: 3.39.1
     file: blueprints/node.yml
   - project: dwp/engineering/gitlab-ci-toolbox
-    ref: 3.39.0
+    ref: 3.39.1
     file: blueprints/auto-tag-merge.yml
 
 variables:
