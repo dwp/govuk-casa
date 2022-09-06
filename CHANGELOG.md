@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.1.0](https://github.com/dwp/govuk-casa/compare/7.0.9...7.1.0) (2022-09-06)
+
+
+### Features
+
+* add date format option to formatDateObject filter ([f20fbab](https://github.com/dwp/govuk-casa/commit/f20fbaba430e56f489106ad9b8a58cf85fb38910))
+* Applied ability to disable generation of static assets ([6686d24](https://github.com/dwp/govuk-casa/commit/6686d240116e8c292c5da0b9c8a737a72f365ded))
+
 ### [7.0.9](https://github.com/dwp/govuk-casa/compare/7.0.8...7.0.9) (2022-01-13)
 
 
