@@ -31,7 +31,7 @@ e2e-dast:
   tags:
     - docker
   services:
-    - name: owasp/zap2docker-stable@sha256:47911f0e0fc82ab2e660bc2af54c84bae0f4b7b1f89f25b0a7d6e5baa163594a
+    - name: owasp/zap2docker-stable@sha256:1056bd036b89c8b91a639261116dc60898de6109a9ee696d23d06f5f6833d7ed
       alias: zap
       entrypoint: [""]
       command: ["zap.sh", "-daemon", "-host", "0.0.0.0", "-port", "8080", "-config", "api.key=secret", "-config", "api.addrs.addr.name=.*", "-config", "api.addrs.addr.regex=true"]
