@@ -80,7 +80,7 @@
     "cheerio": "1.0.0-rc.12",
     "commitlint": "17.1.2",
     "docdash": "1.2.0",
-    "eslint": "8.23.0",
+    "eslint": "8.23.1",
     "eslint-plugin-no-unsafe-regex": "1.0.0",
     "eslint-plugin-security": "1.5.0",
     "eslint-plugin-sonarjs": "0.15.0",
