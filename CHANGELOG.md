@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.5.0](https://github.com/dwp/govuk-casa/compare/8.4.0...8.5.0) (2022-09-22)
+
+
+### Features
+
+* refactor formatDateObject to allow custom date format ([cff1d95](https://github.com/dwp/govuk-casa/commit/cff1d957e084566606892be631dede1c9b0b1c3c))
+
 ## [8.4.0](https://github.com/dwp/govuk-casa/compare/8.3.0...8.4.0) (2022-07-19)
 
 
