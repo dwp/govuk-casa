@@ -93,10 +93,10 @@ Each page will follow a very typical template, for example:
 
 A small number of [function/filters](../src/lib/nunjucks-filters.js) are made available to your templates:
 
-| Property | Description |
-|----------|-------------|
-| `mergeObjects()` | Function to deep-merge objects |
-| `includes()` | Function to determine if an array includes a value |
-| `formatDateObject()` | Function to format a date |
-| `renderAsAttributes()` | Function to render an object as an HTML attibute string |
-| `waypointUrl()` | For generating URLs. Pre-configured with `mountUrl`, `journeyContext`, `edit` and `editOrigin` parameters for your convenience, but can be overriden in template if needed. See [source](../src/lib/waypoint-url.js) for more details |
+| Property | Description | Example |
+|----------|-------------|---------|
+| `mergeObjects()` | Function to deep-merge objects | |
+| `includes()` | Function to determine if an array includes a value | |
+| `formatDateObject(date, { locale = 'en' , format = 'd MMMM yyyy' })` | Function to format a date | `{{ someDate \| formatDate({ locale: 'cy', format: 'cccc d LLLL' }) }}` |
+| `renderAsAttributes()` | Function to render an object as an HTML attibute string | |
+| `waypointUrl()` | For generating URLs. Pre-configured with `mountUrl`, `journeyContext`, `edit` and `editOrigin` parameters for your convenience, but can be overriden in template if needed. See [source](../src/lib/waypoint-url.js) for more details | |

@@ -22,6 +22,27 @@ describe('View filter: formatDateObject', () => {
     expect(formatDateObject(true)).to.equal(expected);
   });
 
+  it('should output a string date in the default format if no format argument is provided in config object argument', () => {
+    const output = formatDateObject({
+      dd: 1,
+      mm: 3,
+      yyyy: 2007,
+    });
+    expect(output).to.equal('1 March 2007');
+  });
+
+  it('should output a string date in custom format if a format is provided in config object argument', () => {
+    const output = formatDateObject({
+      dd: 1,
+      mm: 3,
+      yyyy: 2007,
+    }, 
+    {
+      format: 'cccc d LLLL'
+    });
+    expect(output).to.equal('Thursday 1 March');
+  });
+
   it('should output a string date in the excpected format, given valid date object with single digits', () => {
     const output = formatDateObject({
       dd: 1,

@@ -49,12 +49,17 @@ function includes(source = [], search = '') {
  *   object - {dd:'', mm:'', yyyy:''}
  *
  * @memberof NunjucksFilters
- * @param  {object} date Date (see supported formats above)
- * @param  {object} config Holds locale
+ * @param  {object} date Date
+ * @param  {string} date.dd Day
+ * @param  {string} date.mm Month
+ * @param  {string} date.yyyy Year
+ * @param  {object} [config] Options
+ * @param  {string} [config.locale] Locale (default 'en')
+ * @param  {string} [config.format] Format (default 'd MMMM yyyy')
  * @returns {string} Formatted date
  */
 function formatDateObject(date, config = {}) {
-  const { locale = 'en' } = config;
+  const { locale = 'en', format = 'd MMMM yyyy' } = config;
 
   if (
     Object.prototype.toString.call(date) === '[object Object]'
@@ -66,7 +71,7 @@ function formatDateObject(date, config = {}) {
       year: Math.max(0, parseInt(date.yyyy, 10)),
       month: Math.max(0, parseInt(date.mm, 10)),
       day: Math.max(1, parseInt(date.dd, 10)),
-    }).setLocale(locale).toFormat('d MMMM yyyy');
+    }).setLocale(locale).toFormat(format);
   }
   return 'INVALID DATE OBJECT';
 }
