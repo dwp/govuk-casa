@@ -4,16 +4,18 @@ CASA has undergone a major refactoring in version 8, and as such there are quite
 
 The following changes are **mandatory**:
 - [`configure()` interface changes](#configure-interface-changes)
+- [`endSession()` changes](#endsession-changes)
 - [Page meta structure changes](#page-meta-structure-changes)
 - [There is now only one class for field validators](#field-validator-class-changes)
 - [Gather modifers replaced with field processors](#field-processors)
 - [Module interface has changed](#module-interface-changes)
 - [Cookie banner has been removed](#cookie-banner-removed)
-- [Nunjucks filters/variables deprecated](#nunjucks-filters-variables-deprecated)
+- [Nunjucks filters/variables changed or deprecated](#nunjucks-filters-variables-changed-or-deprecated)
 - [I18n replaced with `i18next`](#i18n-changes)
 - [`preGatherTraversalSnapshot` has been replaced](#journey-traversal-snapshot-replaced)
 - [Validators are now synchronous](#synchronous-validators)
 - [Validators must now be concrete instances](#always-make-validators)
+- [Conditional and undefined fields are removed from `req.body`](#conditional-and-undefined-fields-are-removed-from-req-body)
 - [Optional fields are defined differently](#defining-optional-fields)
 - [Support for Plan origins has been removed](#plan-origins-removed)
 - [The built-in "check your answers" mechanism has been removed](#check-your-answers-removed)
@@ -26,10 +28,11 @@ The following changes are **mandatory**:
 
 The following changes are **optional**:
 - [Nunjucks variables remove](#nunjucks-variables-removed)
+- [Scripts partial has changed](#scripts-partial-has-changed)
 
 And some other notes:
 - [bfcache fix removed](#bfcache-fix-removed)
-- [CASA scss sources removed](#scss-sources-removed)
+- [CASA scss and js sources removed](#scss-js-sources-removed)
 - [`govuk-frontend` updated to v4](#govuk-fronted-updated)
 
 
@@ -134,6 +137,24 @@ Where the phase was originally set to `alpha`, `beta`, or `live`, you are now en
 
 CASA's routing structure has been completely changed in this release, to the point where the need for a mount controller like this is redundant. Instead you are encouraged to make use of the new routers, middleware, and plugins mechanism to mount your custom middleware as needed.
 
+For example:
+
+```javascript
+// Old
+configure(app, {
+  mountController: function (mountCommonMiddleware) {
+    mountCommonMiddleware();
+    require('./middleware/some-custom-page')(app);
+    require('./middleware/custom-static-route')(app);
+  },
+});
+
+// New
+const { ancillaryController } = configure({ ... });
+ancillaryRouter.use('/some-path', require('./middleware/some-custom-page'));
+staticRouter.use('/some-static/path', require('./middleware/customer-static-route'));
+```
+
 
 **`allowPageEdit` option removed**
 
@@ -148,6 +169,38 @@ Editing is now always "sticky". If you need to control how a user is redirected 
 **`csp` options removed**
 
 The Content-Security-Policy header is now entirely managed by **helmet**. There is a `cspNonce` variable available to all templates which can be used to mark inline CSS and script sources as valid.
+
+If you need to modify these CSP directive, you can use the [`helmetConfigurator()` configuration option]((guides/helmet.md)). For example:
+
+```javascript
+// Old
+configure(app, {
+  csp: {
+    'object-src': ['none'],
+    'media-src': ['somewhere.example.com'],
+    'script-src': [
+      'http://www.google-analytics.com/analytics.js',
+      'http://www.googletagmanager.com/gtm.js',
+      '\'sha256-Lenka3BD801+VZLHH+ZwRhIgOZCLmy55Fr8+MmyYuJ8=\'',
+    ],
+  },
+});
+
+// New
+configure({
+  helmetConfigurator: (config) => {
+    // Note that the Google Analytics domains are now all provided by CASA out
+    // of the box, so no need to re-add.
+    config.contentSecurityPolicy.directives['object-src'] = ['none'];
+    config.contentSecurityPolicy.directives['media-src'] = [webchatBaseUrl];
+    config.contentSecurityPolicy.directives['script-src'] = [
+      ...config.contentSecurityPolicy.directives['script-src'],
+      '\'sha256-Lenka3BD801+VZLHH+ZwRhIgOZCLmy55Fr8+MmyYuJ8=\'',
+    ];
+    return config;
+  },
+})
+```
 
 
 **`headers.disabled` option removed**
@@ -183,7 +236,7 @@ app.listen();
 See the [proxy guide](../guides/setup-behind-a-proxy.md) for more details.
 
 
-***`sessionExpiryController` option removed**
+**`sessionExpiryController` option removed**
 
 The preferred method is now to replace the default `/session-timeout` route, like so:
 
@@ -236,6 +289,34 @@ configure({
 ```
 
 This aligns with the new global `hooks` option.
+
+### `endSession` changes
+
+In version 7, the `configure()` function would return a curried instance of the `endSession()` function. In version 8 this is no longer the case, and you should instead import the function directly from the module.
+
+```javascript
+// Old
+const { endSession } = configure(...);
+
+// New
+import endSession from '@dwp/govuk-casa';
+```
+
+Additionally, this function now uses a callback signature, rather than returning a Promise. This is more "Express-like" and helps avoid inadvertent mishandling of asynchronous calls within Express middleware:
+
+```javascript
+// Old
+endSession(req).then().catch(err);
+
+// New
+endSession(req, (err) => {
+  if (err) {
+    // handle error
+  } else {
+    ...
+  }
+});
+```
 
 
 ### Page meta structure changes
@@ -300,6 +381,8 @@ pages = [
 ];
 ```
 
+Note the change in the function signature of conditionals too; `waypointId` has been replaved with `waypoint`.
+
 
 ### Field processors
 
@@ -356,7 +439,7 @@ Note that `createGetRequest()` has been superceded by `waypointUrl()`.
 The built-in cookie banner has been removed and moved to a new plugin. This plugin is currently under development however, but once availabnle you will simply need to include this plugin in your config and it should "just work".
 
 
-### Nunjucks filters/variables deprecated
+### Nunjucks filters/variables changed or deprecated
 
 Some Nunjucks filters and variables have been deprecated and removed.
 
@@ -365,6 +448,12 @@ Some Nunjucks filters and variables have been deprecated and removed.
 | `mergeObjectsDeep()` | `mergeObjects()` |
 | `makeLink()`| `waypointUrl()` |
 | `serviceName` | Store service name in `common.yaml` locale dictionary, and use `t('common:serviceName')` in templates |
+
+The behaviour of the following nunjucks functions have changed:
+
+| Function | Old usage | New usage |
+|----------|-----------|-----------|
+| `formatDateObject` | `{{ date \| formatDateObject }}` | `{{ formatDateObject(date) }}` |
 
 
 ### I18n changes
@@ -446,7 +535,7 @@ class MyValidator extends ValidatorFactory {
   validate(value, dataContext = {}) {
     if (failedValidation) {
       return [
-        ValidationError.make({ 'Failed message here', dataContext }),
+        ValidationError.make({ errorMsg: 'Failed message here', dataContext }),
       ];
     } else {
       return [];
@@ -475,6 +564,29 @@ field('fieldName').validators([
 ```
 
 
+### Conditional and undefined fields are removed from `req.body`
+
+On journey pages managed by CASA, all fields are removed from `req.body` unless you have specified them in the `fields` property for that page.
+
+For example, given the following configuration ...
+
+```javascript
+configure({
+  pages: [{
+    waypoint: 'page1',
+    fields: [{
+      field('field1').conditional(the_condition),
+    }],
+  }],
+});
+```
+
+If you `POST`ed a request to `page1`, then regardless of what data you post, only `req.body.field1` will remain in place. If you wanted to also capture other fields, they must be added to the `fields` property above.
+
+Note also that fields not meeting their conditions are also removed. So if `the_condition` resolved to `false` in the example above, then `req.body.field1` would be absent too.
+
+
+
 ### Defining optional fields
 
 ```javascript
@@ -493,11 +605,18 @@ field('fieldName', { optional: true } ).validators([
 
 ### Plan origins removed
 
-This is one of the larger changes in this release, and quite a major alteration to the whole Plan mechanics. However, it does bring with it a major simplification that will pay maintenance dividends in the long run. For those using origins in their current application, we advise using separate CASA apps for each segmented route instead.
+This is one of the larger changes in this release, and quite a major alteration to the whole Plan mechanics. However, it does bring with it a major simplification that will pay maintenance dividends in the long run.
 
-This is a bit of an involved change so we've put together an [example app](../../examples/multiapp/) to demonstrate one possible way to achieve the equivalent.
+For those using origins in their current application, we advise following one of the following alternatives:
+
+* If you don't necessarily need the user to enter the Plan at an origin (perhaps you were just using origins as a means of namespacing waypoints), consider using path-separated waypoints. For example, if you previously used an origin of `details` and a waypoint `personal`, this would be accessed via `details/personal`. So you can actually just set the waypoint itself to `details/personal`.
+* If you need the user to access certain waypoints directly without going through the whole Plan from the start (the more classic purpose of origins), then consider separating your app into multiple CASA sub-apps, each with their own Plan holding the waypoints originally listed under an origin. This is a bit of an involved change so we've put together an [example app](../../examples/multiapp/) to demonstrate one possible way to achieve the equivalent.
 
 For anyone using _Ephemeral Contexts_, you may also want to consider using sub-apps for portions of your overall service, depending on your use case. For example, sub-apps may be a good option for looping journeys.
+
+The following are no longer available as a result of this change:
+
+* `req.casa.journeyOrigin`
 
 
 ### "Check your answers" removed
@@ -525,16 +644,18 @@ In CASA v7, the `postvalidate` hook would not get executed if validation failed.
 
 To mimic the previous behaviour, you could move your middleware to a `predirect` hook. This will never get called if validation failed.
 
-To check if your waypoint has got errors:
+Alternatively, you can check for error as shown below, and execute your logic only when there are errors:
 
 ```javascript
 hook = {
   hook: 'postvalidate',
   middleware: (req, res, next) => {
-    if (req.casa.journeyContext.getValidationErrorsForPage(req.casa.waypoint)) {
-      // ...
+    if (!req.casa.journeyContext.hasValidationErrorsForPage(req.casa.waypoint)) {
+      // Perform your old logic here
+    } else {
+      // Falling through the next middleware will render the errors as normal
+      next();
     }
-    next();
   },
 };
 ```
@@ -624,6 +745,11 @@ The Nunjucks object `govuk.components` has been removed. This was used mainly fo
 This object is replaced with a simple string held in `casaVersion`, holding the current version of CASA.
 
 
+### Scripts partial has changed
+
+The `casa/partials/scripts.njk` partial has been modified, so if you are overwriting this template completely, please refer to the new source and make changes to your own template as needed. In particular, the initialisation of all GOVUK Design System components is now inlined in that partial (i.e. `window.GOVUKFrontend.initAll()`).
+
+
 ## Additional notes
 
 ### `bfcache` fix removed
@@ -631,11 +757,20 @@ This object is replaced with a simple string held in `casaVersion`, holding the 
 Back/forward cache behaviour has been disabled via the `Cache-control: no-store` header for a while, so the accompanying JavaScript fix has been removed.
 
 
-### SCSS sources removed
+### SCSS/js sources removed
 
 These files have been removed:
 
 * `src/scss/_casaElements.scss`
+* `src/js/casa.js`
+
+And the location of the CSS/JS assets have also been changed:
+
+| Previous location | New location |
+|-------------------|---------------|
+| `govuk/casa/css/casa.css` | `casa/assets/css/casa.css` |
+| `govuk/frontend/js/all.js` | `govuk/assets/js/all.js` |
+| `govuk/casa/js/casa.js` | _removed_ |
 
 
 ### `govuk-frontend` updated

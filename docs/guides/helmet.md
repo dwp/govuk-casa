@@ -2,7 +2,7 @@
 
 [Helmet](https://helmetjs.github.io/) offers a set of useful security headers for ExpressJS.
 
-CASA supplies a resonable set of defaults for configuring Helmet, but sometimes you may need to add/remove/modify these settings to meet some specific needs. You can do this by using the `helmetConfigurator` option ...
+CASA supplies a resonable set of [defaults for configuring Helmet](src/middleware/pre.js), but sometimes you may need to add/remove/modify these settings to meet some specific needs. You can do this by using the `helmetConfigurator` option ...
 
 ```javascript
 import { configure } from "@dwp/govuk-casa";

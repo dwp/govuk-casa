@@ -1,7 +1,10 @@
 import lodash from 'lodash';
 import { isEmpty } from './utils.js';
+import logger from './logger.js';
 
 const { isFunction } = lodash;
+
+const log = logger('lib:field');
 
 /**
  * @access private
@@ -285,7 +288,13 @@ export class PageField {
       // ESLint disabled as `i` is an integer
       /* eslint-disable security/detect-object-injection */
       // TODO: Replace `value` with `context.fieldValue` here
-      const fieldErrors = this.#validators[i].validate(value, context).map((e) => e.withContext({
+      let fieldErrors = this.#validators[i].validate(value, context)
+      if (!Array.isArray(fieldErrors)) {
+        // Friendly message for developer
+        throw new TypeError(`The validator at index ${i} (name: ${this.#validators[i].name || 'unknown'}) for field '${this.#name}' did not return an array`);
+      }
+
+      fieldErrors = fieldErrors.map((e) => e.withContext({
         ...context,
         validator: this.#validators[i].name,
       }));

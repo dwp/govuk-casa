@@ -36,9 +36,8 @@ describe('View filter: formatDateObject', () => {
       dd: 1,
       mm: 3,
       yyyy: 2007,
-    }, 
-    {
-      format: 'cccc d LLLL'
+    }, {
+      format: 'cccc d LLLL',
     });
     expect(output).to.equal('Thursday 1 March');
   });
