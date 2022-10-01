@@ -1,3 +1,9 @@
+/**
+ * Refactor opportunity:
+ * There's no real need to spin up an Express app to test these middleware, and
+ * we're doing a bit of gymnastics to validate things here. Return to a proper
+ * unit test and exercise the middleware function directly.
+ */
 import { expect } from 'chai';
 import ExpressJS from 'express';
 import request from 'supertest';
@@ -10,7 +16,8 @@ const makeErroringApp = (thrownError) => {
   app.use((req, res, next) => {
     res.render = (tpl, vars = {}) => {
       const errorSuffix = vars.errorCode ? ` ${vars.errorCode}` : '';
-      res.send(`${tpl}${errorSuffix}`);
+      const hasErrorObject = vars.error !== undefined ? 'true' : 'false';
+      res.send(`${tpl}${errorSuffix} ${hasErrorObject}`);
     };
     next();
   });
@@ -31,7 +38,7 @@ describe('post middleware', () => {
 
     request(app)
       .get('/')
-      .expect((res) => expect(res.text).to.equal('casa/errors/static.njk'))
+      .expect((res) => expect(res.text).to.equal('casa/errors/static.njk true'))
       .expect(200, done);
   });
 
@@ -41,7 +48,7 @@ describe('post middleware', () => {
 
     request(app)
       .get('/')
-      .expect((res) => expect(res.text).to.equal('casa/errors/404.njk'))
+      .expect((res) => expect(res.text).to.equal('casa/errors/404.njk false'))
       .expect(404, done);
   });
 
@@ -53,7 +60,7 @@ describe('post middleware', () => {
 
     request(app)
       .get('/')
-      .expect((res) => expect(res.text).to.equal('casa/errors/static.njk bad_csrf_token'))
+      .expect((res) => expect(res.text).to.equal('casa/errors/static.njk bad_csrf_token true'))
       .expect(403, done);
   });
 
@@ -65,7 +72,7 @@ describe('post middleware', () => {
 
     request(app)
       .get('/')
-      .expect((res) => expect(res.text).to.equal('casa/errors/static.njk invalid_payload'))
+      .expect((res) => expect(res.text).to.equal('casa/errors/static.njk invalid_payload true'))
       .expect(403, done);
   });
 
@@ -77,7 +84,7 @@ describe('post middleware', () => {
 
     request(app)
       .get('/')
-      .expect((res) => expect(res.text).to.equal('casa/errors/static.njk parameter_limit_exceeded'))
+      .expect((res) => expect(res.text).to.equal('casa/errors/static.njk parameter_limit_exceeded true'))
       .expect(413, done);
   });
 
@@ -89,7 +96,7 @@ describe('post middleware', () => {
 
     request(app)
       .get('/')
-      .expect((res) => expect(res.text).to.equal('casa/errors/static.njk payload_size_exceeded'))
+      .expect((res) => expect(res.text).to.equal('casa/errors/static.njk payload_size_exceeded true'))
       .expect(413, done);
   });
 
@@ -101,7 +108,7 @@ describe('post middleware', () => {
 
     request(app)
       .get('/')
-      .expect((res) => expect(res.text).to.equal('casa/errors/static.njk unaccepted_request_method'))
+      .expect((res) => expect(res.text).to.equal('casa/errors/static.njk unaccepted_request_method true'))
       .expect(400, done);
   });
 });

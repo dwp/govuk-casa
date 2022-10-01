@@ -30,13 +30,17 @@ There are some special CASA-specific blocks that you can use in these templates:
 
 ## Error pages
 
-Some default error pages are used by CASA. You can override these as needed:
+Some default error pages are used by CASA. You can override these templates as needed by simply creating a template file on the same path within your own views directory:
 
-* `casa/errors/403.njk` - Used when CSRF token is invalid, or request body cannot be verified
-* `casa/errors/404.njk` - Used when the requested page was not found
-* `casa/errors/500.njk` - Gneeral purpose error page, when something unexpected happens
-* `casa/errors/503.njk` - General purpose upstream comms problem, when an upstream service cannot be found
-* `casa/errors/static.njk` - A static English general error page (no translations), used when the translation utility cannot be loaded
+| Template | Variables | Description |
+|----------|-----------|-------------|
+| `casa/errors/404.njk` | _none_ | Used when the requested page was not found |
+| `casa/errors/403.njk` | `errorCode`, `error` (object holding original Error) | Used when CSRF token is invalid, or request body cannot be verified |
+| `casa/errors/500.njk` | _as above_ | Geenral purpose error page, when something unexpected happens |
+| `casa/errors/503.njk` | _as above_ | General purpose upstream comms problem, when an upstream service cannot be found |
+| `casa/errors/static.njk` | _as above_ | A static English general error page (no translations), used when the translation utility cannot be loaded |
+
+See the [error handler code](src/middleware/post.js) for a list of `errorCode` values.
 
 
 ## Form components
