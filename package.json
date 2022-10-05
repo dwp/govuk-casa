@@ -62,9 +62,9 @@
     "validator": "13.7.0"
   },
   "devDependencies": {
-    "@babel/core": "7.19.1",
+    "@babel/core": "7.19.3",
     "@babel/eslint-parser": "7.19.1",
-    "@babel/preset-env": "7.19.1",
+    "@babel/preset-env": "7.19.3",
     "@ckeditor/jsdoc-plugins": "30.5.0",
     "@commitlint/config-conventional": "17.1.0",
     "@dwp/casa-spiderplan": "2.4.1",
@@ -90,10 +90,10 @@
     "jsdoc-tsimport-plugin": "1.0.5",
     "mocha": "10.0.0",
     "sass": "1.55.0",
-    "sinon": "14.0.0",
+    "sinon": "14.0.1",
     "sinon-chai": "3.7.0",
     "standard-version": "9.5.0",
-    "supertest": "6.2.4",
-    "typescript": "4.8.3"
+    "supertest": "6.3.0",
+    "typescript": "4.8.4"
   }
 }
