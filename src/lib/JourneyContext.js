@@ -83,7 +83,7 @@ export default class JourneyContext {
    * `identity` holds information that helps uniquely identify this context
    * among a group of contexts stored in the session.
    *
-   * @param {object} data Entire journey data.
+   * @param {Record<string,unknown>} data Entire journey data.
    * @param {object} validation Page errors (indexed by waypoint id).
    * @param {object} nav Navigation context.
    * @param {object} identity Some metadata for identifying this context among others.

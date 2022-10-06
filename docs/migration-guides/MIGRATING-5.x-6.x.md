@@ -36,7 +36,7 @@ Where you may have had something like this previously ...
 
 ```javascript
 const fieldValidators = {
-  fieldA: new SimlpeField([
+  fieldA: new SimpleField([
     // rules
   ], (pageData, fieldName) => {
     return pageData[fieldName] > 50;
@@ -48,7 +48,7 @@ const fieldValidators = {
 
 ```javascript
 const fieldValidators = {
-  fieldA: new SimlpeField([
+  fieldA: new SimpleField([
     // rules
   ], ({ waypointId, fieldName, journeyContext }) => {
     return journeyContext.getDataForPage(waypointId)[fieldName] > 50;

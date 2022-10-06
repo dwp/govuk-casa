@@ -1,6 +1,8 @@
 import lodash from 'lodash';
 import { isEmpty } from './utils.js';
+import logger from './logger.js';
 
+const log = logger('lib:field');
 const { isFunction } = lodash;
 
 /**
@@ -75,7 +77,7 @@ export class PageField {
    * Create a field.
    *
    * @param {string} name Field name
-   * @param {object} opts Options
+   * @param {object} [opts] Options
    * @param {boolean} [opts.optional=false] Whether this field is optional
    * @param {boolean} [opts.persist=true] Whether this field will persist in `req.body`
    */
@@ -112,14 +114,14 @@ export class PageField {
       persist: this.#meta.persist,
     });
 
-    if (this.validators()) {
-      clone.validators(this.validators());
+    if (this.getValidators()) {
+      clone.validators(this.getValidators());
     }
-    if (this.conditions()) {
-      clone.conditions(this.conditions());
+    if (this.getConditions()) {
+      clone.conditions(this.getConditions());
     }
-    if (this.processors()) {
-      clone.processors(this.processors());
+    if (this.getProcessors()) {
+      clone.processors(this.getProcessors());
     }
 
     return clone;
@@ -209,19 +211,40 @@ export class PageField {
   }
 
   /**
+   * Get validators
+   *
+   * @returns {Validator[]} A list containing all validators.
+   */
+  getValidators() {
+    return this.#validators;
+  }
+
+  /**
    * Add/get value validators
    * Some validators will include a `sanitise()` method which will be run at the
    * same time as other "processors".
    *
    * @param {Validator[]} items Validation functions
-   * @returns {PageField | Validator[]} Chain or return all validators
+   * @returns {PageField} Chain - Deprecated: this currently gets all validators if
+   * empty or missing, in v9 this functionality will removed in favour of the
+   * function getValidators().
    */
   validators(items = []) {
     if (!items.length) {
-      return this.#validators;
+      log.warn('Calling validators() to get all validators is deprecated, please use getValidators()');
+      return this.getValidators();
     }
     this.#validators = [...this.#validators, ...(items.flat())];
     return this;
+  }
+
+  /**
+   * Get processors
+   *
+   * @returns {FieldProcessorFunction[]} A list containing all processors.
+   */
+  getProcessors() {
+    return this.#processors;
   }
 
   /**
@@ -229,15 +252,27 @@ export class PageField {
    * This is most often used to sanitise values to a particular data type.
    *
    * @param {FieldProcessorFunction[]} items Processor functions
-   * @returns {PageField | FieldProcessorFunction[]} Chain or return all processors
+   * @returns {PageField} Chain - Deprecated: this currently gets all processors if
+   * empty or missing, in v9 this functionality will removed in favour of the
+   * function getProcessors().
    */
   processors(items = []) {
     if (!items.length) {
-      return this.#processors;
+      log.warn('Calling processors() to get all processors is deprecated, please use getProcessors()');
+      return this.getProcessors();
     }
 
     this.#processors = [...this.#processors, ...(items.flat())];
     return this;
+  }
+
+  /**
+   * Get conditions
+   *
+   * @returns {ValidatorConditionFunction[]} A list containing all conditions.
+   */
+  getConditions() {
+    return this.#conditions;
   }
 
   /**
@@ -246,11 +281,14 @@ export class PageField {
    * "actionable".
    *
    * @param {ValidatorConditionFunction[]} items Condition functions
-   * @returns {PageField | ValidatorConditionFunction[]} Chain or return all conditions
+   * @returns {PageField} Chain - Deprecated: this currently gets all conditions if
+   * empty or missing, in v9 this functionality will removed in favour of the
+   * function getConditions().
    */
   conditions(items = []) {
     if (!items.length) {
-      return this.#conditions;
+      log.warn('Calling conditions() to get all conditions is deprecated, please use getConditions()');
+      return this.getConditions();
     }
     this.#conditions = [...this.#conditions, ...(items.flat())];
     return this;
@@ -398,7 +436,7 @@ export class PageField {
    * @returns {PageField} Chain
    */
   if(...args) {
-    return this.conditions(...args);
+    return this.conditions(args);
   }
 }
 
@@ -407,7 +445,7 @@ export class PageField {
  *
  * @memberof module:@dwp/govuk-casa
  * @param {string} name Field name
- * @param {object} opts Options
+ * @param {object} [opts] Options
  * @param {boolean} [opts.optional=false] Whether this field is optional
  * @param {boolean} [opts.persist=true] Whether this field will persist in `req.body`
  * @returns {PageField} A PageField

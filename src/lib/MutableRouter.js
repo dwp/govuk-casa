@@ -100,8 +100,8 @@ export default class MutableRouter {
   /**
    * Prepend middleware function(s) using the `all()` method.
    *
-   * @param {string} path route path
-   * @param  {...Function} callbacks Middleware functions
+   * @param {string | Function} path route path or middleware function
+   * @param  {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   prependAll(path, ...callbacks) {
@@ -111,8 +111,8 @@ export default class MutableRouter {
   /**
    * Prepend middleware function(s) using the `get()` method.
    *
-   * @param {string} path route path
-   * @param  {...Function} callbacks Middleware functions
+   * @param {string | Function} path route path or middleware function
+   * @param  {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   prependGet(path, ...callbacks) {
@@ -122,8 +122,8 @@ export default class MutableRouter {
   /**
    * Prepend middleware function(s) using the `post()` method.
    *
-   * @param {string} path route path
-   * @param  {...Function} callbacks Middleware functions
+   * @param {string | Function} path route path or middleware function
+   * @param  {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   prependPost(path, ...callbacks) {
@@ -133,8 +133,8 @@ export default class MutableRouter {
   /**
    * Prepend middleware function(s) using the `delete()` method.
    *
-   * @param {string} path route path
-   * @param  {...Function} callbacks Middleware functions
+   * @param {string | Function} path route path or middleware function
+   * @param  {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   prependDelete(path, ...callbacks) {
@@ -144,8 +144,8 @@ export default class MutableRouter {
   /**
    * Prepend middleware function(s) using the `put()` method.
    *
-   * @param {string} path route path
-   * @param  {...Function} callbacks Middleware functions
+   * @param {string | Function} path route path or middleware function
+   * @param  {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   prependPut(path, ...callbacks) {
@@ -155,8 +155,8 @@ export default class MutableRouter {
   /**
    * Prepend middleware function(s) using the `use()` method.
    *
-   * @param {string} path route path
-   * @param  {...Function} callbacks Middleware functions
+   * @param {string | Function} path route path or middleware function
+   * @param  {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   prependUse(path, ...callbacks) {
@@ -168,8 +168,8 @@ export default class MutableRouter {
   /**
    * Replace middleware function(s) that were mounted using the `all()` method.
    *
-   * @param {string} path route path
-   * @param  {...Function} callbacks Middleware functions
+   * @param {string | Function} path route path or middleware function
+   * @param  {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   replaceAll(path, ...callbacks) {
@@ -179,8 +179,8 @@ export default class MutableRouter {
   /**
    * Replace middleware function(s) that were mounted using the `get()` method.
    *
-   * @param {string} path route path
-   * @param  {...Function} callbacks Middleware functions
+   * @param {string | Function} path route path or middleware function
+   * @param  {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   replaceGet(path, ...callbacks) {
@@ -190,8 +190,8 @@ export default class MutableRouter {
   /**
    * Replace middleware function(s) that were mounted using the `post()` method.
    *
-   * @param {string} path route path
-   * @param  {...Function} callbacks Middleware functions
+   * @param {string | Function} path route path or middleware function
+   * @param  {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   replacePost(path, ...callbacks) {
@@ -201,8 +201,8 @@ export default class MutableRouter {
   /**
    * Replace middleware function(s) that were mounted using the `delete()` method.
    *
-   * @param {string} path route path
-   * @param  {...Function} callbacks Middleware functions
+   * @param {string | Function} path route path or middleware function
+   * @param  {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   replaceDelete(path, ...callbacks) {
@@ -212,8 +212,8 @@ export default class MutableRouter {
   /**
    * Replace middleware function(s) that were mounted using the `put()` method.
    *
-   * @param {string} path route path
-   * @param  {...Function} callbacks Middleware functions
+   * @param {string | Function} path route path or middleware function
+   * @param  {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   replacePut(path, ...callbacks) {
@@ -223,8 +223,8 @@ export default class MutableRouter {
   /**
    * Replace middleware function(s) that were mounted using the `use()` method.
    *
-   * @param {string} path route path
-   * @param  {...Function} callbacks Middleware functions
+   * @param {string | Function} path route path or middleware function
+   * @param  {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   replaceUse(path, ...callbacks) {
@@ -236,8 +236,8 @@ export default class MutableRouter {
   /**
    * Append middleware function(s) using the `all()` method.
    *
-   * @param {string} path route path
-   * @param  {...Function} callbacks Middleware functions
+   * @param {string | Function} path route path or middleware function
+   * @param  {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   all(path, ...callbacks) {
@@ -247,8 +247,8 @@ export default class MutableRouter {
   /**
    * Append middleware function(s) using the `get()` method.
    *
-   * @param {string} path route path
-   * @param  {...Function} callbacks Middleware functions
+   * @param {string | Function} path route path or middleware function
+   * @param  {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   get(path, ...callbacks) {
@@ -258,8 +258,8 @@ export default class MutableRouter {
   /**
    * Append middleware function(s) using the `post()` method.
    *
-   * @param {string} path route path
-   * @param  {...Function} callbacks Middleware functions
+   * @param {string | Function} path route path or middleware function
+   * @param  {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   post(path, ...callbacks) {
@@ -269,8 +269,8 @@ export default class MutableRouter {
   /**
    * Append middleware function(s) using the `delete()` method.
    *
-   * @param {string} path route path
-   * @param  {...Function} callbacks Middleware functions
+   * @param {string | Function} path route path or middleware function
+   * @param  {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   delete(path, ...callbacks) {
@@ -280,8 +280,8 @@ export default class MutableRouter {
   /**
    * Append middleware function(s) using the `put()` method.
    *
-   * @param {string} path route path
-   * @param  {...Function} callbacks Middleware functions
+   * @param {string | Function} path route path or middleware function
+   * @param  {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   put(path, ...callbacks) {
@@ -291,8 +291,8 @@ export default class MutableRouter {
   /**
    * Append middleware function(s) using the `use()` method.
    *
-   * @param {string} path route path
-   * @param  {...Function} callbacks Middleware functions
+   * @param {string | Function} path route path or middleware function
+   * @param  {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   use(path, ...callbacks) {

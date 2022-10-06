@@ -36,11 +36,15 @@ export {
  */
 
 /**
+ * @typedef {object} ContextEventHandlerOptions
+ * @property {JourneyContext} opts.journeyContext Context including changes
+ * @property {JourneyContext} opts.previousContext Context prior to changes
+ * @property {object} opts.session Request session object
+ */
+
+/**
  * @callback ContextEventHandler
- * @param {object} opts Options
- * @param {JourneyContext} opts.journeyContext Context including changes
- * @param {JourneyContext} opts.previousContext Context prior to changes
- * @param {object} opts.session Request session object
+ * @param {ContextEventHandlerOptions} opts Options
  * @returns {void}
  */
 
@@ -86,6 +90,8 @@ export {
  * @property {boolean} [secure=false] Whether to use secure session cookies
  * @property {boolean|string} [cookieSameSite=true] SameSite (true = Strict)
  * @property {object} [store] Session store (default MemoryStore)
+ * @property {string} [cookiePath] the URL path on which the session cookie
+ * is valid (defaults to '/')
  */
 
 /**
@@ -140,7 +146,7 @@ export {
  * @property {Page[]} [pages=[]] Pages the represent waypoints
  * @property {GlobalHook[]} [hooks=[]] Hooks to apply
  * @property {IPlugin[]} [plugins=[]] Plugins
- * @property {I18nOptions[]} [i18n] I18n configuration
+ * @property {I18nOptions} [i18n] I18n configuration
  * @property {Plan} [plan] CASA Plan
  * @property {ContextEvent[]} [events=[]] Handlers for JourneyContext events
  * @property {HelmetConfigurator} [helmetConfigurator] Helmet configuration manipulator function
