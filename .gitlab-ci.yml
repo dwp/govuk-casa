@@ -1,10 +1,10 @@
 include:
-  - project: dwp/engineering/gitlab-ci-toolbox
-    ref: 3.43.1
-    file: blueprints/node.yml
-  - project: dwp/engineering/gitlab-ci-toolbox
-    ref: 3.43.1
-    file: blueprints/auto-tag-merge.yml
+  - project: dwp/engineering/pipeline-solutions/gitlab/functions
+    ref: 3.43.2
+    file: functions/node.yml
+  - project: dwp/engineering/pipeline-solutions/gitlab/functions
+    ref: 3.43.2
+    file: functions/auto-tag-merge.yml
 
 variables:
   NODE_IMAGE: node:14.18.1@sha256:36a56dc5c28c952b77db095e986e6e65af7eb9095e38b0da7495fc83800b91af
