@@ -11,6 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "@dwp/govuk-casa": "../../",
-    "express": "4.18.1"
+    "express": "4.18.2"
   }
 }
