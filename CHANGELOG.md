@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [8.5.1](https://github.com/dwp/govuk-casa/compare/8.5.0...8.5.1) (2022-10-13)
+
 ## [8.5.0](https://github.com/dwp/govuk-casa/compare/8.4.0...8.5.0) (2022-09-22)
 
 
