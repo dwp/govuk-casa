@@ -34,8 +34,7 @@
     "build:css-assets": "node scripts/compile-sass.js",
     "build:api-docs": "npx jsdoc -c ./jsdoc.json -d ./docs/api/ --debug -P '' -r -R ./README.md --verbose -t ./node_modules/docdash ./src",
     "prepare": "npm run build",
-    "upgrade-deps": "OD=$(npm outdated --long --parseable); echo \"$OD\" | grep ':devDependencies:' | awk -F: '{ print $4 }' | xargs npm i -DE; echo \"$OD\" | grep ':dependencies:' | awk -F: '{ print $4 }' | xargs npm i -E",
-    "standard-version": "node scripts/standard-version.js"
+    "upgrade-deps": "OD=$(npm outdated --long --parseable); echo \"$OD\" | grep ':devDependencies:' | awk -F: '{ print $4 }' | xargs npm i -DE; echo \"$OD\" | grep ':dependencies:' | awk -F: '{ print $4 }' | xargs npm i -E"
   },
   "keywords": [],
   "author": "DWP Digital",
