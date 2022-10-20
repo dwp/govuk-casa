@@ -48,8 +48,13 @@ e2e-dast:
     # execution environment is quite constrained)
     - npm run test:e2e -- --workers 4 --zap --zap-proxy 'http://zap:8080/' --zap-target-hostname "$(hostname)" || true
     - "wget -qO- --header 'X-ZAP-Api-Key: secret' http://zap:8080/OTHER/core/other/jsonreport > gl-dast-report.json"
+    - "wget -qO- --header 'X-ZAP-Api-Key: secret' http://zap:8080/OTHER/core/other/htmlreport > gl-dast-report.html"
   artifacts:
     when: always
+    expire_in: 3 months
+    paths:
+      - gl-dast-report.html
+      - gl-dast-report.json
     reports:
       dast:
         - gl-dast-report.json
