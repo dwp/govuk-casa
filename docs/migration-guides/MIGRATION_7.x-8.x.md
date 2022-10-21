@@ -637,6 +637,8 @@ The following have moved:
 | `req.casa.journeyWaypointId` | `req.casa.waypoint` | The current waypoint being requested |
 | `req.casa.preGatherTraversalSnapshot` | `req.casa.archivedJourneyContext` | The JourneyContext as it was before being updated after a form POST |
 
+Note also that `req.casa.editOrigin` will _only_ contain a value if an `editorigin` parameter has been specified on the request URL. This behaviour differs from CASA v7, where `req.editOriginUrl` was always defined (by default to the current page).
+
 
 ### `postvalidate` execution
 
