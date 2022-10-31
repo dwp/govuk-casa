@@ -1,10 +1,7 @@
 import lodash from 'lodash';
 import { isEmpty } from './utils.js';
-import logger from './logger.js';
 
 const { isFunction } = lodash;
-
-const log = logger('lib:field');
 
 /**
  * @access private
@@ -267,6 +264,7 @@ export class PageField {
    * @param {any} value Value to validate
    * @param {ValidateContext} context Contextual validation information
    * @returns {ValidationError[]} Errors, or an empty array if all valid
+   * @throws {TypeError} If validator does not return an array
    */
   runValidators(value, context = Object.create(null)) {
     // Skip validation if the field is empty and optional
