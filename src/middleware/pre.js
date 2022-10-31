@@ -1,15 +1,31 @@
 import { randomBytes } from 'crypto';
 import helmet from 'helmet';
 
+/**
+ * @access private
+ * @typedef {import('../casa').HelmetConfigurator} HelmetConfigurator
+ */
+
 const GA_DOMAIN = '*.google-analytics.com';
 const GA_ANALYTICS_DOMAIN = '*.analytics.google.com';
 const GTM_DOMAIN = '*.googletagmanager.com';
 const GTM_PREVIEW_DOMAIN = 'https://tagmanager.google.com';
 
 /**
- * @access private
- * @typedef {import('../casa').HelmetConfigurator} HelmetConfigurator
+ * Extracts the CSP nonce used in every template, and makes it available as a
+ * nonce value in the CSP header.
+ *
+ * IMPORTANT: Do not rename this function as it _might_ be used in consumer code
+ * to identify this function specifically, most likely to remove it from CSP
+ * headers for custom purposes.
+ *
+ * @param {import('express').Request} req Request
+ * @param {import('express').Response} res Response
+ * @returns {string} nonce value suitable for use in CSP header
  */
+function casaCspNonce(req, res) {
+  return `'nonce-${res.locals.cspNonce}'`;
+}
 
 /**
  * Pre middleware.
@@ -58,13 +74,13 @@ export default ({
       useDefaults: true,
       directives: {
         'default-src': ["'none'"],
-        'script-src': ["'self'", GA_DOMAIN, GTM_DOMAIN, GTM_PREVIEW_DOMAIN, (req, res) => `'nonce-${res.locals.cspNonce}'`],
+        'script-src': ["'self'", GA_DOMAIN, GTM_DOMAIN, GTM_PREVIEW_DOMAIN, casaCspNonce],
         'img-src': ["'self'", GA_DOMAIN, GA_ANALYTICS_DOMAIN, GTM_DOMAIN, 'https://ssl.gstatic.com', 'https://www.gstatic.com'],
         'connect-src': ["'self'", GA_DOMAIN, GA_ANALYTICS_DOMAIN, GTM_DOMAIN],
         'frame-src': ["'self'", GTM_DOMAIN],
         'frame-ancestors': ["'self'"],
         'form-action': ["'self'"],
-        'style-src': ["'self'", 'https://fonts.googleapis.com', GTM_PREVIEW_DOMAIN, (req, res) => `'nonce-${res.locals.cspNonce}'`],
+        'style-src': ["'self'", 'https://fonts.googleapis.com', GTM_PREVIEW_DOMAIN, casaCspNonce],
         'font-src': ["'self'", 'data:', 'https://fonts.gstatic.com'],
       },
     },
