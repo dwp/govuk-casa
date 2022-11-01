@@ -27,6 +27,15 @@ Our projects are built to last. We strive to ensure high quality throughout the 
 1.  **Tests:** To ensure high quality code and protect against future regressions, we require all the code in DWP Projects to have at least unit test coverage.
 2.  **Green CI Tests:** We use CI systems to test all pull requests, although not all of these are publicly visible. We require these test runs to succeed on every pull request before being merged. Project maintainers will help guide you if they find any issues.
 
+### Pre-commit Checks
+
+All code contributions must adhere to a few formatting rules which are best caught using pre-commit git hooks, which can be setup as follows:
+
+* [Install the **pre-commit** utility](https://pre-commit.com/#install)
+* Run `pre-commit install` inside your local clone directory
+
+You're now good to go. 
+
 ### Code Review Process
 
 Code review for public contributions takes place in GitHub pull requests. See [this article](https://help.GitHub.com/articles/about-pull-requests/) if you're not familiar with GitHub Pull Requests.
