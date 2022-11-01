@@ -46,4 +46,3 @@ npm link @dwp/govuk-casa
 > **Note**: Every change you make to the local clone of CASA will require it to be rebuilt with `npm run build`.
 
 If you're building an ES6-based app, you can skip the build step by temporarily altering `package.json` to point `main` at `src/casa.js`.
-

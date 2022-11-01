@@ -51,4 +51,3 @@ An events mechanism was chosen over anything involving middleware hooks because 
 ## Middleware as arrays
 
 All files in the `src/middleware/` directory must return arrays of middleware, even if there is just one middleware function. This breeds consistency as these objects are made available to developers.
-

@@ -145,4 +145,3 @@ The following globals are always available to the Nunjucks templates. Refer to t
 |----------|-------------|
 | `req.casa.archivedJourneyContext` (POST) | Snapshot of the journey context as it was before a form submission. Available after `journey.pregather` hook |
 | `req.casa.waypoint` | The current waypoint being processed. Available before `journey.presteer` |
-

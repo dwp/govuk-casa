@@ -26,4 +26,3 @@ validators.regex.make({
   },
 })
 ```
-

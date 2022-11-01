@@ -241,4 +241,3 @@ plan.setRoute('start', 'field', walkTo('west'));
 
 
 ## Traversing a Plan
-

@@ -14,4 +14,3 @@ field:
     required: Enter your partner’s date of birth.
     format: Enter a real date of birth.
     future: Enter a date of birth that is in the past.
-

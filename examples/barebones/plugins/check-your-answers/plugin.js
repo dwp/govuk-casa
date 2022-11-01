@@ -13,8 +13,8 @@ const stringify = (value) => {
 /**
  * waypoint[] = list of waypoints on which CYA will be enabled
  *
- * @param {CheckYourAnswersPluginOptions} param0 
- * @returns 
+ * @param {CheckYourAnswersPluginOptions} param0
+ * @returns
  */
 module.exports = function({
   waypoints = ['check-your-answers'],
