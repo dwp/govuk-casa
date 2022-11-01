@@ -113,4 +113,17 @@ describe('pre middleware', () => {
       .expect((res) => expect(res.headers).to.have.property('content-security-policy').that.matches(/test-domain.test/i))
       .expect(200, done);
   });
+
+  it('uses a named function to generate the nonce directives', () => {
+    // If the function name changes, that is considered a breaking API change
+    preMiddleware({
+      helmetConfigurator: (config) => {
+        const scriptNonce = config.contentSecurityPolicy.directives['script-src'].filter((d) => d instanceof Function && d.name === 'casaCspNonce').pop();
+        const styleNonce = config.contentSecurityPolicy.directives['style-src'].filter((d) => d instanceof Function && d.name === 'casaCspNonce').pop();
+
+        expect(scriptNonce).to.be.a('function');
+        expect(styleNonce).to.be.a('function');
+      },
+    });
+  });
 });
