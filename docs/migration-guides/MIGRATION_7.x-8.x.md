@@ -25,6 +25,7 @@ The following changes are **mandatory**:
 - [Journey form now requires an explicit URL](#journey-form-url)
 - [Custom show/hide functionality removed](#show-hide-removed)
 - [Skippable waypoints must now be explicitly defined](#skippable-waypoints)
+- [Session data structure changed](#session-data-structure-changed)
 
 The following changes are **optional**:
 - [Nunjucks variables remove](#nunjucks-variables-removed)
@@ -721,6 +722,13 @@ const plan = new Plan();
 
 plan.addSkippables('country');
 ```
+
+
+## Session data structure changed
+
+Whilst this is strictly a private API, some projects may be making direct use of CASA's underlying session data so will need to be aware that the structure of that data has changed a little.
+
+The `req.session.journeyContextList` is no longer an object indexed by the context IDs. It is now an array of `JourneyContext` instances.
 
 
 ## Optional changes
