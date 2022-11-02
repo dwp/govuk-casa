@@ -1,3 +1,8 @@
 {
-  "extends": ["gitlab>dwp/engineering/renovate//shared-configs/renovate-auto-merge"]
+  "extends": ["gitlab>dwp/engineering/renovate//shared-configs/renovate-auto-merge"],
+  "baseBranches": [
+    "main",
+    "maintain/6.x",
+    "maintain/7.x"
+  ]
 }
