@@ -84,8 +84,8 @@
     "yargs": "17.3.1"
   },
   "peerDependencies": {
-    "express": "4.x",
-    "express-session": "1.x"
+    "express": "4.17.2",
+    "express-session": "1.17.2"
   },
   "scripts": {
     "pipeline": "npm test && npm run compliance && npm run quality && npm run security:vulnerable-packages && (npm outdated || true)",
