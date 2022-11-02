@@ -1,6 +1,6 @@
 include:
   - project: dwp/engineering/pipeline-solutions/gitlab/functions
-    ref: 3.45.1
+    ref: 3.46.0
     file: functions/node.yml
 
 variables:
