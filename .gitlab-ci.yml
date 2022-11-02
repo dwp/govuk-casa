@@ -2,9 +2,16 @@ include:
   - project: dwp/engineering/pipeline-solutions/gitlab/functions
     ref: 3.46.0
     file: functions/node.yml
+  - project: dwp/engineering/pipeline-solutions/gitlab/functions
+    ref: 3.46.0
+    file: functions/auto-tag-merge.yml
+
 
 variables:
   NODE_IMAGE: node:12-alpine@sha256:b8d44d2beeeb1bea09a0b2da2dcd062116ca393f0f2ad065f05d593765055fe3
+  NODE_PUBLISH_TO_GITLAB: "true"
+  AUTO_TAG_MERGE_TAG_BRANCH: "maintain/6.x"
+  AUTO_TAG_MERGE_PREPARE_MR: "true"
 
 # ---------------------------------------------------------- blueprint overrides 
 
@@ -26,3 +33,8 @@ node-modules:
 node-publish-gitlab:
   variables:
     NPM_PUBLISH_TAG: "maintain6x"
+  before_script:
+    # As this is a OSS project, there is an .npmrc setting that points @dwp
+    # at the public npm registry. For internal publishing purpses, we need to
+    # remove that reference.
+    - if [ -f .npmrc ]; then sed -i.bak '/^@dwp:registry.*$/d' .npmrc; fi
