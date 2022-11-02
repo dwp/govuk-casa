@@ -1,7 +1,7 @@
 include:
-  - project: dwp/engineering/gitlab-ci-toolbox
-    ref: 3.x.x
-    file: blueprints/node.yml
+  - project: dwp/engineering/pipeline-solutions/gitlab/functions
+    ref: 3.45.1
+    file: functions/node.yml
 
 variables:
   NODE_IMAGE: node:12-alpine@sha256:b8d44d2beeeb1bea09a0b2da2dcd062116ca393f0f2ad065f05d593765055fe3
@@ -25,4 +25,4 @@ node-modules:
 # Manipulate publishing process to Gitlab
 node-publish-gitlab:
   variables:
-    DIST_TAG: "maintain6x"
+    NPM_PUBLISH_TAG: "maintain6x"
