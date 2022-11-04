@@ -1,9 +1,9 @@
 include:
   - project: dwp/engineering/pipeline-solutions/gitlab/functions
-    ref: 3.46.0
+    ref: 3.46.2
     file: functions/node.yml
   - project: dwp/engineering/pipeline-solutions/gitlab/functions
-    ref: 3.46.0
+    ref: 3.46.2
     file: functions/auto-tag-merge.yml
 
 variables:
