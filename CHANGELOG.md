@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.6.0](https://github.com/dwp/govuk-casa/compare/8.5.2...8.6.0) (2022-11-04)
+
+
+### Features
+
+* **better-typescript-support:** fixes and additions to types ([8dda905](https://github.com/dwp/govuk-casa/commit/8dda9050b53ee8a5f53c8f7c1cb4afa91df2e674))
+
 ### [8.5.2](https://github.com/dwp/govuk-casa/compare/8.5.1...8.5.2) (2022-10-31)
 
 ### [8.5.1](https://github.com/dwp/govuk-casa/compare/8.5.0...8.5.1) (2022-10-13)
