@@ -39,9 +39,9 @@ export {
 
 /**
  * @typedef {object} ContextEventHandlerOptions
- * @property {JourneyContext} opts.journeyContext Context including changes
- * @property {JourneyContext} opts.previousContext Context prior to changes
- * @property {object} opts.session Request session object
+ * @property {JourneyContext} journeyContext Context including changes
+ * @property {JourneyContext} previousContext Context prior to changes
+ * @property {object} session Request session object
  */
 
 /**

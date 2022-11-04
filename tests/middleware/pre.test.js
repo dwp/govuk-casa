@@ -61,6 +61,7 @@ describe('pre middleware', () => {
     app.use((req, res) => res.status(200).send('ok'));
 
     const getCspDomains = (res, directive) => {
+      /* eslint-disable-next-line security/detect-non-literal-regexp */
       const matches = res.headers['content-security-policy'].match(new RegExp(`${directive} ([^;]+);`));
       return matches ? matches[1].split(' ') : [];
     }

@@ -26,7 +26,6 @@ const sanitiseWaypoint = (w) => w.replace(/[^/a-z0-9_-]/ig, '').replace(/\/+/g, 
  *   edit: true,
  *   editOrigin: '/somewhere/else'
  * })
- *
  * @memberof module:@dwp/govuk-casa
  * @param {object} obj Options
  * @param {string} obj.waypoint Waypoint

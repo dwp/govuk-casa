@@ -100,6 +100,7 @@ export class PageField {
     };
 
     // Apply name
+    /* eslint-disable-next-line security/detect-non-literal-fs-filename */
     this.rename(name);
   }
 
