@@ -6,6 +6,7 @@ import Plan from './lib/Plan.js';
 import JourneyContext from './lib/JourneyContext.js';
 import ValidatorFactory from './lib/ValidatorFactory.js';
 import ValidationError from './lib/ValidationError.js';
+import MutableRouter from './lib/MutableRouter.js';
 import waypointUrl from './lib/waypoint-url.js';
 import endSession from './lib/end-session.js';
 import * as nunjucksFilters from './lib/nunjucks-filters.js';
@@ -19,6 +20,7 @@ export {
   JourneyContext,
   ValidatorFactory,
   ValidationError,
+  MutableRouter,
 
   // Utilities
   waypointUrl,
@@ -130,10 +132,6 @@ export {
  * @param {object} opts Mounting options
  * @param {string} [opts.route='/'] Optional route to attach all middleware/routers too
  * @returns {import('express').Express} The prepared ExpressJS app instance
- */
-
-/**
- * @typedef {import('./lib/index').MutableRouter} MutableRouter
  */
 
 /**

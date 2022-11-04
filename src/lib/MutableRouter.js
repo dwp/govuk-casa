@@ -1,6 +1,9 @@
 /* eslint-disable sonarjs/no-duplicate-string,class-methods-use-this */
 import { Router } from 'express';
 
+/**
+ * @memberof module:@dwp/govuk-casa
+ */
 export default class MutableRouter {
   /**
    * @type {Array}
@@ -18,12 +21,14 @@ export default class MutableRouter {
   #sealed;
 
   /**
-   * Mutable router.
+   * A wrapping class to make Express routers mutable. You can append, prepend
+   * and remove routes from a MutableRouter before finally "sealing" it and
+   * mounting it on your Express app.
    *
    * @class
    */
   constructor() {
-    this.#router = new Router();
+    this.#router = Router();
     this.#stack = [];
     this.#sealed = false;
   }
