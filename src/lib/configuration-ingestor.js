@@ -200,7 +200,7 @@ export function validateSessionName(name = 'casa-session') {
  * @throws {TypeError} For invalid value.
  * @returns {string} Name.
  */
-export function validateSessionSecure(secure = false) {
+export function validateSessionSecure(secure = true) {
   if (typeof secure !== 'boolean') {
     throw new TypeError('Session secure flag must be boolean (session.secure)');
   }
