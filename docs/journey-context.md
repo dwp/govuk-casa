@@ -67,7 +67,7 @@ const clone = JourneyContext.fromObject(context);
 
 Note that the Journey Context stored in `req.casa.journeyContext` could be any of the contexts held in session, as decided by the `contextid` request parameter. CASA will look in three places for this parameter (in this order):
 
-* `req.params` (only applicable to CASA apps mounted on a parameterised route containing `:contextid`), e.g. `GET /app/32e61fe2-47ca-43d0-84be-cf9f4d6c45cd` 
+* `req.params` (only applicable to CASA apps mounted on a parameterised route containing `:contextid`), e.g. `GET /app/32e61fe2-47ca-43d0-84be-cf9f4d6c45cd`
 * `req.query`, e.g. `GET /app?contextid=32e61fe2-47ca-43d0-84be-cf9f4d6c45cd`
 * `req.body`, e.g. `POST` request with body `contextid=32e61fe2-47ca-43d0-84be-cf9f4d6c45cd`
 

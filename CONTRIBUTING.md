@@ -34,7 +34,7 @@ All code contributions must adhere to a few formatting rules which are best caug
 * [Install the **pre-commit** utility](https://pre-commit.com/#install)
 * Run `pre-commit install` inside your local clone directory
 
-You're now good to go. 
+You're now good to go.
 
 ### Code Review Process
 

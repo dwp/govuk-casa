@@ -113,7 +113,7 @@ const {
   postMiddleware
   csrfMiddleware,
   cookieParserMiddleware,
-  
+
   // Function
   mount,
 } = configure({ ... })
