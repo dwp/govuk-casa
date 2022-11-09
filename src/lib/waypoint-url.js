@@ -28,13 +28,13 @@ const sanitiseWaypoint = (w) => w.replace(/[^/a-z0-9_-]/ig, '').replace(/\/+/g, 
  * })
  * @memberof module:@dwp/govuk-casa
  * @param {object} obj Options
- * @param {string} obj.waypoint Waypoint
- * @param {string} obj.mountUrl Mount URL
- * @param {JourneyContext} obj.journeyContext JourneyContext
- * @param {boolean} obj.edit Turn edit mode on or off
- * @param {string} obj.editOrigin Edit mode original URL
- * @param {boolean} obj.skipTo Skip to this waypoint from the current one
- * @param {string} obj.routeName Plan route name; next | prev
+ * @param {string} [obj.waypoint=""] Waypoint
+ * @param {string} [obj.mountUrl="/"] Mount URL
+ * @param {JourneyContext} [obj.journeyContext] JourneyContext
+ * @param {boolean} [obj.edit=false] Turn edit mode on or off
+ * @param {string} [obj.editOrigin] Edit mode original URL
+ * @param {boolean} [obj.skipTo] Skip to this waypoint from the current one
+ * @param {string} [obj.routeName=next] Plan route name; next | prev
  * @returns {string} URL
  */
 export default function waypointUrl({
