@@ -60,7 +60,7 @@
     "@stryker-mutator/mocha-framework": "4.0.0",
     "@stryker-mutator/mocha-runner": "5.6.1",
     "autocannon": "7.10.0",
-    "chai": "4.3.6",
+    "chai": "4.3.7",
     "chai-as-promised": "7.1.1",
     "chai-http": "4.3.0",
     "cheerio": "1.0.0-rc.12",
