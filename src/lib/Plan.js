@@ -537,7 +537,7 @@ export default class Plan {
           /* eslint-disable-next-line security/detect-object-injection */
           return self.follows[routeName][`${e.v}/${e.w}`](route, context);
         } catch (ex) {
-          log.warn('Route follow function threw an exception, "%s" (%s)', ex.message, `${e.v}/${e.w}`);
+          log.warn('Route follow function threw an exception, "%s" (%s)', ex.message, `${e.v} -> ${e.w}`);
           return false;
         }
       });
