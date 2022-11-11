@@ -83,7 +83,7 @@
     "eslint-plugin-security": "1.5.0",
     "eslint-plugin-sonarjs": "0.16.0",
     "fast-check": "3.3.0",
-    "husky": "8.0.1",
+    "husky": "8.0.2",
     "jsdoc": "4.0.0",
     "jsdoc-tsimport-plugin": "1.0.5",
     "mocha": "10.1.0",
