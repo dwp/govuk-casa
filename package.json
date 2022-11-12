@@ -87,7 +87,7 @@
     "jsdoc": "4.0.0",
     "jsdoc-tsimport-plugin": "1.0.5",
     "mocha": "10.1.0",
-    "sass": "1.56.0",
+    "sass": "1.56.1",
     "sinon": "14.0.2",
     "sinon-chai": "3.7.0",
     "supertest": "6.3.1",
