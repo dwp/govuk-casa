@@ -43,11 +43,13 @@ describe('Middleware: page/validate', () => {
       journeyContext: journeyContext(),
     };
     mockResponse = response();
-    stubNext = sinon.stub().callsFake(err => (err ? console.log(err) : null));
+    stubNext = sinon.stub().callsFake((err) => (err ? console.log(err) : null));
   });
 
   it('should execute the "prevalidate" hook', async () => {
     const middleware = mwValidate();
+    mockRequest.casa.journeyContext = new JourneyContext({});
+    mockRequest.casa.journeyContext.identity.id = '123e4567-e89b-12d3-a456-426614174000';
     await middleware(mockRequest, mockResponse, stubNext);
     expect(stubExecuteHook).to.be.calledWithExactly(
       mockLogger,
@@ -60,6 +62,8 @@ describe('Middleware: page/validate', () => {
 
   it('should execute the "postvalidate" hook when there are no validation errors', async () => {
     const middleware = mwValidate();
+    mockRequest.casa.journeyContext = new JourneyContext({});
+    mockRequest.casa.journeyContext.identity.id = '123e4567-e89b-12d3-a456-426614174000';
     await middleware(mockRequest, mockResponse, stubNext);
     expect(stubExecuteHook).to.be.calledWithExactly(
       mockLogger,
@@ -89,7 +93,9 @@ describe('Middleware: page/validate', () => {
       fieldValidators: 'test-validators',
     };
     const middleware = mwValidate(pageMeta);
-    mockRequest.casa.journeyContext.getDataForPage.returns('test-journey-data');
+    mockRequest.casa.journeyContext = new JourneyContext({});
+    mockRequest.casa.journeyContext.identity.id = '123e4567-e89b-12d3-a456-426614174000';
+    mockRequest.casa.journeyContext.getDataForPage = sinon.stub().returns('test-journey-data');
     await middleware(mockRequest, mockResponse, stubNext);
     expect(stubValidationProcessor).to.be.calledWithExactly({
       waypointId: 'test-id',
@@ -105,15 +111,17 @@ describe('Middleware: page/validate', () => {
     });
     mockRequest.casa.journeyContext = new JourneyContext({}, {
       'test-waypoint-id': {
-        'test-field' : [ ValidationError.make({ errorMsg: 'test-error' }) ],
+        'test-field': [ValidationError.make({ errorMsg: 'test-error' })],
       },
     });
+    mockRequest.casa.journeyContext.identity.id = '123e4567-e89b-12d3-a456-426614174000';
     mockRequest.session.journeyContext = mockRequest.casa.journeyContext.toObject();
     const spy = sinon.spy(mockRequest.casa.journeyContext, 'clearValidationErrorsForPage');
 
     await middleware(mockRequest, mockResponse, stubNext);
     expect(spy).to.be.calledOnceWithExactly('test-waypoint-id');
-    expect(mockRequest.session.journeyContext.validation).to.eql({
+
+    expect(mockRequest.casa.journeyContext.validation).to.deep.equal({
       'test-waypoint-id': null,
     });
   });
