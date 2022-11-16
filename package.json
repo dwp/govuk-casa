@@ -22,7 +22,8 @@
     "!/test/unit/testdata/**/*"
   ],
   "engines": {
-    "node": ">=14.6.0 <19.0.0"
+    "node": ">=14.6.0 <19.0.0",
+    "npm": "< 8.0.0"
   },
   "repository": {
     "type": "git",
