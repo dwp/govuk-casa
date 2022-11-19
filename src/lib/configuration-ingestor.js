@@ -195,12 +195,15 @@ export function validateSessionName(name = 'casa-session') {
  * Validates and sanitises sessions secure flag.
  *
  * @access private
- * @param {boolean} [secure=false] Session secure flag.
+ * @param {boolean} [secure] Session secure flag.
  * @throws {ReferenceError} For missing value type.
- * @throws {TypeError} For invalid value.
+ * @throws {TypeError} For invalid or missing value.
  * @returns {string} Name.
  */
-export function validateSessionSecure(secure = true) {
+export function validateSessionSecure(secure) {
+  if (secure === undefined) {
+    throw new Error('Session secure flag must be explicitly defined (session.secure)');
+  }
   if (typeof secure !== 'boolean') {
     throw new TypeError('Session secure flag must be boolean (session.secure)');
   }

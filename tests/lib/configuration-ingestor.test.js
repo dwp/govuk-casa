@@ -181,12 +181,17 @@ describe('ConfigIngestor', () => {
   });
 
   describe('validateSessionSecure()', () => {
+    it('should throw an Error if the value is not defined', () => {
+      expect(() => validateSessionSecure()).to.throw(Error, 'Session secure flag must be explicitly defined (session.secure)');
+    });
+
     it('should throw a TypeError if the value is not a string', () => {
       expect(() => validateSessionSecure([])).to.throw(TypeError, 'Session secure flag must be boolean (session.secure)');
     });
 
     it('should return a valid value', () => {
       expect(validateSessionSecure(false)).to.equal(false);
+      expect(validateSessionSecure(true)).to.equal(true);
     });
   });
 
