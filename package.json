@@ -19,7 +19,8 @@
     "views/**/*"
   ],
   "engines": {
-    "node": ">=14.17.2"
+    "node": "^14.0.0 || ^16.0.0 || ^18.0.0",
+    "npm": "^8.0.0"
   },
   "scripts": {
     "pipeline": "npm run coverage && npm run lint",
