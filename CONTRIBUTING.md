@@ -32,7 +32,7 @@ Our projects are built to last. We strive to ensure high quality throughout the 
 All code contributions must adhere to a few formatting rules which are best caught using pre-commit git hooks, which can be setup as follows:
 
 * [Install the **pre-commit** utility](https://pre-commit.com/#install)
-* Run `pre-commit install` inside your local clone directory
+* Run `pre-commit install --install-hooks` inside your local clone directory
 
 You're now good to go.
 

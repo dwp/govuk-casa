@@ -1,4 +1,12 @@
 ---
+default_install_hook_types:
+    - pre-commit
+    - commit-msg
+    - post-commit
+
+default_stages:
+    - commit
+
 fail_fast: true
 
 repos:
@@ -39,3 +47,7 @@ repos:
         language: python
         # The "secret" variable name is used innocently in a few places
         args: ["--exclude-lines", "secret: 'secret'", "--exclude-lines", 'secret ==', "--exclude-lines", 'secret !=']
+  - repo: https://gitlab.com/adam-moss/pre-commit-trailer
+    rev: v1.1.0
+    hooks:
+      - id: add-pre-commit-config-trailer
