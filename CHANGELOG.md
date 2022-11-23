@@ -1,3 +1,9 @@
+# Changelog
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [6.9.1](https://github.com/dwp/govuk-casa/compare/6.9.0...6.9.1) (2022-11-23)
+
 # [6.9.0](https://github.com/dwp/govuk-casa/compare/6.8.6...6.9.0) (2022-04-08)
 
 
@@ -584,6 +590,3 @@ Signed-off-by: james.gauld <james.gauld@engineering.digital.dwp.gov.uk>
 
 <a name="2.1.1"></a>
 ## 2.1.1 (2018-10-27)
-
-
-
