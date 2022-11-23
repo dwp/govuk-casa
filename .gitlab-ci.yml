@@ -41,11 +41,15 @@ e2e-dast:
     # ref: https://docs.gitlab.com/runner/executors/docker.html#create-a-network-for-each-job
     # Required so ZAP can connect to servers being spun up in this build container
     FF_NETWORK_PER_BUILD: 1
+  before_script:
+    - apt-get update
+    - apt-get install -y jq
   script:
     - "until wget -qO- --header 'X-ZAP-Api-Key: secret' http://zap:8080/JSON/core/view/zapHomePath >/dev/null 2>&1; do echo 'Waiting for ZAP ...'; sleep 1; done"
     - ./node_modules/.bin/spiderplan --worker-init ./tests/e2e/worker-init.js --language en ./tests/e2e/personas/**/traversal.yaml --workers 1 --zap --zap-proxy 'http://zap:8080/' --zap-target-hostname "$(hostname)"
     - "wget -qO- --header 'X-ZAP-Api-Key: secret' http://zap:8080/OTHER/core/other/jsonreport > gl-dast-report.json"
     - "wget -qO- --header 'X-ZAP-Api-Key: secret' http://zap:8080/OTHER/core/other/htmlreport > gl-dast-report.html"
+    - if [[ "$(jq '[.site[].alerts[].riskcode | select(. | tonumber >= 3)] | length' gl-dast-report.json)" -ne "0" ]]; then echo 'Found HIGH or CRITICAL vulnerabilities reported. Job failed.'; exit 1; fi
   artifacts:
     when: always
     expire_in: 3 months
