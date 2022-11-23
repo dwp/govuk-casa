@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.1.1](https://github.com/dwp/govuk-casa/compare/7.1.0...7.1.1) (2022-11-23)
+
+
+### Bug Fixes
+
+* **journey_context:** Regenerated package-lock and added minimum npm version ([d3b5d89](https://github.com/dwp/govuk-casa/commit/d3b5d89b8cbcc0d7dd266cb691d3b5b0c2d1b2d7))
+* **journey-context:** toObject function in JourneyContext scope issue ([ffe29e4](https://github.com/dwp/govuk-casa/commit/ffe29e4a491c4ee91d0fbe69d5af832617e3801b))
+
 ## [7.1.0](https://github.com/dwp/govuk-casa/compare/7.0.9...7.1.0) (2022-09-06)
 
 
