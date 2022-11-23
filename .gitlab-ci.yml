@@ -57,3 +57,8 @@ node-publish-gitlab:
     # at the public npm registry. For internal publishing purpses, we need to
     # remove that reference.
     - if [ -f .npmrc ]; then sed -i.bak '/^@dwp:registry.*$/d' .npmrc; fi
+
+# Use a version-specific branch name for auto-packaging
+auto-tag-merge-prepare-mr:
+  variables:
+    MR_BRANCH: chore/auto-package-v7
