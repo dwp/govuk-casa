@@ -33,6 +33,7 @@ All code contributions must adhere to a few formatting rules which are best caug
 
 * [Install the **pre-commit** utility](https://pre-commit.com/#install)
 * Run `pre-commit install --install-hooks` inside your local clone directory
+* Add a git alias to assist with running pre-commit on rebases: `git config --global alias.prebase "rebase -x 'pre-commit run --from-ref HEAD~ --to-ref HEAD --hook-stage commit-msg --commit-msg-filename .git/COMMIT_EDITMSG'"` - and wherever you use `git rebase ...`, use `git prebase ...` instead.
 
 You're now good to go.
 

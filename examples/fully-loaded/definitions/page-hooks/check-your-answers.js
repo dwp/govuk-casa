@@ -25,7 +25,6 @@ export default () => {
   return [{
     hook: 'prerender',
     middleware: (req, res, next) => {
-      console.log('calling cya page hook');
       const d = req.casa.journeyContext.data;
       const row = rowFactory(req.t, `${req.baseUrl}/`);
 

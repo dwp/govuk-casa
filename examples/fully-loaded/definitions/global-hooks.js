@@ -32,7 +32,6 @@ export default [{
     // has a partner. Set flags for those here.
     res.locals.northernIrelandPrefix = req.casa.journeyContext.data?.country?.country === 'NORTHERN_IRELAND' ? 'northernIreland.' : '';
     res.locals.claimTypePrefix = req.casa.journeyContext.data?.['live-with-partner']?.havePartner === 'yes' ? 'joint.' : 'single.';
-    console.log('setup some global vars');
     next();
   },
 }];

@@ -1,4 +1,6 @@
 # Traverse forwards and backwards
+# This is also used in DAST tests, so needs to cover as many waypoints as
+# possible, without submitting.
 
 journey:
   country:

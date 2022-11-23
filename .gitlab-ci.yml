@@ -31,7 +31,7 @@ e2e-dast:
   tags:
     - docker
   services:
-    - name: owasp/zap2docker-stable@sha256:7a669aec036cb47107463c10a722fb581da3e7200b816de3feb92f05ccbcdb03
+    - name: owasp/zap2docker-stable@sha256:0f5578a52ae843dd9a90ac438761ef042acf2e94ca1d43181cd759759a213e66
       alias: zap
       entrypoint: [""]
       command: ["zap.sh", "-daemon", "-host", "0.0.0.0", "-port", "8080", "-config", "api.key=secret", "-config", "api.addrs.addr.name=.*", "-config", "api.addrs.addr.regex=true"]
@@ -43,10 +43,7 @@ e2e-dast:
     FF_NETWORK_PER_BUILD: 1
   script:
     - "until wget -qO- --header 'X-ZAP-Api-Key: secret' http://zap:8080/JSON/core/view/zapHomePath >/dev/null 2>&1; do echo 'Waiting for ZAP ...'; sleep 1; done"
-    # We use `|| true` here in order to always generate the report, regardless
-    # of failure. We also limit the no. workers so not to overload ZAP (the
-    # execution environment is quite constrained)
-    - npm run test:e2e -- --workers 4 --zap --zap-proxy 'http://zap:8080/' --zap-target-hostname "$(hostname)" || true
+    - ./node_modules/.bin/spiderplan --worker-init ./tests/e2e/worker-init.js --language en ./tests/e2e/personas/**/traversal.yaml --workers 1 --zap --zap-proxy 'http://zap:8080/' --zap-target-hostname "$(hostname)"
     - "wget -qO- --header 'X-ZAP-Api-Key: secret' http://zap:8080/OTHER/core/other/jsonreport > gl-dast-report.json"
     - "wget -qO- --header 'X-ZAP-Api-Key: secret' http://zap:8080/OTHER/core/other/htmlreport > gl-dast-report.html"
   artifacts:
