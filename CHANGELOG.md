@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.7.0](https://github.com/dwp/govuk-casa/compare/8.6.0...8.7.0) (2022-11-23)
+
+
+### Features
+
+* throw if session.secure flag not defined ([936db37](https://github.com/dwp/govuk-casa/commit/936db370f0bbb2ccc538c0697fed4c3ec7243d42))
+
 ## [8.6.0](https://github.com/dwp/govuk-casa/compare/8.5.2...8.6.0) (2022-11-04)
 
 
