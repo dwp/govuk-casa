@@ -37,7 +37,7 @@ As a request gets passed through CASA's routes and middleware, it will modify th
 | | [POST] Sanitise fields in `req.body`, pruning unknown fields, run field processors on the remaining | | |
 | | [POST] `journey.postsanitise` hooks executed | | |
 | | [POST] `journey.pregather` hooks executed | | |
-| | [POST] Gather `req.body` data into the `req.casa.journeyContext` | `req.archivedJourneyContext` | |
+| | [POST] Gather `req.body` data into the `req.casa.journeyContext` | `req.casa.archivedJourneyContext` | |
 | | [POST] `journey.postgather` hooks executed | | |
 | | [POST] `journey.prevalidate` hooks executed | | |
 | | [POST] Validate data in the journey context and update its validation states | | |
