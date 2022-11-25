@@ -69,3 +69,43 @@ pages:
   artifacts:
     paths:
       - public
+
+
+
+# Move all this into functions when tested and working on branch
+
+node-publish-npmjs:
+  image: node:18.12.1@sha256:c47a2c61e635eb4938fcd56a1139b552300624b53e3eca06b5554a577f1842cf
+  script:
+    # Fail if any inputs are missing/invalid
+    - |
+      export PACKAGE_NAME=$(node -p "require('./package.json').name")
+      export PACKAGE_VERSION=$(node -p "require('./package.json').version")
+      if ! echo "$PACKAGE_NAME" | grep -q "^@dwp/"; then
+        echo "Only packages scoped with '@dwp' can be published with this job."
+        exit 1
+      fi
+    - echo "Mirroring '${PACKAGE_NAME}@${PACKAGE_VERSION}'"
+
+    # Determine the tarball for the given package version from GitLab
+    - |
+      cat<<EOF>.npmrc
+      @dwp:registry=https://gitlab.com/api/v4/packages/npm/
+      //gitlab.com/api/v4/packages/npm/:_authToken=${CI_JOB_TOKEN}
+      EOF
+    - TARBALL_URI=$(npm view $PACKAGE_NAME dist.tarball)
+    - echo "Using tarball source '${TARBALL_URI}'"
+
+    # Determine which dist-tag to apply (will match that used in GitLab). Fails
+    # if more than one tag is associated with the semantic version.
+    - npm dist-tag | grep "$PACKAGE_VERSION" | awk -F ':' '{ print $1 }'
+
+    # Publish the tarball to npmjs.com
+    - |
+      cat<<EOF>.npmrc
+      registry=https://registry.npmjs.org/
+      @dwp:registry=https://registry.npmjs.org/
+      //registry.npmjs.org/:_authToken=${NODE_PUBLISH_PUBLIC_NPM_TOKEN}
+      EOF
+  rules:
+    - when: manual
