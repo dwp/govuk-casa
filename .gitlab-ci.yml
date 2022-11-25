@@ -96,7 +96,7 @@ node-publish-npmjs:
       @dwp:registry=${GITLAB_REGISTRY}
       ${GITLAB_REGISTRY_NOPROTO}:_authToken=${CI_JOB_TOKEN}
       EOF
-    - TARBALL_URI=$(npm view $PACKAGE_NAME dist.tarball)
+    - TARBALL_URI=$(npm view ${PACKAGE_NAME}@${PACKAGE_VERSION} dist.tarball)
     - echo "Using tarball source '${TARBALL_URI}'"
 
     # Determine which dist-tag to apply (will match that used in GitLab). Fails
