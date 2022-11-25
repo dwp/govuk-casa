@@ -76,6 +76,7 @@ pages:
 
 node-publish-npmjs:
   image: node:18.12.1@sha256:c47a2c61e635eb4938fcd56a1139b552300624b53e3eca06b5554a577f1842cf
+  cache:
   script:
     # Fail if any inputs are missing/invalid
     - |
@@ -94,7 +95,7 @@ node-publish-npmjs:
     - |
       cat<<EOF>.npmrc
       @dwp:registry=${GITLAB_REGISTRY}
-      ${GITLAB_REGISTRY_NOPROTO}:_authToken=${CI_JOB_TOKEN}
+      //${GITLAB_REGISTRY_NOPROTO}:_authToken=${CI_JOB_TOKEN}
       EOF
     - TARBALL_URI=$(npm view ${PACKAGE_NAME}@${PACKAGE_VERSION} dist.tarball)
     - echo "Using tarball source '${TARBALL_URI}'"
