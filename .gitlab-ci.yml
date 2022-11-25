@@ -102,7 +102,7 @@ node-publish-npmjs:
 
     # Determine which dist-tag to apply (will match that used in GitLab). Fails
     # if more than one tag is associated with the semantic version.
-    - npm view ${PACKAGE_NAME}@${PACKAGE_VERSION} dist-tags)
+    - npm view ${PACKAGE_NAME}@${PACKAGE_VERSION} dist-tags
 
     # Publish the tarball to npmjs.com
     - |
