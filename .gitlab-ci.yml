@@ -81,6 +81,9 @@ node-publish-npmjs:
     - |
       export PACKAGE_NAME=$(node -p "require('./package.json').name")
       export PACKAGE_VERSION=$(node -p "require('./package.json').version")
+      export GITLAB_REGISTRY="$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/npm/"
+      export GITLAB_REGISTRY_NOPROTO=$(echo "$GITLAB_REGISTRY" | sed 's|https://||g')
+
       if ! echo "$PACKAGE_NAME" | grep -q "^@dwp/"; then
         echo "Only packages scoped with '@dwp' can be published with this job."
         exit 1
@@ -90,15 +93,15 @@ node-publish-npmjs:
     # Determine the tarball for the given package version from GitLab
     - |
       cat<<EOF>.npmrc
-      @dwp:registry=https://gitlab.com/api/v4/packages/npm/
-      //gitlab.com/api/v4/packages/npm/:_authToken=${CI_JOB_TOKEN}
+      @dwp:registry=${GITLAB_REGISTRY}
+      ${GITLAB_REGISTRY_NOPROTO}:_authToken=${CI_JOB_TOKEN}
       EOF
     - TARBALL_URI=$(npm view $PACKAGE_NAME dist.tarball)
     - echo "Using tarball source '${TARBALL_URI}'"
 
     # Determine which dist-tag to apply (will match that used in GitLab). Fails
     # if more than one tag is associated with the semantic version.
-    - npm dist-tag | grep "$PACKAGE_VERSION" | awk -F ':' '{ print $1 }'
+    - npm dist-tag $PACKAGE_NAME | grep "$PACKAGE_VERSION" | awk -F ':' '{ print $1 }'
 
     # Publish the tarball to npmjs.com
     - |
