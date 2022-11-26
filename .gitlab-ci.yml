@@ -69,11 +69,3 @@ pages:
   artifacts:
     paths:
       - public
-
-
-
-# Move all this into functions when tested and working on branch
-
-node-publish-npmjs:
-  rules:
-    - when: manual
