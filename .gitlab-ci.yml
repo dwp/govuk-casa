@@ -107,7 +107,7 @@ node-publish-npmjs:
     - |
       DIST_TAGS=$(npm view --json ${PACKAGE_NAME}@${PACKAGE_VERSION} dist-tags)
       echo -e "Found dist-tags:\n${DIST_TAGS}"
-      DIST_TAG=$(node -p "t=Object.entries($DIST_TAGS).filter(([k,v]) => v !== '${PACKAGE_VERSION}'); l=t.length; l == 1 ? t[0][0] : (l === 0 ? '_none_' : '_multiple');")
+      DIST_TAG=$(node -p "t=Object.entries($DIST_TAGS).filter(([k,v]) => v !== '${PACKAGE_VERSION}'); l=t.length; l == 1 ? t[0][0] : (l === 0 ? '_none_' : '_multiple_');")
       if [ "$DIST_TAG" == "_none_" ] || [ -z "$DIST_TAG" ]; then
         echo "Could not find a dist tag for version '${PACKAGE_VERSION}' in list. Is this an older version? Only the most recent version of the package can currently be mirrored by this script."
         exit 1
