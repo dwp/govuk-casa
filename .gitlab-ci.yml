@@ -75,7 +75,5 @@ pages:
 # Move all this into functions when tested and working on branch
 
 node-publish-npmjs:
-  variables:
-    NODE_PUBLISH_PUBLIC_CLI_ARGS: "--dry-run"
   rules:
     - when: manual
