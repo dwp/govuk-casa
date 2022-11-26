@@ -98,7 +98,7 @@ node-publish-npmjs:
       //${GITLAB_REGISTRY_NOPROTO}:_authToken=${CI_JOB_TOKEN}
       EOF
     - TARBALL_URI=$(npm view ${PACKAGE_NAME}@${PACKAGE_VERSION} dist.tarball)
-    - echo "Using tarball source '${TARBALL_URI}'"
+    - echo "Using tarball source ${TARBALL_URI}"
 
     # Determine which dist-tag to apply (will match that used in GitLab). Fails
     # if more than one tag is associated with the semantic version, or no tag
@@ -107,7 +107,7 @@ node-publish-npmjs:
     - |
       DIST_TAGS=$(npm view --json ${PACKAGE_NAME}@${PACKAGE_VERSION} dist-tags)
       echo -e "Found dist-tags:\n${DIST_TAGS}"
-      DIST_TAG=$(node -p "t=Object.entries($DIST_TAGS).filter(([k,v]) => v !== '${PACKAGE_VERSION}'); l=t.length; l == 1 ? t[0][0] : (l === 0 ? '_none_' : '_multiple_');")
+      DIST_TAG=$(node -p "t=Object.entries($DIST_TAGS).filter(([k,v]) => v === '${PACKAGE_VERSION}'); l=t.length; l == 1 ? t[0][0] : (l === 0 ? '_none_' : '_multiple_');")
       if [ "$DIST_TAG" == "_none_" ] || [ -z "$DIST_TAG" ]; then
         echo "Could not find a dist tag for version '${PACKAGE_VERSION}' in list. Is this an older version? Only the most recent version of the package can currently be mirrored by this script."
         exit 1
@@ -124,5 +124,6 @@ node-publish-npmjs:
       @dwp:registry=https://registry.npmjs.org/
       //registry.npmjs.org/:_authToken=${NODE_PUBLISH_PUBLIC_NPM_TOKEN}
       EOF
+    - npm publish "$TARBALL_URI" --tag "$DIST_TAG" --dry-run
   rules:
     - when: manual
