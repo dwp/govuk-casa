@@ -125,6 +125,6 @@ node-publish-npmjs:
       @dwp:registry=https://registry.npmjs.org/
       //registry.npmjs.org/:_authToken=${NODE_PUBLISH_PUBLIC_NPM_TOKEN}
       EOF
-    - npm publish "$TARBALL_URI" --tag "$DIST_TAG" --dry-run
+    - npm publish ./src-package.tgz --tag "$DIST_TAG" --dry-run
   rules:
     - when: manual
