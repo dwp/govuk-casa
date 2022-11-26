@@ -99,7 +99,8 @@ node-publish-npmjs:
       EOF
     - TARBALL_URI=$(npm view ${PACKAGE_NAME}@${PACKAGE_VERSION} dist.tarball)
     - echo "Using tarball source ${TARBALL_URI}"
-    - curl -o src-package.tgz "${TARBALL_URI}"
+    - curl -o src-package.tgz --header="JOB-TOKEN:$CI_JOB_TOKEN" "${TARBALL_URI}"
+    - ls -la
 
     # Determine which dist-tag to apply (will match that used in GitLab). Fails
     # if more than one tag is associated with the semantic version, or no tag
