@@ -75,58 +75,7 @@ pages:
 # Move all this into functions when tested and working on branch
 
 node-publish-npmjs:
-  image: node:18.12.1@sha256:c47a2c61e635eb4938fcd56a1139b552300624b53e3eca06b5554a577f1842cf
-  cache:
-  script:
-    # Fail if any inputs are missing/invalid
-    - |
-      export PACKAGE_NAME=$(node -p "require('./package.json').name")
-      export PACKAGE_VERSION=$(node -p "require('./package.json').version")
-      export GITLAB_REGISTRY="$CI_API_V4_URL/packages/npm/"
-      export GITLAB_REGISTRY_NOPROTO=$(echo "$GITLAB_REGISTRY" | sed 's|https://||g')
-
-      if ! echo "$PACKAGE_NAME" | grep -q "^@dwp/"; then
-        echo "Only packages scoped with '@dwp' can be published with this job."
-        exit 1
-      fi
-    - echo "Mirroring '${PACKAGE_NAME}@${PACKAGE_VERSION}'"
-
-    # Determine the tarball for the given package version from GitLab
-    - |
-      cat<<EOF>.npmrc
-      @dwp:registry=${GITLAB_REGISTRY}
-      //${GITLAB_REGISTRY_NOPROTO}:_authToken=${CI_JOB_TOKEN}
-      EOF
-    - TARBALL_URI=$(npm view ${PACKAGE_NAME}@${PACKAGE_VERSION} dist.tarball)
-    - |
-      echo "Using tarball source ${TARBALL_URI}"
-      curl -o src-package.tgz -H "JOB-TOKEN: $CI_JOB_TOKEN" "${TARBALL_URI}"
-      ls -la
-
-    # Determine which dist-tag to apply (will match that used in GitLab). Fails
-    # if more than one tag is associated with the semantic version, or no tag
-    # matches version. This prevents older versions being published and
-    # clobbering existing tags.
-    - |
-      DIST_TAGS=$(npm view --json ${PACKAGE_NAME}@${PACKAGE_VERSION} dist-tags)
-      echo -e "Found dist-tags:\n${DIST_TAGS}"
-      DIST_TAG=$(node -p "t=Object.entries($DIST_TAGS).filter(([k,v]) => v === '${PACKAGE_VERSION}'); l=t.length; l == 1 ? t[0][0] : (l === 0 ? '_none_' : '_multiple_');")
-      if [ "$DIST_TAG" == "_none_" ] || [ -z "$DIST_TAG" ]; then
-        echo "Could not find a dist tag for version '${PACKAGE_VERSION}' in list. Is this an older version? Only the most recent version of the package can currently be mirrored by this script."
-        exit 1
-      elif [ "$DIST_TAG" == "_multiple_" ]; then
-        echo "Found multiple dist tag matches for version '${PACKAGE_VERSION}' in list. This script currently only supports publishing under a single dist-tag."
-        exit 1
-      fi
-    - echo "Applying dist-tag '${DIST_TAG}'"
-
-    # Publish the tarball to npmjs.com
-    - |
-      cat<<EOF>.npmrc
-      registry=https://registry.npmjs.org/
-      @dwp:registry=https://registry.npmjs.org/
-      //registry.npmjs.org/:_authToken=${NODE_PUBLISH_PUBLIC_NPM_TOKEN}
-      EOF
-    - npm publish ./src-package.tgz --tag "$DIST_TAG" --dry-run
+  variables:
+    NODE_PUBLISH_PUBLIC_CLI_ARGS: "--dry-run"
   rules:
     - when: manual
