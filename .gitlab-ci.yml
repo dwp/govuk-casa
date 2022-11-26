@@ -101,8 +101,22 @@ node-publish-npmjs:
     - echo "Using tarball source '${TARBALL_URI}'"
 
     # Determine which dist-tag to apply (will match that used in GitLab). Fails
-    # if more than one tag is associated with the semantic version.
-    - npm view ${PACKAGE_NAME}@${PACKAGE_VERSION} dist-tags
+    # if more than one tag is associated with the semantic version, or no tag
+    # matches version. This prevents older versions being published and
+    # clobbering existing tags.
+    - |
+      DIST_TAGS=$(npm view --json ${PACKAGE_NAME}@${PACKAGE_VERSION} dist-tags)
+      DIST_TAG=$(node -p "t=Object.entries($DIST_TAGS).filter(([k,v]) => v === '${PACKAGE_VERSION}'); l=t.length; l == 1 ? t[0][0] : (l === 0 ? '_none_' : '_multiple');")
+      if [ "$DIST_TAG" == "_none_" ] || [ -z "$DIST_TAG" ]; then
+        echo "Could not find a dist tag for version '${PACKAGE_VERSION}' in list."
+        echo "$DIST_TAGS"
+        exit 1
+      elif [ "$DIST_TAG" == "_multiple_" ]; then
+        echo "Found multiple dist tag matches for version '${PACKAGE_VERSION}' in list. This script currently only supports publishing under a single dist-tag."
+        echo "$DIST_TAGS"
+        exit 1
+      fi
+    - echo "Applying dist-tag '${DIST_TAG}'"
 
     # Publish the tarball to npmjs.com
     - |
