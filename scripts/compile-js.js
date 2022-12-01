@@ -34,7 +34,8 @@ function compileJsSources(targetDir, npmGovukCasa) {
   fs.ensureDirSync(dstDir);
   fs.writeFileSync(
     path.resolve(dstDir, 'casa.js'),
-    uglifyCasa.code, {
+    uglifyCasa.code,
+    {
       encoding: 'utf8',
     },
   );

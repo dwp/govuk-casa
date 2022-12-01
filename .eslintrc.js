@@ -11,6 +11,9 @@ module.exports = {
     'sonarjs/cognitive-complexity': [1, 10],
     'jsdoc/require-description-complete-sentence': [0],
     'no-unsafe-regex/no-unsafe-regex': 2,
+    // Disabling rules added since @dwp/eslint-config-base@6.0.0
+    'import/extensions': [0],
+    'default-param-last': [0],
   },
   globals: {
     GOVUK_CASA_DEBUG_NS: true,
