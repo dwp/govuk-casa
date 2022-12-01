@@ -1,13 +1,13 @@
 include:
   - template: DAST.gitlab-ci.yml
   - project: dwp/engineering/pipeline-solutions/gitlab/functions
-    ref: 3.49.0
+    ref: 3.49.1
     file: functions/node.yml
   - project: dwp/engineering/pipeline-solutions/gitlab/functions
-    ref: 3.49.0
+    ref: 3.49.1
     file: functions/auto-tag-merge.yml
   - project: dwp/engineering/pipeline-solutions/gitlab/functions
-    ref: 3.49.0
+    ref: 3.49.1
     file: jobs/build-docker-image.yml
 
 variables:
