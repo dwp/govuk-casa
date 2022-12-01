@@ -50,10 +50,10 @@
     "validator": "13.7.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "16.3.0",
-    "@commitlint/config-conventional": "16.2.4",
-    "@commitlint/travis-cli": "16.3.0",
-    "@dwp/commitlint-config-base": "1.2.0",
+    "@commitlint/cli": "17.3.0",
+    "@commitlint/config-conventional": "17.3.0",
+    "@commitlint/travis-cli": "17.3.0",
+    "@dwp/commitlint-config-base": "4.0.0",
     "@dwp/eslint-config-base": "5.0.1",
     "@stryker-mutator/core": "5.6.1",
     "@stryker-mutator/html-reporter": "3.1.0",

@@ -1,3 +1,0 @@
-{
-  "extends": ["@dwp/commitlint-config-base"]
-}
