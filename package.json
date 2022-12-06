@@ -84,7 +84,7 @@
     "cheerio": "1.0.0-rc.12",
     "commitlint": "17.3.0",
     "docdash": "2.0.0",
-    "eslint": "8.28.0",
+    "eslint": "8.29.0",
     "eslint-plugin-no-unsafe-regex": "1.0.0",
     "eslint-plugin-security": "1.5.0",
     "eslint-plugin-sonarjs": "0.16.0",
@@ -95,7 +95,7 @@
     "sass": "1.56.1",
     "sinon": "14.0.2",
     "sinon-chai": "3.7.0",
-    "supertest": "6.3.1",
+    "supertest": "6.3.2",
     "typescript": "4.9.3"
   }
 }
