@@ -4,5 +4,8 @@
     "main",
     "maintain/6.x",
     "maintain/7.x"
+  ],
+  "ignoreDeps": [
+    "@dwp/govuk-casa"
   ]
 }

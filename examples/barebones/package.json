@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@dwp/govuk-casa": "../../",
+    "@dwp/govuk-casa": "^8.0.0",
     "express": "4.18.2"
   }
 }
