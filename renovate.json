@@ -7,5 +7,11 @@
   ],
   "ignoreDeps": [
     "@dwp/govuk-casa"
-  ]
+  ],
+  "packageRules": [{
+    "description": "v6 supports up to node v12. These pacages require >=v14 so cannot be upgraded",
+    "matchBaseBranches": ["maintain/6.x"],
+    "matchPackageNames": ["fs-extra", "jsdom", "@stryker-mutator/core", "@stryker-mutator/mocha-runner"],
+    "enabled": false
+  }]
 }
