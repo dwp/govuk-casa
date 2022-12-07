@@ -9,6 +9,8 @@ module.exports = {
     semi: [0],
     'sonarjs/cognitive-complexity': [1, 10],
     'jsdoc/require-description-complete-sentence': [0],
+    'import/extensions': [0],
+    'function-paren-newline': [0],
   },
   globals: {
     GOVUK_CASA_DEBUG_NS: true,

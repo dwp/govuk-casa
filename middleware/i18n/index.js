@@ -2,6 +2,7 @@ const logger = require('../../lib/Logger.js')('i18n');
 
 const mwI18n = require('./i18n.js');
 
+/* eslint-disable-next-line default-param-last */
 module.exports = (app, supportedLocales = [], I18nUtility) => {
   if (!Array.isArray(supportedLocales) || !supportedLocales.length) {
     throw new TypeError('At least one supported locale is required');

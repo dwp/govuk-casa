@@ -1,3 +1,4 @@
+/* eslint-disable default-param-last */
 const { isObjectWithKeys, isObjectType, normalizeHtmlObjectPath } = require('../../lib/Util.js');
 const JourneyContext = require('../../lib/JourneyContext.js');
 

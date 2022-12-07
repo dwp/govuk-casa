@@ -15,6 +15,7 @@
  *   string language = The language code to use (ISO 639-1).
  */
 
+/* eslint-disable-next-line default-param-last */
 module.exports = (logger, supportedLocales = [], translatorFactory) => (req, res, next) => {
   const currentSessionLanguage = (req.session || Object.create(null)).language;
 

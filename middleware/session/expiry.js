@@ -1,3 +1,4 @@
+/* eslint-disable default-param-last */
 // If the store session has expired, clean up and let the user know. It's
 // important to clear the cookie, using the same options that were used when
 // the cookie was created by expressSession above - see

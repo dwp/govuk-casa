@@ -11,6 +11,7 @@
 const createLogger = require('../../lib/Logger.js');
 const JourneyContext = require('../../lib/JourneyContext.js');
 
+/* eslint-disable-next-line default-param-last */
 module.exports = (mountUrl = '/', plan) => (req, res, next) => {
   const logger = createLogger('page.journey-rails');
   logger.setSessionId(req.session.id);
