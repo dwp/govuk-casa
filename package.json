@@ -49,8 +49,8 @@
     "validator": "13.7.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "16.3.0",
-    "@commitlint/config-conventional": "16.2.4",
+    "@commitlint/cli": "17.3.0",
+    "@commitlint/config-conventional": "17.3.0",
     "@commitlint/travis-cli": "16.3.0",
     "@dwp/commitlint-config-base": "4.0.0",
     "@dwp/eslint-config-base": "6.0.0",
