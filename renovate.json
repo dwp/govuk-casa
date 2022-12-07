@@ -37,7 +37,7 @@
   }, {
     "description": "Stick to current major node versions on older branches (as defined by docker images)",
     "matchBaseBranches": ["maintain/6.x", "maintain/7.x"],
-    "matchManagers": ["docker"],
+    "matchManagers": ["dockerfile"],
     "matchPackageNames": ["node"],
     "matchUpdateTypes": ["major"],
     "enabled": false
