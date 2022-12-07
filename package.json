@@ -69,7 +69,6 @@
     "eslint-plugin-sonarjs": "0.16.0",
     "express": "4.18.2",
     "express-session": "1.17.3",
-    "husky": "7.0.4",
     "jsdom": "19.0.0",
     "minimatch": "5.1.1",
     "mocha": "10.1.0",
