@@ -26,6 +26,21 @@ node-publish-gitlab:
 
 # ------------------------------------------------------------------ custom jobs
 
+# Unit tests on other supported node versions
+unit-test:
+  extends: .node-common
+  parallel:
+    matrix:
+      - node_image_version: node:14@sha256:f11e8dbf2ff6668927aafd90a804bf6597d8fe53dc16742a234045f7bf647a8c
+      - node_image_version: node:16@sha256:7f404d09ceb780c51f4fac7592c46b8f21211474aacce25389eb0df06aaa7472
+  stage: unit-test
+  image: $node_image_version
+  script:
+    - node --version
+    - npm --version
+    - npm test
+
+# ZAP scans
 e2e-dast:
   stage: security-dynamic-analysis
   image: $NODE_IMAGE
