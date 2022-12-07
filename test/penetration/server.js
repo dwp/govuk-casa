@@ -27,7 +27,7 @@ const casaApp = configure(app, {
   compiledAssetsDir: path.join(TMP_DIR, 'static'),
   sessions: {
     name: 'sessid', // one of the defaults ZAP looks for
-    secret: 'SuperSecretSecret',
+    secret: 'SuperSecretSecret', // pragma: allowlist secret
     ttl: 60 * 60, // seconds
     secure: false,
   },

@@ -28,7 +28,7 @@ describe('Middleware: session/init', () => {
   it('should configure the session correctly', () => {
     mwInit(mockLogger, {
       store: 'test-store',
-      secret: 'test-secret',
+      secret: 'test-secret', // pragma: allowlist secret
       secure: 'test-secure',
       cookiePath: 'test-cookie-path',
       cookieSameSite: true,
@@ -36,7 +36,7 @@ describe('Middleware: session/init', () => {
     });
     expect(stubExpressSession).to.be.calledOnceWith(sinon.match({
       store: 'test-store',
-      secret: 'test-secret',
+      secret: 'test-secret', // pragma: allowlist secret
       resave: false,
       saveUninitialized: false,
       cookie: {

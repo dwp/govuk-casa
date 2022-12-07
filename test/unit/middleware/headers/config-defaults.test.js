@@ -11,7 +11,7 @@ const { renderTemplateFile } = require('../../templates/helpers.js');
 const middleware = require('../../../../middleware/headers/config-defaults.js');
 
 describe('Middleware: headers/config-defaults', () => {
-  const DEFAULT_CSP_SCRIPTS = "'self' 'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU=' https://www.google-analytics.com/ https://www.googletagmanager.com/";
+  const DEFAULT_CSP_SCRIPTS = "'self' 'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU=' https://www.google-analytics.com/ https://www.googletagmanager.com/"; // pragma: allowlist secret
   let mockApp;
 
   beforeEach(() => {

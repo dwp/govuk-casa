@@ -55,4 +55,3 @@ describe('utils: validateMountUrl()', () => {
     expect(() => validateMountUrl('/test/')).to.not.throw();
   });
 });
-

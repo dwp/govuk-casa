@@ -38,4 +38,4 @@ repos:
       - id: detect-secrets
         language: python
         # The "secret" variable name is used innocently in a few places
-        args: ["--exclude-lines", "secret: 'secret'", "--exclude-lines", 'secret ==', "--exclude-lines", 'secret !=']
+        args: ["--exclude-lines", "secret: 'secret'", "--exclude-lines", 'secret ==', "--exclude-lines", 'secret !=', '--exclude-files', '.*\.md$']

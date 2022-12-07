@@ -134,7 +134,7 @@ const casaApp = configure(expressAppInstance, {
 
     // secret (String; required)
     // Secret used to encrypt session data (depends on session store)
-    secret: 'super-super-secret',
+    secret: 'super-super-secret', // pragma: allowlist secret
 
     // secure (Boolean; required)
     // Whether to set session cookies as secure (HTTPS) or not
@@ -162,7 +162,7 @@ const casaApp = configure(expressAppInstance, {
   // skipAssetsGeneration (Boolean; optional; default false)
   // Gives the ability to skip the static assets generation at runtime.
   // If set to true, it will require the developer to manually
-  // generate the assets themselves. 
+  // generate the assets themselves.
   // See `../preparing-assets.md` for an example.
   skipAssetsGeneration: false
 });

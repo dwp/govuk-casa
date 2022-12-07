@@ -18,7 +18,7 @@ const config = {
   i18n: { dirs: [], locales: ['en'] },
   sessions: {
     name: 'example',
-    secret: 'SuperSecretSecret',
+    secret: 'SuperSecretSecret', // pragma: allowlist secret
     ttl: 60 * 60,
     secure: false,
   },
@@ -166,8 +166,8 @@ describe('Server: Config', () => {
           agent.get('/?lang=cy'),
         ]);
 
-        expect(responses[0].text).to.equal('TEST 1 EN');
-        expect(responses[1].text).to.equal('TEST 1 CY');
+        expect(String.prototype.trim.call(responses[0].text)).to.equal('TEST 1 EN');
+        expect(String.prototype.trim.call(responses[1].text)).to.equal('TEST 1 CY');
       });
     });
   });
