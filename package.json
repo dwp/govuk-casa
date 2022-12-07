@@ -34,7 +34,7 @@
     "colors": "1.4.0",
     "csurf": "1.11.0",
     "debug": "4.3.4",
-    "fast-copy": "2.1.7",
+    "fast-copy": "3.0.0",
     "fs-extra": "10.1.0",
     "govuk-frontend": "3.14.0",
     "govuk_template_jinja": "0.26.0",
