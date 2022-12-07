@@ -9,9 +9,37 @@
     "@dwp/govuk-casa"
   ],
   "packageRules": [{
-    "description": "v6 supports up to node v12. These pacages require >=v14 so cannot be upgraded",
+    "description": "v6 supports up to node v12. These packages require >=v14 so cannot be upgraded",
     "matchBaseBranches": ["maintain/6.x"],
     "matchPackageNames": ["fs-extra", "jsdom", "@stryker-mutator/core", "@stryker-mutator/mocha-runner"],
+    "matchUpdateTypes": ["major"],
+    "enabled": false
+  }, {
+    "description": "Cannot major upgrade govuk-frontend in older versions as they introduce potentially breaking changes to UI",
+    "matchBaseBranches": ["maintain/6.x", "maintain/7.x"],
+    "matchPackageNames": ["govuk-frontend"],
+    "matchUpdateTypes": ["major"],
+    "enabled": false
+  }, {
+    "description": "Stick to major node versions on older branches ( as defined in .nvmrc)",
+    "matchBaseBranches": ["maintain/6.x", "maintain/7.x"],
+    "matchManagers": ["nvm"],
+    "matchUpdateTypes": ["major"],
+    "enabled": false
+  }, {
+    "description": "Stick to major node and npm versions on older branches (as defined in engines)",
+    "matchBaseBranches": ["maintain/6.x", "maintain/7.x"],
+    "matchManagers": ["npm"],
+    "matchPackageNames": ["node", "npm"],
+    "matchDepTypes": ["engines"],
+    "matchUpdateTypes": ["major"],
+    "enabled": false
+  }, {
+    "description": "Stick to current major node versions on older branches (as defined by docker images)",
+    "matchBaseBranches": ["maintain/6.x", "maintain/7.x"],
+    "matchManagers": ["docker"],
+    "matchPackageNames": ["node"],
+    "matchUpdateTypes": ["major"],
     "enabled": false
   }]
 }
