@@ -310,3 +310,11 @@ export {
  * @param {PlanArbiterParams} route Route metadata
  * @returns {PlanRoute[]} Returns all routes, excluding those that the arbiter could eliminate
  */
+
+/**
+ * @typedef {object} JourneyContextObject Journey Context Object
+ * @property {Record<string,any>} [data] Data
+ * @property {any} [validation] Validation state
+ * @property {any} [nav] Navigation meta
+ * @property {any} [identity] Identity meta
+ */

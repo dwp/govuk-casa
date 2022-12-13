@@ -35,6 +35,11 @@ const log = logger('lib:journey-context');
 
 /**
  * @access private
+ * @typedef {import('../casa').JourneyContextObject} JourneyContextObject
+ */
+
+/**
+ * @access private
  * @typedef {import('express').Request} ExpressRequest
  */
 
@@ -83,7 +88,7 @@ export default class JourneyContext {
    * `identity` holds information that helps uniquely identify this context
    * among a group of contexts stored in the session.
    *
-   * @param {Record<string,unknown>} data Entire journey data.
+   * @param {Record<string,any>} data Entire journey data.
    * @param {object} validation Page errors (indexed by waypoint id).
    * @param {object} nav Navigation context.
    * @param {object} identity Some metadata for identifying this context among others.
@@ -100,7 +105,7 @@ export default class JourneyContext {
   /**
    * Clone into an object that can be stringified.
    *
-   * @returns {object} Plain object.
+   * @returns {JourneyContextObject} Plain object.
    */
   toObject() {
     return Object.assign(Object.create(null), {
@@ -114,11 +119,7 @@ export default class JourneyContext {
   /**
    * Create a new JourneyContext using the plain object.
    *
-   * @param {object} obj Object.
-   * @param {object} obj.data Data
-   * @param {object} obj.validation Validation state
-   * @param {object} obj.nav Navigation meta
-   * @param {object} obj.identity Identity meta
+   * @param {JourneyContextObject} obj Object.
    * @returns {JourneyContext} Instance.
    */
   static fromObject({
