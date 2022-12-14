@@ -93,7 +93,7 @@
     "jsdoc-tsimport-plugin": "1.0.5",
     "mocha": "10.2.0",
     "sass": "1.56.2",
-    "sinon": "14.0.2",
+    "sinon": "15.0.0",
     "sinon-chai": "3.7.0",
     "supertest": "6.3.3",
     "typescript": "4.9.4"
