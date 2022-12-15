@@ -1,6 +1,8 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
+
+### [6.9.4](https://github.com/dwp/govuk-casa/compare/6.9.3...6.9.4) (2022-12-15)
 
 ### [6.9.3](https://github.com/dwp/govuk-casa/compare/6.9.2...6.9.3) (2022-11-28)
 
