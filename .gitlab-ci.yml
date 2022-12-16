@@ -10,6 +10,7 @@ include:
 variables:
   NODE_IMAGE: node:12-alpine@sha256:b8d44d2beeeb1bea09a0b2da2dcd062116ca393f0f2ad065f05d593765055fe3
   NODE_PUBLISH_TO_GITLAB: "true"
+  NODE_PUBLISH_TO_NPMJS: "true"
   AUTO_TAG_MERGE_TAG_BRANCH: "maintain/6.x"
   AUTO_TAG_MERGE_PREPARE_MR: "true"
 
