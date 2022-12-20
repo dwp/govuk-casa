@@ -1,5 +1,5 @@
 {
-  "extends": ["gitlab>dwp/engineering/renovate//shared-configs/renovate-auto-merge"],
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "baseBranches": [
     "main",
     "maintain/6.x",
@@ -41,5 +41,15 @@
     "matchPackageNames": ["node"],
     "matchUpdateTypes": ["major"],
     "enabled": false
+  }, {
+    "description": "Auto-merging without an MR",
+    "groupName": "developer-dependencies",
+    "matchUpdateTypes": ["minor", "patch", "pin", "pinDigest"],
+    "matchDepTypes": ["devDependencies"],
+    "automerge": true,
+    "automergeType": "branch",
+    "platformAutomerge": true,
+    "gitLabIgnoreApprovals": true,
+    "addLabels": ["Automatic Merge"]
   }]
 }
