@@ -60,7 +60,7 @@
     "i18next-http-middleware": "3.2.1",
     "js-yaml": "4.1.0",
     "lodash": "4.17.21",
-    "luxon": "3.1.1",
+    "luxon": "3.2.1",
     "nunjucks": "3.2.3",
     "path-to-regexp": "6.2.1",
     "uuid": "9.0.0",
