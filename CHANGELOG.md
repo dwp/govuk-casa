@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+### [7.1.7](https://github.com/dwp/govuk-casa/compare/7.1.6...7.1.7) (2023-01-13)
+
+
+### Bug Fixes
+
+* bump Luxon to 3.2.1. CVE-2023-22467 ([69a400f](https://github.com/dwp/govuk-casa/commit/69a400f3ea2668b9ef4d7294d38c5e138b75c599))
+
 ### [7.1.6](https://github.com/dwp/govuk-casa/compare/7.1.5...7.1.6) (2022-12-16)
 
 ### [7.1.5](https://github.com/dwp/govuk-casa/compare/7.1.4...7.1.5) (2022-12-16)
