@@ -7,11 +7,17 @@ module.exports = () => {
     arbiter: 'auto',
   });
 
-  plan.addSequence(
-    'personal-details',
-    'checkboxes',
-    'contact-details',
-  );
+  // plan.addSequence(
+  //   'personal-details',
+  //   'checkboxes',
+  //   'contact-details',
+  // );
+
+  plan.setRoute('personal-details', 'beths-page', (r, c) => c.data['personal-details'].title.trim().toLowerCase() === 'miss');
+  plan.setRoute('personal-details', 'checkboxes', (r, c) => c.data['personal-details'].title.trim().toLowerCase() !== 'miss');
+
+  plan.setRoute('beths-page', 'review');
+  plan.setRoute('checkboxes', 'contact-details');
 
   plan.setRoute('contact-details', 'secret-agent', (r, c) => c.data['contact-details'].tel === '007');
   plan.setRoute('contact-details', 'work/impact', (r, c) => c.data['contact-details'].tel !== '007');
