@@ -15,7 +15,13 @@ module.exports = () => [{
       next();
     }
   }],
-}, {
+}, 
+{
+  waypoint: 'beths-page',
+  view: 'pages/beths-page.njk',
+  fields: [],
+},
+{
   waypoint: 'checkboxes',
   view: 'pages/checkboxes.njk',
   fields: checkboxesFields(),

@@ -70,7 +70,7 @@ const application = ({
 
     res.render('welcome.njk', {
       demoContextId: req.session.demoContextId,
-      salutation: ['John', 'Bob', 'Sue', 'Clara'][Math.floor(Math.random() * 4)],
+      salutation: ['Beth'][Math.floor(Math.random() * 4)],
     });
   });
 

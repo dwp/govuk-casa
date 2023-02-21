@@ -21,6 +21,14 @@
 
   <p class="govuk-body">
     {{ govukButton({
+      text:'coolest people only',
+      href: casa.mountUrl + "beths-page",
+      isStartButton: true
+    })}}
+  </p>
+
+  <p class="govuk-body">
+    {{ govukButton({
       text: 'Try an alternative context',
       href: casa.mountUrl + "personal-details?contextid=" + demoContextId,
       isStartButton: true
