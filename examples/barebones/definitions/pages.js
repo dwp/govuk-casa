@@ -19,12 +19,12 @@ module.exports = () => [{
 {
   waypoint: 'beths-page',
   view: 'pages/beths-page.njk',
-  fields: [],
+  fields: checkboxesFields(),
 },
 {
   waypoint: 'checkboxes',
   view: 'pages/checkboxes.njk',
-  fields: checkboxesFields(),
+  fields: [],
 }, {
   waypoint: 'contact-details',
   view: 'pages/contact-details.njk',
