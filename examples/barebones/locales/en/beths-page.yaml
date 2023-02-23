@@ -1,2 +1,15 @@
 pageTitle: Beth's page
 h1: Beth's page
+field: 
+  foodBoxes:
+      label: what's ur favesssss!!
+      hint: You must choose at least 1
+      options:
+        sushi: Sushi
+        burger: Burger
+        pasta: Pasta
+        curry: Curry
+errors:
+  min:
+    inline: "You must choose at least 1, but have only chosen {{ count }}"
+    summary: "You must choose at least 1, but have only chosen {{ count }}" 
