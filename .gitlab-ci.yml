@@ -1,9 +1,9 @@
 include:
   - project: dwp/engineering/pipeline-solutions/gitlab/functions
-    ref: 3.55.3
+    ref: 3.55.4
     file: functions/node.yml
   - project: dwp/engineering/pipeline-solutions/gitlab/functions
-    ref: 3.55.3
+    ref: 3.55.4
     file: functions/auto-tag-merge.yml
 
 
@@ -47,4 +47,4 @@ auto-tag-merge-prepare-mr:
 
 # Need to use different nod eversion for commitlint
 commitlint:
-  image: node:18.12.0@sha256:cef9966b19672effeafcf1a67b8add742c3e46ca7dd5532efff60820526c2e95
+  image: node:18.14.2@sha256:8b2c008211854f4ee9ca328910d1c6bff8f30fc9fdf834b48f7ea40992a2079a
