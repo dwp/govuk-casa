@@ -3,11 +3,11 @@ import { FileSystemLoader } from 'nunjucks';
 /**
  * @access private
  * @typedef {import('nunjucks').FileSystemLoaderOptions} FileSystemLoaderOptions
- * 
+ */
+
+/**
  * @access private
  * @typedef {import('nunjucks').LoaderSource} LoaderSource
- * 
- * 
  */
 
 const VALID_BLOCKS = [

@@ -47,7 +47,10 @@ e2e-dast:
   tags:
     - docker
   services:
-    - name: owasp/zap2docker-stable@sha256:7eafedf6d7e15cf98b38aa501f63d13bed6b471027755c8a5fdb2631b5060f57
+    # The image is broken from `owasp/zap2docker-stable:s2023-02-06` onwards,
+    # which conincides with when ZAP starts to build multi-platform images.
+    # DO NOT UPDATE THIS IMAGE UNTIL SOURCES ARE FIXED.
+    - name: owasp/zap2docker-stable@sha256:215795fee30319d4d46007e1d9bb0999d9bafdfa423bcfb690de3d40e642f302
       alias: zap
       entrypoint: [""]
       command: ["zap.sh", "-daemon", "-host", "0.0.0.0", "-port", "8080", "-config", "api.key=secret", "-config", "api.addrs.addr.name=.*", "-config", "api.addrs.addr.regex=true"]
