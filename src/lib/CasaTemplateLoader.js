@@ -3,6 +3,11 @@ import { FileSystemLoader } from 'nunjucks';
 /**
  * @access private
  * @typedef {import('nunjucks').FileSystemLoaderOptions} FileSystemLoaderOptions
+ * 
+ * @access private
+ * @typedef {import('nunjucks').LoaderSource} LoaderSource
+ * 
+ * 
  */
 
 const VALID_BLOCKS = [
@@ -50,7 +55,7 @@ export default class CasaTemplateLoader extends FileSystemLoader {
    * Extract the source from the given template file.
    *
    * @param {string} name Source file path
-   * @returns {string} Source contents of template
+   * @returns {LoaderSource} Source contents of template
    */
   getSource(name) {
     const source = super.getSource(name);
