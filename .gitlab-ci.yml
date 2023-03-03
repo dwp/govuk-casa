@@ -47,4 +47,4 @@ auto-tag-merge-prepare-mr:
 
 # Need to use different nod eversion for commitlint
 commitlint:
-  image: node:18.14.2@sha256:8b2c008211854f4ee9ca328910d1c6bff8f30fc9fdf834b48f7ea40992a2079a
+  image: node:19.7.0@sha256:83841d113e09345a28b146e431f15b062341c5449218e501ba45ef8f9cff6049
