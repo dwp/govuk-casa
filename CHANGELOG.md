@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [8.7.10](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/compare/8.7.9...8.7.10) (2023-03-06)
+
+
+### Bug Fixes
+
+* **typescript:** match function return type to that of superclass ([e358048](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/commit/e35804866ba6e34737e47106591e18de57a47d2c))
+
 ## [8.7.9](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/compare/8.7.8...8.7.9) (2023-03-02)
 
 ## [8.7.8](https://github.com/dwp/govuk-casa/compare/8.7.7...8.7.8) (2023-01-24)
