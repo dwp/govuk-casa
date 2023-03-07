@@ -25,6 +25,11 @@ const log = logger('lib:plan');
  */
 
 /**
+ * @access private
+ * @typedef {import('graphlib').Graph} Graph
+ */
+
+/**
  * @typedef {object} PlanConstructorOptions
  * @property {boolean} [validateBeforeRouteCondition=true] Check page validity before conditions
  * @property {string|PlanArbiter} [arbiter=undefined] Arbitration mechanism
