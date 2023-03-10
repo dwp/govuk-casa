@@ -4,8 +4,8 @@ about: Use this template for requesting a new feature
 labels: feature, triage
 ---
 
-**Summary**
+# Summary
 
-**Proposed solution**
+## Proposed solution
 
-**Benefits**
+## Benefits

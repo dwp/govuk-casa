@@ -1,8 +1,9 @@
 # Breaking Changes
 
 The following changes are **mandatory**:
+
 - [Change custom field validator functions, and validator conditionals](#field-validation)
-- [Field validators must reject with a `ValdiationError` (or array of `ValidationError`s)](#validation-rejection-class)
+- [Field validators must reject with a `ValdiationError` (or array of `ValidationError`s)](#reject-with-validationerrors)
 
 --------------------------------------------------------------------------------
 
@@ -58,7 +59,8 @@ const fieldValidators = {
 
 There has also been a change that requires all pages in a CASA journey to have a `fieldValidators` object assigned to it.
 Previously the following would have been acceptable:
-```
+
+```javascript
 const pages = {
   'personal-details': {
     view: 'common/check-and-change.njk',
@@ -67,7 +69,8 @@ const pages = {
 ```
 
 However, it now requires a `fieldValidators` object assigned to it like the following example shows:
-```
+
+```javascript
 const pages = {
   'personal-details': {
     view: 'common/check-and-change.njk',
@@ -75,7 +78,6 @@ const pages = {
   },
 };
 ```
-
 
 ### Reject with `ValidationError`s
 

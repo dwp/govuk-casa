@@ -88,7 +88,8 @@ The `formatDateObject()` Nunjucks filter will take a date object captured with t
 ```nunjucks
 {{ myDate | formatDateObject }}
 ```
-```
+
+```nunjucks
 1 January 1980
 ```
 
@@ -97,6 +98,7 @@ You can also pass a locale:
 ```nunjucks
 {{ myDate | formatDateObject({ locale: 'cy' }) }}
 ```
-```
+
+```nunjucks
 1 Ionawr 1980
 ```

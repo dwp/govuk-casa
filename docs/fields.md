@@ -49,7 +49,6 @@ configure({
 });
 ```
 
-
 ## Built-in validators
 
 You can use any of these [built-in validation rules](src/lib/validators/)
@@ -63,7 +62,6 @@ You can use any of these [built-in validation rules](src/lib/validators/)
 * [required](src/lib/validators/required.README.md)
 * [strlen](src/lib/validators/strlen.README.md)
 * [wordCount](src/lib/validators/wordCount.README.md)
-
 
 ## Writing custom validators
 
@@ -105,7 +103,6 @@ field('name').validators([
 ]);
 ```
 
-
 ## Conditional validation
 
 In some circumstances you may want to skip validation on a field. For example, if you have a conditionally-revealed input in your HTML form, then you wouldn't want to validate that field if it was never submitted.
@@ -121,7 +118,6 @@ field('name').validators([
 ])
 ```
 
-
 ## Field processors
 
 You can attach arbitrary "processors" to a field that will execute on the user input (in the order they are defined) before theinput is gathered into the session.
@@ -132,7 +128,6 @@ field('my-field').processors([
   (fieldValue) => `${fieldValue}-processed`,
 ])
 ```
-
 
 ## Defining error messages
 

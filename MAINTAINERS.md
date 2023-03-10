@@ -2,7 +2,6 @@
 
 Please refer to our [Contributors Guide](docs/contributors/index.md) for more insights on how code should be structured and tested.
 
-
 ## Reviewing contributions
 
 Review tips:
@@ -18,7 +17,6 @@ Review tips:
 * Ensure that the MR is rebased onto the tip of `main` branch
 * Are any breaking changes introduced; if so does the commit log include a BREAKING CHANGE comment in the footer?
 * Is documentation included where appropriate?
-
 
 ### Handling contributions from a GitHub PR
 
@@ -59,7 +57,6 @@ git push -u origin sue-feature/thing
 Review the code locally using the guidelines above, ensuring it builds, passes linting and tests. Use the `npm run pipeline` script to cover these checks (check for changes to those scripts beforehand).
 
 If successful, merge into `main`, ensure CI build passes before finally pushing back up to GitHub and _closing_ (without merging) the original PR.
-
 
 ## Packaging a new version
 

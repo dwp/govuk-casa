@@ -10,7 +10,6 @@ Custom parameters:
 * `casaErrors` - form errors (just pass `formErrors`)
 * `casaWithAnalytics` - enable DWP's conventional Google Analytics attributes (`data-ga-question` and `data-ga-answer`) - `false` by default; **IMPORTANT: DO NOT ENABLE this option if the question or answer may contain personally-identifiable information as values will be pushed to Google**
 
-
 ## Example usage
 
 Basic example:
@@ -76,7 +75,7 @@ casaGovukCheckboxes({
 
 ## Displaying errors
 
-ref: https://design-system.service.gov.uk/components/error-summary/
+ref: <https://design-system.service.gov.uk/components/error-summary/>
 
 The error summary link must set focus on the first checkbox in the group. Unless you have specified an explicit `id` for the first item in the list, this macro will explicitly set that `id` to `f-<name>`, e.g. `f-preferences` in order for links from the error summary to work as expected.
 
@@ -89,4 +88,4 @@ The following attributes will be attached to each `<input>` option if `casaWithA
 
 These are the conventions used by DWP.
 
-**IMPORTANT: DO NOT ENABLE this option if the question or answer may contain personally-identifiable information as values will be pushed to Google**
+> **IMPORTANT:** DO NOT ENABLE this option if the question or answer may contain personally-identifiable information as values will be pushed to Google

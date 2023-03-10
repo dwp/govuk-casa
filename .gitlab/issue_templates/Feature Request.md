@@ -1,7 +1,7 @@
-**Summary**
+# Summary
 
-**Proposed solution**
+## Proposed solution
 
-**Benefits**
+## Benefits
 
 /label ~feature ~triage

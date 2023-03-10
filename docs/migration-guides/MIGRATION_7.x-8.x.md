@@ -3,6 +3,7 @@
 CASA has undergone a major refactoring in version 8, and as such there are quite a few breaking changes to the public APIs.
 
 The following changes are **mandatory**:
+
 - [`configure()` interface changes](#configure-interface-changes)
 - [`endSession()` changes](#endsession-changes)
 - [Page meta structure changes](#page-meta-structure-changes)
@@ -10,12 +11,12 @@ The following changes are **mandatory**:
 - [Gather modifiers replaced with field processors](#field-processors)
 - [Module interface has changed](#module-interface-changes)
 - [Cookie banner has been removed](#cookie-banner-removed)
-- [Nunjucks filters/variables changed or deprecated](#nunjucks-filters-variables-changed-or-deprecated)
+- [Nunjucks filters and variables changed or deprecated](#nunjucks-filters-and-variables-changed-or-deprecated)
 - [I18n replaced with `i18next`](#i18n-changes)
 - [`preGatherTraversalSnapshot` has been replaced](#journey-traversal-snapshot-replaced)
 - [Validators are now synchronous](#synchronous-validators)
 - [Validators must now be concrete instances](#always-make-validators)
-- [Conditional and undefined fields are removed from `req.body`](#conditional-and-undefined-fields-are-removed-from-req-body)
+- [Conditional and undefined fields are removed from `req.body`](#conditional-and-undefined-fields-are-removed-from-the-request-body)
 - [Optional fields are defined differently](#defining-optional-fields)
 - [Support for Plan origins has been removed](#plan-origins-removed)
 - [The built-in "check your answers" mechanism has been removed](#check-your-answers-removed)
@@ -23,19 +24,20 @@ The following changes are **mandatory**:
 - [`postvalidate` hook always triggered`](#postvalidate-execution)
 - [Journey form template now has a default form](#default-journey-form)
 - [Journey form now requires an explicit URL](#journey-form-url)
-- [Custom show/hide functionality removed](#show-hide-removed)
+- [Custom visibility toggle functionality removed](#custom-visibility-toggle-functionality-removed)
 - [Skippable waypoints must now be explicitly defined](#skippable-waypoints)
 - [Session data structure changed](#session-data-structure-changed)
 
 The following changes are **optional**:
+
 - [Nunjucks variables remove](#nunjucks-variables-removed)
 - [Scripts partial has changed](#scripts-partial-has-changed)
 
 And some other notes:
-- [bfcache fix removed](#bfcache-fix-removed)
-- [CASA scss and js sources removed](#scss-js-sources-removed)
-- [`govuk-frontend` updated to v4](#govuk-fronted-updated)
 
+- [bfcache fix removed](#bfcache-fix-removed)
+- [CASA scss and js sources removed](#casa-scss-and-js-sources-removed)
+- [`govuk-frontend` updated to v4](#govuk-frontend-updated)
 
 ## Highlights
 
@@ -44,8 +46,6 @@ And some other notes:
 - Replaced custom security headers with `helmet`
 - Replaced custom i18n mechanisms with `i18next` and added support for Yaml locale dictionaries
 - Introduced a plugin architecture to make enhancing your application with common components a lot easier
-
-
 
 --------------------------------------------------------------------------------
 
@@ -75,16 +75,15 @@ app.use('/some/mount-url/', casaApp);
 
 This has many benefits, including:
 
-* Calling `configure()` no longer has any side effects until you call `mount()`; it's more like an artifact factory
-* You can create multiple CASA instances and attach them to different ExpressJS apps within the same service
-* It's clearer where you can inject your own middleware/routes
-* You can more easily attach custom global functions/filters to the `nunjucksEnv` as this is a returned artifact
-* We can do away with the `proxyMountUrl` as you can now define explicitly which path to mount any routers on
+- Calling `configure()` no longer has any side effects until you call `mount()`; it's more like an artifact factory
+- You can create multiple CASA instances and attach them to different ExpressJS apps within the same service
+- It's clearer where you can inject your own middleware/routes
+- You can more easily attach custom global functions/filters to the `nunjucksEnv` as this is a returned artifact
+- We can do away with the `proxyMountUrl` as you can now define explicitly which path to mount any routers on
 
 A [series of middleware](docs/setup.md) are also returned which you can make use of in building your own custom routes that mimic some of CASA's behaviours.
 
-
-**View directories**
+#### View directories
 
 We originally envisaged quite a bit of view-related configuration so the `views` configuration was created as an object for future-proofing. However, it never enfded up holding anything other than `dirs`. So we've rolled this up to a simpler array.
 
@@ -102,18 +101,15 @@ configure({
 });
 ```
 
-
-**Session attribute name**
+#### Session attribute name
 
 Changed from `sessions` to `session`.
 
-
-**`session.cookiePath` behaviour changed**
+#### `session.cookiePath` behaviour changed
 
 In CASA v7, this path defaulted to match the `mountUrl`. In order to better support sub-apps out of the box, this will now default to `/`, which makes the session cookie available to _all_ paths on the domain. If you want to limit the cookie to match the `mountUrl`, just set the `session.cookiePath` to match.
 
-
-**`phase` option removed**
+#### `phase` option removed
 
 Where the phase was originally set to `alpha`, `beta`, or `live`, you are now encouraged to override the `beforeContent` Nunjucks block with your own implementation of the [phase banner](https://design-system.service.gov.uk/components/phase-banner/) component from the GOVUK Design System. For example:
 
@@ -133,8 +129,7 @@ Where the phase was originally set to `alpha`, `beta`, or `live`, you are now en
 {% endblock %}
 ```
 
-
-**`mountController` option removed**
+#### `mountController` option removed
 
 CASA's routing structure has been completely changed in this release, to the point where the need for a mount controller like this is redundant. Instead you are encouraged to make use of the new routers, middleware, and plugins mechanism to mount your custom middleware as needed.
 
@@ -156,18 +151,15 @@ ancillaryRouter.use('/some-path', require('./middleware/some-custom-page'));
 staticRouter.use('/some-static/path', require('./middleware/customer-static-route'));
 ```
 
-
-**`allowPageEdit` option removed**
+#### `allowPageEdit` option removed
 
 Editing is now always allowed. If you need to disable editing on any particular page, it is recommended to prepend a custom middleware to the `journeyRouter` that will intercept and requests containing `?edit`, and redirecting the user appropriately.
 
-
-**`useStickyEdit` option removed**
+#### `useStickyEdit` option removed
 
 Editing is now always "sticky". If you need to control how a user is redirected back to the edit origin after an edit, use the **[events mechanism](../events.md)** to preceisely control the validation state on other pages after the edit.
 
-
-**`csp` options removed**
+#### `csp` options removed
 
 The Content-Security-Policy header is now entirely managed by **helmet**. There is a `cspNonce` variable available to all templates which can be used to mark inline CSS and script sources as valid.
 
@@ -203,18 +195,15 @@ configure({
 })
 ```
 
-
-**`headers.disabled` option removed**
+#### `headers.disabled` option removed
 
 This was primarily used to remove any headers that CASA may set when they are already being set by an upstream proxy such as nginx. To do the same now, write a custom middleware, prepended/appended to the appropriate CASA router, and use `res.removeHeader()` to remove the headers.
 
-
-**`compiledAssetsDir` option removed**
+#### `compiledAssetsDir` option removed
 
 CASA no longer needs to write files to the filesystem at boot time, so this option has become redundant and you can remove any static folders you may be using. Instead, CSS assets are held in memory.
 
-
-**`proxyMountUrl` option removed**
+#### `proxyMountUrl` option removed
 
 This was used to support cases where an upstream proxy uses url-rewriting to direct traffic to multiple downstream services. As you can now mount CASA as a sub app on any parent app route you wish, this option has become redundant.
 
@@ -236,8 +225,7 @@ app.listen();
 
 See the [proxy guide](../guides/setup-behind-a-proxy.md) for more details.
 
-
-**`sessionExpiryController` option removed**
+#### `sessionExpiryController` option removed
 
 The preferred method is now to replace the default `/session-timeout` route, like so:
 
@@ -245,8 +233,7 @@ The preferred method is now to replace the default `/session-timeout` route, lik
 ancillaryRouter.replaceGet('/session-timeout', (req, res, next) => res.send(''));
 ```
 
-
-**Page and Plan definitions included during configure()**
+#### Page and Plan definitions included during configure()
 
 The `loadDefinitions()` function will no longer be returned, and you should instead provide them to the `configure()` function directly.
 
@@ -261,8 +248,7 @@ configure({
 })
 ```
 
-
-**Hooks syntax has changed**
+#### Hooks syntax has changed
 
 The format for defining page hooks has changed:
 
@@ -319,7 +305,6 @@ endSession(req, (err) => {
 });
 ```
 
-
 ### Page meta structure changes
 
 When defining a page's view, hooks, fields, etc, the structure of that definition object has changed as follows:
@@ -350,7 +335,6 @@ pages = [{
 ```
 
 Note that `fieldGatherModifiers` have been removed and their functionality can now be replicated with [field "processors"](../fields.md).
-
 
 ### Field validator class changes
 
@@ -384,7 +368,6 @@ pages = [
 
 Note the change in the function signature of conditionals too; `waypointId` has been replaved with `waypoint`.
 
-
 ### Field processors
 
 Gather modifiers have been replaced with field "processor" functions, and their signature changed (now accepts the field value directly rather than as part of an object). These are also used by validators to sanitise field values.
@@ -404,7 +387,6 @@ page = {
   ]
 }
 ```
-
 
 ### Module interface changes
 
@@ -434,13 +416,11 @@ When importing `@dwp/govuk-casa`, you will now get this structure:
 
 Note that `createGetRequest()` has been superseded by `waypointUrl()`.
 
-
 ### Cookie banner removed
 
 The built-in cookie banner has been removed and moved to a new plugin. This plugin is currently under development however, but once availabnle you will simply need to include this plugin in your config and it should "just work".
 
-
-### Nunjucks filters/variables changed or deprecated
+### Nunjucks filters and variables changed or deprecated
 
 Some Nunjucks filters and variables have been deprecated and removed.
 
@@ -455,7 +435,6 @@ The behaviour of the following nunjucks functions have changed:
 | Function | Old usage | New usage |
 |----------|-----------|-----------|
 | `formatDateObject` | `{{ date \| formatDateObject }}` | `{{ formatDateObject(date) }}` |
-
 
 ### I18n changes
 
@@ -473,9 +452,9 @@ req.i18nTranslator.t();
 req.t();
 ```
 
-**String interpolation**
+#### String interpolation
 
-ref: https://www.i18next.com/translation-function/interpolation
+ref: <https://www.i18next.com/translation-function/interpolation>
 
 When injecting dynamic values into your translation strings, you can no longer use the _sprintf_ format for interpolation. Although i18next does offer a [post processor](https://github.com/i18next/i18next-sprintf-postProcessor) to support this, it's an either-or decision between _sprintf_ and named variables. On balance, the named variables approach gives us more flexibility, despite being a little more verbose. You can also achieve the same formatting coercion using i18next's [formatting](https://www.i18next.com/translation-function/formatting) features.
 
@@ -501,11 +480,9 @@ To avoid confusion with i18next's `$t()` nested interpolation function, we've al
 }
 ```
 
-
 ## Journey traversal snapshot replaced
 
 The `req.casa.preGatherTraversalSnapshot` object has been replaced with a full copy of the JourneyContext instance as it looked prior to begin modified by a form submission, in `req.casa.archivedJourneyContext`.
-
 
 ## Synchronous validators
 
@@ -547,7 +524,6 @@ class MyValidator extends ValidatorFactory {
 
 The `dataContext` in these cases has also been changed slightly so that the `waypointId` attribute has been renamed `waypoint`.
 
-
 ### Always `make()` validators
 
 When adding any of the built-in validators, you must now always call their `.make()` method in order to generate a concrete instance of a validator, rather than a reference to its class (or factory class).
@@ -564,8 +540,7 @@ field('fieldName').validators([
 ]);
 ```
 
-
-### Conditional and undefined fields are removed from `req.body`
+### Conditional and undefined fields are removed from the request body
 
 On journey pages managed by CASA, all fields are removed from `req.body` unless you have specified them in the `fields` property for that page.
 
@@ -586,8 +561,6 @@ If you `POST`ed a request to `page1`, then regardless of what data you post, onl
 
 Note also that fields not meeting their conditions are also removed. So if `the_condition` resolved to `false` in the example above, then `req.body.field1` would be absent too.
 
-
-
 ### Defining optional fields
 
 ```javascript
@@ -603,29 +576,26 @@ field('fieldName', { optional: true } ).validators([
 ]);
 ```
 
-
 ### Plan origins removed
 
 This is one of the larger changes in this release, and quite a major alteration to the whole Plan mechanics. However, it does bring with it a major simplification that will pay maintenance dividends in the long run.
 
 For those using origins in their current application, we advise following one of the following alternatives:
 
-* If you don't necessarily need the user to enter the Plan at an origin (perhaps you were just using origins as a means of namespacing waypoints), consider using path-separated waypoints. For example, if you previously used an origin of `details` and a waypoint `personal`, this would be accessed via `details/personal`. So you can actually just set the waypoint itself to `details/personal`.
-* If you need the user to access certain waypoints directly without going through the whole Plan from the start (the more classic purpose of origins), then consider separating your app into multiple CASA sub-apps, each with their own Plan holding the waypoints originally listed under an origin. This is a bit of an involved change so we've put together an [example app](../../examples/multiapp/) to demonstrate one possible way to achieve the equivalent.
+- If you don't necessarily need the user to enter the Plan at an origin (perhaps you were just using origins as a means of namespacing waypoints), consider using path-separated waypoints. For example, if you previously used an origin of `details` and a waypoint `personal`, this would be accessed via `details/personal`. So you can actually just set the waypoint itself to `details/personal`.
+- If you need the user to access certain waypoints directly without going through the whole Plan from the start (the more classic purpose of origins), then consider separating your app into multiple CASA sub-apps, each with their own Plan holding the waypoints originally listed under an origin. This is a bit of an involved change so we've put together an [example app](../../examples/multiapp/) to demonstrate one possible way to achieve the equivalent.
 
 For anyone using _Ephemeral Contexts_, you may also want to consider using sub-apps for portions of your overall service, depending on your use case. For example, sub-apps may be a good option for looping journeys.
 
 The following are no longer available as a result of this change:
 
-* `req.casa.journeyOrigin`
-
+- `req.casa.journeyOrigin`
 
 ### "Check your answers" removed
 
 CASA comes with a built-in solution for the "check your answers" solution. However, this functionality is limited and unloved, so we've removed it from the core framework and started moving it into a plugin.
 
 The first variant of this plugin is currently held in the `examples/barebones/plugins/check-your-answers/` directory, but will be refined and extracted into a separate npm package in due course.
-
 
 ### Request metadata changes
 
@@ -639,7 +609,6 @@ The following have moved:
 | `req.casa.preGatherTraversalSnapshot` | `req.casa.archivedJourneyContext` | The JourneyContext as it was before being updated after a form POST |
 
 Note also that `req.casa.editOrigin` will _only_ contain a value if an `editorigin` parameter has been specified on the request URL. This behaviour differs from CASA v7, where `req.editOriginUrl` was always defined (by default to the current page).
-
 
 ### `postvalidate` execution
 
@@ -663,18 +632,15 @@ hook = {
 };
 ```
 
-
 ### Always call `putContext()`
 
 After making _any_ modifications to `req.casa.journeyContext`, then you must be sure to call `JourneyContext.putContext(req.session, req.casa.journeyContext)`. This will place the journey context data into the right place in the session.
 
 You must still then call `req.session.save(next)` to persist those changes to the session store.
 
-
 ### Default Journey form
 
 CASA now comes with a default journey form, so you no longer need to create one in your own `casa/layouts/journey.njk` template, unless you have heavily customised it in some way.
-
 
 ### Journey form URL
 
@@ -705,13 +671,11 @@ The `casaJourneyForm()` Nunjucks macro now requires a `formUrl` parameter, which
 {% endcall %}
 ```
 
-
-## Show/hide removed
+## Custom visibility toggle functionality removed
 
 Up to v7, CASA provided a custom mechanism to show/hide elements when a radio button is selected. If any of your markup contains the `data-target` attribute, then you are most likely using this feature.
 
 This has been removed in v8 in favour of using the GOVUK Design System's [method of conditionally revealing content](https://design-system.service.gov.uk/components/radios/#conditionally-revealing-a-related-question). You will need to alter your markup to match this component's requirements.
-
 
 ## Skippable waypoints
 
@@ -723,13 +687,11 @@ const plan = new Plan();
 plan.addSkippables('country');
 ```
 
-
 ## Session data structure changed
 
 Whilst this is strictly a private API, some projects may be making direct use of CASA's underlying session data so will need to be aware that the structure of that data has changed a little.
 
 The `req.session.journeyContextList` is no longer an object indexed by the context IDs. It is now an array of `JourneyContext` instances.
-
 
 ## Optional changes
 
@@ -754,11 +716,9 @@ The Nunjucks object `govuk.components` has been removed. This was used mainly fo
 
 This object is replaced with a simple string held in `casaVersion`, holding the current version of CASA.
 
-
 ### Scripts partial has changed
 
 The `casa/partials/scripts.njk` partial has been modified, so if you are overwriting this template completely, please refer to the new source and make changes to your own template as needed. In particular, the initialisation of all GOVUK Design System components is now inlined in that partial (i.e. `window.GOVUKFrontend.initAll()`).
-
 
 ## Additional notes
 
@@ -766,13 +726,12 @@ The `casa/partials/scripts.njk` partial has been modified, so if you are overwri
 
 Back/forward cache behaviour has been disabled via the `Cache-control: no-store` header for a while, so the accompanying JavaScript fix has been removed.
 
-
-### SCSS/js sources removed
+### CASA scss and js sources removed
 
 These files have been removed:
 
-* `src/scss/_casaElements.scss`
-* `src/js/casa.js`
+- `src/scss/_casaElements.scss`
+- `src/js/casa.js`
 
 And the location of the CSS/JS assets have also been changed:
 
@@ -781,7 +740,6 @@ And the location of the CSS/JS assets have also been changed:
 | `govuk/casa/css/casa.css` | `casa/assets/css/casa.css` |
 | `govuk/frontend/js/all.js` | `govuk/assets/js/all.js` |
 | `govuk/casa/js/casa.js` | _removed_ |
-
 
 ### `govuk-frontend` updated
 

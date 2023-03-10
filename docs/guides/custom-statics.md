@@ -38,7 +38,6 @@ The best place to include JS `<script>` tags is just before the closing `</body>
 
 The blocks would most likely be best placed in your main/journey layout template or, if you want certain scripts/css to only appear on specific pages, in the page template.
 
-
 ## Serving up folders of assets
 
 If you have several assets to serve from the same location, be sure to include a 404 handler so that requests for missing files do not bubble up the entire middleware chain:
@@ -51,7 +50,6 @@ const { staticRouter } = configure({ ... });
 staticRouter.use('/assets', static('/src/assets'));
 staticRouter.use('/assets', (req, res, next) => res.status(404).send('Not found'));
 ```
-
 
 ## Overriding CASA's assets
 
@@ -69,11 +67,9 @@ staticRouter.prependUse('/govuk/assets/js/all.js', static('/src/assets/my-all.js
 
 See the ['staticRouter' source](../../src/routes/static.js) for a list of all routes that can be override.
 
-
 ## Caching considerations
 
 By default, CASA sets headers to prevent the caching of _any_ responses except those it places on the `staticRouter` itself. However, in most cases you _do_ want to cache static assets, so consider configuring the ExpressJS static middleware with some [caching controls](http://expressjs.com/en/resources/middleware/serve-static.html).
-
 
 ## Inline scripts and styles
 

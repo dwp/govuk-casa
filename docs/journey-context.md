@@ -9,7 +9,6 @@ As a user interacts with the waypoints along their journey through your service,
 
 This state is stored as a plain JavaScript object in the server session
 
-
 ## Ephemeral contexts
 
 Whilst most setups will only ever deal with one Journey Context per user, it is possible to store multiple contexts per user. These are referred to as **Ephemeral Journey Contexts** (_ephemeral_ as they are generally used to capture state for a temporary period).
@@ -23,7 +22,6 @@ oneContext.identity.name = 'some-unique-name';
 // One or more general-purpose tags
 anotherContext.identity.tags = ['some-tag'];
 ```
-
 
 ## Interacting with the Journey Context
 

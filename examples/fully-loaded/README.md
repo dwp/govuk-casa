@@ -12,4 +12,4 @@ npm i
 DEBUG=casa* PORT=3000 npm start
 ```
 
-Visit http://localhost:3000/fully-loaded/
+Visit <http://localhost:3000/fully-loaded/>

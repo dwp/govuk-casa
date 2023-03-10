@@ -46,7 +46,6 @@ Note that the `waypoint-change` events are only triggered if data has actually _
 
 You could achieve similar integration by using one of the `journey.*` middleware hooks (for example, `journey.postgather`), but this could potentially miss out on changes made to the journey context elsewhere in the request stack, such as plugins, or other hooks. Events on the other hand are guaranteed to run at the point of calling `putContext()`, so as long as session data is not being manipulated directly, events are a good place to handle journey context changes.
 
-
 ## Use cases
 
 ### Forcing a user to re-read a page

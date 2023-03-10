@@ -20,11 +20,13 @@ So the changes you'll need to make are ..
 Wherever you are importing any of CASA's Nunjucks macros, be sure to add `with context` to the end of that import. For example:
 
 **Previous method:**
+
 ```jinja
 {% from "casa/components/date-input/macro.njk" import casaGovukDateInput %}
 ```
 
 **New method:**
+
 ```jinja
 {% from "casa/components/date-input/macro.njk" import casaGovukDateInput with context %}
 ```
@@ -43,17 +45,18 @@ If you use any of the following global template variables (available on `res.loc
 | `phase`               | `casa.phase`              |
 | `csrfToken`           | `casa.csrfToken`          |
 
-
 ## Nunjucks environment no longer available on `res.nunjucksEnvironment`
 
 If you have previously used `res.nunjucksEnvironment` to add global Nunjucks filters and globals, you will now find that it no longer exists. Instead you should access this environment via `app.get('nunjucksEnv')`. For example:
 
 **Previous use:**
+
 ```javascript
 res.nunjucksEnvironment.addGlobal('myFunction', () => { ... });
 ```
 
 **New use:**
+
 ```javascript
 app.get('nunjucksEnv').addGlobal('myFunction', () => { ... });
 ```

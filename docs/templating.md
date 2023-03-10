@@ -8,7 +8,6 @@ When looking for templates to render, CASA will look in the following directorie
 
 Refer to the [request lifecycle](request-lifecycle.md) for information about which template variables and functions are made available to you.
 
-
 ## Layouts
 
 There are two bundled CASA layout templates for you to use:
@@ -27,7 +26,6 @@ There are some special CASA-specific blocks that you can use in these templates:
 | `casaPageTitle` | Use this to set the title of the page. The "Error: " prefix will be added automatically when using the `casa/layouts/journey.njk` layout |
 | `journey_form` | Available to templates using the `casa/layouts/journey.njk` layout, this is where the body of your HTML form will go |
 
-
 ## Error pages
 
 Some default error pages are used by CASA. You can override these templates as needed by simply creating a template file on the same path within your own views directory:
@@ -42,7 +40,6 @@ Some default error pages are used by CASA. You can override these templates as n
 
 See the [error handler code](src/middleware/post.js) for a list of `errorCode` values.
 
-
 ## Form components
 
 For building your forms, you can use component macros from the following locations:
@@ -53,7 +50,6 @@ For building your forms, you can use component macros from the following locatio
 The CASA macros are just wrappers around the GOVUK macros, so the macro interfaces are identical. However, the CASA macros come with come convenient parameters that will decorate your inputs with error and attributes designed to be used by analytics tools (such as Google Analytics), so you are encouraged to use these as the first port of call.
 
 See below for an example using a CASA macro.
-
 
 ## Waypoint page templates
 
@@ -91,7 +87,6 @@ Each page will follow a very typical template, for example:
   }) }}
 {% endblock %}
 ```
-
 
 ## Nunjucks functions/filters
 

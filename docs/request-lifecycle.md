@@ -2,7 +2,6 @@
 
 As a request gets passed through CASA's routes and middleware, it will modify the `req` and `res.locals` objects along the way (`res.locals` is used to add variables and functions to Nunjucks templates). This process is described below, including which piece of middleware is responsible for generating those changes.
 
-
 ## Order of execution
 
 | Middleware/router stage | Description | `req.*` additions | `res.locals.*` additions |
@@ -48,15 +47,13 @@ As a request gets passed through CASA's routes and middleware, it will modify th
 | | [GET/POST] Render the form | | |
 | |
 | **postMiddleware** | Handle all other requests as a 404 response | | |
-| | Handle all errors as a 5** or 4** response | | |
-
+| | Handle all errors as a 5**or 4** response | | |
 
 The following properties are always added to the `req` object:
 
 | Property | Description |
 |----------|-------------|
 | `unparameterisedBaseUrl` | This is a copy of `req.baseUrl`, but with any subsequent parameterised path segments removed. Mainly used for serving static assets from a non-parameterised path. |
-
 
 The following globals are always available to the Nunjucks templates. Refer to the [templating documentation](templating.md) for more details.
 
@@ -69,35 +66,32 @@ The following globals are always available to the Nunjucks templates. Refer to t
 | `renderAsAttributes()` | Function to render an object as an HTML attribute string |
 | `waypointUrl()` | For generating URLs |
 
-
 ## "Pre" middleware
 
-**Template variables**
+### Template variables
 
 | Property | Description |
 |----------|-------------|
 | `cspNonce` | A nonce used by the `govuk-frontend` template for its inline scripts. Cam be used by your own scripts too. |
 
-
 ## "Session" middleware
 
-**Request attributes**
+### Request attributes
 
 | Property | Description |
 |----------|-------------|
 | `session` | Session storage object. |
 | `signedCookies` | All cookies will be parsed into this object |
 
-
 ## "I18n" middleware
 
-**Template variables**
+### Template variables
 
 | Property | Description |
 |----------|-------------|
 | `t()` | Translation function from `i18next` |
 
-**Request attributes**
+### Request attributes
 
 | Property | Description |
 |----------|-------------|
@@ -105,10 +99,9 @@ The following globals are always available to the Nunjucks templates. Refer to t
 | `language` | Language detected by `i18next` |
 | `session.language` | Detected language is stored in session |
 
-
 ## "Data" middleware
 
-**Template variables**
+### Template variables
 
 | Property | Description |
 |----------|-------------|
@@ -119,7 +112,7 @@ The following globals are always available to the Nunjucks templates. Refer to t
 | `locale` | Detected language |
 | `waypointUrl()` | A method for generating URLs, curried with the `mountUrl` and `journeyContext` parameters (see [waypointUrl()](../src/lib/waypoint-url.js)) |
 
-**Request properties**
+### Request properties
 
 | Property | Description |
 |----------|-------------|
@@ -128,10 +121,9 @@ The following globals are always available to the Nunjucks templates. Refer to t
 | `casa.editMode` | Whether the request is in edit mode or not |
 | `casa.editOrigin` | Send user back to this URL after they have finished editing |
 
-
 ## "Journey" router
 
-**Template variables**
+### Template variables
 
 | Property | Description |
 |----------|-------------|
@@ -139,7 +131,7 @@ The following globals are always available to the Nunjucks templates. Refer to t
 | `casa.journeyPreviousUrl` | URL to the _previous_ waypoint in the user's journey. Provided after the `presteer` hook. If this doesn't appear when expected, see options for [traversal arbitration](guides/handling-stale-data.md). |
 | `casa.waypoint` | The current waypoint (if applicable) |
 
-**Request properties**
+### Request properties
 
 | Property | Description |
 |----------|-------------|

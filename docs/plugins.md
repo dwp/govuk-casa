@@ -2,7 +2,6 @@
 
 This document describes how to use plugins and how to write your own.
 
-
 ## Using a plugin
 
 Depending on the plugins you use, there are usually 2 steps needed to include them in your application: initialising the plugin, and altering template(s).
@@ -21,14 +20,12 @@ configure({
 
 Secondly - if the plugin requires it - make the necessary changes to your Nunjucks templates, as instructed.
 
-
 ## Initialisation phases
 
 There are two phases during which a plugin establishes itself in the application:
 
 * A **configure** phase which allows the plugin to manipulate the raw configuration passed in by the application developer, and
 * A **bootstrap** phase during which the plugin can manipulate the CASA Nunjucks environment, routers or middleware
-
 
 ## Configure phase
 
@@ -41,7 +38,6 @@ function configure(config) {
   config.views.push('path/to/my/views/directory');
 }
 ```
-
 
 ## Bootstrap phase
 
@@ -58,7 +54,6 @@ function bootstrap({ ancillaryRouter }) {
 ```
 
 All artifacts returned by the `configure()` function are available to your `bootstrap()` function.
-
 
 ## Injecting content into templates
 
@@ -98,7 +93,6 @@ configure({
   ],
 });
 ```
-
 
 ## Supporting CommonJS and ES6
 

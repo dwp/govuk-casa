@@ -4,7 +4,6 @@ Use the hooks mechanism to insert ExpressJS middleware functions in various plac
 
 These additional middleware are mounted at boot time, so there are no runtime-checks for hooks.
 
-
 ## Global hooks
 
 Hooks are scoped to one of the core CASA routers:
@@ -59,7 +58,6 @@ configure({
 ```
 
 Page hooks are always run _after_ global hooks.
-
 
 ## Hooks reference
 

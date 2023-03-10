@@ -8,7 +8,6 @@ These can each run in isolation, you can combine them all into a larger service,
 
 THe methods used to set these up are all geared around the concept of keeping apps as de-coupled from each other as possible, to make them more portable and less brittle when making changes.
 
-
 ## Supported configurations
 
 If we think of sub-apps in terms of their Plans, CASA supports the following configurations:
@@ -24,7 +23,6 @@ In terms of _sequenced Plans_, a Plan can only have one "parent" Plan, so the fo
 By default, all Plans are considered "isolated"; a user can access any of these Plans directly if they know its URL, so they could skip ahead in a sequence of Plans, for example.
 
 However, you can disable this behaviour by defining an **entrypoint condition** for each app (which is just a bit of middleware). See further below for an example.
-
 
 ## Isolated sub-apps
 
@@ -49,7 +47,6 @@ parent.use('/two/', app2);
 
 app.listen();
 ```
-
 
 ## Sequenced sub-apps
 

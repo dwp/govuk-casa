@@ -5,7 +5,8 @@ Component to wrap your form inputs in a `<form>` that contains all the required 
 A "Continue" button (and "Cancel" link if in edit mode) will also be added.
 
 - [1.3.5: Identify Input Purpose](https://www.w3.org/WAI/WCAG21/Understanding/identify-input-purpose.html)
-- [<form>: The Form element - autocomplete](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#attr-autocomplete)
+- [`<form>`: The Form element - autocomplete](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#attr-autocomplete)
+
 ## Example usage
 
 ```nunjucks

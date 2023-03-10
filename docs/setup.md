@@ -24,7 +24,6 @@ app.listen();
 
 Read on for more detail ...
 
-
 ## `configure()`
 
 This is the entrypoint for setting up a CASA app. There are no side-effects on the wider application when you call this function, so you can safely use it to configure multiple CASA sub-applications if needed.
@@ -86,7 +85,6 @@ Read more about [configuring a Plan](plan.md) for your service.
 
 Read more about [configuring Helmet](guides/helmet.md) for your service.
 
-
 ## Returned values
 
 A call to `configure()` will return:
@@ -145,7 +143,6 @@ All these middleware are also mutable before `mount()` is called (at which point
 | `mount` | `function` | Calling this will mount all the CASA routers/middleware and effectively prevent any further modification |
 
 Call the `mount()` function as the last thing you do, once you've setup all the routers/middleware as you wish. [Read more about this function](docs/mount-function.md) to see how it can be used to mount your application in various scenarios.
-
 
 ## Mutable routers
 

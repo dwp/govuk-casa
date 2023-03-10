@@ -14,4 +14,4 @@ npm link @dwp/govuk-casa
 DEBUG=casa* PORT=3000 npm start
 ```
 
-Visit http://localhost:3000/barebones/
+Visit <http://localhost:3000/barebones/>

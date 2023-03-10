@@ -4,7 +4,6 @@ The **`ancillaryRouter`** is the best place for your custom routes; anything tha
 
 If you refer to the [request lifecycle](../request-lifecycle.md), you'll see that any routes/middleware you place in the `ancillaryRouter` will have access to a lot of things already prepared for you, such as a session, access to some useful data items, as well as templating capabilities.
 
-
 ## Example: A welcome page
 
 A basic page to welcome users to your service:
@@ -17,7 +16,6 @@ ancillaryRouter.get(/^\/$/, (req, res) => res.render('welcome.njk'));
 const casaApp = express();
 mount(casaApp);
 ```
-
 
 ## Example: A feedback form
 

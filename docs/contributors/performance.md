@@ -1,6 +1,5 @@
 # Performance
 
-
 ## Assumptions
 
 In many cases, NodeJS apps are served via a reverse proxy, such as Nginx. Certain functions should be offloaded to these proxies wherever possible, so assume that the following are handled elsewhere in the application stack and do not need to be handled by the CASA framework:
@@ -8,8 +7,7 @@ In many cases, NodeJS apps are served via a reverse proxy, such as Nginx. Certai
 * gzip compression
 * TLS termination
 
-
-## Performance
+## Tips
 
 Iterating over arrays/objects:
 
@@ -20,4 +18,4 @@ Iterating over arrays/objects:
 
 References:
 
-- https://www.realpythonproject.com/javascript-do-you-know-the-fastest-way-to-iterate-over-arrays-objects/
+* <https://www.realpythonproject.com/javascript-do-you-know-the-fastest-way-to-iterate-over-arrays-objects/>

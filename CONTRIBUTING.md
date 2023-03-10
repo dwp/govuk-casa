@@ -16,16 +16,16 @@ We ask you not to submit security concerns via GitHub. For details on submitting
 
 We have a 3 step process for contributions:
 
-1.  Fork our repo and commit changes to a new branch based off `main`, making sure to sign-off those changes for the [Developer Certificate of Origin](#developer-certification-of-origin-dco).
-2.  Create a GitHub Pull Request for your change, following the instructions in the pull request template (if present).
-3.  A [Code Review](#code-review-process) will then be undertaken by the project maintainers.
+1. Fork our repo and commit changes to a new branch based off `main`, making sure to sign-off those changes for the [Developer Certificate of Origin](#developer-certification-of-origin-dco).
+2. Create a GitHub Pull Request for your change, following the instructions in the pull request template (if present).
+3. A [Code Review](#code-review-process) will then be undertaken by the project maintainers.
 
 ### Pull Request Requirements
 
 Our projects are built to last. We strive to ensure high quality throughout the experience. In order to ensure this, we require that all pull requests to DWP projects meet these specifications:
 
-1.  **Tests:** To ensure high quality code and protect against future regressions, we require all the code in DWP Projects to have at least unit test coverage.
-2.  **Green CI Tests:** We use CI systems to test all pull requests, although not all of these are publicly visible. We require these test runs to succeed on every pull request before being merged. Project maintainers will help guide you if they find any issues.
+1. **Tests:** To ensure high quality code and protect against future regressions, we require all the code in DWP Projects to have at least unit test coverage.
+2. **Green CI Tests:** We use CI systems to test all pull requests, although not all of these are publicly visible. We require these test runs to succeed on every pull request before being merged. Project maintainers will help guide you if they find any issues.
 
 ### Pre-commit Checks
 
@@ -43,9 +43,9 @@ Code review for public contributions takes place in GitHub pull requests. See [t
 
 Once you open a pull request, project maintainers will review your code and respond to your pull request with any feedback they might have. The process at this point is as follows:
 
-1.  Two thumbs-up (:+1:) are required from project maintainers.
-2.  When ready, your pull request will be tagged with label `Ready For Merge`.
-3.  Your change will be merged into the project's `main` branch and may be noted in the project's `CHANGELOG.md` at the time of release.
+1. Two thumbs-up (:+1:) are required from project maintainers.
+2. When ready, your pull request will be tagged with label `Ready For Merge`.
+3. Your change will be merged into the project's `main` branch and may be noted in the project's `CHANGELOG.md` at the time of release.
 
 ### Developer Certification of Origin (DCO)
 
@@ -59,7 +59,7 @@ To make a good faith effort to ensure these criteria are met, DWP requires the D
 
 The DCO is an attestation attached to every contribution made by every developer. In the commit message of the contribution, the developer simply adds a Signed-off-by statement and thereby agrees to the DCO, which you can find below or at <http://developercertificate.org/>.
 
-```
+```text
 Developer's Certificate of Origin 1.1
 
 By making a contribution to this project, I certify that:
@@ -92,7 +92,7 @@ By making a contribution to this project, I certify that:
 
 The DCO requires a sign-off message in the following format appear on each commit in the pull request:
 
-```
+```text
 Signed-off-by: Jane Doe <jane.doe@example.com>
 ```
 
@@ -102,9 +102,9 @@ The DCO text can either be manually added to your commit body, or you can add ei
 
 We follow the [Semantic Versioning](http://semver.org/) standard. Our standard version numbers look like X.Y.Z which mean:
 
-*   X is a major release, which may not be fully compatible with any prior major releases
-*   Y is a minor release, which adds both new features and bug fixes
-*   Z is a patch release, which adds bug fixes
+* X is a major release, which may not be fully compatible with any prior major releases
+* Y is a minor release, which adds both new features and bug fixes
+* Z is a patch release, which adds bug fixes
 
 ## Acknowledgements
 

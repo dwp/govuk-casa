@@ -14,7 +14,6 @@ But the `mount()` function also support a few options that can affect how your a
 * `mount(app, { route: '/:id' })` can be used to mount your app under a [paramaterised route](docs/guides/parameterised-mount.md)
 * `mount(app, { serveFirstWaypoint: true })` can be used to ensure the first waypoint in your Plan is served when `/` is visited (see below)
 
-
 ## Auto-serving the first Plan waypoint
 
 If you were to mount your app as so ...

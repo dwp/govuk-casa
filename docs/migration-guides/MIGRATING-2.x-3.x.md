@@ -40,7 +40,6 @@ For example, you will now need to generate the journey form as follows:
 
 To modify this origin url at runtime, include it in the new `editorigin` url query parameter, e.g. `/?edit&editorigin=/my/redirect/url`.
 
-
 ## Conditional waypoints syntax change
 
 Where you have conditional waypoints defined in Object-notation like this ...

@@ -4,7 +4,7 @@ This example demonstrate how you might configure multiple CASA applications all 
 
 This creates two Plans and intersects them as so:
 
-```
+```text
 # Plan 1
 A -> B -> C ... F -> G
 
@@ -22,7 +22,6 @@ Potential use cases for this pattern:
 * "Hub and Spoke" navigation pattern, where each Plan represents an isolated gathering journey
 * Where parts of your user journey require the user to repeatedly enter new data items in a sub-section of your Plan, you could isolate those sections as separate sub-apps and clear them down prior to sending the user back through that section again.
 
-
 ## Running the example
 
 If using this for local framework development purposes:
@@ -39,4 +38,4 @@ npm link @dwp/govuk-casa
 DEBUG=casa* PORT=3000 npm start
 ```
 
-Visit http://localhost:3000/multiapp/main/
+Visit <http://localhost:3000/multiapp/main/>

@@ -4,14 +4,14 @@ about: Use this template for reporting a bug
 labels: bug, triage
 ---
 
-**Summary**
+# Summary
 
-**Steps to reproduce**
+## Steps to reproduce
 
-**Current behaviour**
+## Current behaviour
 
-**Expected behaviour**
+## Expected behaviour
 
-**Relevant logs and/or screenshots**
+## Relevant logs and/or screenshots
 
-**Possible fixes**
+## Possible fixes

@@ -6,7 +6,6 @@
 
 * `tests/e2e/personas/` contains Persona definitions used to drive end-to-end user journeys. These are also be used to drive some non-functional tests (see further below)
 
-
 ## Type of tests to write
 
 As a general rule of thumb ...
@@ -14,7 +13,6 @@ As a general rule of thumb ...
 * Write **Unit Tests** for any files you create or modify in the `src/lib/` directory. These are typically classes and utility functions, and must be named with the `*.test.js` format so that they get picked up correctly by the `npm run test:unit` command.
 
 * Write **End-to-End Tests** to cover any changes or additions to files in the `src/middleware/` and `src/routes/` directories. These are typically ExpressJS middleware functions that are often influenced by any middleware executing before them, so e2e tests ensure the full middleware chain is executed as intended. An exception to this rule is that unit tests are a better choice to cover scenarios that can't be easily triggered by an e2e tests, such as errors and exception pathways.
-
 
 ## Running tests
 
@@ -49,7 +47,6 @@ docker run --name zap -d -u zap -p 8080:8080 -i owasp/zap2docker-stable \
 # Run tests through ZAP
 npm run test:e2e -- --zap --zap-target-hostname=host.docker.internal
 ```
-
 
 ## Coverage metrics
 

@@ -1,18 +1,20 @@
 # Breaking Changes
 
 The following changes are **mandatory**:
+
 - [Minimum of NodeJS 14 now required](#nodejs-version)
 - [Check your default route condition behaviours](#route-conditions)
 - [Date validation no longer uses `moment`](#date-validation)
 - [Stop using `req.session.journeyContext`](#stop-using-the-session-journey-context)
 - [Replace `makeEditLink()` calls](#replace-makeeditlink-calls)
-- [Remove `parseOriginWaypointInUrl()` calls](#remove-parseOriginWaypointInUrl-scalls)
-- [Replace `editSearchParams` with generated parameters and update skip links](#replace-editSearchParams-with-generated-parameters-and-update-skip-links)
+- [Remove `parseOriginWaypointInUrl()` calls](#remove-parseoriginwaypointinurl-calls)
+- [Replace `editSearchParams` with generated parameters and update skip links](#replace-editsearchparams-with-generated-parameters-and-update-skip-links)
 - [Update middleware function calls](#update-middleware-function-calls)
 - [Update field validator definitions](#field-validator-definitions)
 - [Update paths to GOVUK Nunjucks macros](#update-govuk-nunjucks-macro-paths)
 
 The following changes are **optional**:
+
 - [Add active context ID to journey form macro](#add-active-context-id-to-form)
 
 --------------------------------------------------------------------------------
@@ -33,11 +35,11 @@ For example, given a route `A -> B`, joined by a route condition function `X()` 
 
 Previous behaviour:
 
-* `is_AB_traversable = X()`
+- `is_AB_traversable = X()`
 
 New behaviour:
 
-* `is_AB_traversable = A_has_been_validated() && X()`
+- `is_AB_traversable = A_has_been_validated() && X()`
 
 You can keep the previous behaviour by initialising your Plan as so:
 
@@ -49,7 +51,7 @@ const plan = new Plan({
 
 ### Date validation
 
-In this version of CASA, the `moment` date library has been replaced with `luxon` due to `moment` being officially deprecated. When setting the `afterOffsetFromNow` and `beforeOffsetFromNow` parameters for the date validation rule, you can no longer pass `moment.duration` objects. Instead, pass plain objects structured as outlined in https://moment.github.io/luxon/docs/manual/tour.html#durations.
+In this version of CASA, the `moment` date library has been replaced with `luxon` due to `moment` being officially deprecated. When setting the `afterOffsetFromNow` and `beforeOffsetFromNow` parameters for the date validation rule, you can no longer pass `moment.duration` objects. Instead, pass plain objects structured as outlined in <https://moment.github.io/luxon/docs/manual/tour.html#durations>.
 
 For example, to pass in 1 week, instead of doing this:
 
@@ -130,17 +132,15 @@ createGetRequest({
 
 In nunjucks, a [`makeLink()` function](middleware/page/prepare-request.js) is available but uses `createGetRequest()` under the hood. Its function signature has also changed. It is request-specific so has the following arguments bound to it:
 
-* `mountUrl`
-* `waypoint` (current waypoint)
-* `contextId` (current context ID)
-* `editMode` (current edit mode)
-* `editOriginUrl` (current edit origin url)
-
+- `mountUrl`
+- `waypoint` (current waypoint)
+- `contextId` (current context ID)
+- `editMode` (current edit mode)
+- `editOriginUrl` (current edit origin url)
 
 ### Remove `parseOriginWaypointInUrl()` calls
 
 The `parseOriginWaypointInUrl()` function has been removed.
-
 
 ### Replace `editSearchParams` with generated parameters and update skip links
 
@@ -171,16 +171,14 @@ Or this (in Nunjucks):
 <a href="{{ makeLink({ skipTo: waypoint }) }}">Go here</a>
 ```
 
-
 ### Update middleware function calls
 
 This only affects those that are utilising CASA's middleware function on their own custom routes.
 
 The `prepare-request` and `edit-mode` middleware functions have changed their signature, and now require a `mountUrl` argument:
 
-* `middlewarePrepareRequest(mountUrl, plan)`
-* `middlewareEditMode(mountUrl, plan)`
-
+- `middlewarePrepareRequest(mountUrl, plan)`
+- `middlewareEditMode(mountUrl, plan)`
 
 ### Field validator definitions
 
@@ -220,6 +218,7 @@ module.exports = function (value, context) {
   const errorMessage = this.errorMsg;
 }
 ```
+
 ```javascript
 /* NEW */
 const { ValidatorFactory } = require('@dwp/govuk-casa');
@@ -235,7 +234,6 @@ module.exports = MyValidatorFactory;
 ```
 
 See the [full documentation on field validation](docs/topics/field-validation.md) for more details.
-
 
 ### Update GOVUK Nunjucks macro paths
 

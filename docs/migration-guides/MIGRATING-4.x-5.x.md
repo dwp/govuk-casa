@@ -1,6 +1,7 @@
 # Breaking Changes
 
 The following changes are **mandatory**:
+
 - [Change how CASA assets are imported](#module-import-syntax)
 - [Change how CASA is bootstrapped into your Express application](#bootstrapping-casa)
 - [Use `JourneyContext` instead of `JourneyData`](#use-journeycontext)
@@ -10,12 +11,12 @@ The following changes are **mandatory**:
 
 The following changes are **recommended**:
 
-* [Begin using the new `Plan` class to design your application's user journeys](#userjourney-replaced-with-plan)
-* [Replace `mergeObjects` with `mergeObjectsDeep` in all templates](#mergeobjects-replaced-with-mergeobjectsdeep)
+- [Begin using the new `Plan` class to design your application's user journeys](#userjourney-replaced-with-plan)
+- [Replace `mergeObjects` with `mergeObjectsDeep` in all templates](#mergeobjects-replaced-with-mergeobjectsdeep)
 
 The following new features have been added:
 
-* [Added utility to flag a waypoint as "skipped"](#support-for-skipping-waypoints)
+- [Added utility to flag a waypoint as "skipped"](#support-for-skipping-waypoints)
 
 --------------------------------------------------------------------------------
 
@@ -40,7 +41,7 @@ See the [full list of public APIs](api/imports.md) to see what other modules can
 
 The exception to this change are the older, deprecated classes, which should continue to be imported as follows:
 
-* `require('@dwp/govuk-casa/lib/UserJourney.js')`
+- `require('@dwp/govuk-casa/lib/UserJourney.js')`
 
 ### Bootstrapping CASA
 
@@ -86,13 +87,13 @@ req.session.journeyContext = contextInstance.toObject();
 
 A series of variables previously on the `req.*` namespace have been moved into `req.casa.*` to avoid future namespace overcrowding:
 
-* `req.journeyData` -> `req.casa.journeyContext`
-* `req.journeyOrigin` -> `req.casa.journeyOrigin`
-* `req.journeyWaypointId` -> `req.casa.journeyWaypointId`
-* `req.journeyActive` -> `req.casa.plan`
-* `req.casaRequestState.preGatherTraversalSnapshot` -> `req.casa.preGatherTraversalSnapshot`
-* `req.session.journeyData` -> `req.session.journeyContext.data`
-* `req.session.journeyValidationErrors` -> `req.session.journeyContext.validation`
+- `req.journeyData` -> `req.casa.journeyContext`
+- `req.journeyOrigin` -> `req.casa.journeyOrigin`
+- `req.journeyWaypointId` -> `req.casa.journeyWaypointId`
+- `req.journeyActive` -> `req.casa.plan`
+- `req.casaRequestState.preGatherTraversalSnapshot` -> `req.casa.preGatherTraversalSnapshot`
+- `req.session.journeyData` -> `req.session.journeyContext.data`
+- `req.session.journeyValidationErrors` -> `req.session.journeyContext.validation`
 
 Note, the content of these variables has not changed, so just changing the references should be sufficient.
 
@@ -114,14 +115,13 @@ plan.traverse(new JourneyContext(data, validation));
 
 You can no longer use `/` in waypoint IDs. This is due to how the URLs are now parsed to extract the "origin traversal waypoint".
 
-
 --------------------------------------------------------------------------------
 
 ## Recommend changes
 
 ### `UserJourney` replaced with `Plan`
 
-We have adopted a Graph-based data structure to describe user journeys under the hood, which are managed through a new [`Plan`](#../lib/Plan.js) class. The older `UserJourney.*` classes have all been rolled into this one `Plan` class.
+We have adopted a Graph-based data structure to describe user journeys under the hood, which are managed through a new [`Plan`](../lib/Plan.js) class. The older `UserJourney.*` classes have all been rolled into this one `Plan` class.
 
 The API for defining journeys has changed drastically. See one of the [example projects](../examples/) for an idea of how journeys are now constructed, or the [documentation for building plans](docs/guides/3-plan.md) to understand how to construct your own plans from scratch.
 
@@ -156,7 +156,6 @@ Here's a summary of example changes that you will likely need to to make:
 The `mergeObjectsDeep` template function is more descriptive, and uses safer deep-merging techniques under the hood.
 
 `mergeObjects` still exists as an alias, but may be removed in future versions so we recommend replacing it.
-
 
 --------------------------------------------------------------------------------
 

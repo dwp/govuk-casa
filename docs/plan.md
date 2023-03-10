@@ -27,7 +27,6 @@ configure({
 });
 ```
 
-
 ## Terminology
 
 * **Plan**: The sum of all _Waypoints_ and _Routes_
@@ -38,7 +37,6 @@ configure({
 
 Whilst the terms _Waypoint_ and _Page_ are interchangeable for the most part, you should think of _Waypoints_ as abstractions, and _Pages_ as concrete implementations (i.e. visible web pages) of the same concept.
 
-
 ### Valid waypoint syntax
 
 Waypoints are denoted by strings in any of the following format:
@@ -47,7 +45,6 @@ Waypoints are denoted by strings in any of the following format:
 * Sub-app urls: `url:///slug/to/somewhere` would take the user to `/slug/to/somewhere`. When linking to the url of another Plan, you must specify the mount URL of that app rather than a specific waypoint, and leave it up to that app to decide how to redirect the user, based on the Journey context.
 
 > **NOTE:** You can only link to a sub-app once in a Plan. If you need to reuse the functionality of the sub-app elsewhere in your Plan, create a duplicate instance of that sub-app and mount it on an alternative URL.
-
 
 ## Skippable waypoints
 
@@ -75,7 +72,6 @@ const url = waypointUrl({
 });
 ```
 
-
 ## Simple linear routes
 
 Connect two waypoints with a two-way route as follows:
@@ -102,7 +98,6 @@ plan.setRoute('a', 'b');
 plan.setNextRoute('b', 'c');
 plan.setPrevRoute('c', 'a');
 ```
-
 
 ## Route conditions
 
@@ -146,7 +141,6 @@ const plan = new Plan({
 
 In some cases, CASA may run into scenarios where it can't choose which route to traverse. In this case, you can configure an [arbitration process](guides/handling-stale-data.md) to help nudge it in the right direction.
 
-
 ### How changing answers effects the user's journey
 
 If a user goes back to modify any of their answers, this may well alter how their onward journey unfolds.
@@ -161,7 +155,6 @@ The rules that govern how a user is redirected are outlined below:
 | `a, b, c, d` | `a, b, d` | Waypoint `c` has been removed from the middle of a journey, so the user will stop at the last incomplete waypoint, `d` |
 | `a, b, c, d` | `a, c, d` | _(as above)_ |
 | `a, b, c` | `a, c, d` | Waypoint `b` has been removed, and `d` has been added to the end; user will stop at the new waypoint, `d` |
-
 
 ## Visualising the Plan
 
@@ -186,7 +179,6 @@ const graphcopy = graphlib.json.read(JSON.parse(json));
 
 process.stdout.write(dot.write(graphcopy));
 ```
-
 
 ### Labelling graph edges
 
@@ -238,6 +230,5 @@ const walkTo = direction => isEqualTo('direction', direction);
 // `start <-- "direction" equals "west" --> field`
 plan.setRoute('start', 'field', walkTo('west'));
 ```
-
 
 ## Traversing a Plan
