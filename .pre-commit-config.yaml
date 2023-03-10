@@ -78,17 +78,16 @@ repos:
           - markdownlint-rule-titlecase
           - markdownlint-cli2-formatter-codequality
 
-  # - repo: https://github.com/pre-commit/mirrors-prettier
-  #   rev: v3.0.0-alpha.6
+  # - repo: https://github.com/pre-commit/mirrors-eslint
+  #   rev: v8.35.0
   #   hooks:
-  #     - id: prettier
+  #     - id: eslint
   #       additional_dependencies:
-  #         - prettier@3.0.0-alpha.4
-  #         - eslint-config-prettier
-  #         - stylelint-config-prettier
-  #         - prettier-plugin-java
-  #         - prettier-plugin-sh
-  #         - "@prettier/plugin-xml"
+  #         - eslint@8.35.0
+  #         - "@dwp/eslint-config-base"
+  #         - eslint-plugin-no-unsafe-regex
+  #         - eslint-plugin-security
+  #         - eslint-plugin-sonarjs
 
   - repo: https://gitlab.com/adam-moss/pre-commit-trailer
     rev: v1.1.0
