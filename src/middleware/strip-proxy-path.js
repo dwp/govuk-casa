@@ -39,7 +39,7 @@ export default ({
       next();
     } else {
       // Strip the proxy path prefix from the original URL so that
-      // subsequnt middleware sees the URL path as though proxy wasn't there.
+      // subsequent middleware sees the URL path as though proxy wasn't there.
       // req.url will already have the proxy prefix and mountUrl removed.
       /* eslint-disable security/detect-non-literal-regexp */
       log.trace(`req.originalUrl before proxy stripping: ${req.originalUrl}`);

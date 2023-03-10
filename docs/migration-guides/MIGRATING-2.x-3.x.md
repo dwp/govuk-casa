@@ -71,7 +71,7 @@ If you're using conditionals in Array-notation, no changes are needed.
 
 ## Removal of `unsafe-inline` Content-Security-Policy headers
 
-The `unsafe-inline` CSP header allowed any inline `<script>` scripts to be executed, regardless of their content. Attacks could potentially expoit this feature (via other injection vectors if they exist) to insert arbitrary scripts.
+The `unsafe-inline` CSP header allowed any inline `<script>` scripts to be executed, regardless of their content. Attacks could potentially exploit this feature (via other injection vectors if they exist) to insert arbitrary scripts.
 
 If you have have any inline `<script>` in your templates, you will need to [configure CASA](api/bootstrap.md) to use an appropriate CSP header value for each of them, i.e. using nonces, or content hashes - see [https://content-security-policy.com/](https://content-security-policy.com/) for more information.
 

@@ -20,7 +20,7 @@ The definition for a Page looks like this:
 }
 ```
 
-See [hooks](hooks.md), and [fields](fields.md) documentation for more details on each repsectively.
+See [hooks](hooks.md), and [fields](fields.md) documentation for more details on each respectively.
 
 Passing your Page definitions into `configure()`:
 

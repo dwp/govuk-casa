@@ -85,7 +85,7 @@ const application = ({
   });
 
   // Now mount all CASA's routers and middleware
-  // You cannot mount anything afer this point because CASA will add its own
+  // You cannot mount anything after this point because CASA will add its own
   // fall-through and error handling middleware
   const casaApp = ExpressJS();
   mount(casaApp);

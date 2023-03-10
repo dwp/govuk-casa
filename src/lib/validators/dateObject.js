@@ -146,7 +146,7 @@ export default class DateObject extends ValidatorFactory {
         errorMsg.focusSuffix.push('[yyyy]');
       }
 
-      // If the date is invalid, but not specific parts have been highighted in
+      // If the date is invalid, but not specific parts have been highlighted in
       // error, then highlight all inputs, focusing on the [dd] first
       if (!valid && !errorMsg.focusSuffix.length) {
         errorMsg.focusSuffix = ['[dd]', '[mm]', '[yyyy]'];

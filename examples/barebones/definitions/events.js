@@ -2,7 +2,7 @@
 
 module.exports = (plan) => [
   // This "waypoint-change" event is triggered whenever data/validation
-  // changes on a waypoint, just prior to it being commited to the session.
+  // changes on a waypoint, just prior to it being committed to the session.
   // In this example, we're using it to force the user to re-read their
   // contact-details if entering a certain secret code. It does this by
   // invalidating the 'contact-details' waypoint, forcing the user to re-visit.

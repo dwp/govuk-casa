@@ -54,7 +54,7 @@ describe('Validation: ValidationError', () => {
       expect(error).to.have.property('focusSuffix').that.deep.equals(['-test-suffix']);
     });
 
-    it('should reset public variables paramter between each context application', () => {
+    it('should reset public variables parameter between each context application', () => {
       const error = new ValidationError({
         variables: ({ fieldName }) => ({ name: fieldName === 'a' ? 'testA' : 'testB' }),
       });

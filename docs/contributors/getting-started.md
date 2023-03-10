@@ -21,7 +21,7 @@ npm run build
 * `tests/` - tests
 * `views/` - Nunjucks templates
 
-Any code in `src/` that references files in `assets/` will do so via a relative path to `dist/assets/` rather than the root `assets/` directory. This is important because that reference must work in both the raw, uncompiled version of the code, but also in the code copied to `dist/`. For example, `../dist/assets/file.html` will resolve to the same file from both `src/script.js` and `dist/script.js`. We always use the `dist/assets/` version because assets need to compile regardless of whether we're running lcoally or packaging up the npm distributable.
+Any code in `src/` that references files in `assets/` will do so via a relative path to `dist/assets/` rather than the root `assets/` directory. This is important because that reference must work in both the raw, uncompiled version of the code, but also in the code copied to `dist/`. For example, `../dist/assets/file.html` will resolve to the same file from both `src/script.js` and `dist/script.js`. We always use the `dist/assets/` version because assets need to compile regardless of whether we're running locally or packaging up the npm distributable.
 
 We already duplicate the JavaScript in order to support CommonJS and ES6 modules, but we do not want to duplicate the static assets or views as it will cause the package size to bloat unnecessarily.
 

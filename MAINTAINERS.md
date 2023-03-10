@@ -74,7 +74,7 @@ npx standard-version
 git push -u origin head
 
 # Create an MR from this branch, seek approval and merge. A new version will be
-# automtically published to the internal GitLab registry.
+# automatically published to the internal GitLab registry.
 ```
 
 Presently, publishing to the public npm registry is a manual process:

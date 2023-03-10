@@ -19,7 +19,7 @@
   }
 
   /**
-   * Attach show/hide functionalty.
+   * Attach show/hide functionality.
    *
    * @param {HTMLElement} node Element to init.
    * @returns {void}

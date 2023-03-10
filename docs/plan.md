@@ -106,7 +106,7 @@ plan.setPrevRoute('c', 'a');
 
 ## Route conditions
 
-You can attach conditions to routes that control how the user traverses through them. By default, there are conditions attached to each route that will prevent them being traversed unless the following are satisifed:
+You can attach conditions to routes that control how the user traverses through them. By default, there are conditions attached to each route that will prevent them being traversed unless the following are satisfied:
 
 * The "source" waypoint has been successfully validated (i.e. validation has been executed, and no errors found)
 
@@ -136,7 +136,7 @@ When `ticked` is `true`, the traversal sequence will be: `a <--> b <--> c`
 
 When `ticked` is `false` the traversal sequence will be: `a <--> c`
 
-**NOTE:** When you define a cutom route condition, CASA will still perform its own checks before running your condition (specifically, that the "source" waypoint has passed validation). You can override this behaviour by toggling the `validateBeforeRouteCondition` flag when creating a Plan, e.g:
+**NOTE:** When you define a custom route condition, CASA will still perform its own checks before running your condition (specifically, that the "source" waypoint has passed validation). You can override this behaviour by toggling the `validateBeforeRouteCondition` flag when creating a Plan, e.g:
 
 ```javascript
 const plan = new Plan({

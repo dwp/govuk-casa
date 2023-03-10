@@ -7,7 +7,7 @@ The following changes are **mandatory**:
 - [`endSession()` changes](#endsession-changes)
 - [Page meta structure changes](#page-meta-structure-changes)
 - [There is now only one class for field validators](#field-validator-class-changes)
-- [Gather modifers replaced with field processors](#field-processors)
+- [Gather modifiers replaced with field processors](#field-processors)
 - [Module interface has changed](#module-interface-changes)
 - [Cookie banner has been removed](#cookie-banner-removed)
 - [Nunjucks filters/variables changed or deprecated](#nunjucks-filters-variables-changed-or-deprecated)
@@ -21,7 +21,7 @@ The following changes are **mandatory**:
 - [The built-in "check your answers" mechanism has been removed](#check-your-answers-removed)
 - [Some metadata have moved off `req`](#request-metadata-changes)
 - [`postvalidate` hook always triggered`](#postvalidate-execution)
-- [Journey form template now has a defualt form](#default-journey-form)
+- [Journey form template now has a default form](#default-journey-form)
 - [Journey form now requires an explicit URL](#journey-form-url)
 - [Custom show/hide functionality removed](#show-hide-removed)
 - [Skippable waypoints must now be explicitly defined](#skippable-waypoints)
@@ -432,7 +432,7 @@ When importing `@dwp/govuk-casa`, you will now get this structure:
 }
 ```
 
-Note that `createGetRequest()` has been superceded by `waypointUrl()`.
+Note that `createGetRequest()` has been superseded by `waypointUrl()`.
 
 
 ### Cookie banner removed
@@ -710,7 +710,7 @@ The `casaJourneyForm()` Nunjucks macro now requires a `formUrl` parameter, which
 
 Up to v7, CASA provided a custom mechanism to show/hide elements when a radio button is selected. If any of your markup contains the `data-target` attribute, then you are most likely using this feature.
 
-This has been removed in v8 in favour of using the GOVUK Design System's [method of condtionally revealing content](https://design-system.service.gov.uk/components/radios/#conditionally-revealing-a-related-question). You will need to alter your markup to match this component's requirements.
+This has been removed in v8 in favour of using the GOVUK Design System's [method of conditionally revealing content](https://design-system.service.gov.uk/components/radios/#conditionally-revealing-a-related-question). You will need to alter your markup to match this component's requirements.
 
 
 ## Skippable waypoints

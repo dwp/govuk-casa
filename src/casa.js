@@ -295,7 +295,7 @@ export {
  * @property {string} routeName Follow routes matching this name (next | prev)
  * @property {Map} history Used to detect loops in traversal (INTERNAL USE ONLY)
  * @property {Function} [stopCondition] If true, traversal will be stopped (useful for performance)
- * @property {string|PlanArbiter} [arbiter] Mutliple target routes found, this decides which to use
+ * @property {string|PlanArbiter} [arbiter] Multiple target routes found, this decides which to use
  */
 
 /**

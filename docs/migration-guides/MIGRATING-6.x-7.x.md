@@ -152,7 +152,7 @@ For example, where you once may have used it as so:
 link = `?skipto=${waypoint}${editSearchParams}`
 ```
 
-You woud now do this:
+You would now do this:
 
 ```javascript
 const { utils: { createGetRequest }} = require('@dwp/govuk-casa');

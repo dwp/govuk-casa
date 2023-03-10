@@ -69,7 +69,7 @@ To hook into this mechanism, you need to provide that loader with a list of temp
 ```javascript
 function bootstrap({ nunjucksEnv }) {
   // This will insert some content at the end of the named block. It will be
-  // inserted into the first occurence of this block as that is usually the
+  // inserted into the first occurrence of this block as that is usually the
   // most specific, and overrides any other uses of the same block elsewhere.
   nunjucksEnv.modifyBlock('blockName', () => {
     return 'This will add some content from another template at the beginning of the blockName block: {% include "my-plugin/thing.njk" %}';

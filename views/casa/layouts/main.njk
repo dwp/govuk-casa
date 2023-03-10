@@ -7,7 +7,7 @@
 
 
 {% block skipLink %}
-  {# Harcoding content for the skip link as t() may not be availble on some error pages #}
+  {# Hardcoding content for the skip link as t() may not be available on some error pages #}
   {{ govukSkipLink({
     href: '#main-content',
     text: "Neidio i'r prif gynnwys" if locale === 'cy' else 'Skip to main content'

@@ -41,7 +41,7 @@ describe('validators/nino', () => {
     expect(rule('AA\u200237\u200207\u200273\u2002A')).to.not.be.empty;
   });
 
-  it('should throw TypeError when allowWhitespace isnt a boolean', () => {
+  it('should throw TypeError when allowWhitespace isn\'t a boolean', () => {
     const rule = nino.make({ allowWhitespace: 'true' }).validate;
     expect(() => rule('AA 37 07 73 A')).to.throw(TypeError, 'NINO validation rule option "allowWhitespace" must been a boolean. received string');
   });

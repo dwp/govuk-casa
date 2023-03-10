@@ -24,7 +24,7 @@ const log = logger('lib:configuration-ingestor');
 const echo = (a) => (a);
 
 /**
- * Validates and sanitises i18n obejct.
+ * Validates and sanitises i18n object.
  *
  * @access private
  * @param {object} i18n Object to validate.

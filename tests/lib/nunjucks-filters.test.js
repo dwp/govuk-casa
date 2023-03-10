@@ -42,7 +42,7 @@ describe('View filter: formatDateObject', () => {
     expect(output).to.equal('Thursday 1 March');
   });
 
-  it('should output a string date in the excpected format, given valid date object with single digits', () => {
+  it('should output a string date in the expected format, given valid date object with single digits', () => {
     const output = formatDateObject({
       dd: 1,
       mm: 3,
@@ -51,7 +51,7 @@ describe('View filter: formatDateObject', () => {
     expect(output).to.equal('1 March 2007');
   });
 
-  it('should output a string date in the excpected format, given valid date object with double digits', () => {
+  it('should output a string date in the expected format, given valid date object with double digits', () => {
     const output = formatDateObject({
       dd: 11,
       mm: 10,
@@ -60,7 +60,7 @@ describe('View filter: formatDateObject', () => {
     expect(output).to.equal('11 October 1998');
   });
 
-  it('should output a string date in the excpected locale', () => {
+  it('should output a string date in the expected locale', () => {
     const output = formatDateObject({
       dd: 11,
       mm: 1,

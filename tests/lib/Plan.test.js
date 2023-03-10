@@ -204,7 +204,7 @@ describe('Plan', () => {
       expect(stub_n1n2).not.to.be.called;
     });
 
-    it('should stop traversing when multiple routes are satisified between any waypoint pair', () => {
+    it('should stop traversing when multiple routes are satisfied between any waypoint pair', () => {
       const planTest = new Plan({
         validateBeforeRouteCondition: false,
       });

@@ -4,7 +4,7 @@
  */
 
 /**
- * Test is a value can be stringifed (numbers or strings)
+ * Test is a value can be stringified (numbers or strings)
  *
  * @access private
  * @param {any} value Item to test

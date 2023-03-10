@@ -59,7 +59,7 @@ You can force a user to re-visit a page by invalidating it, and the events syste
 
 ```javascript
 configure({
-  evnts: [{
+  events: [{
     event: 'waypoint-change',
     waypoint: 'do-you-have-a-partner',
     field: 'havePartner',

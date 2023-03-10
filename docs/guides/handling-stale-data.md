@@ -44,7 +44,7 @@ const plan = new Plan();
 plan.traversePrevRoutes(journeyContext);
 ```
 
-Traversal will stop at the first point where mutliple choices are present.
+Traversal will stop at the first point where multiple choices are present.
 
 ### Option 2: Automatic arbitration
 

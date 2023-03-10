@@ -9,7 +9,7 @@ const application = ({
   MOUNT_URL = '/',
 }) => {
   // Create a session store. This is important. If you don't use the same session
-  // store for all sub-apps, they will effecitvely operate independently of each
+  // store for all sub-apps, they will effectively operate independently of each
   // other
   const sessionStore = new MemoryStore();
 

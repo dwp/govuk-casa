@@ -46,7 +46,7 @@ If you use any of the following global template variables (available on `res.loc
 
 ## Nunjucks environment no longer available on `res.nunjucksEnvironment`
 
-If you have previously used `res.nunjucksEnvironment` to add global Nunjucks filters and globals, you will now find that it no longer exists. Intead you should access this environment via `app.get('nunjucksEnv')`. For example:
+If you have previously used `res.nunjucksEnvironment` to add global Nunjucks filters and globals, you will now find that it no longer exists. Instead you should access this environment via `app.get('nunjucksEnv')`. For example:
 
 **Previous use:**
 ```javascript

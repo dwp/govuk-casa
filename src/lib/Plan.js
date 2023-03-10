@@ -544,8 +544,8 @@ export default class Plan {
 
       // When there's more than one candidate route to take, we need help to choose
       if (target.length > 1) {
-        const satisifed = target.map((t) => `${t.v} -> ${t.w}`);
-        log.debug(`Multiple routes were satisfied for "${routeName}" from "${startWP}" (${satisifed.join(' / ')}). Deciding how to resolve ...`);
+        const satisfied = target.map((t) => `${t.v} -> ${t.w}`);
+        log.debug(`Multiple routes were satisfied for "${routeName}" from "${startWP}" (${satisfied.join(' / ')}). Deciding how to resolve ...`);
 
         if (arbiter === 'auto') {
           log.debug('Using automatic arbitration process');

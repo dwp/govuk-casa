@@ -55,7 +55,7 @@ The following properties are always added to the `req` object:
 
 | Property | Description |
 |----------|-------------|
-| `unparameterisedBaseUrl` | This is a copy of `req.baseUrl`, but with any subsequent parameterised path segments removed. Mainly used for serving static assets from a non-paramterised path. |
+| `unparameterisedBaseUrl` | This is a copy of `req.baseUrl`, but with any subsequent parameterised path segments removed. Mainly used for serving static assets from a non-parameterised path. |
 
 
 The following globals are always available to the Nunjucks templates. Refer to the [templating documentation](templating.md) for more details.
@@ -66,7 +66,7 @@ The following globals are always available to the Nunjucks templates. Refer to t
 | `mergeObjects()` | Function to deep-merge objects |
 | `includes()` | Function to determine if an array includes a value |
 | `formatDateObject()` | Function to format a date |
-| `renderAsAttributes()` | Function to render an object as an HTML attibute string |
+| `renderAsAttributes()` | Function to render an object as an HTML attribute string |
 | `waypointUrl()` | For generating URLs |
 
 
@@ -113,7 +113,7 @@ The following globals are always available to the Nunjucks templates. Refer to t
 | Property | Description |
 |----------|-------------|
 | `assetPath` | URL from which all `govuk-frontend` assets are served. Used by the main `govuk-frontend` template |
-| `casa.mountUrl` | Configured mount URL. Note that if using a paramterized mount point (e.g. `/base/:someId`) then this URL will contain the parameter value(s) |
+| `casa.mountUrl` | Configured mount URL. Note that if using a parameterized mount point (e.g. `/base/:someId`) then this URL will contain the parameter value(s) |
 | `casa.staticMountUrl` | Configured mount URL for serving static assets. This is generally the same as `casa.mountUrl`, but with any parameterised values removed. |
 | `htmlLang` | Detected language (required by `govuk-frontend` template) |
 | `locale` | Detected language |

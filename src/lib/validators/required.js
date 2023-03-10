@@ -20,7 +20,7 @@ const { isPlainObject } = lodash; // CommonJS
  * Test if value is present.
  *
  * Value is required. The following values will fail this rule:
- *  (all values that satisify `isEmpty()`) plus '\s'
+ *  (all values that satisfy `isEmpty()`) plus '\s'
  *
  * See {@link RequiredConfigOptions} for `make()` options.
  *

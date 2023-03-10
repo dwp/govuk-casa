@@ -45,7 +45,7 @@ Therefore we have settled on a halfway house by keeping JavaScript and making us
 
 ## Journey Context events
 
-An events mechanism was chosen over anything involving middleware hooks because the context could be changed _anywhere_ within the application, and certain middleware hooks may never get reached before a user is redirected. So the only point at which events are triggered is when `JourneyContext.putContext()` is called - this **should** always be called (by the developer, or CASA internals) just before data is comitted to the session.
+An events mechanism was chosen over anything involving middleware hooks because the context could be changed _anywhere_ within the application, and certain middleware hooks may never get reached before a user is redirected. So the only point at which events are triggered is when `JourneyContext.putContext()` is called - this **should** always be called (by the developer, or CASA internals) just before data is committed to the session.
 
 
 ## Middleware as arrays
