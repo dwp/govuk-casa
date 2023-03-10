@@ -1,11 +1,15 @@
+%YAML 1.2
+# yaml-language-server: $schema=https://json.schemastore.org/pre-commit-config.json
 ---
 default_install_hook_types:
-    - pre-commit
-    - commit-msg
-    - post-commit
+  - pre-commit
+  - prepare-commit-msg
+  - commit-msg
+  - post-commit
+  - pre-push
 
 default_stages:
-    - commit
+  - commit
 
 fail_fast: true
 
@@ -18,36 +22,80 @@ repos:
           - commit-msg
         additional_dependencies:
           - "@dwp/commitlint-config-base"
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.2.4
+    hooks:
+      - id: codespell
+        # derived from help here: https://github.com/codespell-project/codespell/issues/1498
+        exclude: >
+          (?x)^(
+            CHANGELOG.md|
+            package-lock.json
+          )$
+        additional_dependencies:
+          - tomli
+
+  - repo: https://github.com/jumanjihouse/pre-commit-hooks
+    rev: 3.0.0
+    hooks:
+      - id: forbid-binary
+      - id: shellcheck
+        args: ["--severity=warning"] # Optionally only show errors and warnings
+      - id: shfmt
+
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
-      - id: check-yaml
-      - id: end-of-file-fixer
       - id: check-added-large-files
       - id: check-case-conflict
       - id: check-executables-have-shebangs
       - id: check-shebang-scripts-are-executable
       - id: check-merge-conflict
-      - id: detect-private-key
+      - id: check-symlinks
+      - id: check-toml
+      - id: check-xml
+      - id: check-yaml
+        args:
+          - --unsafe # to handle Gitlab `- !reference` blocks
       - id: fix-byte-order-marker
       - id: forbid-new-submodules
       - id: mixed-line-ending
         args:
-          - --fix=no
+          - --fix=lf
       - id: no-commit-to-branch
         args:
           - --branch=main
       - id: trailing-whitespace
         args:
           - --markdown-linebreak-ext=md
-  - repo: https://github.com/Yelp/detect-secrets
-    rev: v1.4.0
-    hooks:
-      - id: detect-secrets
-        language: python
-        # The "secret" variable name is used innocently in a few places
-        args: ["--exclude-lines", "secret: 'secret'", "--exclude-lines", 'secret ==', "--exclude-lines", 'secret !=']
+
   - repo: https://gitlab.com/adam-moss/pre-commit-trailer
     rev: v1.1.0
     hooks:
       - id: add-pre-commit-config-trailer
+      - id: add-pre-commit-user-skipped-trailer
+
+  - repo: https://gitlab.com/adam-moss/pre-commit-ssh-git-signing-key
+    rev: v1.0.0
+    hooks:
+      - id: add-ssh-git-signing-key
+      - id: remove-ssh-git-signing-key
+
+  - repo: https://gitlab.com/repo-hooks/pre-commit-community-health
+    rev: v1.0.0-alpha
+    hooks:
+      - id: block-commit-no-verify
+      - id: block-push-skip-ci
+
+  - repo: local
+    hooks:
+      - id: trufflehog
+        stages:
+          - commit
+          - push
+        name: TruffleHog
+        description: Detect secrets in your data.
+        entry: bash -c 'trufflehog git file://. --since-commit HEAD'
+        language: system
+        pass_filenames: false
