@@ -132,3 +132,60 @@ field('my-field').processors([
   (fieldValue) => `${fieldValue}-processed`,
 ])
 ```
+
+
+## Defining error messages
+
+All validators will accept an `errorMsg` argument to describe the error that should appear given invalid data. This can take one of several forms:
+
+```javascript
+// A simple string (takes either a hardcoded string, or an i18n dictionary reference)
+validator.make({
+  errorMsg: 'waypoint:field.name.error',
+});
+
+// An object
+validator.make({
+  errorMsg: {
+    summary: 'waypoint:field.name.error',
+    variables: {},
+  },
+});
+
+// A function
+// This must return one of the formats above; a string or an object
+validator.make({
+  errorMsg: ({ journeyContext, waypoint, fieldName, fieldValue, validator }) => {
+    return 'waypoint:field.name.error';
+  },
+});
+```
+
+### Using variables in error messages
+
+There are two methods for injecting runtime variables into error messages:
+
+```javascript
+// Use an object to inject static variables (e.g. runtime environment config)
+validator.make({
+  errorMsg: {
+    summary: 'waypoint:field.name.error',
+    variables: {
+      // These variables will be interpolated when the error message is rendered
+      some_var: 'some_value',
+    },
+  },
+});
+
+// Use a function to inject dynamically evaluated variables
+validator.make({
+  errorMsg: ({ journeyContext, waypoint, fieldName, fieldValue, validator }) => {
+    return {
+      summary: 'waypoint:field.name.error',
+      variables: {
+        some_var: journeyContext.data['waypoint'].some_field,
+      },
+    };
+  },
+});
+```

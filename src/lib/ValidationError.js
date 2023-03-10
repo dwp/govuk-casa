@@ -55,7 +55,7 @@ export default class ValidationError {
       });
     }
 
-    // No contextual changes applicable; return ValidationErorr made from the
+    // No contextual changes applicable; return ValidationError made from the
     // original object
     if (isPlainObject(errorMsg)) {
       return new ValidationError(errorMsg);
