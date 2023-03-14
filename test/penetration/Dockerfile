@@ -1,7 +1,7 @@
 # To build this image for testing, run the following from the project root:
 #   docker build -t casa-pentest -f test/penetration/Dockerfile .
 
-FROM node:14-alpine@sha256:2825e1c8aad5786d79d6fce6ce14cf4c903bd4e03b84f586afe4e39430665fe4
+FROM node:14-alpine@sha256:1d02d4073d7dfd58950a222a862f8b819afd774560b7b3e992b27ff4cd088285
 
 ENV PORT=3000
 
