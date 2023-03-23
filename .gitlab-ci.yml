@@ -1,14 +1,11 @@
 include:
   - template: DAST.gitlab-ci.yml
   - project: dwp/engineering/pipeline-solutions/gitlab/functions
-    ref: 3.55.8
-    file: functions/node.yml
-  - project: dwp/engineering/pipeline-solutions/gitlab/functions
-    ref: 3.55.8
-    file: functions/auto-tag-merge.yml
-  - project: dwp/engineering/pipeline-solutions/gitlab/functions
-    ref: 3.55.8
-    file: jobs/build-docker-image.yml
+    ref: 3.58.0
+    file:
+      - functions/node.yml
+      - functions/auto-tag-merge.yml
+      - jobs/build-docker-image.yml
 
 variables:
   NODE_IMAGE: node:14-alpine@sha256:2ae9624a39ce437e7f58931a5747fdc60224c6e40f8980db90728de58e22af7c
@@ -51,13 +48,6 @@ dast:
 node-publish-gitlab:
   variables:
     NPM_PUBLISH_TAG: "maintain7x"
-  before_script:
-    # Job runs as root, so we need to allow hooks to run in the general case
-    - npm set "unsafe-perm" "true"
-    # As this is a OSS project, there is an .npmrc setting that points @dwp
-    # at the public npm registry. For internal publishing purpses, we need to
-    # remove that reference.
-    - if [ -f .npmrc ]; then sed -i.bak '/^@dwp:registry.*$/d' .npmrc; fi
 
 # Use a version-specific branch name for auto-packaging
 auto-tag-merge-prepare-mr:
