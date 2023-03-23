@@ -7,6 +7,7 @@ const { all: deepmergeAll } = merge;
 // Arrays will be merged such that elements at the same index will be merged
 // into each other
 // ref: https://www.npmjs.com/package/deepmerge
+
 const combineMerge = (target, source, options) => {
   const destination = target.slice()
 
@@ -25,8 +26,37 @@ const combineMerge = (target, source, options) => {
   return destination
 }
 
+// Allows objects to be deepmerged and retain their type, without becoming [object Object]
+// ref: https://github.com/jonschlinkert/is-plain-object/blob/master/is-plain-object.js
+
+function isObject(o) {
+  return Object.prototype.toString.call(o) === '[object Object]';
+}
+
+function isPlainObjectOrArray(o) {
+  if (Array.isArray(o)) {
+    return true
+  }
+  if (isObject(o) === false) {
+    return false
+  }
+  const ctor = o.constructor;
+  if (ctor === undefined) {
+    return true
+  }
+  const prot = ctor.prototype;
+  if (isObject(prot) === false) {
+    return false
+  }
+  // eslint-disable-next-line no-prototype-builtins
+  if (prot.hasOwnProperty('isPrototypeOf') === false) {
+    return false;
+  }
+  return true;
+}
+
 function mergeObjects(...objects) {
-  return deepmergeAll([Object.create(null), ...objects], { arrayMerge: combineMerge });
+  return deepmergeAll([Object.create(null), ...objects], { arrayMerge: combineMerge, isMergeableObject: isPlainObjectOrArray });
 }
 /**
  * Determine whether a value exists in a list.

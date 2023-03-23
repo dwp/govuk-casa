@@ -121,6 +121,25 @@ describe('View filter: mergeObjects', () => {
     });
   });
 
+  it('should not convert non-plain object to plain object when merging', () => {
+    const obj1 = {
+      safeString: new nunjucks.runtime.SafeString('hello'),
+    };
+    const obj2 = {
+      val: 'hello',
+      length: 5,
+    }
+    const merged = mergeObjects(obj1, obj2);
+    expect(merged).to.eql({
+      safeString: new nunjucks.runtime.SafeString('hello'),
+      val: 'hello',
+      length: 5,
+    });
+    expect(obj1.safeString.constructor.name).to.equal('String');
+    expect(merged.safeString.constructor.name).to.equal('String');
+    expect(merged.safeString.toString()).to.equal('hello');
+  });
+
   it('should not affect the original obejct', () => {
     const first = { x: 1 };
     const merged = mergeObjects(first, { x: 2 });
