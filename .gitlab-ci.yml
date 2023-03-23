@@ -12,18 +12,6 @@ variables:
   NODE_PUBLISH_TO_NPMJS: "true"
   AUTO_TAG_MERGE_PREPARE_MR: "true"
 
-# ---------------------------------------------------------- blueprint overrides
-
-node-coverage:
-  variables:
-    TEST_EXECUTABLE: 'npm run test'
-
-# This is an OSS project so the @dwp scope point to public npm registry. However
-# for publishing to the internal GitLab we need to remove that specific config.
-node-publish-gitlab:
-  before_script:
-    - if [ -f .npmrc ]; then sed -i.bak '/^@dwp:registry.*$/d' .npmrc; fi
-
 # ------------------------------------------------------------------ custom jobs
 
 # Unit tests on other supported node versions
