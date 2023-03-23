@@ -3,4 +3,4 @@ version: v1.0.0-alpha.0
 project_metadata:
   - project_id: 26878543
     name: govuk-casa
-    version: 7.1.11
+    version: 7.1.12
