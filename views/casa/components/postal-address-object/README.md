@@ -52,3 +52,13 @@ With configurable items:
 There is a companion validation rule - [`postalAddressObject`](../../../../../docs/field-validation-rules.md#postalAddressObject) - that you can use to ensure the addresses are passed in correctly. See this rule for more information on how to control error highlighting among other things.
 
 And when using the `required` field validator in conjunction with this macro, you will need to configure the validator to indicate which part of the date input you want to focus on when linked from the error summary, using the `focusSuffix` error option:
+
+## Google Tag Manager
+
+The following attributes will be attached to the error `<p>` tags if `casaWithAnalytics` is `true`:
+
+* `data-ga-question`: Holds the specific item's label's text content after removing all html tags
+
+These are the conventions used by DWP.
+
+> **IMPORTANT:** DO NOT ENABLE this option if the question or answer may contain personally-identifiable information as values will be pushed to Google

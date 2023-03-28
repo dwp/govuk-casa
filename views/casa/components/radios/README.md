@@ -68,6 +68,10 @@ The following attributes will be attached to each `<input>` option if `casaWithA
 * `data-ga-question`: Holds the fieldset legend's content
 * `data-ga-answer`: Holds the specific answer's text/html value
 
+The following attributes will be attached to the error `<p>` tag if `casaWithAnalytics` is `true`:
+
+* `data-ga-question`: Holds the fieldset legend's content after removing all html tags
+
 These are the conventions used by DWP.
 
 > **IMPORTANT:** DO NOT ENABLE this option if the question or answer may contain personally-identifiable information as values will be pushed to Google

@@ -29,7 +29,7 @@ const { isPlainObject } = lodash; // CommonJS
  */
 
 /**
- * @typedef {Object.<string, unknown>} ValidatorFactoryOptions
+ * @typedef {Object<string, unknown>} ValidatorFactoryOptions
  * @property {ErrorMessageConfig} errorMsg Error message
  */
 

@@ -19,3 +19,12 @@ casaGovukInput({
   casaErrors: formErrors
 })
 ```
+## Google Tag Manager
+
+The following attributes will be attached to the error `<p>` tag if `casaWithAnalytics` is `true`:
+
+* `data-ga-question`: Holds the fieldset label's text content after removing all html tags
+
+These are the conventions used by DWP.
+
+> **IMPORTANT:** DO NOT ENABLE this option if the question or answer may contain personally-identifiable information as values will be pushed to Google
