@@ -11,14 +11,8 @@ module.exports = (logger, defaultHeaders = {}, disabledHeaders = []) => (req, re
 
   const headers = Object.assign(Object.create(null), defaultHeaders);
 
-  // X-XSS-Protection introduces a security bug into IE8, so disable it if IE8
-  if (isIE8.test(req.headers['user-agent'])) {
-    logger.trace('disabling xss protection for IE8');
-    headers['X-XSS-Protection'] = '0';
-  }
-
   // Caching policy
-  // Cache static assets more agressively
+  // Cache static assets more aggressively
   if (isStaticAsset.test(req.url)) {
     headers['Cache-Control'] = 'public';
     headers.Pragma = 'cache';

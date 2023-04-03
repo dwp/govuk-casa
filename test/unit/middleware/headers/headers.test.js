@@ -31,12 +31,6 @@ describe('Middleware: headers/headers', () => {
     expect(mockLogger.trace).to.have.been.calledOnceWithExactly('apply headers to %s %s', 'GET', '/test-url');
   });
 
-  it('should set X-XSS-Protection header when given request from IE8', () => {
-    mockRequest.headers['user-agent'] = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0)';
-    middleware(mockRequest, mockResponse, stubNext);
-    expect(mockResponse.setHeader).to.have.been.calledWithExactly('X-XSS-Protection', '0');
-  });
-
   it('should set appropriate headers on non-static assets', () => {
     middleware(mockRequest, mockResponse, stubNext);
     expect(mockResponse.setHeader).to.have.been.calledWithExactly('Cache-Control', 'no-cache, no-store, must-revalidate, private');
