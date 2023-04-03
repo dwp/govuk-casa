@@ -1,4 +1,4 @@
-import { Graph } from 'graphlib';
+import { Graph } from '@dagrejs/graphlib';
 import JourneyContext from './JourneyContext.js';
 import logger from './logger.js';
 
@@ -26,7 +26,7 @@ const log = logger('lib:plan');
 
 /**
  * @access private
- * @typedef {import('graphlib').Graph} Graph
+ * @typedef {import('@dagrejs/graphlib').Graph} Graph
  */
 
 /**
