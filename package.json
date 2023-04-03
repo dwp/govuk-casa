@@ -30,6 +30,7 @@
     "url": "git@github.com:dwp/govuk-casa.git"
   },
   "dependencies": {
+    "@dagrejs/graphlib": "2.1.12",
     "body-parser": "1.20.2",
     "colors": "1.4.0",
     "csurf": "1.11.0",
@@ -39,7 +40,6 @@
     "fs-extra": "11.1.1",
     "govuk-frontend": "3.14.0",
     "govuk_template_jinja": "0.26.0",
-    "graphlib": "2.1.8",
     "klaw-sync": "6.0.0",
     "lodash.merge": "4.6.2",
     "luxon": "3.3.0",

@@ -177,7 +177,7 @@ The Plan is described by a directed graph data structure under the hood, which c
 You can get hold of this raw graph structure by using the `plan.getGraphStructure()` method. Here's a very simplistic example of how to convert the graph into a DOT language representation, which can then be fed into Graphviz:
 
 ```javascript
-const graphlib = require('graphlib');
+const graphlib = require('@dagrejs/graphlib');
 const dot = require('graphlib-dot');
 const { Plan } = require('@dwp/govuk-casa');
 
