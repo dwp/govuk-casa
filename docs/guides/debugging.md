@@ -25,3 +25,30 @@ export DEBUG=casa:middleware:session*
 ```
 
 Read more about the **[debug](https://www.npmjs.com/package/debug)** module.
+
+## Source Maps
+
+When transpiled to CS Modules during installation, CASA files are accompanied by Source Map files to help IDEs link back to the original ES Modules when running your application in the IDEs debug mode.
+
+In VS Code for example, a typical `launch.json` file could look like this:
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "my-debug-configuration",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/server.js",
+      "env": {
+        "DEBUG": "casa*"
+      },
+      "outputCapture": "std",
+      "sourceMaps": true,
+      "outFiles": ["${workspaceFolder}/node_modules/@dwp/govuk-casa/dist/**/*.js"],
+      "runtimeArgs": ["--preserve-symlinks"]
+    }
+  ]
+}
+```
