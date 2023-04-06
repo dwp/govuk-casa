@@ -44,7 +44,7 @@ export default class ValidatorFactory {
    *
    * @param {ValidatorFactoryOptions} config Validator config (custom to each validator)
    * @returns {Validator} Validator object
-   * @throws {TypeError} When configurarion is invalid.
+   * @throws {TypeError} When configuration is invalid.
    */
   static make(config = {}) {
     if (!isPlainObject(config)) {

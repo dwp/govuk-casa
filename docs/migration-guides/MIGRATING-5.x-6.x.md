@@ -3,7 +3,7 @@
 The following changes are **mandatory**:
 
 - [Change custom field validator functions, and validator conditionals](#field-validation)
-- [Field validators must reject with a `ValdiationError` (or array of `ValidationError`s)](#reject-with-validationerrors)
+- [Field validators must reject with a `ValidationError` (or array of `ValidationError`s)](#reject-with-validationerrors)
 
 --------------------------------------------------------------------------------
 

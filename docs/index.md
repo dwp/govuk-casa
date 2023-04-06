@@ -16,8 +16,10 @@ Guides
 
 * [Adding custom static assets](guides/custom-statics.md)
 * [Adding custom routes](guides/custom-routes.md)
+* [Mutable routers](guides/mutable-routers.md)
+* [Adding custom session timeouts](guides/custom-session-timeout.md)
 * [Running multiple CASA sub-apps](guides/using-sub-apps.md)
-* [Mounting on a paramerterised URL](guides/parameterised-mount.md)
+* [Mounting on a parameterised URL](guides/parameterised-mount.md)
 * [Strategies for handling stale data](guides/handling-stale-data.md)
 * [Running behind a proxy](guides/setup-behind-a-proxy.md)
 * [Migrating between CASA versions](migration-guides/)

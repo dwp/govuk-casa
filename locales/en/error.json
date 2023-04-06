@@ -1,5 +1,5 @@
 {
-  "documentTtlePrefix": "Error: ",
+  "documentTitlePrefix": "Error: ",
   "summary": {
     "h1": "There is a problem",
     "defaultDescription": ""

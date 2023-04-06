@@ -2,7 +2,7 @@
 
 ## Default `review` page no longer automated
 
-If you have a special `review` waypoint in your journey, the page handlers for that waypoint are no longer added automatically to your page definitions for you. Instead you must now explicitly add them to your page defintitions, and you don't need to call it `review` either.
+If you have a special `review` waypoint in your journey, the page handlers for that waypoint are no longer added automatically to your page definitions for you. Instead you must now explicitly add them to your page definitions, and you don't need to call it `review` either.
 
 With the addition of support for multiple User Journeys - each of which may have its own "review" page - a single global `review` page is now redundant.
 
@@ -78,7 +78,7 @@ If you have have any inline `<script>` in your templates, you will need to [conf
 
 Various Nunjucks macros, templates and browser JavaScript/CSS assets marked as deprecated (these were used in CASA v1 prior to introducing the GOVUK Frontend module) have now been removed. This includes:
 
-**Removal of all `*.html` macro/template files** - you should now use the equuivalent `*.njk` files
+**Removal of all `*.html` macro/template files** - you should now use the equivalent `*.njk` files
 
 **Removal of `partials/journey-sidebar.njk` and its use in other templates**
 

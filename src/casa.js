@@ -220,7 +220,7 @@ export {
 /**
  * @callback ErrorMessageConfigGenerator
  * @param {ValidateContext} dataContext Data context
- * @returns {string|ErrorMessageConfigObject} Compiled error mesasge config
+ * @returns {string|ErrorMessageConfigObject} Compiled error message config
  */
 
 /**

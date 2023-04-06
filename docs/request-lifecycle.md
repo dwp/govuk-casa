@@ -31,7 +31,7 @@ As a request gets passed through CASA's routes and middleware, it will modify th
 | | [GET/POST] Handle `skipto` links | | |
 | | [GET/POST] `journey.presteer` hooks executed | | |
 | | [GET/POST] Ensure user is not jumping ahead in the Plan; may redirect |  | `casa.journeyPreviousUrl` |
-| | [GET/POST] `journey.postesteer` hooks executed | | |
+| | [GET/POST] `journey.poststeer` hooks executed | | |
 | | [POST] `journey.presanitise` hooks executed | | |
 | | [POST] Sanitise fields in `req.body`, pruning unknown fields, run field processors on the remaining | | |
 | | [POST] `journey.postsanitise` hooks executed | | |

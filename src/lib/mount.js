@@ -33,7 +33,7 @@ import serveFirstWaypointMiddlewareFactory from '../middleware/serve-first-waypo
  * Mounting function factory.
  *
  * @param {object} args Arguments
- * @param {NunjucksEnvironment} args.nunjucksEnv Pre-configured Nunmjucks environment
+ * @param {NunjucksEnvironment} args.nunjucksEnv Pre-configured Nunjucks environment
  * @param {string} [args.mountUrl] Mount URL
  * @param {Plan} [args.plan] CASA Plan
  * @param {MutableRouter} args.staticRouter Router for all static assets

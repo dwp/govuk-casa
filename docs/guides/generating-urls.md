@@ -18,7 +18,7 @@ middleware = (req, res, next) => {
 };
 ```
 
-And in your Nunjucks templates (where the `waypointUrl()` functionn is already pre-configured with appropriate values for the `mountUrl` and `journeyContext` parameters):
+And in your Nunjucks templates (where the `waypointUrl()` function is already pre-configured with appropriate values for the `mountUrl` and `journeyContext` parameters):
 
 ```jinja
 <p>

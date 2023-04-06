@@ -82,7 +82,7 @@ describe('Plan', () => {
       expect(plan.getRouteCondition('a', 'b', 'next')).to.equal(follow);
     });
 
-    it('throws a SyntaxError if passed an mis-fomatted url:// waypoint', () => {
+    it('throws a SyntaxError if passed an mis-formatted url:// waypoint', () => {
       // Should have a trailing `/`
       expect(() => {
         plan.setNamedRoute('a', 'url://bad', 'next');

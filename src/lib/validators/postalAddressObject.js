@@ -19,7 +19,7 @@ const { isPlainObject } = lodash; // CommonjS
  * @property {string|object} [errorMsgAddress3] Error message for address3 part
  * @property {string|object} [errorMsgAddress4] Error message for address4 part
  * @property {string|object} [errorMsgPostcode] Error message for postcode part
- * @property {number} [strlenmax] Max. String length for each of the inputs appress[1-4]
+ * @property {number} [strlenmax] Max. String length for each of the inputs address[1-4]
  * @property {string[]} [requiredFields] Field parts required (others become optional). One of
  * 'address1'|'address2'|'address3'|'address4'|'postcode'
  */

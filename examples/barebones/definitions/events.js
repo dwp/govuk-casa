@@ -26,7 +26,7 @@ module.exports = (plan) => [
   //
   // BE CAREFUL WITH THIS: You might want to keep some waypoint data because
   // they're not traversable _yet_, but you know they may be. Tricky way to do
-  // thids cleanly en-mass. Better to use the `waypoint-change` events and
+  // this cleanly en-mass. Better to use the `waypoint-change` events and
   // pinpoint the waypoints you want to purge.
   {
     event: 'context-change',

@@ -72,7 +72,7 @@ module.exports = {
   myDateField: sf([
     r.required.make({
       errorMsg: {
-        summary: 'Your error mesasge',
+        summary: 'Your error message',
         focusSuffix: '[dd]'
       }
     }),

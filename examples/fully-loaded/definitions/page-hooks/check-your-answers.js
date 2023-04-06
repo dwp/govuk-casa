@@ -30,7 +30,7 @@ export default () => {
 
       res.locals.rows = [
         row('country', 'country', d.country.country ?? req.t('country:unspecified')),
-        row('date-of-birth', 'dateOfBirther', formatDateObject(d['date-of-birth'].dateOfBirth)),
+        row('date-of-birth', 'dateOfBirth', formatDateObject(d['date-of-birth'].dateOfBirth)),
         row('live-with-partner', 'havePartner', d['live-with-partner'].havePartner),
         row('your-name', 'fullName', d['your-name'].fullName),
       ];

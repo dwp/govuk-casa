@@ -46,8 +46,8 @@ JourneyContext.putContext(req.session, myJourneyContext);
 JourneyContext.removeContext(req.session, myJourneyContext);
 JourneyContext.removeContexts(req.session);
 JourneyContext.removeContextById(req.session, 'some-uuid');
-JourneyContext.removeContexByName(req.session, 'some-name');
-JourneyContext.removeContexsByTag(req.session, 'some-tag');
+JourneyContext.removeContextByName(req.session, 'some-name');
+JourneyContext.removeContextsByTag(req.session, 'some-tag');
 
 // Create a new ephemeral context, with a pre-generated id
 JourneyContext.createEphemeralContext();

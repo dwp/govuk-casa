@@ -12,10 +12,10 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "runtimeArgs": ["--preserve-symlinks"],
-      "runtimeExecutable": "npm",
       "program": "test",
-      "outputCapture": "std"
+      "outputCapture": "std",
+      "runtimeArgs": ["--preserve-symlinks"],
+      "runtimeExecutable": "npm"
     },
 
     // Use this to debug the `fully-loaded` example app
@@ -26,13 +26,15 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
+      "program": "server.js",
+      "cwd": "${workspaceFolder}/examples/fully-loaded/",
       "env": {
         "DEBUG": "casa*"
       },
-      "cwd": "${workspaceFolder}/examples/fully-loaded/",
-      "runtimeArgs": ["--preserve-symlinks"],
-      "program": "server.js",
-      "outputCapture": "std"
+      "outputCapture": "std",
+      "sourceMaps": true,
+      "outFiles": ["${workspaceFolder}/node_modules/@dwp/govuk-casa/dist/**/*.js"],
+      "runtimeArgs": ["--preserve-symlinks"]
     }
   ]
 }

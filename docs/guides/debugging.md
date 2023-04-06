@@ -28,7 +28,7 @@ Read more about the **[debug](https://www.npmjs.com/package/debug)** module.
 
 ## Source Maps
 
-When transpiled to CS Modules during installation, CASA files are accompanied by Source Map files to help IDEs link back to the original ES Modules when running your application in the IDEs debug mode.
+When transpiled to CommonJS Modules during installation, CASA files are accompanied by Source Maps to help IDEs link back to the original ES Modules when running your application in the IDEs debug mode.
 
 In VS Code for example, a typical `launch.json` file could look like this:
 
@@ -37,9 +37,9 @@ In VS Code for example, a typical `launch.json` file could look like this:
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "my-debug-configuration",
-      "type": "node",
+      "type": "pwa-node",
       "request": "launch",
+      "name": "my-debug-configuration",
       "program": "${workspaceFolder}/server.js",
       "env": {
         "DEBUG": "casa*"
@@ -52,3 +52,5 @@ In VS Code for example, a typical `launch.json` file could look like this:
   ]
 }
 ```
+
+Other VS Code debugger configuration examples are available [here](../../scripts/vscode.launch.example.json).

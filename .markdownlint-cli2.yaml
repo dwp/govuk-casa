@@ -21,7 +21,7 @@ config:
 
   # Allow inline HTML
   #
-  # Reason: The <br/> and <code> tags in partiuclar are useful for making blocks of text more readbale in a table cell.
+  # Reason: The <br/> and <code> tags in particular are useful for making blocks of text more readbale in a table cell.
   #
   # Details: https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md#md033---inline-html
   MD033:

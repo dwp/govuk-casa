@@ -73,7 +73,7 @@ describe('Radios macro', () => {
     expect(p.get(0).attribs['data-ga-question']).to.equal(undefined);
   });
 
-  it('should render data analytis tags when flagged', () => {
+  it('should render data analytics tags when flagged', () => {
     const output = njks.render('./casa/components/radios/template.njk', {
       params: {
         name: 'radioName',

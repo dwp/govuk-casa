@@ -34,7 +34,7 @@ Some default error pages are used by CASA. You can override these templates as n
 |----------|-----------|-------------|
 | `casa/errors/404.njk` | _none_ | Used when the requested page was not found |
 | `casa/errors/403.njk` | `errorCode`, `error` (object holding original Error) | Used when CSRF token is invalid, or request body cannot be verified |
-| `casa/errors/500.njk` | _as above_ | Geenral purpose error page, when something unexpected happens |
+| `casa/errors/500.njk` | _as above_ | General purpose error page, when something unexpected happens |
 | `casa/errors/503.njk` | _as above_ | General purpose upstream comms problem, when an upstream service cannot be found |
 | `casa/errors/static.njk` | _as above_ | A static English general error page (no translations), used when the translation utility cannot be loaded |
 
@@ -45,7 +45,7 @@ See the [error handler code](src/middleware/post.js) for a list of `errorCode` v
 For building your forms, you can use component macros from the following locations:
 
 * The bundled [CASA macros](../views/casa/components/) in `casa/components/*`
-* The macros provided by the [GOVUK Design System](https://design-system.service.gov.uk/components) `gouk/components/*`
+* The macros provided by the [GOVUK Design System](https://design-system.service.gov.uk/components) `govuk/components/*`
 
 The CASA macros are just wrappers around the GOVUK macros, so the macro interfaces are identical. However, the CASA macros come with come convenient parameters that will decorate your inputs with error and attributes designed to be used by analytics tools (such as Google Analytics), so you are encouraged to use these as the first port of call.
 

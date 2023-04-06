@@ -21,7 +21,7 @@ validators.dateObject.make({
   allowSingleDigitMonth: true,
 
   // Allow month names to be used. This will match any name that conforms to
-  // `Luxon`'s `MMM` format (i.e. January, Februrary, Mar, Apr, etc)
+  // `Luxon`'s `MMM` format (i.e. January, February, Mar, Apr, etc)
   allowMonthNames: true,
 
   // Limit to values before/after a specific date. You can use the `now`

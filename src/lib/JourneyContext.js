@@ -642,7 +642,7 @@ export default class JourneyContext {
    * @param {object} session Request session
    * @param {JourneyContext} context Context
    * @returns {void}
-   * @throws {TypeError} When isession is not a valid type, or context has no ID
+   * @throws {TypeError} When session is not a valid type, or context has no ID
    */
   static putContext(session, context) {
     if (!isObject(session)) {

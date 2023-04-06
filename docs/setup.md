@@ -68,7 +68,7 @@ Functions to alter functionality in certain points throughout the request lifecy
 * `PageField[]` **`pages[].fields[]`** Form field definitions
 * `object[]` **`pages[].hooks`** List of hooks specific to this page(matches structure of global hooks - see above - but without `<scope>.` prefixes)
 
-Definitions for the pages that represent an interactive form for the wach waypoint. Not every waypoint needs an accompanying page definition. For example, if you want to do something very custom with a waypoint in Plan, you can write your own routes for it and attach them to the `journeyRouter` yourself.
+Definitions for the pages that represent an interactive form for each waypoint. Not every waypoint needs an accompanying page definition. For example, if you want to do something very custom with a waypoint in Plan, you can write your own routes for it and attach them to the `journeyRouter` yourself.
 
 * `string` **`events[].event`** _(required)_ Event name (`waypoint-change` or `context-change`)
 * `string` **`events[].waypoint`** (optional) Attach listener to change events on this waypoint
@@ -123,7 +123,7 @@ const {
 | `ancillaryRouter` | `MutableRouter` or `Router` | Serves all general-purpose pages |
 | `journeyRouter` | `MutableRouter` or `Router` | Serves all pages that represent waypoints in a user's journey |
 
-All these routers are mutable (new routes/middleware can be appended or prepended to them) prior to calling `mount()` ([see below](#mutable-routers)) and immutable thereafter. Note that when they do get mounted, they are mounted in the order above.
+All these routers are mutable (new routes/middleware can be appended or prepended to them) prior to calling `mount()` ([see](./guides/mutable-routers.md)) and immutable thereafter. Note that when they do get mounted, they are mounted in the order above.
 
 | Artifact | Type | Description |
 |----------|------|-------------|
@@ -136,43 +136,10 @@ All these routers are mutable (new routes/middleware can be appended or prepende
 | `csrfMiddleware` | `function[]` | Useful for POST forms |
 | `cookieParserMiddleware` | `function[]` | Parses request cookies into the `req.signedCookies` object |
 
-All these middleware are also mutable before `mount()` is called (at which point they aree mounted in the order above). They are just arrays of middleware, so you can `push()`/`unshift()` your own middleware functions to these arrays as you need.
+All these middleware are also mutable before `mount()` is called (at which point they are mounted in the order above). They are just arrays of middleware, so you can `push()`/`unshift()` your own middleware functions to these arrays as you need.
 
 | Artifact | Type | Description |
 |----------|------|-------------|
 | `mount` | `function` | Calling this will mount all the CASA routers/middleware and effectively prevent any further modification |
 
 Call the `mount()` function as the last thing you do, once you've setup all the routers/middleware as you wish. [Read more about this function](docs/mount-function.md) to see how it can be used to mount your application in various scenarios.
-
-## Mutable routers
-
-ExpressJS does not allow you to modify the router stack once middleware has been mounted on an app or router instance.
-
-However, CASA provides a small window of opportunity for you to **append**, **prepend**, and **replace** middleware on any of its router before finally calling `mount()`. It does this through the [`MutableRouter`](../src/lib/MutableRouter.js) class.
-
-This is particularly useful for plugins that might need to ensure certain middleware is run before anything other routes on the `ancillaryRouter`. Here's an example:
-
-```javascript
-// Prepend a `.use()` moiutning, so we can be sure these template variables are
-// available to all rendered pages
-ancillaryRouter.prependUse((req, res, next) => {
-  res.locals.importantVariable = 'must be present';
-  next();
-});
-
-// Later on, mount is called
-mount(app);
-
-// If we try to mount anything on that router now, we get complaints ...
-ancillaryRouter.use((res, req, next) => {});  // throws an Error!
-```
-
-You can also replace any existing middleware on a particular path:
-
-```javascript
-ancillaryRouter.replaceAll('/session-path', (req, res, next) => {
-  // do something different
-});
-```
-
-Once `mount()` has been called, those routers are no longer mutable.

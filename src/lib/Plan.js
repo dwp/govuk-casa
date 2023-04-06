@@ -567,7 +567,7 @@ export default class Plan {
           target = arbiter({
             targets: target.map((t) => makeRouteObject(self.dgraph, t)),
             journeyContext: context,
-            travereOptions: options,
+            traverseOptions: options,
           });
           target = target.map((r) => ({ v: r.source, w: r.target, name: r.name }));
         } else {

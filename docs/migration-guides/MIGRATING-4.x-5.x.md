@@ -30,7 +30,7 @@ All public CASA classes and functions are now exported as part of the main modul
 const JourneyData = require('@dwp/govuk-casa/lib/JourneyData.js');
 ```
 
-You would now import each individual asset using `const { ... } = require(...)` synatax, as follows:
+You would now import each individual asset using `const { ... } = require(...)` syntax, as follows:
 
 ```javascript
 // JourneyData has been replaced with JourneyContext - see further below

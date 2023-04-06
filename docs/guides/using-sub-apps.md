@@ -68,7 +68,7 @@ function createApp(store, entrypointCondition) {
     },
   });
   const app = ExpressJS();
-  acillaryRouter.use(entrypointCondition);
+  ancillaryRouter.use(entrypointCondition);
   return mount(app);
 }
 

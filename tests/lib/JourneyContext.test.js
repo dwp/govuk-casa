@@ -207,7 +207,7 @@ describe('JourneyContext', () => {
       expect(JourneyContext.validateContextId(DEFAULT_CONTEXT_ID)).to.equal(DEFAULT_CONTEXT_ID);
     });
 
-    it('should throw if the provided ID is not a strind', () => {
+    it('should throw if the provided ID is not a string', () => {
       expect(() => {
         JourneyContext.validateContextId(123);
       }).to.throw(TypeError, 'Context ID must be a string');

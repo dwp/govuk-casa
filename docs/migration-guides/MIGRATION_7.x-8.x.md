@@ -85,7 +85,7 @@ A [series of middleware](docs/setup.md) are also returned which you can make use
 
 #### View directories
 
-We originally envisaged quite a bit of view-related configuration so the `views` configuration was created as an object for future-proofing. However, it never enfded up holding anything other than `dirs`. So we've rolled this up to a simpler array.
+We originally envisaged quite a bit of view-related configuration so the `views` configuration was created as an object for future-proofing. However, it never ended up holding anything other than `dirs`. So we've rolled this up to a simpler array.
 
 ```javascript
 // Old
@@ -157,7 +157,7 @@ Editing is now always allowed. If you need to disable editing on any particular 
 
 #### `useStickyEdit` option removed
 
-Editing is now always "sticky". If you need to control how a user is redirected back to the edit origin after an edit, use the **[events mechanism](../events.md)** to preceisely control the validation state on other pages after the edit.
+Editing is now always "sticky". If you need to control how a user is redirected back to the edit origin after an edit, use the **[events mechanism](../events.md)** to precisely control the validation state on other pages after the edit.
 
 #### `csp` options removed
 
@@ -338,7 +338,7 @@ Note that `fieldGatherModifiers` have been removed and their functionality can n
 
 ### Field validator class changes
 
-The `simpleFieldValidation()` function has been replaced with a new `field()` function which exposes a "builder" pattern for constructing field objects. This opens up opportunities for plugins to modify field configurtations, for example.
+The `simpleFieldValidation()` function has been replaced with a new `field()` function which exposes a "builder" pattern for constructing field objects. This opens up opportunities for plugins to modify field configurations, for example.
 
 ```javascript
 // old
@@ -418,7 +418,7 @@ Note that `createGetRequest()` has been superseded by `waypointUrl()`.
 
 ### Cookie banner removed
 
-The built-in cookie banner has been removed and moved to a new plugin. This plugin is currently under development however, but once availabnle you will simply need to include this plugin in your config and it should "just work".
+The built-in cookie banner has been removed and moved to a new plugin. This plugin is currently under development however, but once available you will simply need to include this plugin in your config and it should "just work".
 
 ### Nunjucks filters and variables changed or deprecated
 

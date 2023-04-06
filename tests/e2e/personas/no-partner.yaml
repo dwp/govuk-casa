@@ -22,7 +22,7 @@ journey:
   accounts:
     currentSavingsAccounts: select()
   check-your-answers:
-    # No interactiond
+    # No interactions
   submit:
     # No interactions
   what-happens-next:

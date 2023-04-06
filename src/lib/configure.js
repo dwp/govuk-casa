@@ -124,7 +124,7 @@ export default function configure(config = {}) {
     events,
   });
 
-  // Prepare form middleware and its constiuent parts
+  // Prepare form middleware and its constituent parts
   // These are used for any forms, including waypoint page forms.
   const bodyParserMiddleware = bodyParserMiddlewareFactory();
   const csrfMiddleware = csrfMiddlewareFactory();

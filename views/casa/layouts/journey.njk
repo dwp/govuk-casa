@@ -22,7 +22,7 @@
 
 {# Use `casaPageTitle` instead of `pageTitle` if you want CASA to automatically prefix with `Error` when appropriate #}
 {% block pageTitle -%}
-  {{- t("error:documentTtlePrefix") if formErrors -}}
+  {{- t("error:documentTitlePrefix") if formErrors -}}
   {% block casaPageTitle %}{% endblock %}
 {%- endblock %}
 

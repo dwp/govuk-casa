@@ -2,7 +2,7 @@
 
 ## `staticRouter` will not support parameterised routes
 
-The `staticRouter` is current attached to both the `app` and `router` thart CASA generates during mounting.
+The `staticRouter` is currently attached to both the `app` and `router` that CASA generates during mounting.
 
 For performance reasons, it will be removed from the `router`.
 

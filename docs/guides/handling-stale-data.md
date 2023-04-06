@@ -36,7 +36,7 @@ There are 4 options:
 ### Option 1: Do nothing
 
 ```javascript
-// Applicartion config
+// Application config
 const plan = new Plan();
 
 // Example of using it directly
