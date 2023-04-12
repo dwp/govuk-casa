@@ -15,7 +15,6 @@
     "rootDir": "src",
     "skipLibCheck": true,
     "sourceMap": true,
-    "sourceRoot": "../../src/",
     "strict": true,
     "traceResolution": false,
     "types": ["express", "node", "nunjucks"]

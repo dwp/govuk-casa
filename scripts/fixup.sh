@@ -30,3 +30,6 @@ cat >dist/mjs/package.json <<!EOF
   "type": "module"
 }
 !EOF
+
+# These files are uncompiled and don't require a source map
+find dist -name "*.cjs.map" -type f -delete
