@@ -370,6 +370,18 @@ describe('validators/dateObject', () => {
       });
     });
 
+    it('should remove leading, trailing, and nested whitespace', () => {
+      expect(sanitise({
+        dd: ' 1 ',
+        mm: '2 2',
+        yyyy: '   20   2   3   ',
+      })).to.deep.equal({
+        dd: '1',
+        mm: '2 2',
+        yyyy: '20 2 3',
+      });
+    });
+
     it('should ignore toString overrides', () => {
       expect(sanitise({
         dd: {

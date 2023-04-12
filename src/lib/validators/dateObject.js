@@ -3,7 +3,7 @@ import { DateTime } from 'luxon';
 import lodash from 'lodash';
 import ValidationError from '../ValidationError.js';
 import ValidatorFactory from '../ValidatorFactory.js';
-import { stringifyInput } from '../utils.js';
+import { stringifyInput, stripWhitespace } from '../utils.js';
 
 const { isPlainObject } = lodash;
 
@@ -93,7 +93,7 @@ export default class DateObject extends ValidatorFactory {
     }];
     formatTests.forEach((test) => {
       if (test.flags.every((v) => v === true)) {
-        formats = [...formats, ...test.formats]
+        formats = [...formats, ...test.formats];
       }
     });
 
@@ -159,9 +159,9 @@ export default class DateObject extends ValidatorFactory {
   sanitise(value) {
     if (value !== undefined) {
       return isPlainObject(value) ? {
-        dd: stringifyInput(value.dd),
-        mm: stringifyInput(value.mm),
-        yyyy: stringifyInput(value.yyyy),
+        dd: stripWhitespace(stringifyInput(value.dd)),
+        mm: stripWhitespace(stringifyInput(value.mm)),
+        yyyy: stripWhitespace(stringifyInput(value.yyyy)),
       } : Object.create(null);
     }
     return undefined;
