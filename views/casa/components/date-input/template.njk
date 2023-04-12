@@ -1,4 +1,4 @@
-{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from 'govuk/components/date-input/macro.njk' import govukDateInput %}
 
 {% set fieldErrors = params.casaErrors[params.namePrefix] %}
 {% set hasSuffixHighlights = true if fieldErrors[0].focusSuffix.length else false %}
@@ -7,7 +7,7 @@
   {{ 'govuk-input--error' if fieldErrors }}
 {% endset -%}
 
-{# Build up attributes #}
+{# Generate validation data- attributes #}
 {% set mergedAttributes = params.attributes or {} %}
 {% if fieldErrors %}
   {% set mergedAttributes = mergeObjects(mergedAttributes, {
@@ -53,6 +53,5 @@
     } if params.casaWithAnalytics else {}
   } if params.casaErrors[params.namePrefix] else null
 }) %}
-
 
 {{ govukDateInput(mergedParams) }}

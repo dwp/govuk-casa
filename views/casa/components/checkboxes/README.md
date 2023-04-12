@@ -15,62 +15,67 @@ Custom parameters:
 Basic example:
 
 ```nunjucks
-{% from "casa/components/checkboxes/macro.njk" import casaGovukCheckboxes with context %}
+{% from 'casa/components/checkboxes/macro.njk' import casaGovukCheckboxes with context %}
 
 casaGovukCheckboxes({
-  name: "preferences",
+  name: 'preferences',
   casaValue: formData.preferences,
   casaErrors: formErrors,
   fieldset: {
     legend: {
-      text: "Choose your preferences",
+      text: 'Choose your preferences',
       isPageHeading: true,
-      classes: "govuk-fieldset__legend--xl"
+      classes: 'govuk-fieldset__legend--xl'
     }
   },
   hint: {
-    text: "Some instructive hints"
+    text: 'Some instructive hints'
   },
-  items: [{
-    value: "twistedflax",
-    text: "Twisted Flax"
-  }, {
-    value: "tworeeds",
-    text: "Two Reeds"
-  }, {
-    value: "water",
-    text: "Water"
-  }, {
-    value: "horus",
-    text: "Horus"
-  }]
+  items: [
+    {
+      value: 'twoReeds',
+      text: 'Two Reeds'
+    }, {
+      value: 'twistedFlax',
+      text: 'Twisted Flax'
+    }, {
+      value: 'water',
+      text: 'Water'
+    }, {
+      value: 'eyeOfHorus',
+      text: 'Eye of Horus'
+    }
+  ]
 })
 ```
 
-To associate a checkbox item with a toggleable DOM element:
+If you want one of the checkbox items to toggle the display of an element:
 
 ```nunjucks
-{% from "casa/components/checkboxes/macro.njk" import casaGovukCheckboxes with context %}
+{% from 'casa/components/checkboxes/macro.njk' import casaGovukCheckboxes with context %}
 
 {% set panel %}
-  This panel will remain hidden until the "First Choice" option is checked
+  This panel will remain hidden until the 'Yes' checkbox is chosen
 {% endset %}
 
-casaGovukCheckboxes({
-  name: "preferences",
-  casaValue: formData.preferences,
+{{ casaGovukCheckboxes({
+  name: 'preference',
+  casaValue: formData.preference,
   casaErrors: formErrors,
-  items: [{
-    value: "first-choice",
-    text: "First Choice",
-    conditional: {
-      html: panel
+  items: [
+    {
+      value: 'yes',
+      text: 'Yes',
+      conditional: {
+        html: panel
+      }
+    },
+    {
+      value: 'no',
+      text: 'No'
     }
-  }, {
-    value: "second-choice",
-    text: "Second Choice"
-  }]
-})
+  ]
+}) }}
 ```
 
 ## Displaying errors

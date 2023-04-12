@@ -1,7 +1,7 @@
 pageTitle: Do you have a partner?
 field:
   havePartner:
-    hint: If you live with a partner their details must be included as part of your application. A partner is a husband wife civil partner or someone that you are in a relationship with.
+    hint: If you live with a partner their details must be included as part of your application. A partner is a husband, wife, civil partner, or someone that you are in a relationship with.
     required: Select yes if you have a partner.
     options:
       yes: Yes

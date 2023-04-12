@@ -1,0 +1,37 @@
+{% extends 'layouts/journey.njk' %}
+
+{% from 'casa/components/select/macro.njk' import casaGovukSelect with context %}
+
+{% block casaPageTitle %}
+  {{ t('your-relationship-status:pageTitle') }} - {{ t('common:serviceName') }}
+{% endblock %}
+
+{% block journey_form %}
+  {{ casaGovukSelect({
+    name: 'relationshipStatus',
+    casaValue: formData.relationshipStatus,
+    casaErrors: formErrors,
+    label: {
+      text: t('your-relationship-status:pageTitle'),
+      isPageHeading: true,
+      classes: 'govuk-label--xl'
+    },
+    items: [
+      {
+        text: t('your-relationship-status:field.relationshipStatus.options.select')
+      }, {
+        value: 'husband',
+        text: t('your-relationship-status:field.relationshipStatus.options.husband')
+      }, {
+        value: 'wife',
+        text: t('your-relationship-status:field.relationshipStatus.options.wife')
+      }, {
+        value: 'civilPartner',
+        text: t('your-relationship-status:field.relationshipStatus.options.civilPartner')
+      }, {
+        value: 'other',
+        text: t('your-relationship-status:field.relationshipStatus.options.other')
+      }
+    ]
+  }) }}
+{% endblock %}

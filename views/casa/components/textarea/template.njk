@@ -1,4 +1,4 @@
-{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from 'govuk/components/textarea/macro.njk' import govukTextarea %}
 
 {% set fieldErrors = params.casaErrors[params.name] %}
 
@@ -10,6 +10,7 @@
   }) %}
 {% endif %}
 
+{# Merge parameters #}
 {% set mergedParams = mergeObjects(params, {
   id: params.id if params.id else 'f-' + params.name,
   attributes: mergedAttributes,

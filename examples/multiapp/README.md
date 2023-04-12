@@ -32,7 +32,7 @@ npm ci
 npm link
 
 # Install and run this example
-cd examples/barebones/
+cd examples/multiapp/
 npm i
 npm link @dwp/govuk-casa
 DEBUG=casa* PORT=3000 npm start

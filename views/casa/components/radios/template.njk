@@ -1,4 +1,4 @@
-{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from 'govuk/components/radios/macro.njk' import govukRadios %}
 
 {% set fieldErrors = params.casaErrors[params.name] %}
 
@@ -10,7 +10,7 @@
   }) %}
 {% endif %}
 
-{# Add checked flag to chosen input #}
+{# Add checked flag to chosen item #}
 {% set mergedItems = [] %}
 {% for item in params.items %}
   {% set item = mergeObjects({

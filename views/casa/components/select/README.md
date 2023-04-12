@@ -1,10 +1,10 @@
-# `casaGovukRadios()`
+# `casaGovukSelect()`
 
-Extends the [`govukRadios()`](https://design-system.service.gov.uk/components/radios/) macro.
+Extends the [`govukSelect()`](https://design-system.service.gov.uk/components/select/) macro.
 
 Custom parameters:
 
-* `casaValue` - the value of the chosen radio button. This is a convenience for toggling the `checked` flag on the appropriate `item`, but you can also manually set `checked` on each item if you need to use more specific logic for determining checked state.
+* `casaValue` - the value of the selected option. This is a convenience for toggling the `selected` flag on the appropriate `item`, but you can also manually set `selected` on each item of you need to use more specific logic for determining selected state.
 * `casaErrors` - form errors (just pass `formErrors`)
 * `casaWithAnalytics` - enable DWP's conventional Google Analytics attributes (`data-ga-question` and `data-ga-answer`) - `false` by default; **IMPORTANT: DO NOT ENABLE this option if the question or answer may contain personally-identifiable information as values will be pushed to Google**
 
@@ -13,18 +13,14 @@ Custom parameters:
 Basic example:
 
 ```nunjucks
-{% from 'casa/components/radios/macro.njk' import casaGovukRadios with context %}
+{% from 'casa/components/select/macro.njk' import casaGovukSelect with context %}
 
-{{ casaGovukRadios({
+{{ casaGovukSelect({
   name: 'preference',
   casaValue: formData.preference,
   casaErrors: formErrors,
-  fieldset: {
-    legend: {
-      text: 'Choose your preference',
-      isPageHeading: true,
-      classes: 'govuk-fieldset__legend--xl'
-    }
+  label: {
+    text: 'Choose your preference'
   },
   hint: {
     text: 'Some instructive hints'
@@ -47,40 +43,11 @@ Basic example:
 }) }}
 ```
 
-If you want one of the radio items to toggle the display of an element:
-
-```nunjucks
-{% from 'casa/components/radios/macro.njk' import casaGovukRadios with context %}
-
-{% set panel %}
-  This panel will remain hidden until the 'Yes' radio button is chosen
-{% endset %}
-
-{{ casaGovukRadios({
-  name: 'preference',
-  casaValue: formData.preference,
-  casaErrors: formErrors,
-  items: [
-    {
-      value: 'yes',
-      text: 'Yes',
-      conditional: {
-        html: panel
-      }
-    },
-    {
-      value: 'no',
-      text: 'No'
-    }
-  ]
-}) }}
-```
-
-## Displaying errors
+<!-- ## Displaying errors
 
 ref: <https://design-system.service.gov.uk/components/error-summary/>
 
-The error summary link must set focus on the first radio in the group. Unless you have specified an explicit `id` for the first item in the list, this macro will explicitly set that `id` to `f-<name>`, e.g. `f-preferences` in order for links from the error summary to work as expected.
+The error summary link must set focus on the select item in the group. Unless you have specified an explicit `id` for the first item in the list, this macro will explicitly set that `id` to `f-<name>`, e.g. `f-preferences` in order for links from the error summary to work as expected. -->
 
 ## Google Analytics
 

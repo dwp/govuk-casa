@@ -11,7 +11,7 @@ export default () => {
   plan.setRoute('your-name', 'your-partners-name', (r, c) => c.data['live-with-partner'].havePartner === 'yes');
   plan.setRoute('your-name', 'your-address', (r, c) => c.data['live-with-partner'].havePartner !== 'yes');
 
-  plan.addSequence('your-partners-name', 'your-address');
+  plan.addSequence('your-partners-name', 'your-relationship-status', 'your-address');
 
   plan.addSequence('your-address', 'accounts', 'check-your-answers', 'submit');
 

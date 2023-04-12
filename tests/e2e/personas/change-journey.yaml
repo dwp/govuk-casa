@@ -18,6 +18,8 @@ journey:
     fullName: Joe Bloggs
   your-partners-name:
     fullName: Joanna Bloggs
+  your-relationship-status:
+    civilPartner: click()
   your-address:
     addr1: Street
     addr2: Suburb
@@ -42,8 +44,9 @@ journey:
 
 templateVars:
   check-your-answers:
-    country: ENGLAND
+    country: England
     dateOfBirth: 11 March 1900
     partnerDateOfBirth: 11 December 1950
+    relationshipStatus: Civil partner
     address: Street, Suburb, Town, County, AA1 1AA
     accounts: currentSavingsAccounts

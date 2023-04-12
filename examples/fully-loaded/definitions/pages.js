@@ -3,6 +3,7 @@ import dateOfBirthFields from './fields/date-of-birth.js';
 import liveWithPartnerFields from './fields/live-with-partner.js';
 import yourNameFields from './fields/your-name.js';
 import yourPartnersNameFields from './fields/your-partners-name.js';
+import yourRelationshipStatusFields from './fields/your-relationship-status.js'
 import yourAddressFields from './fields/your-address.js';
 import accountsFields from './fields/accounts.js';
 
@@ -35,6 +36,10 @@ export default () => [{
   waypoint: 'your-partners-name',
   view: 'pages/your-partners-name.njk',
   fields: yourPartnersNameFields(),
+}, {
+  waypoint: 'your-relationship-status',
+  view: 'pages/your-relationship-status.njk',
+  fields: yourRelationshipStatusFields(),
 }, {
   waypoint: 'your-address',
   view: 'pages/your-address.njk',

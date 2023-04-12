@@ -4,21 +4,17 @@ Which country do you live in?
 - {{ country }}
 Change
 
-
 What is your date of birth?
 - {{ dateOfBirth }}
 Change
 
-
 Do you have a partner?
-- {{ 'yes' if persona.journey['live-with-partner'].yes === 'click()' else 'no' }}
+- {{ 'Yes' if persona.journey['live-with-partner'].yes === 'click()' else 'No' }}
 Change
-
 
 What is your full name?
 - Joe Bloggs
 Change
-
 
 {% if persona.journey['live-with-partner'].yes == 'click()' %}
   What is your partner's full name?
@@ -28,17 +24,18 @@ Change
   What is your partner's date of birth?
   - {{ partnerDateOfBirth }}
   Change
-{% endif %}
 
+  What is your relationship status?
+  - {{ relationshipStatus }}
+  Change
+{% endif %}
 
 What is your home address?
 - {{ address }}
 Change
 
-
 Tell us what accounts or investments you {{ 'and your partner' if persona.journey['live-with-partner'].yes === 'click()' else '' }} have
 - {{ accounts }}
 Change
-
 
 Continue

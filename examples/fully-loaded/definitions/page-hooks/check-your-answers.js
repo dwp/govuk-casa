@@ -29,9 +29,9 @@ export default () => {
       const row = rowFactory(req.t, `${req.baseUrl}/`);
 
       res.locals.rows = [
-        row('country', 'country', d.country.country ?? req.t('country:unspecified')),
+        row('country', 'country', d.country.country ? req.t(`country:field.country.options.${d.country.country}`) : req.t('country:unspecified')),
         row('date-of-birth', 'dateOfBirth', formatDateObject(d['date-of-birth'].dateOfBirth)),
-        row('live-with-partner', 'havePartner', d['live-with-partner'].havePartner),
+        row('live-with-partner', 'havePartner', d['live-with-partner'].havePartner.replace(/\b\w/g, s => s.toUpperCase())),
         row('your-name', 'fullName', d['your-name'].fullName),
       ];
 
@@ -40,6 +40,7 @@ export default () => {
           ...res.locals.rows,
           row('your-partners-name', 'fullName', d['your-partners-name'].fullName),
           row('live-with-partner', 'partnerDateOfBirth', formatDateObject(d['live-with-partner'].partnerDateOfBirth), 'live-with-partner:field.partnerDateOfBirth.legend'),
+          row('your-relationship-status', 'relationshipStatus', req.t(`your-relationship-status:field.relationshipStatus.options.${d['your-relationship-status'].relationshipStatus}`))
         ];
       }
 
@@ -48,7 +49,6 @@ export default () => {
         row('your-address', 'address', makeAddress(d['your-address'])),
         row('accounts', 'accounts[]', (d['accounts'].accounts || []).join(', '), `accounts:${res.locals.claimTypePrefix}pageTitle`),
       ];
-
 
       next();
     }

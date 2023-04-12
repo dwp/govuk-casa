@@ -1,7 +1,4 @@
-{% from 'govuk/components/checkboxes/macro.njk' import govukCheckboxes %}
-
-{# Ensure field name is always suffixed with [] to have it parsed consistently as an array #}
-{% set fieldName = params.name | replace('[]', '') + '[]' %}
+{% from 'govuk/components/select/macro.njk' import govukSelect %}
 
 {% set fieldErrors = params.casaErrors[params.name] %}
 
@@ -13,45 +10,40 @@
   }) %}
 {% endif %}
 
-{% set mergedAttributes = mergeObjects(mergedAttributes, {
-  id: params.id if params.id else 'f-' + params.name + '-wrapper' | safe
-}) %}
-
-{# Add checked flag to chosen items #}
+{# Add selected flag to chosen item #}
 {% set mergedItems = [] %}
 {% for item in params.items %}
   {% set item = mergeObjects({
     attributes: {
-      'data-ga-question': params.fieldset.legend.text or params.fieldset.legend.html,
+      'data-ga-question': params.label.text or params.label.html,
       'data-ga-answer': item.text or item.html
     }
   } if params.casaWithAnalytics else {}, item, {
-    checked: true if item.checked or includes(params.casaValue, item.value) else null
+    selected: true if item.selected or item.value == params.casaValue else false
   }) %}
   {% set mergedItems = (mergedItems.push(item), mergedItems) %}
 {% endfor %}
 
 {# Merge parameters #}
 {% set mergedParams = mergeObjects(params, {
-  name: fieldName,
-  idPrefix: params.idPrefix if params.idPrefix else 'f-' + params.name,
+  id: params.id if params.id else 'f-' + params.name,
   attributes: mergedAttributes,
   items: mergedItems,
   errorMessage: {
     text: t(params.casaErrors[params.name][0].inline, params.casaErrors[params.name][0].variables),
     attributes: {
-      'data-ga-question': params.fieldset.legend.text or params.fieldset.legend.html | striptags
+      'data-ga-question': params.label.text or params.label.html | striptags
     } if params.casaWithAnalytics else {}
-  } if params.casaErrors[params.name] else null
+  } if params.casaErrors[params.name].length
 }) %}
 
-{# Ensure that the first item has the id matching `f-<name>` in order for error summary linkage to work #}
+{# Ensure that the first item has the id matching `f-<name>` in order for error summary linkage to work
 {% if not mergedParams.items[0].id %}
   {% set mergedParams = mergeObjects(mergedParams, {
     items: [{
       id: 'f-' + params.name
     }]
   }) %}
-{% endif %}
+{% endif %} #}
 
-{{ govukCheckboxes(mergedParams) }}
+{{ govukSelect(mergedParams) }}

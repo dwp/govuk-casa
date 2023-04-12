@@ -1,0 +1,10 @@
+pageTitle: What is your relationship status?
+field:
+  relationshipStatus:
+    required: Select your relationship status.
+    options:
+      select: Please select
+      husband: Husband
+      wife: Wife
+      civilPartner: Civil partner
+      other: Other

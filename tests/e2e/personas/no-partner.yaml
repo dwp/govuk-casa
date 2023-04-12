@@ -65,7 +65,7 @@ errors:
 
 templateVars:
   check-your-answers:
-    country: ENGLAND
+    country: England
     dateOfBirth: 11 March 1900
     address: Street, Suburb, Town, County, AA1 1AA
     accounts: currentSavingsAccounts

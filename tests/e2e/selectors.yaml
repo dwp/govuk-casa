@@ -20,6 +20,12 @@ your-name:
 your-partners-name:
   fullName: 'input[name="fullName"]'
 
+your-relationship-status:
+  husband: 'select[name="relationshipStatus"] > option[value="husband"]'
+  wife: 'select[name="relationshipStatus"] > option[value="wife"]'
+  civilPartner: 'select[name="relationshipStatus"] > option[value="civilPartner"]'
+  other: 'select[name="relationshipStatus"] > option[value="other"]'
+
 your-address:
   addr1: 'input[name="addressLine1"]'
   addr2: 'input[name="addressLine2"]'

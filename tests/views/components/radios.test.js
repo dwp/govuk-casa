@@ -101,6 +101,7 @@ describe('Radios macro', () => {
 
     expect(p.get(0).attribs['data-ga-question']).to.equal('Radio Legend');
   });
+
   it('should strip html tags from the data-ga-question value', () => {
     const output = njks.render('./casa/components/radios/template.njk', {
       params: {
@@ -129,5 +130,4 @@ describe('Radios macro', () => {
 
     expect(p.get(0).attribs['data-ga-question']).to.equal('Radio Legend');
   });
-
 });
