@@ -1,7 +1,7 @@
 include:
   - template: DAST.gitlab-ci.yml
   - project: dwp/engineering/pipeline-solutions/gitlab/functions
-    ref: 3.58.5
+    ref: 3.58.6
     file:
       - functions/node.yml
       - functions/auto-tag-merge.yml
