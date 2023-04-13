@@ -1,9 +1,10 @@
 // This is the "parent" application, off which the other sub-apps will hang.
-const ExpressJS = require('express');
-const { MemoryStore } = require('express-session');
+import ExpressJS from 'express';
 
-const mainApplication = require('./app-main/app.js');
-const subApplication = require('./app-sub/app.js');
+import { MemoryStore } from 'express-session';
+
+import mainApplication from './app-main/app.js';
+import subApplication from './app-sub/app.js';
 
 const application = ({
   MOUNT_URL = '/',
@@ -49,4 +50,4 @@ const application = ({
   return app;
 };
 
-module.exports = application;
+export default application;

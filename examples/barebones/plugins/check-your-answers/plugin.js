@@ -1,5 +1,8 @@
-const { resolve } = require('path');
-const { waypointUrl } = require('@dwp/govuk-casa');
+import { dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
+import { waypointUrl } from '@dwp/govuk-casa';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const reSlugger = /[^a-z0-9\-]+/ig;
 
@@ -16,9 +19,9 @@ const stringify = (value) => {
  * @param {CheckYourAnswersPluginOptions} param0
  * @returns
  */
-module.exports = function({
+export default ({
   waypoints = ['check-your-answers'],
-}) {
+}) => {
   const configure = (config) => {
     // Structure pages to make it more easily searchable by waypoint
     const pages = {};

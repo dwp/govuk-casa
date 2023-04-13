@@ -1,6 +1,6 @@
-const { field, validators: r, ValidationError } = require('@dwp/govuk-casa');
+import { field, validators as r, ValidationError } from '@dwp/govuk-casa';
 
-module.exports = () => [
+export default () => [
   field('boxes').validators([
     r.required.make(),
 

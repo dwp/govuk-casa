@@ -1,19 +1,28 @@
-const ExpressJS = require('express');
-const { configure } = require('@dwp/govuk-casa');
-const path = require('path');
+import ExpressJS from 'express';
 
-const pages = require('./definitions/pages.js');
-const plan = require('./definitions/plan.js');
+import { dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
+
+import { configure } from '@dwp/govuk-casa';
+
+import pages from './definitions/pages.js';
+import planFactory from './definitions/plan.js';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const application = ({
   sessionStore,
   mountUrl = '/',
   subAppMountUrl = '/',
 }) => {
+  const plan = planFactory({
+    subAppMountUrl,
+  });
+
   const { staticRouter, ancillaryRouter, mount } = configure({
     mountUrl,
     views: [
-      path.resolve(__dirname, 'views'),
+      resolve(__dirname, 'views'),
     ],
     session: {
       name: 'myappsessionid',
@@ -23,13 +32,11 @@ const application = ({
       store: sessionStore,
     },
     i18n: {
-      dirs: [ path.resolve(__dirname, 'locales') ],
+      dirs: [ resolve(__dirname, 'locales') ],
       locales: [ 'en' ]
     },
     pages: pages(),
-    plan: plan({
-      subAppMountUrl,
-    }),
+    plan,
   });
 
   staticRouter.get('/css/application.css', (req, res, next) => {
@@ -49,4 +56,4 @@ const application = ({
   return app;
 };
 
-module.exports = application;
+export default application;

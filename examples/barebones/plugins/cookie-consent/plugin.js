@@ -1,7 +1,9 @@
-const { resolve } = require('path');
+import { dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
 
-module.exports = function(options) {
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
+export default (options) => {
   const configure = (config) => {
     // Add a views directory
     config.views.push(resolve(__dirname, 'views'));

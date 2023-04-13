@@ -1,12 +1,14 @@
 import ExpressJS from 'express';
-import { configure } from '../../src/casa.js';
+
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
-import pages from './definitions/pages.js';
-import planFactory from './definitions/plan.js';
+import { configure } from '../../src/casa.js';
+
 import eventsFactory from './definitions/events.js';
 import globalHooks from './definitions/global-hooks.js';
+import pages from './definitions/pages.js';
+import planFactory from './definitions/plan.js';
 
 const { static: expressStatic } = ExpressJS; // CommonJS
 

@@ -1,6 +1,6 @@
 // Some examples of how events can be used to manipulate the JourneyContext
 
-module.exports = (plan) => [
+export default (plan) => [
   // This "waypoint-change" event is triggered whenever data/validation
   // changes on a waypoint, just prior to it being committed to the session.
   // In this example, we're using it to force the user to re-read their

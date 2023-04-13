@@ -1,6 +1,6 @@
-const { field, validators: r } = require('@dwp/govuk-casa');
+import { field, validators as r } from '@dwp/govuk-casa';
 
-module.exports = () => [
+export default () => [
   field('tel', { optional: true }).validators([
     r.regex.make({
       pattern: /^[0-9\-\+\(\) ]+$/,

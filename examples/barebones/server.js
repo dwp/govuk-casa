@@ -1,8 +1,8 @@
-const application = require('./app.js');
+import application from './app.js';
 
 // Here we're injecting some config as it might be read from process.env
-const server = application({
+application({
   MOUNT_URL: '/barebones/',
-}).listen(3000, () => {
+}).listen(process.env.PORT ?? 3000, () => {
   console.log('running');
 });

@@ -1,6 +1,6 @@
-const { Plan } = require('@dwp/govuk-casa');
+import { Plan } from '@dwp/govuk-casa';
 
-module.exports = () => {
+export default () => {
   const plan = new Plan({
     // Demo of one technique to handle traversal arbitration; see docs for more
     // options as `auto` can be expensive

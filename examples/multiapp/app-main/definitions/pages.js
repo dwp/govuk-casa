@@ -1,6 +1,6 @@
-const { field, validators: r } = require('@dwp/govuk-casa');
+import { field, validators as r } from '@dwp/govuk-casa';
 
-module.exports = () => [{
+export default () => [{
   waypoint: 'start',
   view: 'pages/start.njk',
   fields: [

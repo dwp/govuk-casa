@@ -1,6 +1,6 @@
-const { field, validators: r } = require('@dwp/govuk-casa');
+import { field, validators as r } from '@dwp/govuk-casa';
 
-module.exports = () => [
+export default () => [
   field('license', { optional: true }).validators([
     r.strlen.make({
       max: 20,

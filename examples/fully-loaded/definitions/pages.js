@@ -1,11 +1,11 @@
+import accountsFields from './fields/accounts.js';
 import countryFields from './fields/country.js';
 import dateOfBirthFields from './fields/date-of-birth.js';
 import liveWithPartnerFields from './fields/live-with-partner.js';
+import yourAddressFields from './fields/your-address.js';
 import yourNameFields from './fields/your-name.js';
 import yourPartnersNameFields from './fields/your-partners-name.js';
 import yourRelationshipStatusFields from './fields/your-relationship-status.js'
-import yourAddressFields from './fields/your-address.js';
-import accountsFields from './fields/accounts.js';
 
 import checkYourAnswersHooks from './page-hooks/check-your-answers.js';
 import submitHooks from './page-hooks/submit.js';

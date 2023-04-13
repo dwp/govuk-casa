@@ -1,6 +1,6 @@
-const { field, validators: r } = require('@dwp/govuk-casa');
+import { field, validators as r } from '@dwp/govuk-casa';
 
-module.exports = () => [
+export default () => [
   field('title').validators([
     r.required.make({
       errorMsg: 'personal-details:field.title.empty'

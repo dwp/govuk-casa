@@ -1,10 +1,10 @@
-const personalDetailsFields = require('./fields/personal-details.js');
-const checkboxesFields = require('./fields/checkboxes.js');
-const contactDetailsFields = require('./fields/contact-details.js');
-const secretAgentFields = require('./fields/secret-agent.js');
-const workImpactFields = require('./fields/work-impact.js');
+import personalDetailsFields from './fields/personal-details.js';
+import checkboxesFields from './fields/checkboxes.js';
+import contactDetailsFields from './fields/contact-details.js';
+import secretAgentFields from './fields/secret-agent.js';
+import workImpactFields from './fields/work-impact.js';
 
-module.exports = () => [{
+export default () => [{
   waypoint: 'personal-details',
   view: 'pages/personal-details.njk',
   fields: personalDetailsFields(),

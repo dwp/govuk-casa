@@ -1,6 +1,6 @@
-const { Plan } = require('@dwp/govuk-casa');
+import { Plan } from '@dwp/govuk-casa';
 
-module.exports = ({ mainAppMountUrl }) => {
+export default ({ mainAppMountUrl }) => {
   const plan = new Plan();
 
   plan.addSequence(

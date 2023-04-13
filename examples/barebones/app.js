@@ -1,18 +1,26 @@
-const ExpressJS = require('express');
-const { static: expressStatic } = ExpressJS;
-const { configure, JourneyContext } = require('@dwp/govuk-casa');
-const { resolve } = require('path');
+import ExpressJS from 'express';
 
-const cookieConsentPlugin = require('./plugins/cookie-consent/plugin.js');
-const checkYourAnswersPlugin = require('./plugins/check-your-answers/plugin.js');
+import { configure, JourneyContext } from '@dwp/govuk-casa';
+import { dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
 
-const pages = require('./definitions/pages.js');
-const plan = require('./definitions/plan.js')();
-const events = require('./definitions/events.js')(plan);
+import eventsFactory from './definitions/events.js';
+import pages from './definitions/pages.js';
+import planFactory from './definitions/plan.js';
+
+import checkYourAnswersPlugin from './plugins/check-your-answers/plugin.js';
+import cookieConsentPlugin from './plugins/cookie-consent/plugin.js';
+
+const { static: expressStatic } = ExpressJS; // CommonJS
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const application = ({
   MOUNT_URL = '/',
 }) => {
+  const plan = planFactory();
+  const events = eventsFactory(plan);
+
   // Configure some CASA routes and other middleware for use in our CASA app
   const { staticRouter, ancillaryRouter, csrfMiddleware, mount } = configure({
     views: [
@@ -98,4 +106,4 @@ const application = ({
   return app;
 };
 
-module.exports = application;
+export default application;
