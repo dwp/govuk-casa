@@ -37,7 +37,7 @@
     "lint": "eslint .",
     "build": "npm run build:prepare && npm run build:sources && npm run build:css-assets",
     "build:prepare": "rm -rf dist/* && mkdir -p dist/assets/js/ && mkdir -p dist/assets/css/",
-    "build:sources": "tsc -p tsconfig-cjs.json && ./scripts/fixup.sh",
+    "build:sources": "tsc -p tsconfig-cjs.json && ./scripts/fixup.sh && node scripts/esm-wrapper",
     "build:css-assets": "node scripts/compile-sass.js",
     "build:api-docs": "npx jsdoc -c ./jsdoc.json -d ./docs/api/ --debug -P '' -r -R ./README.md --verbose -t ./node_modules/docdash ./src",
     "prepare": "npm run build",

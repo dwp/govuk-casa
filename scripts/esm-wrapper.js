@@ -1,21 +1,26 @@
-// Basic wrapper to act as the package entrypoint for ESM applications
-// ref: https://redfin.engineering/node-modules-at-war-why-commonjs-and-es-modules-cant-get-along-9617135eeca1
-// The `../casa.js` reference here is correct. This file will be copied into
-// `dist/` in the right location at build time, which will resolve that file
-// path correctly.
-import casa from '../casa.js';
+// Script to create a basic wrapper to act as the package entrypoint for ESM applications
+// Reference: https://redfin.engineering/node-modules-at-war-why-commonjs-and-es-modules-cant-get-along-9617135eeca1
 
-export const { configure } = casa;
-export const { validators } = casa;
-export const { field } = casa;
-export const { Plan } = casa;
-export const { JourneyContext } = casa;
-export const { ValidatorFactory } = casa;
-export const { ValidationError } = casa;
+import { writeFile } from 'fs';
 
-// Utilities
-export const { waypointUrl } = casa;
-export const { endSession } = casa;
+import * as casa from '../dist/casa.js';
 
-// Nunjucks filters
-export const { nunjucksFilters } = casa;
+let data = `// Basic wrapper to act as the package entrypoint for ESM applications;
+// Reference: https://redfin.engineering/node-modules-at-war-why-commonjs-and-es-modules-cant-get-along-9617135eeca1;
+
+import casa from \'../casa.js\';
+
+`;
+
+Object.keys(casa).forEach((key) => {
+  if (key !== '__esModule' && key !== 'default') {
+    data += `export const { ${key} } = casa;\n`;
+  }
+});
+
+writeFile('./dist/mjs/esm-wrapper.js', data, (err) => {
+  if (err) {
+    throw err;
+  }
+  console.log('./dist/mjs/esm-wrapper.js created');
+});

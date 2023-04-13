@@ -2,9 +2,8 @@
 #
 # Run this after typescript compilation
 
-# Copy ESM wrapper
+# Create ESM wrapper directory
 mkdir -p dist/mjs/
-cp scripts/esm-wrapper.js dist/mjs/
 
 # Copy all src/**/*.cjs files as tsc will ignore them
 # These files need the .cjs extension so we can import them directly from our
