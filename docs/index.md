@@ -26,6 +26,7 @@ Guides
 * [Debugging a CASA app](guides/debugging.md)
 * [Customising `Content-Security-Policy`](guides/helmet.md)
 * [Generating URLs](guides/generating-urls.md)
+* [Using external data in route conditions](guides/using-external-data-in-route-conditions.md)
 
 ## API Reference
 
