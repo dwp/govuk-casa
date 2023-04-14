@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [8.8.0](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/compare/8.7.12...8.8.0) (2023-04-14)
+
+
+### Features
+
+* add data-ga-question tags to errors inside input macros ([cb6e277](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/commit/cb6e2779ccc12b5ec2b0f7b60e926a01e8db3706))
+* **components:** create casa component version of govuk ([c53fd99](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/commit/c53fd996103b310cf97bfbe28f03d6da01a9a3d8))
+
+
+### Bug Fixes
+
+* update source maps sourceRoot ([3721b7d](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/commit/3721b7dc9472ba5fa94e38d6a239d0fd6767d9a8))
+
 ## [8.7.12](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/compare/8.7.11...8.7.12) (2023-03-28)
 
 
