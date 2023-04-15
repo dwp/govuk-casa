@@ -21,6 +21,7 @@ const editOrigin = (req) => {
 export default function dataMiddleware({
   plan,
   events,
+  contextIdGenerator,
 }) {
   return [
     (req, res, next) => {
@@ -44,6 +45,13 @@ export default function dataMiddleware({
 
       // Grab chosen language from session
       req.casa.journeyContext.nav.language = req.session.language;
+
+      // Context ID generator
+      Object.defineProperty(req, JourneyContext.ID_GENERATOR_REQ_KEY, {
+        value: contextIdGenerator,
+        enumerable: false,
+        writable: false,
+      });
 
       /* ------------------------------------------------- Template variables */
 

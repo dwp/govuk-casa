@@ -31,7 +31,7 @@ export default ({
       }
       /* eslint-enable security/detect-object-injection */
 
-      const journeyContext = JourneyContext.fromContext(req.casa.journeyContext);
+      const journeyContext = JourneyContext.fromContext(req.casa.journeyContext, req);
       journeyContext.setDataForPage(waypoint, prunedBody);
 
       // Second, prune any fields that do not pass the validation conditional,

@@ -77,6 +77,7 @@ export default function configure(config = {}) {
     helmetConfigurator = undefined,
     formMaxParams,
     formMaxBytes,
+    contextIdGenerator,
   } = ingestedConfig;
 
   // Prepare all page hooks so they are prefixed with the `journey.` scope.
@@ -124,6 +125,7 @@ export default function configure(config = {}) {
   const dataMiddleware = dataMiddlewareFactory({
     plan,
     events,
+    contextIdGenerator,
   });
 
   // Prepare form middleware and its constituent parts

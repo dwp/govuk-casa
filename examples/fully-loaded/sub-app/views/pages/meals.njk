@@ -1,0 +1,35 @@
+{% extends "casa/layouts/journey.njk" %}
+
+{% from "casa/components/checkboxes/macro.njk" import casaGovukCheckboxes with context %}
+
+{% block casaPageTitle %}
+  Meals
+{% endblock %}
+
+{% block journey_form %}
+  {{ casaGovukCheckboxes({
+    name: "meals",
+    fieldset: {
+      legend: {
+        text: "Select your meals",
+        isPageHeading: true,
+        classes: "govuk-fieldset__legend--xl"
+      }
+    },
+    items: [{
+      value: "chilli",
+      text: "Chill con carne"
+    }, {
+      value: "lasagne",
+      text: "Lasagne"
+    }, {
+      value: "quiche",
+      text: "Quiche"
+    }, {
+      value: "salad",
+      text: "Salad"
+    }],
+    casaValue: formData.meals,
+    casaErrors: formErrors
+  }) }}
+{% endblock %}

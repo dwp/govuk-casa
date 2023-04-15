@@ -5,7 +5,7 @@ const { formatDateObject } = nunjucksFilters;
 const makeAddress = ({ addressLine1, addressLine2, town, county, postcode }) => `${addressLine1},${addressLine2},${town},${county},${postcode}`.replace(/,+/g, ',  ');
 
 export default () => {
-  const rowFactory = (t, mountUrl) => (waypoint, fieldName, value, key = `${waypoint}:pageTitle`) => ({
+  const rowFactory = (t, mountUrl, journeyContext) => (waypoint, fieldName, value, key = `${waypoint}:pageTitle`) => ({
     key: { text: t(key) },
     value: { text: value },
     actions: {
@@ -13,10 +13,15 @@ export default () => {
         text: 'Change',
         visuallyHiddenText: '',
         href: waypointUrl({
+          journeyContext,
           waypoint,
           mountUrl,
           edit: true,
-          editOrigin: `${mountUrl}check-your-answers`,
+          editOrigin: waypointUrl({
+            journeyContext,
+            mountUrl,
+            waypoint: 'check-your-answers',
+          }),
         }) + `#f-${fieldName}`,
       }],
     },
@@ -26,7 +31,7 @@ export default () => {
     hook: 'prerender',
     middleware: (req, res, next) => {
       const d = req.casa.journeyContext.data;
-      const row = rowFactory(req.t, `${req.baseUrl}/`);
+      const row = rowFactory(req.t, `${req.baseUrl}/`, req.casa.journeyContext);
 
       res.locals.rows = [
         row('country', 'country', d.country.country ? req.t(`country:field.country.options.${d.country.country}`) : req.t('country:unspecified')),
@@ -50,6 +55,8 @@ export default () => {
         row('accounts', 'accounts[]', (d['accounts'].accounts || []).join(', '), `accounts:${res.locals.claimTypePrefix}pageTitle`),
         row('your-assets', 'assetsValue', `£${d['your-assets'].assetsValue}`)
       ];
+
+      res.locals.usingDemoContext = !req.casa.journeyContext.isDefault();
 
       next();
     }

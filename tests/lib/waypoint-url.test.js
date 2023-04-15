@@ -79,6 +79,9 @@ describe('waypointUrl()', () => {
     journeyContext.identity.id = 'test-context';
 
     expect(waypointUrl({ mountUrl: '/path/test-context/', journeyContext })).to.not.contain('contextid=');
+    expect(waypointUrl({
+      mountUrl: '/path/test-context/', waypoint: 'wp', edit: true, editOrigin: '/test/', journeyContext,
+    })).to.not.contain('contextid=');
   });
 
 

@@ -16,4 +16,10 @@
     rows: rows
   }) }}
 
+  {% if usingDemoContext %}
+    <p class="govuk-body">
+      You have used the demo ephemeral context!
+    </p>
+  {% endif %}
+
 {% endblock %}

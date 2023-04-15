@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /**
  * Represents the state of a user's journey through the Plan. It contains
  * information about:
@@ -6,17 +7,19 @@
  * - Validation errors on that data
  * - Navigation information about how the user got where they are.
  */
-import { v4 as uuidv4, validate as uuidValidate } from 'uuid';
 import lodash from 'lodash';
 import ValidationError from './ValidationError.js';
 import logger from './logger.js';
 import { notProto } from './utils.js';
+import { uuid as uuidGenerator } from './context-id-generators.js';
 
 const {
   cloneDeep, isPlainObject, isObject, has, isEqual,
 } = lodash; // CommonJS
 
 const log = logger('lib:journey-context');
+
+const uuid = uuidGenerator();
 
 /**
  * @access private
@@ -74,6 +77,16 @@ export default class JourneyContext {
   #eventListenerPreState;
 
   static DEFAULT_CONTEXT_ID = 'default';
+
+  /**
+   * @type {symbol}
+   */
+  static ID_GENERATOR_REQ_LOG = Symbol('generatedContextIds');
+
+  /**
+   * @type {symbol}
+   */
+  static ID_GENERATOR_REQ_KEY = Symbol('generateContextId');
 
   /**
    * Constructor.
@@ -476,12 +489,15 @@ export default class JourneyContext {
   /**
    * Construct a new ephemeral JourneyContext instance with a unique ID.
    *
+   * Note: In later versions of CASA, the `req` property will be mandatory.
+   *
+   * @param {ExpressRequest} [req] Request session
    * @returns {JourneyContext} Constructed JourneyContext instance
    */
-  static createEphemeralContext() {
+  static createEphemeralContext(req) {
     return JourneyContext.fromObject({
       identity: {
-        id: uuidv4(),
+        id: JourneyContext.generateContextId(req),
       },
     });
   }
@@ -489,17 +505,20 @@ export default class JourneyContext {
   /**
    * Construct a new JourneyContext instance from another instance.
    *
+   * Note: In later versions of CASA, the `req` property will be mandatory.
+   *
    * @param {JourneyContext} context Context to copy from
+   * @param {ExpressRequest} [req] Request
    * @returns {JourneyContext} Constructed JourneyContext instance
    * @throws {TypeError} When context is not a valid type
    */
-  static fromContext(context) {
+  static fromContext(context, req) {
     if (!(context instanceof JourneyContext)) {
       throw new TypeError('Source context must be a JourneyContext');
     }
 
     const newContextObj = context.toObject();
-    newContextObj.identity.id = uuidv4();
+    newContextObj.identity.id = JourneyContext.generateContextId(req);
 
     return JourneyContext.fromObject(newContextObj);
   }
@@ -542,14 +561,14 @@ export default class JourneyContext {
   }
 
   /**
-   * Validate the format of a context ID, i.e. "default" or a uuid
-   * eg 00000000-0000-0000-0000-000000000000
-   * eg 123e4567-e89b-12d3-a456-426614174000
+   * Validate the format of a context ID:
+   * - Between 1 and 64 characters
+   * - Contain only the characters a-z, 0-9, -
    *
    * @param {string} id Context ID
    * @returns {string} Original ID if it's valid
    * @throws {TypeError} When id is not a valid type
-   * @throws {SyntaxError} When id is not a valid uuid format
+   * @throws {SyntaxError} When id is not a valid format
    */
   static validateContextId(id) {
     if (id === JourneyContext.DEFAULT_CONTEXT_ID) {
@@ -558,9 +577,58 @@ export default class JourneyContext {
 
     if (typeof id !== 'string') {
       throw new TypeError('Context ID must be a string');
-    } else if (!uuidValidate(id)) {
-      throw new SyntaxError('Context ID is not in the correct uuid format');
+    } else if (!id.match(/^[a-z0-9-]{1,64}$/)) {
+      throw new SyntaxError('Context ID is not in the correct format');
     }
+
+    return id;
+  }
+
+  /**
+   * Generate a new context ID, validate it, and throw if the ID has already been
+   * generated during this request lifecycle. This may happen if an ID was
+   * generated, but never used to store a new context in the session. Therefore
+   * it is important for user code to always call `putContext()` before
+   * generating another ID.
+   *
+   * @param {ExpressRequest} [req] Request
+   * @returns {string} New ID
+   * @throws {Error} When generated ID has already been used
+   */
+  static generateContextId(req) {
+    // Can't generate custom ID when no request object is provided, because the
+    // custom generator function itself exists on that object.
+    if (!req) {
+      log.warn('Generating a context ID without a given request object. Reverting to uuid().');
+      return uuid();
+    }
+
+    // Collate a list of context IDs already in use, either from existing
+    // contexts in the session, or generated during this request lifecycle.
+    // We don't identify the source of each ID because the generator must not
+    // differentiate its behaviour on whether the ID exists in session or not.
+    const inSessionIds = JourneyContext.getContexts(req.session)
+      .map((c) => c.identity.id)
+      .filter((id) => id !== JourneyContext.DEFAULT_CONTEXT_ID);
+    const inRequestIds = req[JourneyContext.ID_GENERATOR_REQ_LOG] ?? [];
+    const reservedIds = Array.from(new Set([...inSessionIds, ...inRequestIds]).values());
+
+    // Generate and log the ID
+    const id = JourneyContext.validateContextId(
+      req[JourneyContext.ID_GENERATOR_REQ_KEY].call(null, { req, reservedIds }),
+    );
+    if (reservedIds.includes(id)) {
+      throw new Error(`Regenerated a context ID, ${String(id)}. It has likely not yet been used to store a new context in session using JourneyContext.putContext().`);
+    }
+
+    if (!req[JourneyContext.ID_GENERATOR_REQ_LOG]) {
+      Object.defineProperty(req, JourneyContext.ID_GENERATOR_REQ_LOG, {
+        value: [],
+        enumerable: false,
+        writable: false,
+      });
+    }
+    req[JourneyContext.ID_GENERATOR_REQ_LOG].push(id);
 
     return id;
   }

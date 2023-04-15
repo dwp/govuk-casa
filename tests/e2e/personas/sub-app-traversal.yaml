@@ -1,0 +1,9 @@
+# Traverse forwards and backwards using ephemeral context
+
+journey:
+  start:
+    subAppContextButton: click()
+  sub-app/:contextid/meals:
+    chilli: select()
+  sub-app/:contextid/complete:
+    # No interactions

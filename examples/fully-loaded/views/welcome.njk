@@ -18,4 +18,20 @@
       isStartButton: true
     }) }}
   </p>
+
+  <p class="govuk-body">
+    {{ govukButton({
+      text: 'Try an alternative context',
+      href: casa.mountUrl + "country?contextid=" + demoContextId,
+      isStartButton: true
+    }) }}
+  </p>
+
+  <p class="govuk-body">
+    {{ govukButton({
+      text: 'Try a parameterised sub-app',
+      href: casa.mountUrl + "sub-app/" + subAppContextId + "/meals",
+      isStartButton: true
+    }) }}
+  </p>
 {% endblock %}

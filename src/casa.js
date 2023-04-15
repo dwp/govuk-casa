@@ -11,6 +11,7 @@ import waypointUrl from './lib/waypoint-url.js';
 import endSession from './lib/end-session.js';
 import * as nunjucksFilters from './lib/nunjucks-filters.js';
 import * as constants from './lib/constants.js';
+import * as contextIdGenerators from './lib/context-id-generators.js';
 
 /** @module @dwp/govuk-casa */
 export {
@@ -32,6 +33,9 @@ export {
 
   // Constants
   constants,
+
+  // Context ID generators
+  contextIdGenerators,
 };
 
 /* ----------------------------------------------------------------- Typedefs */
@@ -160,6 +164,7 @@ export {
  * @property {HelmetConfigurator} [helmetConfigurator] Helmet configuration manipulator function
  * @property {number} [formMaxParams=25] Max number of form parameters to ingest
  * @property {number|string} [formMaxBytes="50KB"] Max total form payload size to ingest
+ * @property {ContextIdGenerator} [contextIdGenerator] Custom context ID generator
  */
 
 /**
@@ -329,4 +334,25 @@ export {
  * @property {any} [validation] Validation state
  * @property {any} [nav] Navigation meta
  * @property {any} [identity] Identity meta
+ */
+
+/**
+ * @typedef ContextIdGeneratorParams
+ * @property {object} args Arguments
+ * @property {import('express').Request} args.req Request
+ * @property {[string]} args.reservedIds List of IDs already in use in session or request
+ */
+
+/**
+ * Generates a GUID for use as a journey context ID. This ID must not clash with
+ * any other context IDs in the given session.
+ *
+ * The resulting ID must match these criteria:
+ * - A string
+ * - Between 1 and 64 characters
+ * - Contain only the characters a-z, 0-9, -
+ *
+ * @callback ContextIdGenerator
+ * @param {ContextIdGeneratorParams} params Parameters
+ * @returns {string} A newly generated GUID
  */

@@ -9,6 +9,7 @@ import {
   validateHookPath,
   validateView,
 } from './utils.js';
+import * as contextIdGenerators from './context-id-generators.js';
 
 /**
  * @access private
@@ -435,6 +436,18 @@ export function validateFormMaxBytes(value, defaultValue = 1024 * 50) {
   return parsedValue;
 }
 
+export function validateContextIdGenerator(generator) {
+  if (generator === undefined) {
+    return contextIdGenerators.uuid();
+  }
+
+  if (!(generator instanceof Function)) {
+    throw new TypeError('contextIdGenerator must be a function');
+  }
+
+  return generator;
+}
+
 /**
  * Ingest, validate, sanitise and manipulate configuration parameters.
  *
@@ -489,6 +502,9 @@ export default function ingest(config = {}) {
     // Form parsing
     formMaxParams: validateFormMaxParams(config.formMaxParams, 25),
     formMaxBytes: validateFormMaxBytes(config.formMaxBytes, 1024 * 50),
+
+    // Context ID generator
+    contextIdGenerator: validateContextIdGenerator(config.contextIdGenerator),
   };
 
   // Freeze to modifications

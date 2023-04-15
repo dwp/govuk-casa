@@ -1,8 +1,8 @@
 # Example: Fully Loaded
 
-This example makes use of every CASA feature.
+> This application is used as the basis for our end-to-end test suite, so any changes made here may necessitate changes to the `tests/e2e/` sources
 
-You'll notice that it doesn't import `@dwp/govuk-casa` anywhere, but rather `src/casa.js` directly.  This is because we also use this example app as the basis for our e2e testing.
+This example makes use of every CASA feature.
 
 ```bash
 # Install

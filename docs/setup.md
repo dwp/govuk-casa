@@ -90,6 +90,10 @@ Read more about [configuring Helmet](guides/helmet.md) for your service.
 
 This allows you to limit the number of individual parameters and/or the maximum total payload that will be parsed from an incoming form body.
 
+* `function` **`contextIdGenerator`** Function to generate custom IDs for new ephemeral contexts (default: uuid generator)
+
+This allows you to define a custom function for generating new context IDs instead of the default UUIDs.
+
 ## Returned values
 
 A call to `configure()` will return:

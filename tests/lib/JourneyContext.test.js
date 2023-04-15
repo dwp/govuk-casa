@@ -6,6 +6,13 @@ import ValidationError from '../../src/lib/ValidationError.js';
 
 const DEFAULT_CONTEXT_ID = JourneyContext.DEFAULT_CONTEXT_ID;
 
+// This more closely mimics the way this property is created in prod code
+const defineCustomIdGenerator = (req, generator) => Object.defineProperty(req, JourneyContext.ID_GENERATOR_REQ_KEY, {
+  value: generator,
+  enumerable: false,
+  writable: false,
+});
+
 describe('JourneyContext', () => {
   describe('constructor()', () => {
     it('should contain an empty data object in initialisation', () => {
@@ -17,6 +24,24 @@ describe('JourneyContext', () => {
     it('should contain an empty validation object in initialisation', () => {
       const data = new JourneyContext({});
       expect(data.getValidationErrors()).to.be.an('object').and.be.empty; /* eslint-disable-line no-unused-expressions */
+    });
+  });
+
+  describe('generateContextId()', () => {
+    it('generates a new ID using the default source by default', () => {
+      expect(JourneyContext.generateContextId()).to.match(/^[a-z0-9-]{1,64}$/);
+    });
+
+    it('generates a new ID from a custom generator', () => {
+      const req = {};
+      defineCustomIdGenerator(req, () => ('123'));
+      expect(JourneyContext.generateContextId(req)).to.equal('123');
+    });
+
+    it('throws if the generated ID does not meet format criteria', () => {
+      const req = {};
+      defineCustomIdGenerator(req, () => (123));
+      expect(() => JourneyContext.generateContextId(req)).to.throw(Error, /must be a string/)
     });
   });
 
@@ -158,6 +183,17 @@ describe('JourneyContext', () => {
         JourneyContext.DEFAULT_CONTEXT_ID,
       );
     });
+
+    it('generates a context with a custom ID', () => {
+      const request = {
+        test: 123,
+      }
+      defineCustomIdGenerator(request, ({ req }) => (`--${req.test}--`));
+      const newInstance = JourneyContext.createEphemeralContext(request);
+
+      expect(newInstance).to.be.an.instanceof(JourneyContext);
+      expect(newInstance.identity.id).to.equal('--123--');
+    });
   });
 
   describe('fromContext()', () => {
@@ -173,6 +209,18 @@ describe('JourneyContext', () => {
 
       expect(newInstance).to.be.an.instanceof(JourneyContext);
       expect(newInstance.identity.id).not.be.empty.and.not.to.equal(source.identity.id);
+    });
+
+    it('generates a context with a custom ID', () => {
+      const request = {
+        test: 123,
+      }
+      defineCustomIdGenerator(request, ({ req }) => (`--${req.test}--`));
+      const source = new JourneyContext();
+      const newInstance = JourneyContext.fromContext(source, request);
+
+      expect(newInstance).to.be.an.instanceof(JourneyContext);
+      expect(newInstance.identity.id).to.equal('--123--');
     });
   });
 
@@ -207,6 +255,10 @@ describe('JourneyContext', () => {
       expect(JourneyContext.validateContextId(DEFAULT_CONTEXT_ID)).to.equal(DEFAULT_CONTEXT_ID);
     });
 
+    it('should echos any valid string', () => {
+      expect(JourneyContext.validateContextId('valid-string')).to.equal('valid-string');
+    });
+
     it('should throw if the provided ID is not a string', () => {
       expect(() => {
         JourneyContext.validateContextId(123);
@@ -215,8 +267,16 @@ describe('JourneyContext', () => {
 
     it('should throw if the provided ID is not a valid UUID', () => {
       expect(() => {
-        JourneyContext.validateContextId('abcdefgh-e89b-12d3-a456-426614174000');
-      }).to.throw(SyntaxError, 'Context ID is not in the correct uuid format');
+        JourneyContext.validateContextId('_$_some_invalid_chars_!_');
+      }).to.throw(SyntaxError, 'Context ID is not in the correct format');
+
+      expect(() => {
+        JourneyContext.validateContextId('');
+      }).to.throw(SyntaxError, 'Context ID is not in the correct format');
+
+      expect(() => {
+        JourneyContext.validateContextId('longer-than-64-characters'.padEnd(65, 'x'));
+      }).to.throw(SyntaxError, 'Context ID is not in the correct format');
     });
   });
 
@@ -558,7 +618,7 @@ describe('JourneyContext', () => {
     it('falls back to context ID is not a valid format', () => {
       validateStub.restore();
       const context = JourneyContext.extractContextFromRequest({
-        query: { contextid: 'invalid' },
+        query: { contextid: '$invalid$' },
       });
 
       expect(context).to.equal('default');

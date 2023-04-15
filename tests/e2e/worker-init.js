@@ -89,7 +89,8 @@ export default async ({ sharedState, language = 'en', cliArgs = {} }) => {
     plan,
     selectors,
     nunjucksEnv,
-    textFilter: (t) => (t),
+    // The start page chooses a random name, so we need to cement this for our static testing
+    textFilter: (t) => (t.replace(/Welcome, (Bob|John|Sue|Clara)/, 'Welcome, SALUTATION')),
     hooks,
   };
 };

@@ -29,7 +29,10 @@ export default ({
   (req, res, next) => {
     // Store a copy of the journey context before modifying it. This is useful
     // for any comparison work that may be done in subsequent middleware.
-    req.casa.archivedJourneyContext = JourneyContext.fromContext(req.casa.journeyContext);
+    req.casa.archivedJourneyContext = JourneyContext.fromContext(
+      req.casa.journeyContext,
+      req,
+    );
 
     // Ignore data for any non-persistent fields
     // ESLint disabled as `fields`, `i` and `name` are dev-controlled

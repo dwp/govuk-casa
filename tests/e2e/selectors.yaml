@@ -1,3 +1,7 @@
+start:
+  demoContextButton: 'a[href^="/country?contextid="]'
+  subAppContextButton: 'a[href^="/sub-app/"]'
+
 country:
   england: 'input[name="country"][value="ENGLAND"]'
   skipLink: '#skip-waypoint'
@@ -51,3 +55,9 @@ check-your-answers:
 
 submit:
   # Empty, but needed so a `_back` selector can be added
+
+sub-app/:param/meals:
+  chilli: '[name="meals[]"][value="chilli"]'
+  lasagne: "[name='meals[]'][value='lasagne']"
+  quiche: "[name='meals[]'][value='quiche']"
+  salad: "[name='meals[]'][value='salad']"
