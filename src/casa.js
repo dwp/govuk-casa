@@ -10,6 +10,7 @@ import MutableRouter from './lib/MutableRouter.js';
 import waypointUrl from './lib/waypoint-url.js';
 import endSession from './lib/end-session.js';
 import * as nunjucksFilters from './lib/nunjucks-filters.js';
+import * as constants from './lib/constants.js';
 
 /** @module @dwp/govuk-casa */
 export {
@@ -28,6 +29,9 @@ export {
 
   // Nunjucks filters
   nunjucksFilters,
+
+  // Constants
+  constants,
 };
 
 /* ----------------------------------------------------------------- Typedefs */
@@ -42,12 +46,18 @@ export {
  * @property {JourneyContext} journeyContext Context including changes
  * @property {JourneyContext} previousContext Context prior to changes
  * @property {object} session Request session object
+ * @property {ContextEventUserInfo} userInfo User-space information pass-through
  */
 
 /**
  * @callback ContextEventHandler
  * @param {ContextEventHandlerOptions} opts Options
  * @returns {void}
+ */
+
+/**
+ * @typedef {object} ContextEventUserInfo
+ * @property {symbol} [casaRequestPhase] Request phase at which event is triggered
  */
 
 /**

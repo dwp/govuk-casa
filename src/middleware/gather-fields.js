@@ -4,6 +4,7 @@
 // - Remove validation date of JourneyContext so it can re-evaluted
 
 import JourneyContext from '../lib/JourneyContext.js';
+import { REQUEST_PHASE_GATHER } from '../lib/constants.js';
 
 /**
  * @access private
@@ -41,10 +42,16 @@ export default ({
     }
     /* eslint-enable security/detect-object-injection */
 
-    // Update data and validation context in the current request, and store
+    // Update data and validation context in the current request, and store.
+    // The validation state is removed here because we must assume the gathered
+    // data is invalid until proven otherwise when the validation step is run.
     req.casa.journeyContext.setDataForPage(waypoint, persistentBody);
     req.casa.journeyContext.removeValidationStateForPage(waypoint);
-    JourneyContext.putContext(req.session, req.casa.journeyContext);
+    JourneyContext.putContext(req.session, req.casa.journeyContext, {
+      userInfo: {
+        casaRequestPhase: REQUEST_PHASE_GATHER,
+      },
+    });
 
     next();
   },

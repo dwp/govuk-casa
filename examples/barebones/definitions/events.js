@@ -1,5 +1,7 @@
 // Some examples of how events can be used to manipulate the JourneyContext
 
+import { constants } from '@dwp/govuk-casa';
+
 export default (plan) => [
   // This "waypoint-change" event is triggered whenever data/validation
   // changes on a waypoint, just prior to it being committed to the session.
@@ -30,8 +32,23 @@ export default (plan) => [
   // pinpoint the waypoints you want to purge.
   {
     event: 'context-change',
-    handler: ({ journeyContext }) => {
+    handler: ({ journeyContext, userInfo }) => {
+      // Ignore when the context is updated at the "gather" stage, because it
+      // will always be invalidated at that point. We instead need to wait until
+      // the data has been validated before we test traversals here.
+      if (userInfo?.casaRequestPhase === constants.REQUEST_PHASE_GATHER) {
+        console.log('Skipping purge at the "gather" phase');
+        return;
+      }
+
+      // If the last traversed waypoint has errors, ignore the event and allow
+      // the user to correct errors before we purge.
       const traversed = plan.traverse(journeyContext);
+      if (!traversed.length || journeyContext.getValidationErrorsForPage(traversed.at(-1)).length) {
+        console.log(`Waypoint "${traversed.at(-1)}" has errors, so won't purge`);
+        return;
+      }
+
       const all = plan.getWaypoints();
       const toPurge = all.filter(e => !traversed.includes(e));
       journeyContext.purge(toPurge);

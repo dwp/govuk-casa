@@ -358,7 +358,7 @@ export default class JourneyContext {
   purge(waypoints = []) {
     const newData = Object.create(null);
     const newValidation = Object.create(null);
-    const toKeep = Object.keys(this.data).filter((w) => !waypoints.includes(w));
+    const toKeep = Object.keys(this.#data).filter((w) => !waypoints.includes(w));
 
     // ESLint disabled as `i` is an integer
     /* eslint-disable security/detect-object-injection */
@@ -367,7 +367,6 @@ export default class JourneyContext {
       newValidation[toKeep[i]] = this.#validation[toKeep[i]];
     }
     /* eslint-enable security/detect-object-injection */
-
     this.#data = { ...newData };
     this.#validation = { ...newValidation };
   }
@@ -408,12 +407,16 @@ export default class JourneyContext {
   /**
    * Execute all listeners for the given event.
    *
+   * The `userInfo` parameter is simply passed straight through to the event
+   * listeners.
+   *
    * @param {object} params Params
    * @param {string} params.event Event (waypoint-change | context-change)
    * @param {object} params.session Session
+   * @param {ContextEventUserInfo|object} [params.userInfo] Pass-through info
    * @returns {JourneyContext} Chain
    */
-  applyEventListeners({ event, session }) {
+  applyEventListeners({ event, session, userInfo }) {
     if (!this.#eventListeners.length) {
       return this;
     }
@@ -450,7 +453,12 @@ export default class JourneyContext {
 
       if (runHandler) {
         log.trace(logMessage);
-        handler({ journeyContext: this, previousContext, session });
+        handler({
+          journeyContext: this,
+          previousContext,
+          session,
+          userInfo,
+        });
       }
     }
     /* eslint-enable security/detect-object-injection */
@@ -641,10 +649,12 @@ export default class JourneyContext {
    *
    * @param {object} session Request session
    * @param {JourneyContext} context Context
+   * @param {object} options Options
+   * @param {ContextEventUserInfo|object} [options.userInfo] Pass-through event info
    * @returns {void}
    * @throws {TypeError} When session is not a valid type, or context has no ID
    */
-  static putContext(session, context) {
+  static putContext(session, context, options = {}) {
     if (!isObject(session)) {
       throw new TypeError('Session must be an object');
     } else if (!(context instanceof JourneyContext)) {
@@ -659,14 +669,18 @@ export default class JourneyContext {
     }
 
     // Apply context events
+    const { userInfo = undefined } = options;
+
     context.applyEventListeners({
       event: 'waypoint-change',
       session,
+      userInfo,
     });
 
     context.applyEventListeners({
       event: 'context-change',
       session,
+      userInfo,
     });
 
     const list = new Map(session.journeyContextList);

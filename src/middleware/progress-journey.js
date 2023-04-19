@@ -6,11 +6,16 @@ import Plan from '../lib/Plan.js';
 import JourneyContext from '../lib/JourneyContext.js';
 import waypointUrl from '../lib/waypoint-url.js';
 import logger from '../lib/logger.js';
+import { REQUEST_PHASE_REDIRECT } from '../lib/constants.js';
 
 const log = logger('middleware:progress-journey');
 
 const saveAndRedirect = (session, journeyContext, url, res, next) => {
-  JourneyContext.putContext(session, journeyContext);
+  JourneyContext.putContext(session, journeyContext, {
+    userInfo: {
+      casaRequestPhase: REQUEST_PHASE_REDIRECT,
+    },
+  });
 
   session.save((err) => {
     if (err) {
@@ -73,7 +78,6 @@ export default ({
     if (Plan.isExitNode(nextWaypoint)) {
       log.trace(`Next waypoint is an exit node; clearing validation state on ${nextWaypoint}`);
       req.casa.journeyContext.clearValidationErrorsForPage(nextWaypoint);
-      JourneyContext.putContext(req.session, req.casa.journeyContext);
     }
 
     // Construct the next url

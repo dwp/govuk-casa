@@ -1,5 +1,6 @@
 // Validate the data captured in the journey context
 import JourneyContext from '../lib/JourneyContext.js';
+import { REQUEST_PHASE_VALIDATE } from '../lib/constants.js';
 
 const updateContext = ({
   waypoint,
@@ -15,7 +16,11 @@ const updateContext = ({
   }
 
   // Save to session
-  JourneyContext.putContext(session, journeyContext);
+  JourneyContext.putContext(session, journeyContext, {
+    userInfo: {
+      casaRequestPhase: REQUEST_PHASE_VALIDATE,
+    },
+  });
 }
 
 export default ({

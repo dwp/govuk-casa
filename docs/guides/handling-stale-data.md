@@ -87,8 +87,16 @@ This gives you the opportunity to decide which route is best to take.
 // global `journey.postgather` hook.
 configure({
   hooks: [{
-    hook: 'journey.postgather',
+    hook: 'journey.postvalidate',
     middleware: (req, res, next) => {
+      // If the current waypoint contains error, don't perform purging as it
+      // will remove all data beyond this waypoint
+      const errors = req.casa.journeyContext.getValidationErrorsForPage(req.casa.waypoint);
+      if (errors.length) {
+        return next();
+      }
+
+      // Purge waypoints that can no longer be reached
       const traversed = plan.traverse(req.casa.journeyContext);
       const all = plan.getWaypoints();
       const toPurge = all.filter(e => !traversed.includes(e));

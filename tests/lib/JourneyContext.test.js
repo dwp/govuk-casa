@@ -456,6 +456,25 @@ describe('JourneyContext', () => {
       expect(initSpy).to.be.calledOnceWithExactly(session);
       initSpy.restore();
     });
+
+    it('should pass userInfo through to event listeners', (done) => {
+      const testUserInfo = { test: 'data' };
+      const context = new JourneyContext();
+      context.identity.id = '123e4567-e89b-12d3-a456-426614174000';
+      context.addEventListeners([{
+        event: 'context-change',
+        handler: ({ userInfo }) => {
+          try {
+            expect(userInfo).to.equal(testUserInfo);
+            done();
+          } catch (e) {
+            done(e);
+          }
+        },
+      }]);
+
+      JourneyContext.putContext({}, context, { userInfo: testUserInfo });
+    });
   });
 
 
