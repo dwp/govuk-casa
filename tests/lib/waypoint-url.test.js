@@ -21,11 +21,26 @@ describe('waypointUrl()', () => {
     expect(waypointUrl({ waypoint: '//base/9-sub_slug' })).to.equal('/base/9-sub_slug'); // double slashes
     expect(waypointUrl({ waypoint: '/@/base/9-sub_slug' })).to.equal('/base/9-sub_slug'); // double slash separator
     expect(waypointUrl({ waypoint: '/%2F/base/9-sub_slug' })).to.equal('/2F/base/9-sub_slug'); // encoding
-    expect(waypointUrl({ waypoint: '//base /9-sub_slug' })).to.equal('/base20/9-sub_slug');
+    expect(waypointUrl({ waypoint: '//base /9-sub_slug' })).to.equal('/base/9-sub_slug');
     expect(waypointUrl({ waypoint: '%252F/base/9-sub_slug' })).to.equal('/252F/base/9-sub_slug'); // double encoding
-    expect(waypointUrl({ waypoint: '/\u200Bbase/9-sub_slug' })).to.equal('/E2808Bbase/9-sub_slug'); // encoding non-visibles
-    expect(waypointUrl({ waypoint: ':!@£$%^&*()_-+={}[]:";\'|\\~`<,>.?' })).to.equal('/C2A3_-7B7D22/603C3E3F'); // various disallowed
+    expect(waypointUrl({ waypoint: '/\u200Bbase/9-sub_slug' })).to.equal('/base/9-sub_slug'); // encoding non-visibles
+    expect(waypointUrl({ waypoint: ':!@£$%^&*()_-+={}[]:";\'|\\~`<,>.?' })).to.equal('/_-'); // various disallowed
     expect(waypointUrl({ waypoint: '\r\n123\r\n456' })).to.equal('/123456'); // LF/CR disallowed
+  });
+
+
+  it('doesn\'t allow waypoint URL parameters to override named paramters', () => {
+    // contextid
+    const journeyContext = new JourneyContext({}, {}, {}, { id: 'real-id' });
+    expect(waypointUrl({ waypoint: 'wp?contextid=123', journeyContext })).to.equal('/wp?contextid=real-id');
+
+    // edit, editorigin
+    expect(waypointUrl({ waypoint: 'wp?edit=false&editorigin=/test/bad' })).to.equal('/wp');
+    expect(waypointUrl({ waypoint: 'wp?edit=false&editorigin=/test/bad', edit: true, editOrigin: '/test/good' })).to.equal('/wp?edit=true&editorigin=%2Ftest%2Fgood');
+
+    // skipto
+    expect(waypointUrl({ waypoint: 'wp?skipto=/test/bad' })).to.equal('/wp');
+    expect(waypointUrl({ waypoint: 'wp?skipto=/test/bad', skipTo: '/test/good' })).to.equal('/wp?skipto=%2Ftest%2Fgood');
   });
 
 
@@ -35,6 +50,10 @@ describe('waypointUrl()', () => {
     expect(waypointUrl({ waypoint: 'url:///' })).to.equal(`/_/?refmount=${e('url:///')}&route=next`);
     expect(waypointUrl({ waypoint: 'url:///test' })).to.equal(`/test/_/?refmount=${e('url:///')}&route=next`);
     expect(waypointUrl({ mountUrl: '/mount/', waypoint: 'url:///test' })).to.equal(`/test/_/?refmount=${e('url:///mount/')}&route=next`);
+
+    // Allows onlt contextid URL parameter to be passed
+    expect(waypointUrl({ waypoint: 'url:///test?test=1' })).to.equal(`/test/_/?refmount=${e('url:///')}&route=next`);
+    expect(waypointUrl({ waypoint: 'url:///test?contextid=1' })).to.equal(`/test/_/?refmount=${e('url:///')}&route=next&contextid=1`);
   });
 
 
@@ -76,6 +95,15 @@ describe('waypointUrl()', () => {
     expect(waypointUrl({ edit: true, editOrigin: '//test' })).to.equal('/?edit=true&editorigin=%2Ftest'); // double slashes
     expect(waypointUrl({ edit: true, editOrigin: 'http://other.test/' })).to.equal('/?edit=true&editorigin=http%2Fothertest%2F');
     expect(waypointUrl({ edit: true, editOrigin: '/\r\n123\r\n456' })).to.equal('/?edit=true&editorigin=%2F123456'); // LF/CR disallowed
+
+    // Allow 'contextid' URL params on edit origin
+    expect(waypointUrl({ edit: true, editOrigin: 'test?contextid=cid&next=two' })).to.equal('/?edit=true&editorigin=test%3Fcontextid%3Dcid');
+
+    // Disallow any other URL parameters on edit origin
+    expect(waypointUrl({ edit: true, editOrigin: 'test?other=1' })).to.equal('/?edit=true&editorigin=test');
+
+    // Treat URLs with multiple "?" as a path
+    expect(waypointUrl({ edit: true, editOrigin: 'test?param=?test=fail' })).to.equal('/?edit=true&editorigin=testparamtestfail');
   });
 
 

@@ -16,6 +16,34 @@ const reUrlProtocolExtract = /^url:\/\/(.+)$/i
 const sanitiseWaypoint = (w) => w.replace(/[^/a-z0-9_-]/ig, '').replace(/\/+/g, '/');
 
 /**
+ * Sanitise a waypoint string, with allowed URL parameters:
+ * contextid = JourneyContext ID
+ *
+ * @access private
+ * @param {string} w Waypoint and potential URL parameters
+ * @returns {string} Sanitised waypoint
+ */
+const sanitiseWaypointWithAllowedParams = (w) => {
+  // Extract URL params
+  const parts = w.split('?');
+  if (parts.length !== 2) {
+    return sanitiseWaypoint(w);
+  }
+  const [waypoint, rawParams] = parts;
+  const urlSearchParams = new URLSearchParams(rawParams);
+
+  // Strip all but those parameters allowed
+  const validatedUrlSearchParams = new URLSearchParams();
+  for (const pk of ['contextid']) {
+    if (urlSearchParams.has(pk)) {
+      validatedUrlSearchParams.set(pk, urlSearchParams.get(pk));
+    }
+  }
+
+  return `${sanitiseWaypoint(waypoint)}?${validatedUrlSearchParams.toString()}`.replace(/\?$/, '');
+}
+
+/**
  * Generate a URL pointing at a particular waypoint.
  *
  * @example
@@ -53,13 +81,18 @@ export default function waypointUrl({
   if (String(waypoint).substr(0, 7) === 'url:///') {
     const m = waypoint.match(reUrlProtocolExtract);
 
-    const u = new URL(m[1], 'https://placeholder.test/');
+    const u = new URL(sanitiseWaypointWithAllowedParams(m[1]), 'https://placeholder.test/');
     url.pathname = `${sanitiseWaypoint(u.pathname)}/_/`;
 
-    url.searchParams.append('refmount', `url://${mountUrl}`);
-    url.searchParams.append('route', routeName);
+    url.searchParams.set('refmount', `url://${mountUrl}`);
+    url.searchParams.set('route', routeName);
+    for (const [uk, uv] of u.searchParams.entries()) {
+      url.searchParams.append(uk, uv);
+    }
   } else {
-    url.pathname = `${mountUrl}${waypoint}`;
+    const u = new URL(sanitiseWaypointWithAllowedParams(`${mountUrl}${waypoint}`), 'https://placeholder.test/');
+    url.pathname = u.pathname;
+    url.search = u.search;
   }
 
   // Attach context ID as query parameter for non-default contexts.
@@ -70,23 +103,23 @@ export default function waypointUrl({
     journeyContext
     && !journeyContext.isDefault()
     && journeyContext.identity.id
-    && !mountUrl.includes(journeyContext.identity.id)
+    && !mountUrl.includes(`/${journeyContext.identity.id}/`)
   ) {
-    url.searchParams.append('contextid', journeyContext.identity.id);
+    url.searchParams.set('contextid', journeyContext.identity.id);
   }
 
   // Attach edit mode flag
   if (edit === true) {
-    url.searchParams.append('edit', 'true');
+    url.searchParams.set('edit', 'true');
   }
 
   if (edit && editOrigin) {
-    url.searchParams.append('editorigin', sanitiseWaypoint(editOrigin));
+    url.searchParams.set('editorigin', sanitiseWaypointWithAllowedParams(editOrigin));
   }
 
   // Skipto
   if (skipTo) {
-    url.searchParams.append('skipto', sanitiseWaypoint(skipTo));
+    url.searchParams.set('skipto', sanitiseWaypointWithAllowedParams(skipTo));
   }
 
   return `${sanitiseWaypoint(url.pathname)}${url.search}`;
