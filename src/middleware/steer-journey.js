@@ -67,6 +67,7 @@ export default ({
     });
     res.locals.casa.journeyPreviousUrl = prevRoute.target ? waypointUrl({
       mountUrl,
+      journeyContext: req.casa.journeyContext,
       waypoint: prevRoute.target,
       routeName: 'prev',
       edit: req.casa.editMode,
