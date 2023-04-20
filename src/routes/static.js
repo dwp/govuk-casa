@@ -66,6 +66,7 @@ export default function staticRouter({
   const govukFrontendDirectory = resolve(createRequire(dirname).resolve('govuk-frontend'), '../../');
 
   router.use('/govuk/assets/js/all.js', ExpressStatic(`${govukFrontendDirectory}/govuk/all.js`, staticConfig));
+  router.use('/govuk/assets/js/all.js.map', ExpressStatic(`${govukFrontendDirectory}/govuk/all.js.map`, staticConfig));
   router.use('/govuk/assets', ExpressStatic(`${govukFrontendDirectory}/govuk/assets`, staticConfig));
   router.use('/govuk/assets', notFoundHandler);
 
