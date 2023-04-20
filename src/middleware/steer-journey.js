@@ -47,8 +47,9 @@ export default ({
     // Cannot be in edit mode if we're already on the `editorigin` URL
     if (req.casa.editMode) {
       const { pathname: currentPathname } = new URL(req.originalUrl, 'https://placeholder.test/');
+      const { pathname: editOriginPathname } = new URL(req.casa.editOrigin, 'https://placeholder.test/');
 
-      if (req.casa.editOrigin === currentPathname) {
+      if (editOriginPathname === currentPathname) {
         log.debug(`Disabling edit mode as we are on the edit origin (${req.casa.editOrigin})`);
         req.casa.editMode = false;
         req.casa.editOrigin = undefined;
