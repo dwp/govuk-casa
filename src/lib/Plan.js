@@ -25,11 +25,6 @@ const log = logger('lib:plan');
  */
 
 /**
- * @access private
- * @typedef {import('@dagrejs/graphlib').Graph} Graph
- */
-
-/**
  * @typedef {object} PlanConstructorOptions
  * @property {boolean} [validateBeforeRouteCondition=true] Check page validity before conditions
  * @property {string|PlanArbiter} [arbiter=undefined] Arbitration mechanism
@@ -567,7 +562,7 @@ export default class Plan {
           target = arbiter({
             targets: target.map((t) => makeRouteObject(self.dgraph, t)),
             journeyContext: context,
-            traverseOptions: options,
+            travereOptions: options,
           });
           target = target.map((r) => ({ v: r.source, w: r.target, name: r.name }));
         } else {
