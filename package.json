@@ -62,7 +62,7 @@
     "js-yaml": "4.1.0",
     "lodash": "4.17.21",
     "luxon": "3.3.0",
-    "nunjucks": "3.2.3",
+    "nunjucks": "3.2.4",
     "path-to-regexp": "6.2.1",
     "uuid": "9.0.0",
     "validator": "13.9.0"
