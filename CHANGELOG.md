@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [8.9.0](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/compare/8.8.0...8.9.0) (2023-04-25)
+
+
+### Features
+
+* allow contextid to be passed in editorigin and skipto ([0d97d68](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/commit/0d97d689606ba40585b45d0317faa8a1ae464db4))
+* allow user data to be passed to event handlers ([128f09b](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/commit/128f09bb40fd3947be8bb8e43638e8330aa6decd))
+
+
+### Bug Fixes
+
+* include context id in back link ([68e4a27](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/commit/68e4a27d99619055ae8f3781a3a724c8f983b393))
+
 ## [8.8.0](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/compare/8.7.12...8.8.0) (2023-04-14)
 
 
