@@ -8,7 +8,7 @@ include:
 
 
 variables:
-  NODE_IMAGE: node:12-alpine@sha256:b8d44d2beeeb1bea09a0b2da2dcd062116ca393f0f2ad065f05d593765055fe3
+  NODE_IMAGE: node:18.12.0@sha256:cef9966b19672effeafcf1a67b8add742c3e46ca7dd5532efff60820526c2e95
   NODE_PUBLISH_TO_GITLAB: "true"
   NODE_PUBLISH_TO_NPMJS: "true"
   AUTO_TAG_MERGE_TAG_BRANCH: "maintain/6.x"
@@ -29,6 +29,19 @@ node-modules:
       - artifact.tgz
       - node_modules/
       - dist/
+
+unit-test:
+  extends: .node-common
+  parallel:
+    matrix:
+      - node_image_version: node:16@sha256:7f404d09ceb780c51f4fac7592c46b8f21211474aacce25389eb0df06aaa7472
+      - node_image_version: node:20@sha256:242d81ad2a91353ac3a5ed3598582acb4a9a7761b16c60524b949a1603707848
+  stage: unit-test
+  image: $node_image_version
+  script:
+    - node --version
+    - npm --version
+    - npm test
 
 # Manipulate publishing process to Gitlab
 node-publish-gitlab:
