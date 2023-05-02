@@ -8,7 +8,7 @@ include:
 
 
 variables:
-  NODE_IMAGE: node:18.12.0@sha256:cef9966b19672effeafcf1a67b8add742c3e46ca7dd5532efff60820526c2e95
+  NODE_IMAGE: node:18.16.0@sha256:671ee8d49ce2a691fc3082203c5deb9522e0c80042aa0ff40c07f4a25e63668a
   NODE_PUBLISH_TO_GITLAB: "true"
   NODE_PUBLISH_TO_NPMJS: "true"
   AUTO_TAG_MERGE_TAG_BRANCH: "maintain/6.x"
