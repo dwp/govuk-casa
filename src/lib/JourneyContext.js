@@ -20,6 +20,11 @@ const log = logger('lib:journey-context');
 
 /**
  * @access private
+ * @typedef {import('../casa').ContextEventUserInfo} ContextEventUserInfo
+ */
+
+/**
+ * @access private
  * @typedef {import('../casa').Page} Page
  */
 
