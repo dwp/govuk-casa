@@ -1,4 +1,5 @@
 /* eslint-disable sonarjs/no-duplicate-string */
+import bytes from 'bytes';
 import { PageField } from './field.js';
 import Plan from './Plan.js';
 import logger from './logger.js';
@@ -398,6 +399,42 @@ export function validateHelmetConfigurator(helmetConfigurator) {
   return helmetConfigurator;
 }
 
+export function validateFormMaxParams(value, defaultValue = 25) {
+  // CASA needs to send certain hidden form fields (see `sanitise-fields`
+  // middleware), plus some padding here.
+  const MIN_PARAMS = 10;
+
+  if (value === undefined) {
+    return defaultValue;
+  }
+  if (!Number.isInteger(value)) {
+    throw new TypeError('formMaxParams must be an integer');
+  }
+  if (value < MIN_PARAMS) {
+    throw new RangeError(`formMaxParams must be at least ${MIN_PARAMS}`);
+  }
+
+  return value;
+}
+
+export function validateFormMaxBytes(value, defaultValue = 1024 * 50) {
+  const MIN_BYTES = 1024;
+
+  if (value === undefined) {
+    return defaultValue;
+  }
+
+  const parsedValue = bytes.parse(value);
+  if (!Number.isInteger(parsedValue)) {
+    throw new TypeError('formMaxParams must be a string or an integer');
+  }
+  if (parsedValue < MIN_BYTES) {
+    throw new RangeError(`formMaxBytes must be at least ${MIN_BYTES} bytes (${bytes.format(MIN_BYTES)})`);
+  }
+
+  return parsedValue;
+}
+
 /**
  * Ingest, validate, sanitise and manipulate configuration parameters.
  *
@@ -449,6 +486,9 @@ export default function ingest(config = {}) {
     // Helmet configuration
     helmetConfigurator: validateHelmetConfigurator(config.helmetConfigurator),
 
+    // Form parsing
+    formMaxParams: validateFormMaxParams(config.formMaxParams, 25),
+    formMaxBytes: validateFormMaxBytes(config.formMaxBytes, 1024 * 50),
   };
 
   // Freeze to modifications

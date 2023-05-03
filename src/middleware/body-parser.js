@@ -17,14 +17,17 @@ export function verifyBody(req, res, buf, encoding) {
   }
 }
 
-export default function bodyParserMiddleware() {
+export default function bodyParserMiddleware({
+  formMaxParams,
+  formMaxBytes,
+}) {
   return [
     expressBodyParser({
       extended: true,
       type: 'application/x-www-form-urlencoded',
       inflate: true,
-      parameterLimit: 25, // TODO: make configurable?
-      limit: 1024 * 50, // TODO: make configurable?
+      parameterLimit: formMaxParams,
+      limit: formMaxBytes,
       verify: verifyBody,
     }),
   ];

@@ -49,14 +49,14 @@ function isPlainObjectOrArray(o) {
     return false
   }
   // eslint-disable-next-line no-prototype-builtins
-  if (prot.hasOwnProperty('isPrototypeOf') === false) {
-    return false;
-  }
-  return true;
+  return prot.hasOwnProperty('isPrototypeOf');
 }
 
 function mergeObjects(...objects) {
-  return deepmergeAll([Object.create(null), ...objects], { arrayMerge: combineMerge, isMergeableObject: isPlainObjectOrArray });
+  return deepmergeAll([
+    Object.create(null),
+    ...objects,
+  ], { arrayMerge: combineMerge, isMergeableObject: isPlainObjectOrArray });
 }
 /**
  * Determine whether a value exists in a list.

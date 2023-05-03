@@ -75,6 +75,8 @@ export default function configure(config = {}) {
       locales: ['en', 'cy'],
     },
     helmetConfigurator = undefined,
+    formMaxParams,
+    formMaxBytes,
   } = ingestedConfig;
 
   // Prepare all page hooks so they are prefixed with the `journey.` scope.
@@ -126,7 +128,10 @@ export default function configure(config = {}) {
 
   // Prepare form middleware and its constituent parts
   // These are used for any forms, including waypoint page forms.
-  const bodyParserMiddleware = bodyParserMiddlewareFactory();
+  const bodyParserMiddleware = bodyParserMiddlewareFactory({
+    formMaxParams,
+    formMaxBytes,
+  });
   const csrfMiddleware = csrfMiddlewareFactory();
 
   // Setup router to serve up bundled static assets

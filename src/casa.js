@@ -158,6 +158,8 @@ export {
  * @property {Plan} [plan] CASA Plan
  * @property {ContextEvent[]} [events=[]] Handlers for JourneyContext events
  * @property {HelmetConfigurator} [helmetConfigurator] Helmet configuration manipulator function
+ * @property {int} [formMaxParams=25] Max number of form parameters to ingest
+ * @property {int|string} [formMaxBytes="50KB"] Max total form payload size to ingest
  */
 
 /**

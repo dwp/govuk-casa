@@ -19,6 +19,8 @@ import ingest, {
   validatePages,
   validatePlan,
   validateGlobalHooks,
+  validateFormMaxParams,
+  validateFormMaxBytes,
 } from '../../src/lib/configuration-ingestor.js';
 
 chai.use(sinonChai);
@@ -371,6 +373,62 @@ describe('ConfigIngestor', () => {
         middleware: () => {},
         path: false,
       }])).to.throw(TypeError, 'Global hook at index 0 is invalid: Hook path must be a string or RegExp');
+    });
+  });
+
+  describe('validateFormMaxParams()', () => {
+    it('throws if not an integer', () => {
+      expect(() => validateFormMaxParams(false)).to.throw(TypeError, 'formMaxParams must be an integer');
+      expect(() => validateFormMaxParams(1024.50)).to.throw(TypeError, 'formMaxParams must be an integer');
+      expect(() => validateFormMaxParams(1024)).to.not.throw();
+    });
+
+    it('throws if below the minimum allowed value', () => {
+      expect(() => validateFormMaxParams(9)).to.throw(RangeError, 'formMaxParams must be at least 10');
+      expect(() => validateFormMaxParams(10)).to.not.throw();
+    });
+
+    it('ingests the configuration', () => {
+      // Default value
+      expect(ingest(minimalConfig)).to.contain({
+        formMaxParams: 25,
+      });
+
+      // Custom value
+      expect(ingest({
+        ...minimalConfig,
+        formMaxParams: 15,
+      })).to.contain({
+        formMaxParams: 15,
+      });
+    });
+  });
+
+  describe('validateFormMaxBytes()', () => {
+    it('throws if not a string or integer', () => {
+      expect(() => validateFormMaxBytes(false)).to.throw(TypeError, 'formMaxParams must be a string or an integer');
+      expect(() => validateFormMaxBytes(1024)).to.not.throw();
+      expect(() => validateFormMaxBytes('1kb')).to.not.throw();
+    });
+
+    it('throws if below the minimum allowed value', () => {
+      expect(() => validateFormMaxBytes(1023)).to.throw(RangeError, 'formMaxBytes must be at least 1024 bytes (1KB)');
+      expect(() => validateFormMaxBytes('1023b')).to.throw(RangeError, 'formMaxBytes must be at least 1024 bytes (1KB)');
+    });
+
+    it('ingests the configuration', () => {
+      // Default value
+      expect(ingest(minimalConfig)).to.contain({
+        formMaxBytes: 1024 * 50,
+      });
+
+      // Custom value
+      expect(ingest({
+        ...minimalConfig,
+        formMaxBytes: 2046,
+      })).to.contain({
+        formMaxBytes: 2046,
+      });
     });
   });
 });

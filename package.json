@@ -49,6 +49,7 @@
   "type": "module",
   "dependencies": {
     "@dagrejs/graphlib": "2.1.12",
+    "bytes": "3.1.2",
     "cookie-parser": "1.4.6",
     "csurf": "1.11.0",
     "debug": "4.3.4",

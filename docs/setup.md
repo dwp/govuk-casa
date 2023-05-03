@@ -81,9 +81,14 @@ Listeners for handling various events on state held in the Journey Context.
 
 Read more about [configuring a Plan](plan.md) for your service.
 
-* `helmetConfigurator` **`function`** Function to modify CASA's default Helmet configuration
+* `function` **`helmetConfigurator`** Function to modify CASA's default Helmet configuration
 
 Read more about [configuring Helmet](guides/helmet.md) for your service.
+
+* `integer` **`formMaxParams`** Maximum number of form parameters to ingest (default: `25`)
+* `integer|string` **`formMaxBytes`** Maximum number of form bytes to ingest (default: `50kb`)
+
+This allows you to limit the number of individual parameters and/or the maximum total payload that will be parsed from an incoming form body.
 
 ## Returned values
 
