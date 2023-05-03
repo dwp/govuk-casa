@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [8.10.0](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/compare/8.9.2...8.10.0) (2023-05-03)
+
+
+### Features
+
+* add option to define max form params and payload size ([78a9907](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/commit/78a99078839d9440e6a83ec605cff96b88b33c2d))
+
 ## [8.9.2](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/compare/8.9.1...8.9.2) (2023-05-03)
 
 
