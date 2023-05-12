@@ -1,4 +1,5 @@
 import accountsFields from './fields/accounts.js';
+import yourAssetsFields from './fields/your-assets.js';
 import countryFields from './fields/country.js';
 import dateOfBirthFields from './fields/date-of-birth.js';
 import liveWithPartnerFields from './fields/live-with-partner.js';
@@ -49,6 +50,10 @@ export default () => [{
   view: 'pages/accounts.njk',
   fields: accountsFields(),
 }, {
+  waypoint: 'your-assets',
+  view: 'pages/your-assets.njk',
+  fields: yourAssetsFields(),
+},{
   waypoint: 'check-your-answers',
   view: 'pages/check-your-answers.njk',
   hooks: checkYourAnswersHooks(),

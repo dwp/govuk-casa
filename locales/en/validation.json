@@ -77,6 +77,18 @@
         "summary": "Value is too long"
       }
     },
+
+    "range": {
+      "min": {
+        "inline": "Value is too small",
+        "summary": "Value is too small"
+      },
+      "max": {
+        "inline": "Value is too large",
+        "summary": "Value is too large"
+      }
+    },
+
     "wordCount": {
       "min": {
         "inline": "Value is too short",

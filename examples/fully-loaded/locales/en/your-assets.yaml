@@ -1,0 +1,7 @@
+pageTitle: What is the total value of your accounts or investments in pounds?
+field:
+  assetsValue:
+    hint: The total value must be less than £1000000000.
+    required: Enter the total value of your accounts or investments.
+    tooMuch: The total value must be less than £1000000000
+    tooLess: The total value must be greater than £0

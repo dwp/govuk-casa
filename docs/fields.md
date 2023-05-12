@@ -62,6 +62,7 @@ You can use any of these [built-in validation rules](src/lib/validators/)
 * [required](src/lib/validators/required.README.md)
 * [strlen](src/lib/validators/strlen.README.md)
 * [wordCount](src/lib/validators/wordCount.README.md)
+* [range](src/lib/validators/range.README.md)
 
 ## Writing custom validators
 
@@ -102,6 +103,28 @@ field('name').validators([
   MyValidator.make(),
 ]);
 ```
+
+### Sanitise method
+
+This method can be used to perform transformations on the input before it is validated in the `validate` method. For example:
+
+```javascript
+sanitise(value) {
+  if (value !== undefined) {
+    // do something, e.g. trim whitespace, coerce to a string, etc.
+    return transformedValue;
+  }
+  return undefined;
+}
+```
+
+This method will perform a transformation on an input if it is not undefined, or will pass `undefined` to the validator if the input is undefined.
+
+When performing the transformation, ensure that the returned value is not `falsy`.
+If a user inputs a value and the `sanitise` method transforms it to a `falsy` value, CASA will not render this value on the screen when the user visits the page again.
+This is particularly egregious when the inputted value is invalid, leading to an error message being displayed without the offending value populating the input.
+
+One solution to overcome this potential gotcha is to return the transformed value as a string.
 
 ## Conditional validation
 

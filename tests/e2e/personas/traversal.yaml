@@ -30,11 +30,15 @@ journey:
     postcode: AA1 1AA
   accounts:
     currentSavingsAccounts: select()
+  your-assets:
+    assetsValue: 10000
   check-your-answers:
     # No interactions
   submit:
     _back: click()
   check-your-answers--2:
+    _back: click()
+  your-assets--2:
     _back: click()
   accounts--2:
     _back: click()
@@ -63,3 +67,4 @@ templateVars:
     relationshipStatus: Husband
     address: Street, Suburb, Town, County, AA1 1AA
     accounts: currentSavingsAccounts
+    assetsValue: 10000

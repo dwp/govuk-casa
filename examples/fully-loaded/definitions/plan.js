@@ -13,7 +13,7 @@ export default () => {
 
   plan.addSequence('your-partners-name', 'your-relationship-status', 'your-address');
 
-  plan.addSequence('your-address', 'accounts', 'check-your-answers', 'submit');
+  plan.addSequence('your-address', 'accounts', 'your-assets', 'check-your-answers', 'submit');
 
   // Flag which waypoints can be skipped
   plan.addSkippables('country');

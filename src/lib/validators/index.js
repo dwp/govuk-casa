@@ -6,6 +6,7 @@ import postalAddressObject from './postalAddressObject.js';
 import regex from './regex.js';
 import required from './required.js';
 import strlen from './strlen.js';
+import range from './range.js';
 import wordCount from './wordCount.js';
 
 /**
@@ -20,5 +21,6 @@ export default {
   regex,
   required,
   strlen,
+  range,
   wordCount,
 }

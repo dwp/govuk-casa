@@ -48,6 +48,7 @@ export default () => {
         ...res.locals.rows,
         row('your-address', 'address', makeAddress(d['your-address'])),
         row('accounts', 'accounts[]', (d['accounts'].accounts || []).join(', '), `accounts:${res.locals.claimTypePrefix}pageTitle`),
+        row('your-assets', 'assetsValue', `£${d['your-assets'].assetsValue}`)
       ];
 
       next();

@@ -1,0 +1,28 @@
+{% extends "layouts/journey.njk" %}
+
+{% from "casa/components/input/macro.njk" import casaGovukInput with context %}
+
+{% block casaPageTitle %}
+  {{ t("your-assets:pageTitle") }} - {{ t("common:serviceName") }}
+{% endblock %}
+
+{% block journey_form %}
+  {{ casaGovukInput({
+    name: "assetsValue",
+    classes: "govuk-input--width-20",
+    label: {
+      text: t("your-assets:pageTitle"),
+      isPageHeading: true,
+      classes: "govuk-label--xl"
+    },
+    hint: {
+      text: t("your-assets:field.assetsValue.hint")
+    },
+    prefix: {
+      text: "£"
+    },
+    value: formData.assetsValue,
+    casaErrors: formErrors
+  }) }}
+
+{% endblock %}

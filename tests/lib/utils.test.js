@@ -1,5 +1,10 @@
 import { expect } from 'chai';
-import { stripWhitespace, notProto, validateUrlPath } from '../../src/lib/utils.js';
+import {
+  stripWhitespace,
+  notProto,
+  validateUrlPath,
+  coerceInputToInteger
+} from '../../src/lib/utils.js';
 
 describe('stripWhitespace', () => {
   it('throws if value is not a string ', () => {
@@ -64,7 +69,8 @@ describe('validateUrlPath', () => {
 
   '!@$%&~?'.split('').forEach((char) => {
     it(`throws if path contains invalid character "${char}"`, () => {
-      expect(() => validateUrlPath(`${char}`)).to.throw(SyntaxError, 'URL path must contain only a-z, 0-9, -, _ and / characters');
+      expect(() => validateUrlPath(`${char}`)).to.throw(SyntaxError,
+        'URL path must contain only a-z, 0-9, -, _ and / characters');
     });
   });
 
@@ -73,10 +79,31 @@ describe('validateUrlPath', () => {
   });
 
   it('throws if path contains consecutive /', () => {
-    expect(() => validateUrlPath('//path')).to.throw(SyntaxError, 'URL path must not contain consecutive /');
+    expect(() => validateUrlPath('//path')).to.throw(SyntaxError,
+      'URL path must not contain consecutive /');
   });
 
   it('returns the passed path when valid', () => {
     expect(validateUrlPath('/valid/path')).to.equal('/valid/path');
   });
 });
+
+describe('coerceInputToInteger', () => {
+  [
+    // type | input | expected output
+    ['empty string', '', 0],
+    ['string', '123', 123],
+    ['number', 123, 123],
+    ['negative number', -5, -5],
+    ['object', {}, undefined],
+    ['function', () => {}, undefined],
+    ['array', [], 0],
+    ['boolean', true, 1],
+    ['boolean', false, 0],
+    ['float', 1.23, 1],
+  ].forEach(([type, input, output]) => {
+    it(`should coerce ${type} to an integer`, () => {
+      expect(coerceInputToInteger(input)).to.equal(output);
+    });
+  });
+})

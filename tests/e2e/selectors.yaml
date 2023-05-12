@@ -40,6 +40,9 @@ accounts:
   shares: 'input[name="accounts[]"][value="shares"]'
   unitTrusts: 'input[name="accounts[]"][value="unitTrusts"]'
 
+your-assets:
+  assetsValue: 'input[name="assetsValue"]'
+
 how-we-use-your-info:
   # Empty, but needed so a `_back` selector can be added
 

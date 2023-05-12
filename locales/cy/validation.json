@@ -77,5 +77,16 @@
         "summary": "Mae gwerth yn rhy hir"
       }
     }
+  },
+
+  "range": {
+    "min": {
+      "inline": "Mae’r gwerth yn rhy fach",
+      "summary": "Mae’r gwerth yn rhy fach"
+    },
+    "max": {
+      "inline": "Mae’r gwerth yn rhy fawr",
+      "summary": "Mae’r gwerth yn rhy fawr"
+    }
   }
 }

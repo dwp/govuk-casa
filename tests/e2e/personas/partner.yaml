@@ -1,4 +1,4 @@
-# No partner
+# Partner
 
 journey:
   country:
@@ -28,6 +28,8 @@ journey:
     postcode: AA1 1AA
   accounts:
     currentSavingsAccounts: select()
+  your-assets:
+    assetsValue: 10000
   check-your-answers:
     # No interactions
   submit:
@@ -67,3 +69,4 @@ templateVars:
     relationshipStatus: Other
     address: Street, Suburb, Town, County, AA1 1AA
     accounts: currentSavingsAccounts
+    assetsValue: 10000

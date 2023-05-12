@@ -68,6 +68,16 @@ export function stringifyInput(input, fallback) {
 }
 
 /**
+ * Coerce an input to an integer.
+ *
+ * @param {any} input Input to be coerced.
+ * @returns {number|undefined} The number as an integer or `undefined`.
+ */
+export function coerceInputToInteger(input) {
+  return Number.isNaN(Number(input)) ? undefined : Math.floor(Number(input));
+}
+
+/**
  * Strip whitespace from a string.
  *
  * @access private

@@ -28,6 +28,8 @@ journey:
     postcode: AA1 1AA
   accounts:
     currentSavingsAccounts: select()
+  your-assets:
+    assetsValue: 200
   check-your-answers:
     changePartner: click()
   live-with-partner--2:
@@ -50,3 +52,4 @@ templateVars:
     relationshipStatus: Civil partner
     address: Street, Suburb, Town, County, AA1 1AA
     accounts: currentSavingsAccounts
+    assetsValue: 200

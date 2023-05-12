@@ -21,6 +21,8 @@ journey:
     postcode: AA1 1AA
   accounts:
     currentSavingsAccounts: select()
+  your-assets:
+    assetsValue: 10000
   check-your-answers:
     # No interactions
   submit:
@@ -62,6 +64,15 @@ errors:
       postcode: bad
       messages:
       - en: Enter a real postcode.
+  your-assets:
+    - messages:
+      - en: Enter the total value of your accounts or investments.
+    - assetsValue: -10
+      messages:
+      - en: The total value must be greater than £0
+    - assetsValue: 10000000000
+      messages:
+      - en: The total value must be less than £1000000000
 
 templateVars:
   check-your-answers:
@@ -69,3 +80,4 @@ templateVars:
     dateOfBirth: 11 March 1900
     address: Street, Suburb, Town, County, AA1 1AA
     accounts: currentSavingsAccounts
+    assetsValue: 10000
