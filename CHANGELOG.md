@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [8.10.1](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/compare/8.10.0...8.10.1) (2023-05-15)
+
+
+### Bug Fixes
+
+* serve govuk-frontend sourcemap ([b97779b](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/commit/b97779bd69fd15ce7c7f186bb3017f39af494248))
+* stop edit mode when reaching origin that includes contextid param ([c3166e4](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/commit/c3166e441a1bbfc50fa909e0ef4bd4c9ff83b656))
+
 ## [8.10.0](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/compare/8.9.2...8.10.0) (2023-05-03)
 
 
