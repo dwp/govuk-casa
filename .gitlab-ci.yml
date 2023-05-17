@@ -1,11 +1,13 @@
 include:
   - template: DAST.gitlab-ci.yml
   - project: dwp/engineering/pipeline-solutions/gitlab/functions
-    ref: 4.0.3
+    ref: 4.2.2
     file:
       - functions/node.yml
       - functions/auto-tag-merge.yml
-      - jobs/build-docker-image.yml
+  - project: dwp/engineering/pipeline-solutions/gitlab/fragments/docker-build
+    ref: 4.3.0
+    file: /ci-include-docker-build-base.yml
 
 variables:
   NODE_IMAGE: node:18.16.0@sha256:671ee8d49ce2a691fc3082203c5deb9522e0c80042aa0ff40c07f4a25e63668a
@@ -18,7 +20,9 @@ variables:
 build-static-assets:
   extends: .node-common
   stage: build
-  script: npm run compile-static-assets
+  script:
+    - !reference [.node-init, script]
+    - npm run compile-static-assets
   artifacts:
     expire_in: 1 day
     paths:
@@ -33,26 +37,29 @@ unit-test:
   stage: unit-test
   image: $node_image_version
   script:
+    - !reference [.node-init, script]
     - node --version
     - npm --version
     - npm test
 
 # Package up a testable CASA application, ready for dyanmic security tests
 zap-package:
-  extends: .toolbox-build-docker-image
+  extends:
+    - .node-common
+    - .docker-build-template
   stage: package
   variables:
-    DOCKERFILE: test/penetration/Dockerfile
+    DOCKERFILE_PATH: test/penetration/Dockerfile
 
 dast:
   stage: security-dynamic-analysis
   tags:
-    - docker-in-docker-privileged
+    - docker-in-docker
   needs:
     - zap-package
   variables:
     DAST_WEBSITE: http://casa-pentest-app:3000/
-    DAST_FULL_SCAN_ENABLED: "true"
+    DAST_BROWSER_SCAN: "true"
   services:
     - name: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA
       alias: casa-pentest-app
