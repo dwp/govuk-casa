@@ -13,7 +13,7 @@ import { notProto } from './utils.js';
 import { uuid as uuidGenerator } from './context-id-generators.js';
 
 const {
-  cloneDeep, isPlainObject, isObject, has, isEqual,
+  isPlainObject, isObject, has, isEqual,
 } = lodash; // CommonJS
 
 const log = logger('lib:journey-context');
@@ -126,10 +126,10 @@ export default class JourneyContext {
    */
   toObject() {
     return Object.assign(Object.create(null), {
-      data: cloneDeep(this.#data),
-      validation: cloneDeep(this.#validation),
-      nav: cloneDeep(this.#nav),
-      identity: cloneDeep(this.#identity),
+      data: structuredClone(this.#data),
+      validation: structuredClone(this.#validation),
+      nav: structuredClone(this.#nav),
+      identity: structuredClone(this.#identity),
     });
   }
 
