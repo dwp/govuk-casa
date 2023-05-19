@@ -6,7 +6,7 @@ include:
       - functions/node.yml
       - functions/auto-tag-merge.yml
   - project: dwp/engineering/pipeline-solutions/gitlab/fragments/docker-build
-    ref: 4.3.0
+    ref: 4.4.0
     file: /ci-include-docker-build-base.yml
 
 variables:
