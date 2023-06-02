@@ -49,8 +49,8 @@
     "validator": "13.9.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "17.6.3",
-    "@commitlint/config-conventional": "17.6.3",
+    "@commitlint/cli": "17.6.5",
+    "@commitlint/config-conventional": "17.6.5",
     "@dwp/commitlint-config-base": "4.0.6",
     "@dwp/eslint-config-base": "6.1.1",
     "@stryker-mutator/core": "6.4.2",
