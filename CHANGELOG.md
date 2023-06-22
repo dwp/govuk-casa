@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [8.11.0](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/compare/8.10.2...8.11.0) (2023-06-22)
+
+
+### Features
+
+* add range validator ([3152a50](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/commit/3152a50a0e503f69d1b83ca24faa13b06c51be30))
+* use csrf-sync package for csrf ([f18418c](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/commit/f18418c282516b7cd56c00b1515bf61bcfdd43f2))
+
 ## [8.10.2](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/compare/8.10.1...8.10.2) (2023-05-16)
 
 ## [8.10.1](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/compare/8.10.0...8.10.1) (2023-05-15)
