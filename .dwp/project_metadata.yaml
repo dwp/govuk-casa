@@ -1,6 +1,0 @@
-$schema: https://gitlab.com/dwp/engineering/project-metadata-schema/-/raw/v1.0.0-alpha.0/schema/project_metadata.json
-version: v1.0.0-alpha.0
-project_metadata:
-  - project_id: 26878543
-    name: govuk-casa
-    version: 8.11.0
