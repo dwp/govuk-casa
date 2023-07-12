@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [8.12.0](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/compare/8.11.1...8.12.0) (2023-07-12)
+
+
+### Features
+
+* add option to set a custom context ID generator ([ae56c11](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/commit/ae56c11591e21e730d2ad309b9373b0347808ab6))
+
 ## [8.11.1](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/compare/8.11.0...8.11.1) (2023-07-12)
 
 ## [8.11.0](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/compare/8.10.2...8.11.0) (2023-06-22)
