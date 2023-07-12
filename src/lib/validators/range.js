@@ -62,7 +62,8 @@ export default class Range extends ValidatorFactory {
     // treat an empty string as undefined
     // when user submits empty form, it stores an empty string
     if (value !== '' && value !== undefined) {
-      // add to custom validator docs to ensure not to return a falsy value as it doesn't show on screen
+      // add to custom validator docs to ensure not to return a falsy value as
+      // it doesn't show on screen
       return coerceInputToInteger(value)?.toString();
     }
     return undefined;

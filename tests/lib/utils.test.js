@@ -3,7 +3,7 @@ import {
   stripWhitespace,
   notProto,
   validateUrlPath,
-  coerceInputToInteger
+  coerceInputToInteger,
 } from '../../src/lib/utils.js';
 
 describe('stripWhitespace', () => {
@@ -69,8 +69,10 @@ describe('validateUrlPath', () => {
 
   '!@$%&~?'.split('').forEach((char) => {
     it(`throws if path contains invalid character "${char}"`, () => {
-      expect(() => validateUrlPath(`${char}`)).to.throw(SyntaxError,
-        'URL path must contain only a-z, 0-9, -, _ and / characters');
+      expect(() => validateUrlPath(`${char}`)).to.throw(
+        SyntaxError,
+        'URL path must contain only a-z, 0-9, -, _ and / characters',
+      );
     });
   });
 
@@ -79,8 +81,10 @@ describe('validateUrlPath', () => {
   });
 
   it('throws if path contains consecutive /', () => {
-    expect(() => validateUrlPath('//path')).to.throw(SyntaxError,
-      'URL path must not contain consecutive /');
+    expect(() => validateUrlPath('//path')).to.throw(
+      SyntaxError,
+      'URL path must not contain consecutive /',
+    );
   });
 
   it('returns the passed path when valid', () => {
