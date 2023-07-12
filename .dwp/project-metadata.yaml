@@ -1,0 +1,13 @@
+$schema: https://gitlab.com/dwp/secure-development/schema/project-metadata/-/raw/v1.0.0/schema/project-metadata.json
+schema_version: 1.0.0
+project:
+  - project_id: 26878543
+    component_name: govuk-casa
+    version: 8.11.1
+    cmdb_id: null
+    last_verified:
+      date: null
+      name: null
+    tags:
+      payments: null
+      personally_identifying_information: null
