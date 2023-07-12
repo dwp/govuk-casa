@@ -76,7 +76,7 @@
     "@dwp/casa-spiderplan": "3.1.2",
     "@dwp/casa-spiderplan-a11y-plugin": "0.1.13",
     "@dwp/casa-spiderplan-zap-plugin": "0.1.9",
-    "@dwp/eslint-config-base": "6.1.1",
+    "@dwp/eslint-config-base": "7.0.0",
     "@types/express": "4.17.17",
     "@types/node": "20.4.1",
     "@types/nunjucks": "3.2.3",
