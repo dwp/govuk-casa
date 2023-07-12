@@ -1,10 +1,9 @@
 include:
   - project: dwp/engineering/pipeline-solutions/gitlab/functions
-    ref: 3.58.11
-    file: functions/node.yml
-  - project: dwp/engineering/pipeline-solutions/gitlab/functions
-    ref: 3.58.11
-    file: functions/auto-tag-merge.yml
+    ref: 4.7.0
+    file:
+      - functions/node.yml
+      - functions/auto-tag-merge.yml
 
 variables:
   NODE_IMAGE: node:18.16.0@sha256:671ee8d49ce2a691fc3082203c5deb9522e0c80042aa0ff40c07f4a25e63668a
@@ -26,14 +25,17 @@ unit-test:
   script:
     - node --version
     - npm --version
+    - !reference [.node-init, script]
     - npm test
 
 # ZAP scans
 e2e-dast:
+  extends: .node-common
   stage: security-dynamic-analysis
   image: $NODE_IMAGE
   tags:
     - docker
+  needs: []
   services:
     # The image is broken from `owasp/zap2docker-stable:s2023-02-06` onwards,
     # which conincides with when ZAP starts to build multi-platform images.
@@ -42,8 +44,6 @@ e2e-dast:
       alias: zap
       entrypoint: [""]
       command: ["zap.sh", "-daemon", "-host", "0.0.0.0", "-port", "8080", "-config", "api.key=secret", "-config", "api.addrs.addr.name=.*", "-config", "api.addrs.addr.regex=true"]
-  needs:
-    - node-modules
   variables:
     # ref: https://docs.gitlab.com/runner/executors/docker.html#create-a-network-for-each-job
     # Required so ZAP can connect to servers being spun up in this build container
@@ -52,6 +52,7 @@ e2e-dast:
     - apt-get update
     - apt-get install -y jq
   script:
+    - !reference [.node-init, script]
     - "until wget -qO- --header 'X-ZAP-Api-Key: secret' http://zap:8080/JSON/core/view/zapHomePath >/dev/null 2>&1; do echo 'Waiting for ZAP ...'; sleep 1; done"
     - ./node_modules/.bin/spiderplan --worker-init ./tests/e2e/worker-init.js --language en ./tests/e2e/personas/**/traversal.yaml --workers 1 --zap --zap-proxy 'http://zap:8080/' --zap-target-hostname "$(hostname)"
     - "wget -qO- --header 'X-ZAP-Api-Key: secret' http://zap:8080/OTHER/core/other/jsonreport > gl-dast-report.json"
