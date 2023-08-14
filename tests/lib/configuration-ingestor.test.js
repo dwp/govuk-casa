@@ -1,6 +1,7 @@
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import chai, { expect } from 'chai';
+import { CONFIG_ERROR_VISIBILITY_ONSUBMIT, CONFIG_ERROR_VISIBILITY_ALWAYS } from '../../src/lib/constants.js';
 
 import ingest, {
   validateMountUrl,
@@ -21,6 +22,7 @@ import ingest, {
   validateGlobalHooks,
   validateFormMaxParams,
   validateFormMaxBytes,
+  validateErrorVisibility,
 } from '../../src/lib/configuration-ingestor.js';
 
 chai.use(sinonChai);
@@ -431,4 +433,56 @@ describe('ConfigIngestor', () => {
       });
     });
   });
+
+  describe('validate global errorVisibility', () => {
+    it('should be onsubmit as default value', () => {
+      expect(validateErrorVisibility()).to.be.equal(CONFIG_ERROR_VISIBILITY_ONSUBMIT);
+    });
+
+    it('should return a valid value', () => {
+      expect(validateErrorVisibility(CONFIG_ERROR_VISIBILITY_ALWAYS)).to.be.equal(CONFIG_ERROR_VISIBILITY_ALWAYS);
+    });
+
+    it('should accept function as valid type', () => {
+      expect(validateErrorVisibility((req) => true)).to.not.throw();
+    });
+
+
+    it('should throw an Error if the value is not constant or function', () => {
+      expect(() => validateErrorVisibility('randome')).to.throw(TypeError, 'errorVisibility must be casa constant CONFIG_ERROR_VISIBILITY_ALWAYS | CONFIG_ERROR_VISIBILITY_ONSUBMIT or function');
+    });
+
+  });
+
+  describe('validate page level errorVisibility', () => {
+    it('should throw an Error if the errorVisibility value is not constant or function', () => {
+      expect(() => validatePages([{
+        waypoint: 'test',
+        errorVisibility: 'random',
+        view: 'test.njk',
+      }])).to.throw(TypeError, 'Page at index 0 is invalid: errorVisibility must be casa constant CONFIG_ERROR_VISIBILITY_ALWAYS | CONFIG_ERROR_VISIBILITY_ONSUBMIT or function');
+    });
+
+    it('should not throw if errorVisibility has valid value', () => {
+      expect(() => validatePages([{
+        waypoint: 'test',
+        errorVisibility: CONFIG_ERROR_VISIBILITY_ALWAYS,
+        view: 'test.njk',
+      }])).to.not.throw();
+
+      expect(() => validatePages([{
+        waypoint: 'test',
+        errorVisibility: CONFIG_ERROR_VISIBILITY_ONSUBMIT,
+        view: 'test.njk',
+      }])).to.not.throw();
+
+      expect(() => validatePages([{
+        waypoint: 'test',
+        errorVisibility: () => {},
+        view: 'test.njk',
+      }])).to.not.throw();
+    });
+  });
 });
+
+

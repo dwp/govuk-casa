@@ -10,6 +10,7 @@ import {
   validateView,
 } from './utils.js';
 import * as contextIdGenerators from './context-id-generators.js';
+import { CONFIG_ERROR_VISIBILITY_ALWAYS, CONFIG_ERROR_VISIBILITY_ONSUBMIT } from './constants.js';
 
 /**
  * @access private
@@ -256,6 +257,25 @@ export function validateSessionCookiePath(cookiePath, defaultPath = '/') {
  * @returns {boolean} cookie path
  * @throws {TypeError} When invalid arguments are provided
  */
+
+/**
+ * Validates errorVisibility.
+ *
+ * @access private
+ * @param {string} errorVisibility sets visibility flag for page validation error
+ * @throws {SyntaxError} For invalid errorVisibility flag.
+ * @returns {symbol | Function} flag for error visibility.
+ */
+export function validateErrorVisibility(errorVisibility = CONFIG_ERROR_VISIBILITY_ONSUBMIT) {
+  if (errorVisibility === undefined) {
+    return undefined;
+  }
+  if (errorVisibility === CONFIG_ERROR_VISIBILITY_ALWAYS || errorVisibility === CONFIG_ERROR_VISIBILITY_ONSUBMIT || typeof errorVisibility === 'function') {
+    return errorVisibility;
+  }
+  throw new TypeError('errorVisibility must be casa constant CONFIG_ERROR_VISIBILITY_ALWAYS | CONFIG_ERROR_VISIBILITY_ONSUBMIT or function');
+}
+
 export function validateSessionCookieSameSite(cookieSameSite, defaultFlag) {
   const validValues = [true, false, 'Strict', 'Lax', 'None'];
 
@@ -321,6 +341,9 @@ const validatePage = (page, index) => {
     }
     if (page.hooks !== undefined) {
       validatePageHooks(page.hooks);
+    }
+    if (page.errorVisibility !== undefined) {
+      validateErrorVisibility(page.errorVisibility)
     }
   } catch (err) {
     err.message = `Page at index ${index} is invalid: ${err.message}`;
@@ -466,6 +489,9 @@ export default function ingest(config = {}) {
 
     // URL that will prefix all URLs in the browser address bar
     mountUrl: validateMountUrl(config.mountUrl),
+
+    // flag to make validation error visible on get requests
+    errorVisibility: validateErrorVisibility(config.errorVisibility),
 
     // Session
     session: validateSessionObject(config.session, (session) => ({

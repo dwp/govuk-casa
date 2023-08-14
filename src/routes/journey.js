@@ -9,6 +9,7 @@ import progressJourneyMiddlewareFactory from '../middleware/progress-journey.js'
 import waypointUrl from '../lib/waypoint-url.js';
 import logger from '../lib/logger.js';
 import { resolveMiddlewareHooks } from '../lib/utils.js';
+import { CONFIG_ERROR_VISIBILITY_ALWAYS } from '../lib/constants.js';
 
 const log = logger('routes:journey');
 
@@ -54,6 +55,25 @@ const renderMiddlewareFactory = (view, contextFactory) => [
 ];
 
 /**
+ * generate page validation error
+ *
+ * @param {object} errors object of page validation error
+ * @param {object} req casa request object
+ */
+const generateGovukErrors = (errors, req) => Object.keys(errors || {}).map((k) => ({
+  text: req.t(errors[k][0].summary, errors[k][0].variables), /* eslint-disable-line security/detect-object-injection */
+  href: errors[k][0].fieldHref, /* eslint-disable-line security/detect-object-injection */
+}));
+
+/**
+ * handle errorVisibility flag and function and return boolean
+ *
+ * @param {symbol | Function} errorVisibility errorVisibility config option
+ * @param {object} req casa request object
+ */
+const resolveErrorVisibility = ({ req, errorVisibility }) => (typeof errorVisibility === 'function' ? errorVisibility({ req }) : errorVisibility === CONFIG_ERROR_VISIBILITY_ALWAYS)
+
+/**
  * Create an instance of the router for all waypoints visited during a Journey
  * through the Plan.
  *
@@ -66,6 +86,7 @@ export default function journeyRouter({
   pages,
   plan,
   csrfMiddleware,
+  globalErrorVisibility,
 }) {
   // Router
   const router = new MutableRouter();
@@ -116,7 +137,7 @@ export default function journeyRouter({
   ];
 
   pages.forEach((page) => {
-    const { waypoint, view, hooks: pageHooks = [], fields } = page;
+    const { waypoint, view, hooks: pageHooks = [], fields, errorVisibility } = page;
     const waypointPath = `/${waypoint}`;
 
     let commonWaypointMiddleware = [
@@ -145,10 +166,18 @@ export default function journeyRouter({
       ...resolveMiddlewareHooks('journey.poststeer', waypointPath, [...globalHooks, ...pageHooks]),
 
       ...resolveMiddlewareHooks('journey.prerender', waypointPath, [...globalHooks, ...pageHooks]),
-      renderMiddlewareFactory(view, (req) => ({
-        formUrl: waypointUrl({ mountUrl: `${req.baseUrl}/`, waypoint }),
-        formData: req.casa.journeyContext.getDataForPage(waypoint),
-      })),
+      renderMiddlewareFactory(view, (req) => {
+        const errors = req.casa.journeyContext.getValidationErrorsForPageByField(waypoint) ?? Object.create(null);
+        const govukErrors = generateGovukErrors(errors, req);
+        const displayErrors = resolveErrorVisibility({ req, errorVisibility: globalErrorVisibility }) || resolveErrorVisibility({ req, errorVisibility });
+
+        return ({
+          formUrl: waypointUrl({ mountUrl: `${req.baseUrl}/`, waypoint }),
+          formData: req.casa.journeyContext.getDataForPage(waypoint),
+          formErrors: (Object.keys(errors).length && displayErrors) ? errors : null,
+          formErrorsGovukArray: (govukErrors.length && displayErrors) ? govukErrors : null,
+        })
+      }),
     );
 
     router.post(
@@ -193,10 +222,7 @@ export default function journeyRouter({
         // first one is shown.
         // Disabling security/detect-object-injection rule because both `errors`
         // and the `k` property are known entities
-        const govukErrors = Object.keys(errors).map((k) => ({
-          text: req.t(errors[k][0].summary, errors[k][0].variables), /* eslint-disable-line security/detect-object-injection */
-          href: errors[k][0].fieldHref, /* eslint-disable-line security/detect-object-injection */
-        }));
+        const govukErrors = generateGovukErrors(errors, req)
 
         return {
           formUrl: waypointUrl({ mountUrl: `${req.baseUrl}/`, waypoint }),

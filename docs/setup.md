@@ -55,6 +55,10 @@ Configuration for multi-language support
 
 * `object[]` **`plugins`** Plugins
 
+Configuration option for validation error visibility
+
+* `Symbol|Function` **`errorVisibility`** Use the `errorVisibility` option to keep page validation errors visible on GET requests, i.e on page refresh. see [error-visibility guide](docs/guides/error-visibility.md) for more info.
+
 Plugins to extend application functionality. Read our [plugins documentation](plugins.md) for more details.
 
 * `string` **`hooks[].hook`** Name of the hook to attach to (in the format `<router-scope>.<hookName>`, e.g. `journey.prerender`)

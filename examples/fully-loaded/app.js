@@ -13,6 +13,7 @@ import pages from './definitions/pages.js';
 import planFactory from './definitions/plan.js';
 
 import subApp from './sub-app/app.js';
+import { CONFIG_ERROR_VISIBILITY_ALWAYS } from '../../src/lib/constants.js';
 
 const { static: expressStatic } = ExpressJS; // CommonJS
 
@@ -20,6 +21,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const application = ({
   MOUNT_URL = '/',
+  errorVisibility = CONFIG_ERROR_VISIBILITY_ALWAYS
 }) => {
   // Setup app
   const plan = planFactory();
@@ -40,6 +42,7 @@ const application = ({
     views: [
       resolve(__dirname, 'views'),
     ],
+    errorVisibility,
     session: sharedSession,
     hooks: globalHooks,
     i18n: {

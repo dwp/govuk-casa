@@ -22,6 +22,8 @@ import dataMiddlewareFactory from '../middleware/data.js';
 import bodyParserMiddlewareFactory from '../middleware/body-parser.js';
 import csrfMiddlewareFactory from '../middleware/csrf.js';
 
+import { CONFIG_ERROR_VISIBILITY_ONSUBMIT } from './constants.js';
+
 /**
  * @access private
  * @typedef {import('../casa').ConfigurationOptions} ConfigurationOptions
@@ -55,6 +57,7 @@ export default function configure(config = {}) {
   const ingestedConfig = configurationIngestor(config);
   const {
     mountUrl,
+    errorVisibility = CONFIG_ERROR_VISIBILITY_ONSUBMIT,
     views = [],
     session = {
       secret: 'secret',
@@ -145,11 +148,13 @@ export default function configure(config = {}) {
   });
 
   // Setup waypoint router, which includes routes for every defined waypoint
+  const globalErrorVisibility = errorVisibility
   const journeyRouter = journeyRoutes({
     globalHooks: hooks,
     pages,
     plan,
     csrfMiddleware,
+    globalErrorVisibility,
   });
 
   // Create the mounting function

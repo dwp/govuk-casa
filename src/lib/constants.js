@@ -7,3 +7,5 @@ export const REQUEST_PHASE_GATHER = Symbol('gather');
 export const REQUEST_PHASE_VALIDATE = Symbol('validate');
 export const REQUEST_PHASE_REDIRECT = Symbol('redirect');
 export const REQUEST_PHASE_RENDER = Symbol('render');
+export const CONFIG_ERROR_VISIBILITY_ONSUBMIT = Symbol('onsubmit');
+export const CONFIG_ERROR_VISIBILITY_ALWAYS = Symbol('always');
