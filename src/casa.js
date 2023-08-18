@@ -165,7 +165,7 @@ export {
  * @property {number} [formMaxParams=25] Max number of form parameters to ingest
  * @property {number|string} [formMaxBytes="50KB"] Max total form payload size to ingest
  * @property {ContextIdGenerator} [contextIdGenerator] Custom context ID generator
- * @property {symbol | Function} [errorVisibility] option to keep page validation errors visible on GET requests
+ * @property {symbol|Function} [errorVisibility] option to keep page errors active on GET request
  */
 
 /**

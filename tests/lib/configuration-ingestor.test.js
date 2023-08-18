@@ -440,11 +440,12 @@ describe('ConfigIngestor', () => {
     });
 
     it('should return a valid value', () => {
-      expect(validateErrorVisibility(CONFIG_ERROR_VISIBILITY_ALWAYS)).to.be.equal(CONFIG_ERROR_VISIBILITY_ALWAYS);
+      expect(validateErrorVisibility(CONFIG_ERROR_VISIBILITY_ALWAYS))
+        .to.be.equal(CONFIG_ERROR_VISIBILITY_ALWAYS);
     });
 
     it('should accept function as valid type', () => {
-      expect(validateErrorVisibility((req) => true)).to.not.throw();
+      expect(validateErrorVisibility(() => true)).to.not.throw();
     });
 
 

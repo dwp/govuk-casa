@@ -59,19 +59,20 @@ const renderMiddlewareFactory = (view, contextFactory) => [
  *
  * @param {object} errors object of page validation error
  * @param {object} req casa request object
+ * @returns {object[]} array of error objects
  */
-const generateGovukErrors = (errors, req) => Object.keys(errors || {}).map((k) => ({
-  text: req.t(errors[k][0].summary, errors[k][0].variables), /* eslint-disable-line security/detect-object-injection */
-  href: errors[k][0].fieldHref, /* eslint-disable-line security/detect-object-injection */
-}));
-
+const generateGovukErrors = (errors, req) => Object.values(errors || {}).map(([error]) => ({
+  text: req.t(error.summary, error.variables),
+  href: error.fieldHref,
+}))
 /**
  * handle errorVisibility flag and function and return boolean
  *
  * @param {symbol | Function} errorVisibility errorVisibility config option
  * @param {object} req casa request object
+ * @returns {boolean} true if errorVisibility is "always" or function condition true
  */
-const resolveErrorVisibility = ({ req, errorVisibility }) => (typeof errorVisibility === 'function' ? errorVisibility({ req }) : errorVisibility === CONFIG_ERROR_VISIBILITY_ALWAYS)
+const resolveErrorVisibility = (req, errorVisibility) => (typeof errorVisibility === 'function' ? errorVisibility({ req }) : errorVisibility === CONFIG_ERROR_VISIBILITY_ALWAYS)
 
 /**
  * Create an instance of the router for all waypoints visited during a Journey
@@ -167,9 +168,9 @@ export default function journeyRouter({
 
       ...resolveMiddlewareHooks('journey.prerender', waypointPath, [...globalHooks, ...pageHooks]),
       renderMiddlewareFactory(view, (req) => {
-        const errors = req.casa.journeyContext.getValidationErrorsForPageByField(waypoint) ?? Object.create(null);
-        const govukErrors = generateGovukErrors(errors, req);
-        const displayErrors = resolveErrorVisibility({ req, errorVisibility: globalErrorVisibility }) || resolveErrorVisibility({ req, errorVisibility });
+        const displayErrors = resolveErrorVisibility(req, globalErrorVisibility) || resolveErrorVisibility(req, errorVisibility);
+        const errors = displayErrors && (req.casa.journeyContext.getValidationErrorsForPageByField(waypoint) ?? Object.create(null));
+        const govukErrors = displayErrors && generateGovukErrors(errors, req);
 
         return ({
           formUrl: waypointUrl({ mountUrl: `${req.baseUrl}/`, waypoint }),
