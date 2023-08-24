@@ -907,4 +907,56 @@ export default class JourneyContext {
       );
     }
   }
+
+  /**
+   * Set page skipped status.
+   *
+   * @param {string} waypoint Waypoint to skip.
+   * @param {boolean | object} opts Is skipped flag or options.
+   * @param {string} opts.to Waypoint to skip to.
+   */
+  setSkipped(waypoint, opts) {
+    // Unset, with setSkipped(a, false)
+    if (opts === false) {
+      this.data[waypoint] ??= Object.create(null);
+      this.data[waypoint].__skipped__ = undefined;
+      this.data[waypoint].__skip__ = undefined;
+    }
+    // Set, with setSkipped(a, true) and clear data
+    else if (opts === true) {
+      this.data[waypoint] = Object.create(null);
+      this.data[waypoint].__skipped__ = true;
+      this.data[waypoint].__skip__ = { to: null };
+    }
+    // Set, with setSkipped(a, { to: b }) and clear data
+    else if (typeof opts?.to === "string") {
+      this.data[waypoint] = Object.create(null);
+      this.data[waypoint].__skipped__ = true;
+      this.data[waypoint].__skip__ = { to: opts.to };
+    } else {
+      throw new TypeError(
+        `setSkipped opts must be a boolean or object with a "to" prop of waypoint to skip to, got: ${typeof opts}`,
+      );
+    }
+  }
+
+  /**
+   * Tests if a page has been skipped.
+   *
+   * @param {string} page Page ID (waypoint).
+   * @param {object} opts Skip ptions.
+   * @param {string} opts.to Waypoint that should be skipped to.
+   * @returns {boolean} True if the page has been skipped, or if it has been
+   *   skipped to a specific page.
+   */
+  isSkipped(waypoint, opts) {
+    if (opts === undefined) {
+      return (
+        this.data[waypoint]?.__skipped__ === true ||
+        this.data[waypoint]?.__skip__ !== undefined
+      );
+    } else if (typeof opts.to === "string") {
+      return this.data[waypoint]?.__skip__?.to === opts.to;
+    }
+  }
 }

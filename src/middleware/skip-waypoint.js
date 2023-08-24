@@ -1,27 +1,22 @@
 // Mark a waypoint as skipped
 
-import lodash from "lodash";
 import JourneyContext from "../lib/JourneyContext.js";
 import waypointUrl from "../lib/waypoint-url.js";
 import logger from "../lib/logger.js";
-
-const { has } = lodash;
 
 const log = logger("middleware:skip-waypoint");
 
 export default ({ waypoint }) => [
   (req, res, next) => {
-    if (!has(req.query, "skipto")) {
+    if (!Object.hasOwn(req.query, "skipto")) {
       return next();
     }
     const skipTo = String(req.query.skipto);
 
-    // Inject a special `__skipped__` attribute into this waypoint's data
+    // Inject a special `__skip__` attribute into this waypoint's data
     log.info(`Marking waypoint "${waypoint}" as skipped`);
     req.casa.journeyContext.clearValidationErrorsForPage(waypoint);
-    req.casa.journeyContext.setDataForPage(waypoint, {
-      __skipped__: true,
-    });
+    req.casa.journeyContext.setSkipped(waypoint, { to: skipTo });
     JourneyContext.putContext(req.session, req.casa.journeyContext);
 
     const redirectUrl = waypointUrl({

@@ -733,4 +733,140 @@ describe("JourneyContext", () => {
     expect(contexts[1].identity.id).to.equal("test1");
     expect(contexts[2].identity.id).to.equal("test2");
   });
+
+  describe("setSkipped()", () => {
+    it("set skipped state using boolean and clear data", () => {
+      const journeyContext = new JourneyContext();
+      journeyContext.setDataForPage("page", { test: "a" });
+      journeyContext.setSkipped("page", true);
+
+      expect(journeyContext.getDataForPage("page")).to.deep.equal({
+        __skipped__: true,
+        __skip__: { to: null },
+      });
+    });
+
+    it("set skipped state using opts.to and clear data", () => {
+      const journeyContext = new JourneyContext();
+      journeyContext.setDataForPage("page", { test: "a" });
+      journeyContext.setSkipped("page", { to: "next-page" });
+
+      expect(journeyContext.getDataForPage("page")).to.deep.equal({
+        __skipped__: true,
+        __skip__: { to: "next-page" },
+      });
+    });
+
+    it("unset skipped state using boolean", () => {
+      const journeyContext = new JourneyContext();
+      journeyContext.setDataForPage("page", { test: "a" });
+      journeyContext.setSkipped("page", false);
+
+      expect(journeyContext.getDataForPage("page")).to.deep.equal({
+        test: "a",
+        __skipped__: undefined,
+        __skip__: undefined,
+      });
+    });
+
+    it("creates page data if it is empty when skipping", () => {
+      const journeyContext = new JourneyContext();
+      journeyContext.setSkipped("page", true);
+
+      expect(journeyContext.getDataForPage("page")).to.deep.equal({
+        __skipped__: true,
+        __skip__: { to: null },
+      });
+    });
+
+    it("creates page data if it is empty when unskipping", () => {
+      const journeyContext = new JourneyContext();
+      journeyContext.setSkipped("page", false);
+
+      expect(journeyContext.getDataForPage("page")).to.deep.equal({
+        __skipped__: undefined,
+        __skip__: undefined,
+      });
+    });
+
+    it("throws TypeError if skip value is not a boolean or string", () => {
+      const journeyContext = new JourneyContext();
+      expect(() => journeyContext.setSkipped("page", 9)).to.throw(
+        TypeError,
+        'setSkipped opts must be a boolean or object with a "to" prop of waypoint to skip to, got: number',
+      );
+    });
+  });
+
+  describe("isSkipped()", () => {
+    it("should return true when skipped with boolean", () => {
+      const journeyContext = new JourneyContext({ waypoint: {} });
+      journeyContext.setSkipped("waypoint", true);
+      expect(journeyContext.isSkipped("waypoint")).to.equal(true);
+    });
+
+    it("should return true when skipped with options", () => {
+      const journeyContext = new JourneyContext({ waypoint: {} });
+      journeyContext.setSkipped("waypoint", { to: "target" });
+      expect(journeyContext.isSkipped("waypoint")).to.equal(true);
+    });
+
+    it("should return false if not skipped", () => {
+      const journeyContext = new JourneyContext({ waypoint: {} });
+      expect(journeyContext.isSkipped("waypoint")).to.equal(false);
+    });
+
+    it("should return false if un-skipped", () => {
+      const journeyContext = new JourneyContext({ waypoint: {} });
+      journeyContext.setSkipped("waypoint", true);
+      journeyContext.setSkipped("waypoint", false);
+      expect(journeyContext.isSkipped("waypoint")).to.equal(false);
+    });
+
+    it("should return false if page data does not exist", () => {
+      const journeyContext = new JourneyContext();
+      expect(journeyContext.isSkipped("waypoint")).to.equal(false);
+    });
+
+    describe("with options", () => {
+      it("should return true if skipped to target waypoint", () => {
+        const journeyContext = new JourneyContext({ waypoint: {} });
+        journeyContext.setSkipped("waypoint", { to: "target" });
+        expect(journeyContext.isSkipped("waypoint", { to: "target" })).to.equal(
+          true,
+        );
+      });
+
+      it("should return false when skipped to a different waypoint", () => {
+        const journeyContext = new JourneyContext({ waypoint: {} });
+        journeyContext.setSkipped("waypoint", { to: "somewhere-else" });
+        expect(journeyContext.isSkipped("waypoint", { to: "target" })).to.equal(
+          false,
+        );
+      });
+
+      it("should return false if not skipped", () => {
+        const journeyContext = new JourneyContext({ waypoint: {} });
+        expect(journeyContext.isSkipped("waypoint", { to: "target" })).to.equal(
+          false,
+        );
+      });
+
+      it("should return false if un-skipped", () => {
+        const journeyContext = new JourneyContext({ waypoint: {} });
+        journeyContext.setSkipped("waypoint", { to: "target" });
+        journeyContext.setSkipped("waypoint", false);
+        expect(journeyContext.isSkipped("waypoint", { to: "target" })).to.equal(
+          false,
+        );
+      });
+
+      it("should return false if page data does not exist", () => {
+        const journeyContext = new JourneyContext();
+        expect(journeyContext.isSkipped("waypoint", { to: "target" })).to.equal(
+          false,
+        );
+      });
+    });
+  });
 });

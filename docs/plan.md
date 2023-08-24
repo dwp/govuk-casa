@@ -72,6 +72,28 @@ const url = waypointUrl({
 });
 ```
 
+If you want one page to skip to multiple waypoints, you can use the `JourneyContext.isSkipped()` method to check where a page skips to:
+
+```javascript
+plan.addSkippables("options", "page-a", "page-b");
+plan.addSequence("page-a", "page-b", "page-c", "end");
+plan.setRoute("options", "page-a", (r, c) => c.isSkipped("options", { to: "page-a" }));
+plan.setRoute("options", "page-b", (r, c) => c.isSkipped("options", { to: "page-b" }));
+plan.setRoute("options", "page-c", (r, c) => c.isSkipped("options", { to: "page-c" }));
+```
+
+Which would enable the following journey:
+
+```mermaid
+flowchart LR
+  options --> page-a
+  options --> page-b
+  options --> page-c
+  page-a --> page-b
+  page-b --> page-c
+  page-c --> p["end"]
+```
+
 ## Simple linear routes
 
 Connect two waypoints with a two-way route as follows:
