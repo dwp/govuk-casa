@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [8.13.0](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/compare/8.12.0...8.13.0) (2023-08-24)
+
+
+### Features
+
+* added errorVisibility feature ([d5b411d](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/commit/d5b411d3a2a2874e1163dfaab9006f32ac9c381d))
+
 ## [8.12.0](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/compare/8.11.1...8.12.0) (2023-07-12)
 
 
