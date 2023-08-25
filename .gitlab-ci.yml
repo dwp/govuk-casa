@@ -10,6 +10,8 @@ variables:
   NODE_PUBLISH_TO_GITLAB: "true"
   NODE_PUBLISH_TO_NPMJS: "true"
   AUTO_TAG_MERGE_PREPARE_MR: "true"
+  # Can remove this feature flag once all linters have reached maturity
+  DWP_FF_POLICY_DEV211: "true"
 
 # ------------------------------------------------------------------ custom jobs
 
