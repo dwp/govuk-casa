@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import cheerio from 'cheerio';
+import { load } from 'cheerio';
 import nunjucks from '../../../src/lib/nunjucks.js';
 
 const njks = nunjucks({
@@ -21,7 +21,7 @@ describe('Text area macro', () => {
       },
       t: (item) => item,
     });
-    const $ = cheerio.load(output);
+    const $ = load(output);
     const textarea = $('textarea');
     const label = $('label');
 
@@ -43,7 +43,7 @@ describe('Text area macro', () => {
       },
       t: (item) => item,
     });
-    const $ = cheerio.load(output);
+    const $ = load(output);
     const div = $('div');
     const p = $('p');
 
@@ -67,7 +67,7 @@ describe('Text area macro', () => {
       },
       t: (item) => item,
     });
-    const $ = cheerio.load(output);
+    const $ = load(output);
     const p = $('p');
 
     expect(p.get(0).attribs['data-ga-question']).to.equal('textarea Label');
@@ -87,7 +87,7 @@ describe('Text area macro', () => {
       },
       t: (item) => item,
     });
-    const $ = cheerio.load(output);
+    const $ = load(output);
     const p = $('p');
 
     expect(p.get(0).attribs['data-ga-question']).to.equal('textarea Label');

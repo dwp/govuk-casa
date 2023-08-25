@@ -1,4 +1,4 @@
-import sinon from 'sinon';
+import { stub } from 'sinon';
 import sinonChai from 'sinon-chai';
 import chai, { expect } from 'chai';
 import { CONFIG_ERROR_VISIBILITY_ONSUBMIT, CONFIG_ERROR_VISIBILITY_ALWAYS } from '../../src/lib/constants.js';
@@ -79,7 +79,7 @@ describe('ConfigIngestor', () => {
 
   describe('validateI18nObject()', () => {
     it('should call the callback, passing a valid value, and return its result', () => {
-      const stubCallback = sinon.stub().returns('test-response');
+      const stubCallback = stub().returns('test-response');
       const testInput = {};
       expect(validateI18nObject(testInput, stubCallback)).to.equal('test-response');
       expect(stubCallback).to.be.calledOnceWithExactly(testInput);
@@ -110,7 +110,7 @@ describe('ConfigIngestor', () => {
 
   describe('validateSessionObject()', () => {
     it('should call the callback, passing a valid value, and return its result', () => {
-      const stubCallback = sinon.stub().returns('test-response');
+      const stubCallback = stub().returns('test-response');
       const testInput = {};
       expect(validateSessionObject(testInput, stubCallback)).to.equal('test-response');
       expect(stubCallback).to.be.calledOnceWithExactly(testInput);

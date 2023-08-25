@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import nunjucks from 'nunjucks';
-import cheerio from 'cheerio';
+import { load } from 'cheerio';
 
 nunjucks.configure(['views', 'node_modules/govuk-frontend/']);
 
@@ -15,7 +15,7 @@ describe('Journey form macro', () => {
       caller: () => '',
       t: (item) => item,
     });
-    const $ = cheerio.load(output);
+    const $ = load(output);
     const form = $('form');
     const inputs = $('input');
     const buttons = $('button');
@@ -34,7 +34,7 @@ describe('Journey form macro', () => {
       caller: () => '',
       t: (item) => item,
     });
-    const $ = cheerio.load(output);
+    const $ = load(output);
     const form = $('form');
     const inputs = $('input');
     const buttons = $('button');
@@ -53,7 +53,7 @@ describe('Journey form macro', () => {
       caller: () => '',
       t: (item) => item,
     });
-    const $ = cheerio.load(output);
+    const $ = load(output);
     const form = $('form');
     const inputs = $('input');
     const buttons = $('button');

@@ -42,6 +42,7 @@ export default function nunjucksConfig({
 
   // Globals
   // These can't be modified once set. But they can be overridden by res.locals.
+  /* eslint-disable-next-line security/detect-non-literal-fs-filename */
   env.addGlobal('casaVersion', JSON.parse(readFileSync(resolve(dirname, '../../package.json'))).version);
 
   env.addGlobal('mergeObjects', mergeObjects);

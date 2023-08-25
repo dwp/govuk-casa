@@ -1,6 +1,6 @@
 /* eslint-disable camelcase, object-curly-newline */
 import chai, { expect } from 'chai';
-import sinon from 'sinon';
+import { stub } from 'sinon';
 import sinonChai from 'sinon-chai';
 
 import Plan from '../../src/lib/Plan.js';
@@ -77,7 +77,7 @@ describe('Plan', () => {
     it('should emit a warning log when setting an existing route');
 
     it('should store the follow condition function', () => {
-      const follow = sinon.stub();
+      const follow = stub();
       plan.setNamedRoute('a', 'b', 'next', follow);
       expect(plan.getRouteCondition('a', 'b', 'next')).to.equal(follow);
     });
@@ -112,8 +112,8 @@ describe('Plan', () => {
     });
 
     it('should create route with next and prev conditions', () => {
-      const stubNext = sinon.stub();
-      const stubPrev = sinon.stub();
+      const stubNext = stub();
+      const stubPrev = stub();
       plan.setRoute('a', 'b', stubNext, stubPrev);
 
       plan.traverseNextRoutes(stubContext, { startWaypoint: 'a' });
@@ -128,7 +128,7 @@ describe('Plan', () => {
     });
 
     it('should create route with default prev condition that matches specified next condition', () => {
-      const stubNext = sinon.stub();
+      const stubNext = stub();
       plan.setRoute('a', 'b', stubNext);
 
       plan.traverseNextRoutes(stubContext, { startWaypoint: 'a' });
@@ -173,8 +173,8 @@ describe('Plan', () => {
     });
 
     it('should call all follow-condition functions on the discovered routes, passing context arguments', () => {
-      const stub_n0n1 = sinon.stub().returns(true);
-      const stub_n1n2 = sinon.stub().returns(true);
+      const stub_n0n1 = stub().returns(true);
+      const stub_n1n2 = stub().returns(true);
       const context = new JourneyContext({ d: 'test-data' }, { n0: null }, { n: 'test-nav' });
 
       plan.setNextRoute('n0', 'n1', stub_n0n1);
@@ -189,8 +189,8 @@ describe('Plan', () => {
     });
 
     it('should not evaluate route condition with invalidated source, and validateBeforeRouteCondition == true', () => {
-      const stub_n0n1 = sinon.stub().returns(true);
-      const stub_n1n2 = sinon.stub().returns(true);
+      const stub_n0n1 = stub().returns(true);
+      const stub_n1n2 = stub().returns(true);
       const context = new JourneyContext({ d: 'test-data' }, { n0: null, n1: undefined }, { n: 'test-nav' });
 
       const planB = new Plan({ validateBeforeRouteCondition: true });
@@ -209,8 +209,8 @@ describe('Plan', () => {
         validateBeforeRouteCondition: false,
       });
 
-      const stub_n0n1 = sinon.stub().returns(true);
-      const stub_n0n2 = sinon.stub().returns(true);
+      const stub_n0n1 = stub().returns(true);
+      const stub_n0n2 = stub().returns(true);
 
       planTest.setNextRoute('n0', 'n1', stub_n0n1);
       planTest.setNextRoute('n0', 'n2', stub_n0n2);
@@ -225,8 +225,8 @@ describe('Plan', () => {
     });
 
     it('should return all routes in the order they were satisfied', () => {
-      const stub_n0n1 = sinon.stub().returns(true);
-      const stub_n1n2 = sinon.stub().returns(true);
+      const stub_n0n1 = stub().returns(true);
+      const stub_n1n2 = stub().returns(true);
 
       plan.setNextRoute('n0', 'n1', stub_n0n1);
       plan.setNextRoute('n1', 'n2', stub_n1n2);
@@ -252,9 +252,9 @@ describe('Plan', () => {
     });
 
     it('should stop traversing and return results if stopCondition is met', () => {
-      const stub_n0n1 = sinon.stub().returns(true);
-      const stub_n1n2 = sinon.stub().returns(true);
-      const stub_n2n3 = sinon.stub().returns(true);
+      const stub_n0n1 = stub().returns(true);
+      const stub_n1n2 = stub().returns(true);
+      const stub_n2n3 = stub().returns(true);
 
       plan.setNextRoute('n0', 'n1', stub_n0n1);
       plan.setNextRoute('n1', 'n2', stub_n1n2);
@@ -277,9 +277,9 @@ describe('Plan', () => {
       const testPlan = new Plan();
       const context = new JourneyContext({}, { n0: null, n1: null, n2: undefined, n3: undefined });
 
-      const stub_n0n1 = sinon.stub().returns(true);
-      const stub_n1n2 = sinon.stub().returns(true);
-      const stub_n2n3 = sinon.stub().returns(true);
+      const stub_n0n1 = stub().returns(true);
+      const stub_n1n2 = stub().returns(true);
+      const stub_n2n3 = stub().returns(true);
 
       testPlan.setNextRoute('n0', 'n1', stub_n0n1);
       testPlan.setNextRoute('n1', 'n2', stub_n1n2);

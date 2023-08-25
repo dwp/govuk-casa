@@ -1,4 +1,4 @@
-import sinon from 'sinon';
+import { stub } from 'sinon';
 import express from 'express';
 import request from 'supertest';
 
@@ -12,7 +12,7 @@ describe('mount()', () => {
   beforeEach(() => {
     factoryArgs = {
       nunjucksEnv: {
-        express: sinon.stub(),
+        express: stub(),
       },
       mountUrl: null,
       plan: null,

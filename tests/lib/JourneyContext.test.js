@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import sinon from 'sinon';
+import { stub, spy } from 'sinon';
 
 import JourneyContext from '../../src/lib/JourneyContext.js';
 import ValidationError from '../../src/lib/ValidationError.js';
@@ -508,7 +508,7 @@ describe('JourneyContext', () => {
     });
 
     it('should initialise session if not already initialised', () => {
-      const initSpy = sinon.spy(JourneyContext, 'initContextStore');
+      const initSpy = spy(JourneyContext, 'initContextStore');
       const session = {};
       const context = new JourneyContext();
       context.identity.id = '123e4567-e89b-12d3-a456-426614174000';
@@ -571,9 +571,9 @@ describe('JourneyContext', () => {
     let getContextByIdStub;
 
     beforeEach(() => {
-      initContextStoreStub = sinon.stub(JourneyContext, 'initContextStore');
-      validateStub = sinon.stub(JourneyContext, 'validateContextId').callsFake((cid) => (cid));
-      getContextByIdStub = sinon.stub(JourneyContext, 'getContextById').callsFake((_, cid) => (cid));
+      initContextStoreStub = stub(JourneyContext, 'initContextStore');
+      validateStub = stub(JourneyContext, 'validateContextId').callsFake((cid) => (cid));
+      getContextByIdStub = stub(JourneyContext, 'getContextById').callsFake((_, cid) => (cid));
     });
 
     afterEach(() => {

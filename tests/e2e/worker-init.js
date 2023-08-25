@@ -8,7 +8,7 @@
  * Pass `--zap-api-key` to specify the ZAProxy API key (default "secret")
  * Pass `--zap-proxy` to specify the ZAP host/port, (default http://localhost:8080)
  */
-/* eslint-disable import/no-unresolved,no-unused-vars,global-require */
+/* eslint-disable global-require */
 import { dirname, resolve } from 'path';
 import { load } from 'js-yaml';
 import { readFileSync } from 'fs';

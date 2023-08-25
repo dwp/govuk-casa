@@ -1,4 +1,4 @@
-import sinon from 'sinon';
+import { stub } from 'sinon';
 import sinonChai from 'sinon-chai';
 import chai, { expect } from 'chai';
 import ExpressJS from 'express';
@@ -37,11 +37,11 @@ describe('strip-proxy-path middleware', () => {
         // Calls same middleware again to mimic the behaviour of `app.handle()`,
         // which effectively starts handling the request from the top of the
         // middleware stack
-        handle: sinon.stub().callsFake((req2, res2, next2) => middleware(req2, res2, next2)),
+        handle: stub().callsFake((req2, res2, next2) => middleware(req2, res2, next2)),
       },
     };
     const res = {};
-    const next = sinon.stub();
+    const next = stub();
 
     middleware(req, res, next);
 

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import cheerio from 'cheerio';
+import { load } from 'cheerio';
 import nunjucks from '../../../src/lib/nunjucks.js';
 
 const njks = nunjucks({
@@ -23,7 +23,7 @@ describe('Postal address macro', () => {
       },
       t: (item) => item,
     });
-    const $ = cheerio.load(output);
+    const $ = load(output);
     const input = $('input');
     const legend = $('legend');
 
@@ -59,7 +59,7 @@ describe('Postal address macro', () => {
       },
       t: (item) => item,
     });
-    const $ = cheerio.load(output);
+    const $ = load(output);
     const div = $('div');
     const p = $('p');
 
@@ -105,7 +105,7 @@ describe('Postal address macro', () => {
       },
       t: (item) => item,
     });
-    const $ = cheerio.load(output);
+    const $ = load(output);
     const p = $('p');
 
     expect(p.get(0).attribs['data-ga-question']).to.equal('macros:postalAddressObject.address1');

@@ -58,8 +58,10 @@ export default function staticRouter({
   // The CASA CSS source contains the placeholder `~~~CASA_MOUNT_URL~~~` which
   // must be replaced with the dynamic `mountUrl` to ensure govuk-frontend
   // assets are served from the correct location.
+  /* eslint-disable security/detect-non-literal-fs-filename */
   const casaCss = readFileSync(resolve(dirname, '../../dist/assets/css/casa.css'), { encoding: 'utf8' });
   const casaCssIe8 = readFileSync(resolve(dirname, '../../dist/assets/css/casa-ie8.css'), { encoding: 'utf8' });
+  /* eslint-enable security/detect-non-literal-fs-filename */
 
   // The static middleware will only server GET/HEAD requests, so we can mount
   // the middleware using `use()` rather than resorting to `get()`

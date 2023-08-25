@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import cheerio from 'cheerio';
+import { load } from 'cheerio';
 import nunjucks from '../../../src/lib/nunjucks.js';
 
 const njks = nunjucks({
@@ -23,7 +23,7 @@ describe('Dateinput macro', () => {
       },
       t: (item) => item,
     });
-    const $ = cheerio.load(output);
+    const $ = load(output);
     const input = $('input');
     const legend = $('legend');
 
@@ -49,7 +49,7 @@ describe('Dateinput macro', () => {
       },
       t: (item) => item,
     });
-    const $ = cheerio.load(output);
+    const $ = load(output);
     const div = $('div');
     const p = $('p');
 
@@ -75,7 +75,7 @@ describe('Dateinput macro', () => {
       },
       t: (item) => item,
     });
-    const $ = cheerio.load(output);
+    const $ = load(output);
     const p = $('p');
 
     expect(p.get(0).attribs['data-ga-question']).to.equal('dateInput Legend');
@@ -97,7 +97,7 @@ describe('Dateinput macro', () => {
       },
       t: (item) => item,
     });
-    const $ = cheerio.load(output);
+    const $ = load(output);
     const p = $('p');
 
     expect(p.get(0).attribs['data-ga-question']).to.equal('dateInput Legend');

@@ -1,4 +1,4 @@
-import sinon from 'sinon';
+import { stub } from 'sinon';
 import sinonChai from 'sinon-chai';
 import chai, { expect } from 'chai';
 import ExpressJS from 'express';
@@ -44,7 +44,7 @@ describe('csrf middleware', () => {
     const res = {
       locals: {},
     };
-    const next = sinon.stub();
+    const next = stub();
 
     middleware(req, res, next);
 

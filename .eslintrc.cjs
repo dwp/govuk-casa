@@ -1,7 +1,12 @@
 module.exports = {
   root: true,
-  extends: ['@dwp/eslint-config-base', 'plugin:sonarjs/recommended', 'plugin:security/recommended'],
+  env: {
+    node: true,
+  },
+  extends: ['@dwp/eslint-config-base', 'plugin:import/recommended', 'plugin:sonarjs/recommended', 'plugin:security/recommended'],
   plugins: [
+    'import',
+    'jsdoc',
     'no-unsafe-regex',
     'sonarjs',
     'security',

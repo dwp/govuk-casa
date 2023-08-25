@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 /**
  * Represents the state of a user's journey through the Plan. It contains
  * information about:
@@ -257,6 +256,7 @@ export default class JourneyContext {
    * @returns {JourneyContext} Chain.
    */
   removeValidationStateForPage(pageId) {
+    /* eslint-disable-next-line no-unused-vars */
     const { [pageId]: dummy, ...remaining } = this.#validation;
     this.#validation = { ...remaining };
     return this;

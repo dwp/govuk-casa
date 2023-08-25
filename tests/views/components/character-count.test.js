@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import cheerio from 'cheerio';
+import { load } from 'cheerio';
 import nunjucks from '../../../src/lib/nunjucks.js';
 
 const njks = nunjucks({
@@ -32,7 +32,7 @@ describe('Character count  macro', () => {
         }],
       },
     });
-    const $ = cheerio.load(output);
+    const $ = load(output);
     const textarea = $('textarea');
     const label = $('label');
     const div = $('div');
@@ -69,7 +69,7 @@ describe('Character count  macro', () => {
       },
       t: (item) => item,
     });
-    const $ = cheerio.load(output);
+    const $ = load(output);
     const div = $('div');
     const p = $('p');
     const textarea = $('textarea');
@@ -107,7 +107,7 @@ describe('Character count  macro', () => {
       },
       t: (item) => item,
     });
-    const $ = cheerio.load(output);
+    const $ = load(output);
     const p = $('p');
 
     expect(p.get(0).attribs['data-ga-question']).to.equal('inputLabel');
@@ -138,7 +138,7 @@ describe('Character count  macro', () => {
       },
       t: (item) => item,
     });
-    const $ = cheerio.load(output);
+    const $ = load(output);
     const p = $('p');
 
     expect(p.get(0).attribs['data-ga-question']).to.equal('inputLabel');

@@ -1,4 +1,4 @@
-import i18next from 'i18next';
+import { createInstance } from 'i18next';
 import { LanguageDetector, handle } from 'i18next-http-middleware';
 import { resolve, basename } from 'path';
 import { existsSync, readFileSync, readdirSync } from 'fs';
@@ -11,10 +11,12 @@ const log = logger('middleware:i18n');
 const loadJson = (file) => {
   // Strip out newlines (this is a legacy feature which we're keeping for
   // backwards compatibility).
+  /* eslint-disable-next-line security/detect-non-literal-fs-filename */
   const json = readFileSync(file, 'utf8');
   return JSON.parse(json.replace(/[\r\n]/g, ''));
 }
 
+/* eslint-disable-next-line security/detect-non-literal-fs-filename */
 const loadYaml = (file) => yaml.load(readFileSync(file, 'utf8'))
 
 const extract = (file) => {
@@ -38,11 +40,13 @@ const loadResources = (languages, directories) => {
 
     directories.forEach((basedir) => {
       const dir = resolve(basedir, language);
+      /* eslint-disable-next-line security/detect-non-literal-fs-filename */
       if (!existsSync(dir)) {
         return;
       }
 
       log.info('Loading %s language from %s ...', language, dir);
+      /* eslint-disable-next-line security/detect-non-literal-fs-filename */
       readdirSync(dir).forEach((file) => {
         const { ns, data } = extract(resolve(dir, file));
 
@@ -67,7 +71,7 @@ export default function i18nMiddleware({
   const resources = loadResources(languages, directories);
 
   // Configure i18next
-  const i18nInstance = i18next.createInstance();
+  const i18nInstance = createInstance();
   i18nInstance
     .use(LanguageDetector)
     .init({
