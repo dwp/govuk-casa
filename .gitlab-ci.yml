@@ -20,7 +20,6 @@ unit-test:
   extends: .node-common
   parallel:
     matrix:
-      - node_image_version: node:16@sha256:7f404d09ceb780c51f4fac7592c46b8f21211474aacce25389eb0df06aaa7472
       - node_image_version: node:20@sha256:242d81ad2a91353ac3a5ed3598582acb4a9a7761b16c60524b949a1603707848
   stage: unit-test
   image: $node_image_version
