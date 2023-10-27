@@ -5,41 +5,29 @@
  *  node compile-sass.js.
  */
 
-import sass from 'sass';
-import { writeFile } from 'fs/promises';
-
-const { renderSync } = sass;
+import { compile } from 'sass';
+import { writeFile } from 'node:fs/promises';
+import { createRequire } from 'node:module';
+import { resolve } from 'node:path';
 
 /**
  * Compile all Sass files in the `src/casa/` source directory, and store output
  * into the specified `targetDir`.
  */
 async function compileSassSources() {
-  // Main CSS
-  let targetFile = 'dist/assets/css/casa.css';
-  const { css } = renderSync({
-    file: 'assets/scss/casa.scss',
-    includePaths: [
-      'assets/scss/',
-    ],
-    outputStyle: 'compressed',
-    outFile: targetFile,
-    quietDeps: true,
-  });
-  await writeFile(targetFile, css, { encoding: 'utf8' });
+  const require = createRequire(import.meta.url);
+  const govukFrontendDirectory = resolve(require.resolve('govuk-frontend'), '../../');
 
-  // IE8 support
-  targetFile = 'dist/assets/css/casa-ie8.css';
-  const { css: cssIe8 } = renderSync({
-    file: 'assets/scss/casa-ie8.scss',
-    includePaths: [
-      'assets/scss/',
+  // Main CSS
+  const { css } = compile('assets/scss/casa.scss', {
+    loadPaths: [
+      govukFrontendDirectory,
     ],
-    outputStyle: 'compressed',
-    outFile: targetFile,
+    style: 'compressed',
     quietDeps: true,
   });
-  await writeFile(targetFile, cssIe8, { encoding: 'utf8' })
+
+  await writeFile('dist/assets/css/casa.css', css, { encoding: 'utf8' });
 }
 
 await compileSassSources();

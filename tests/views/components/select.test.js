@@ -6,7 +6,7 @@ import nunjucks from '../../../src/lib/nunjucks.js';
 const njks = nunjucks({
   views: [
     'views',
-    'node_modules/govuk-frontend/',
+    'node_modules/govuk-frontend/dist/',
   ],
 });
 

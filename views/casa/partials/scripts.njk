@@ -1,7 +1,9 @@
 <!-- CASA -->
-<script src="{{ casa.staticMountUrl }}govuk/assets/js/all.js?{{ casaVersion }}"></script>
-<script nonce="{{ cspNonce }}">
-window.GOVUKFrontend.initAll();
+{% set jsPath = casa.staticMountUrl + "govuk/govuk-frontend.min.js?" + casaVersion %}
+<script type="module" src="{{ jsPath }}"></script>
+<script type="module"{% if cspNonce %} nonce="{{ cspNonce }}"{% endif %}>
+import { initAll } from '{{ jsPath }}';
+initAll();
 if (window.history.replaceState) {
   // Prevent re-submission of POST on refreshing page
   window.history.replaceState(null, null, window.location.href);

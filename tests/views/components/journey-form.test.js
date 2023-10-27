@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import nunjucks from 'nunjucks';
 import { load } from 'cheerio';
 
-nunjucks.configure(['views', 'node_modules/govuk-frontend/']);
+nunjucks.configure(['views', 'node_modules/govuk-frontend/dist/']);
 
 describe('Journey form macro', () => {
   it('should render default component when called', () => {

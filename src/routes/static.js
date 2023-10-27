@@ -60,20 +60,18 @@ export default function staticRouter({
   // assets are served from the correct location.
   /* eslint-disable security/detect-non-literal-fs-filename */
   const casaCss = readFileSync(resolve(dirname, '../../dist/assets/css/casa.css'), { encoding: 'utf8' });
-  const casaCssIe8 = readFileSync(resolve(dirname, '../../dist/assets/css/casa-ie8.css'), { encoding: 'utf8' });
   /* eslint-enable security/detect-non-literal-fs-filename */
 
   // The static middleware will only server GET/HEAD requests, so we can mount
   // the middleware using `use()` rather than resorting to `get()`
   const govukFrontendDirectory = resolve(createRequire(dirname).resolve('govuk-frontend'), '../../');
 
-  router.use('/govuk/assets/js/all.js', ExpressStatic(`${govukFrontendDirectory}/govuk/all.js`, staticConfig));
-  router.use('/govuk/assets/js/all.js.map', ExpressStatic(`${govukFrontendDirectory}/govuk/all.js.map`, staticConfig));
+  router.use('/govuk/govuk-frontend.min.js', ExpressStatic(`${govukFrontendDirectory}/govuk/govuk-frontend.min.js`, staticConfig));
+  router.use('/govuk/govuk-frontend.min.js.map', ExpressStatic(`${govukFrontendDirectory}/govuk/govuk-frontend.min.js.map`, staticConfig));
   router.use('/govuk/assets', ExpressStatic(`${govukFrontendDirectory}/govuk/assets`, staticConfig));
   router.use('/govuk/assets', notFoundHandler);
 
   router.get('/casa/assets/css/casa.css', setHeaders, (req, res) => res.send(casaCss.replace(/~~~CASA_MOUNT_URL~~~/g, validateUrlPath(`${req.baseUrl}/`))));
-  router.get('/casa/assets/css/casa-ie8.css', setHeaders, (req, res) => res.send(casaCssIe8.replace(/~~~CASA_MOUNT_URL~~~/g, validateUrlPath(`${req.baseUrl}/`))));
   router.use('/casa/assets', notFoundHandler);
 
   return router;
