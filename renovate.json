@@ -50,5 +50,10 @@
     "platformAutomerge": true,
     "gitLabIgnoreApprovals": true,
     "addLabels": ["Automatic Merge"]
+  }, {
+    "description": "Ignore upgrades to the zap dast image as later versions break pipeline",
+    "matchUpdateTypes": ["pin", "pinDigest"],
+    "matchPackageNames": ["owasp/zap2docker-stable"],
+    "enabled": false
   }]
 }
