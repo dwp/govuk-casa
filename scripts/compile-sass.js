@@ -24,16 +24,10 @@ async function compileSassSources() {
       govukFrontendDirectory,
     ],
     style: 'compressed',
-    sourceMap: true,
     quietDeps: true,
+    sourceMap: true,
+    sourceMapIncludeSources: true,
   });
-
-  // Rewrite source map paths from absolute project path URLs to paths relative to
-  // the compiled css file.
-  for (let i = 0; i < sourceMap.sources.length; i++) {
-    sourceMap.sources[i] = sourceMap.sources[i]
-      .replace(`file://${govukFrontendDirectory}/`, '../../../');
-  }
 
   const targetFile = 'dist/assets/css/casa.css';
   await Promise.all([

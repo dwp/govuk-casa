@@ -68,8 +68,8 @@ export default function staticRouter({
 
   router.use('/govuk/govuk-frontend.min.js', ExpressStatic(`${govukFrontendDirectory}/govuk/govuk-frontend.min.js`, staticConfig));
   router.use('/govuk/govuk-frontend.min.js.map', ExpressStatic(`${govukFrontendDirectory}/govuk/govuk-frontend.min.js.map`, staticConfig));
-  router.use('/govuk', ExpressStatic(`${govukFrontendDirectory}/govuk`, staticConfig));
-  router.use('/govuk', notFoundHandler);
+  router.use('/govuk/assets', ExpressStatic(`${govukFrontendDirectory}/govuk/assets`, staticConfig));
+  router.use('/govuk/assets', notFoundHandler);
 
   router.get('/casa/assets/css/casa.css', setHeaders, (req, res) => res.send(casaCss.replace(/~~~CASA_MOUNT_URL~~~/g, validateUrlPath(`${req.baseUrl}/`))));
   router.use('/casa/assets/css/casa.css.map', ExpressStatic(resolve(dirname, '../../dist/assets/css/casa.css.map')));
