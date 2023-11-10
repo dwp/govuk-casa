@@ -51,7 +51,7 @@
   "devDependencies": {
     "@commitlint/cli": "17.6.6",
     "@commitlint/config-conventional": "17.6.6",
-    "@dwp/eslint-config-base": "6.1.1",
+    "@dwp/eslint-config-base": "7.0.0",
     "@stryker-mutator/core": "6.4.2",
     "@stryker-mutator/html-reporter": "3.1.0",
     "@stryker-mutator/javascript-mutator": "4.0.0",
