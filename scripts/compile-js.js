@@ -7,7 +7,6 @@
  *  node compile-js.js.
  */
 
-/* eslint-disable-next-line import/no-extraneous-dependencies */
 const uglifyJs = require('uglify-js');
 const path = require('path');
 const fs = require('fs-extra');

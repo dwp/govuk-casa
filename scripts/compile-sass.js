@@ -7,7 +7,6 @@
  *  node compile-sass.js.
  */
 
-/* eslint-disable-next-line import/no-extraneous-dependencies */
 const sass = require('sass');
 const path = require('path');
 const klaw = require('klaw-sync');
