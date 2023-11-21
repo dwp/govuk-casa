@@ -1,12 +1,12 @@
 $schema: https://gitlab.com/dwp/secure-development/schema/project-metadata/-/raw/v1.0.0/schema/project-metadata.json
 schema_version: 1.0.0
 project:
-  - project_id: 26878543
+  - project_id: "26878543"
     component_name: govuk-casa
-    version: 8.13.0
+    version: 8.14.0
     cmdb_id: null
     last_verified:
-      date: "2023-07-12"
+      date: "2023-11-21"
       name: james.gauld
     tags:
       payments: null
