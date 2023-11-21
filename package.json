@@ -46,7 +46,7 @@
     "object-resolve-path": "1.1.1",
     "serve-favicon": "2.5.0",
     "uid-safe": "2.1.5",
-    "validator": "13.9.0"
+    "validator": "13.11.0"
   },
   "devDependencies": {
     "@commitlint/cli": "18.4.2",
@@ -62,7 +62,7 @@
     "chai-http": "4.4.0",
     "cheerio": "1.0.0-rc.12",
     "conventional-changelog-cli": "4.1.0",
-    "eslint": "8.53.0",
+    "eslint": "8.54.0",
     "eslint-plugin-sonarjs": "0.23.0",
     "express": "4.18.2",
     "express-session": "1.17.3",
