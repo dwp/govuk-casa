@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [8.14.1](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/-/compare/8.14.0...8.14.1) (2023-12-01)
+
+### Bug Fixes
+
+- handle non-reciprocal url:// waypoints correctly ([af44720](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/-/commit/af44720eda7c89ad6e4ad6a3c0a45f9d340c3309))
+
 ## [8.14.0](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/-/compare/8.13.0...8.14.0) (2023-11-21)
 
 ### Features
