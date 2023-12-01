@@ -13,15 +13,16 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const application = ({
   session,
   contextIdGenerator,
+  fullyLoadedMountUrl,
 }) => {
   // Configure CASA app
-  const { mount } = configure({
+  const { mount, ancillaryRouter } = configure({
     views: [
       resolve(__dirname, 'views'),
     ],
     session,
     pages: pages(),
-    plan: planFactory(),
+    plan: planFactory({ fullyLoadedMountUrl }),
     contextIdGenerator,
   });
 

@@ -108,7 +108,12 @@ export default function journeyRouter({
       })[0],
     });
 
-    if (route === 'prev') {
+    // If the refmount doesn't exist in our Plan, we can assume that the two
+    // Plans are not linked in any way, i.e. the other Plan is simply redirecting
+    // the user to our Plan and we don't intend to link back.
+    if (!plan.getWaypoints().includes(refmount)) {
+      redirectTo = fallback;
+    } else if (route === 'prev') {
       const routes = plan.traversePrevRoutes(req.casa.journeyContext, { startWaypoint: refmount });
       redirectTo = routes.length ? waypointUrl({ mountUrl, waypoint: routes[0].target }) : fallback;
     } else {

@@ -6,4 +6,7 @@ journey:
   sub-app/:contextid/meals:
     chilli: select()
   sub-app/:contextid/complete:
-    # No interactions
+    # Continue
+  country:
+    # This is the start waypoint of the main fully-loaded journey
+    # No interaction

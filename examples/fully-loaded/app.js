@@ -110,7 +110,7 @@ const application = ({
   // Finally, mount our CASA app on the desired mountUrl, and the sub-app
   // separately
   const app = ExpressJS();
-  app.use(`${MOUNT_URL}sub-app`, subApp({ session: sharedSession, contextIdGenerator }));
+  app.use(`${MOUNT_URL}sub-app`, subApp({ session: sharedSession, contextIdGenerator, fullyLoadedMountUrl: MOUNT_URL }));
   app.use(MOUNT_URL, casaApp);
 
   // Return the base web app
