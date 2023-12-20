@@ -3,7 +3,7 @@ fail_fast: true
 
 repos:
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
-    rev: v9.5.0
+    rev: v9.10.0
     hooks:
       - id: commitlint
         stages:
@@ -11,7 +11,7 @@ repos:
         additional_dependencies:
           - "@dwp/commitlint-config-base"
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.5.0
     hooks:
       - id: check-yaml
         args:

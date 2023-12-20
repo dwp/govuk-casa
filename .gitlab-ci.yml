@@ -1,12 +1,12 @@
 include:
   - template: DAST.gitlab-ci.yml
   - project: dwp/engineering/pipeline-solutions/gitlab/functions
-    ref: 4.7.1
+    ref: 4.17.1
     file:
       - functions/node.yml
       - functions/auto-tag-merge.yml
   - project: dwp/engineering/pipeline-solutions/gitlab/fragments/docker-build
-    ref: 4.4.1
+    ref: 4.5.0
     file: /ci-include-docker-build-base.yml
 
 variables:
