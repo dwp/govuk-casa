@@ -77,3 +77,13 @@ pages:
   artifacts:
     paths:
       - public
+
+# Manipulate publishing process to Gitlab
+node-publish-gitlab:
+  variables:
+    NPM_PUBLISH_TAG: "maintain8x"
+
+# Use a version-specific branch name for auto-packaging
+auto-tag-merge-prepare-mr:
+  variables:
+    MR_BRANCH: chore/auto-package-v8
