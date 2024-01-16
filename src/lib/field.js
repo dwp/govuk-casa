@@ -221,19 +221,16 @@ export class PageField {
   }
 
   /**
-   * Add/get value validators
+   * Add value validators
    * Some validators will include a `sanitise()` method which will be run at the
    * same time as other "processors".
    *
    * @param {Validator[]} items Validation functions
-   * @returns {PageField} Chain - Deprecated: this currently gets all validators if
-   * empty or missing, in v9 this functionality will removed in favour of the
-   * function getValidators().
+   * @returns {PageField} Chain
    */
   validators(items = []) {
     if (!items.length) {
-      log.warn('Calling validators() to get all validators is deprecated, please use getValidators()');
-      return this.getValidators();
+      throw new Error('Calling validators() to get all validators is no longer supported, please use getValidators()');
     }
     this.#validators = [...this.#validators, ...(items.flat())];
     return this;
@@ -249,18 +246,15 @@ export class PageField {
   }
 
   /**
-   * Add/get value pre-processors
+   * Add value pre-processors
    * This is most often used to sanitise values to a particular data type.
    *
    * @param {FieldProcessorFunction[]} items Processor functions
-   * @returns {PageField} Chain - Deprecated: this currently gets all processors if
-   * empty or missing, in v9 this functionality will removed in favour of the
-   * function getProcessors().
+   * @returns {PageField} Chain
    */
   processors(items = []) {
     if (!items.length) {
-      log.warn('Calling processors() to get all processors is deprecated, please use getProcessors()');
-      return this.getProcessors();
+      throw new Error('Calling processors() to get all processors is no longer supported, please use getProcessors()');
     }
 
     this.#processors = [...this.#processors, ...(items.flat())];
@@ -277,19 +271,16 @@ export class PageField {
   }
 
   /**
-   * Add/get conditions
+   * Add conditions
    * All conditions must be met in order for this field to be considered
    * "actionable".
    *
    * @param {ValidatorConditionFunction[]} items Condition functions
-   * @returns {PageField} Chain - Deprecated: this currently gets all conditions if
-   * empty or missing, in v9 this functionality will removed in favour of the
-   * function getConditions().
+   * @returns {PageField} Chain
    */
   conditions(items = []) {
     if (!items.length) {
-      log.warn('Calling conditions() to get all conditions is deprecated, please use getConditions()');
-      return this.getConditions();
+      throw new Error('Calling conditions() to get all conditions is no longer supported, please use getConditions()');
     }
     this.#conditions = [...this.#conditions, ...(items.flat())];
     return this;

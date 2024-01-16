@@ -6,6 +6,7 @@ The following changes are **mandatory**:
 - [`casa.mountUrl` must not be used for static assets](#casamounturl-must-not-be-used-for-static-assets)
 - [Ephemeral contexts must be created from a given request](#ephemeral-contexts-must-be-created-from-a-given-request)
 - [`waypointId` removed from field validator condition](#waypointid-removed-from-field-validator-condition)
+- [Use correct method to retrieve field attributes](#use-correct-method-to-retrieve-field-attributes)
 
 --------------------------------------------------------------------------------
 
@@ -61,4 +62,25 @@ field('title').validators([
     errorMsg: 'personal-details:field.title.empty'
   }),
 ]).conditions(({waypoint }) => true),
+```
+
+### Use correct method to retrieve field attributes
+
+You must now use the `get...()` methods to retrieve field conditions, validators, or processors.
+
+```js
+const f = field('name')
+  .validators([ new validator() ])
+  .processors([ new processor() ])
+  .conditions([ new condition() ]);
+
+// Old
+validators = f.validators();
+processors = f.processors();
+conditions = f.conditions();
+
+// New
+validators = f.getValidators();
+processors = f.getProcessors();
+conditions = f.getConditions();
 ```
