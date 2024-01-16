@@ -94,7 +94,7 @@ export default ({
   });
 
   // Serve static assets from the `app` rather than the `router`. The router
-  // may contain paramaterised path segments which would mean serving static
+  // may contain parameterised path segments which would mean serving static
   // assets over a dynamic URL each time, thus causing lots of cache misses on
   // the browser.
   const sealedStaticRouter = staticRouter.seal();
@@ -107,12 +107,6 @@ export default ({
   });
 
   router.use(preMiddleware);
-  // !!! DEPRECATE in v9 !!! For performance reasons, static assets will
-  // always be handled via the `app` middleware rather than `router`.
-  // Anywhere `mountUrl` is used in templates to service static assets must be
-  // changed to use `staticMountUrl`.
-  // TASK: remove this line below
-  router.use(sealedStaticRouter);
   router.use(sessionMiddleware);
   router.use(i18nMiddleware);
   router.use(bodyParserMiddleware);
