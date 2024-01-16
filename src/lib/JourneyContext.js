@@ -599,8 +599,17 @@ export default class JourneyContext {
     // Can't generate custom ID when no request object is provided, because the
     // custom generator function itself exists on that object.
     if (!req) {
-      log.warn('Generating a context ID without a given request object. Reverting to uuid().');
-      return uuid();
+      throw new Error('Missing required request object.')
+    }
+
+    // Define a default context ID generator if required
+    if (!Object.hasOwn(req, JourneyContext.ID_GENERATOR_REQ_KEY)) {
+      log.warn('A context ID generator is not present in the request. Reverting to uuid().');
+      Object.defineProperty(req, JourneyContext.ID_GENERATOR_REQ_KEY, {
+        value: uuid,
+        enumerable: false,
+        writable: false,
+      });
     }
 
     // Collate a list of context IDs already in use, either from existing

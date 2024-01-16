@@ -4,6 +4,7 @@ The following changes are **mandatory**:
 
 - [GOVUK Frontend v5 compatibility](#govuk-frontend-v5-compatibility)
 - [`casa.mountUrl` must not be used for static assets](#casamounturl-must-not-be-used-for-static-assets)
+- [Ephemeral contexts must be created from a given request](#ephemeral-contexts-must-be-created-from-a-given-request)
 
 --------------------------------------------------------------------------------
 
@@ -23,4 +24,18 @@ Where you may have `casa.mountUrl` in your templates to refer to static assets b
 
 {# New #}
 <img src={{ casa.staticMountUrl }}/my-image.png" />
+```
+
+### Ephemeral contexts must be created from a given request
+
+Where you currently call `JourneyContext.createEphemeralContext()`, or `JourneyContext.fromContext()`, you must now pass the current Express `req` request object.
+
+```js
+// Old
+const ctx1 = JourneyContext.createEphemeralContext();
+const ctx2 = JourneyContext.fromContext(otherContext);
+
+// New
+const ctx1 = JourneyContext.createEphemeralContext(req);
+const ctx2 = JourneyContext.fromContext(otherContext, req);
 ```

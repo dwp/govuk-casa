@@ -28,8 +28,12 @@ describe('JourneyContext', () => {
   });
 
   describe('generateContextId()', () => {
-    it('generates a new ID using the default source by default', () => {
-      expect(JourneyContext.generateContextId()).to.match(/^[a-z0-9-]{1,64}$/);
+    it('throws if no request is provided', () => {
+      expect(() => JourneyContext.generateContextId()).to.throw(Error, /Missing required request object/)
+    });
+
+    it('falls back to uuid generator if none is present on request', () => {
+      expect(JourneyContext.generateContextId({})).to.match(/^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/);
     });
 
     it('generates a new ID from a custom generator', () => {
@@ -176,7 +180,7 @@ describe('JourneyContext', () => {
 
   describe('createEphemeralContext()', () => {
     it('should generate a new JourneyContext, with a unique ID', () => {
-      const newInstance = JourneyContext.createEphemeralContext();
+      const newInstance = JourneyContext.createEphemeralContext({});
 
       expect(newInstance).to.be.an.instanceof(JourneyContext);
       expect(newInstance.identity.id).not.be.empty.and.not.to.equal(
@@ -205,7 +209,7 @@ describe('JourneyContext', () => {
 
     it('should generate a new JourneyContext, with a different ID', () => {
       const source = new JourneyContext();
-      const newInstance = JourneyContext.fromContext(source);
+      const newInstance = JourneyContext.fromContext(source, {});
 
       expect(newInstance).to.be.an.instanceof(JourneyContext);
       expect(newInstance.identity.id).not.be.empty.and.not.to.equal(source.identity.id);
