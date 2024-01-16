@@ -7,6 +7,7 @@ The following changes are **mandatory**:
 - [Ephemeral contexts must be created from a given request](#ephemeral-contexts-must-be-created-from-a-given-request)
 - [`waypointId` removed from field validator condition](#waypointid-removed-from-field-validator-condition)
 - [Use correct method to retrieve field attributes](#use-correct-method-to-retrieve-field-attributes)
+- [`PageField.runValidators()` signature changed](#pagefieldrunvalidators-signature-changed)
 
 --------------------------------------------------------------------------------
 
@@ -83,4 +84,18 @@ conditions = f.conditions();
 validators = f.getValidators();
 processors = f.getProcessors();
 conditions = f.getConditions();
+```
+
+### `PageField.runValidators()` signature changed
+
+The signature of the `PageField.runValidators()` method has changed to remove redundancy.
+
+```js
+const f = field('name');
+
+// Old
+f.runValidators('Joe Bloggs', { fieldValue: 'Joe Bloggs' });
+
+// New
+f.runValidators({ fieldValue: 'Joe Bloggs' });
 ```

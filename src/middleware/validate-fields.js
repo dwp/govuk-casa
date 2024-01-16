@@ -52,7 +52,7 @@ export default ({
 
       errors = [
         ...errors,
-        ...field.runValidators(fieldValue, context),
+        ...field.runValidators(context),
       ];
     }
 

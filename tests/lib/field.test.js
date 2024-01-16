@@ -92,7 +92,7 @@ describe('PageField', () => {
       { validate: () => [] },
     ]);
 
-    const errors = f.runValidators('testValue');
+    const errors = f.runValidators({ fieldValue: 'testValue' });
     expect(errors).to.have.length(2);
     expect(errors).to.have.nested.property('[0].message', 'error1');
     expect(errors).to.have.nested.property('[1].message', 'error2');
@@ -109,7 +109,7 @@ describe('PageField', () => {
       () => (false),
     ]);
 
-    const errors = f.runValidators('testValue');
+    const errors = f.runValidators({ fieldValue: 'testValue' });
     expect(errors).to.have.length(0);
   });
 

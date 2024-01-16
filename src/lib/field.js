@@ -291,22 +291,17 @@ export class PageField {
   /**
    * Run all validators and return array of errors, if applicable.
    *
-   * @param {any} value Value to validate
    * @param {ValidateContext} context Contextual validation information
    * @returns {ValidationError[]} Errors, or an empty array if all valid
    * @throws {TypeError} If validator does not return an array
    */
-  runValidators(value, context = Object.create(null)) {
+  runValidators(context = Object.create(null)) {
     // Skip validation if the field is empty and optional
-    if (this.#meta.optional && isEmpty(value)) {
+    if (this.#meta.optional && isEmpty(context?.fieldValue)) {
       return [];
     }
 
     // Skip validation if conditions are not met
-    // We duplicate value in context.fieldValue for historical reasons
-    // @todo explain these historical reasons! And deprecate the need for
-    // `value` altogether
-    context.fieldValue = context.fieldValue ?? value;
     if (!this.testConditions(context)) {
       return [];
     }
@@ -316,7 +311,7 @@ export class PageField {
       // ESLint disabled as `i` is an integer
       /* eslint-disable security/detect-object-injection */
       // TODO: Replace `value` with `context.fieldValue` here
-      let fieldErrors = this.#validators[i].validate(value, context)
+      let fieldErrors = this.#validators[i].validate(context.fieldValue, context)
       if (!Array.isArray(fieldErrors)) {
         // Friendly message for developer
         throw new TypeError(`The validator at index ${i} (name: ${this.#validators[i].name || 'unknown'}) for field '${this.#name}' did not return an array`);
