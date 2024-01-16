@@ -82,6 +82,7 @@ export default ({
         'form-action': ["'self'"],
         'style-src': ["'self'", 'https://fonts.googleapis.com', GTM_PREVIEW_DOMAIN, casaCspNonce],
         'font-src': ["'self'", 'data:', 'https://fonts.gstatic.com'],
+        'manifest-src': ["'self'"],
       },
     },
 
