@@ -385,7 +385,6 @@ export class PageField {
       fieldName: this.#name,
       fieldValue,
       waypoint,
-      waypointId: waypoint, // [DEPRECATED] for backwards compatibility with v7
       journeyContext,
     };
 

@@ -5,6 +5,7 @@ The following changes are **mandatory**:
 - [GOVUK Frontend v5 compatibility](#govuk-frontend-v5-compatibility)
 - [`casa.mountUrl` must not be used for static assets](#casamounturl-must-not-be-used-for-static-assets)
 - [Ephemeral contexts must be created from a given request](#ephemeral-contexts-must-be-created-from-a-given-request)
+- [`waypointId` removed from field validator condition](#waypointid-removed-from-field-validator-condition)
 
 --------------------------------------------------------------------------------
 
@@ -38,4 +39,26 @@ const ctx2 = JourneyContext.fromContext(otherContext);
 // New
 const ctx1 = JourneyContext.createEphemeralContext(req);
 const ctx2 = JourneyContext.fromContext(otherContext, req);
+```
+
+### `waypointId` removed from field validator condition
+
+Field validator condition functions no longer support the `waypointId` parameter, after it was deprecated in v8. You should now only use the `waypoint` parameter.
+
+```javascript
+// old
+field('title').validators([
+  r.required.make({
+    errorMsg: 'personal-details:field.title.empty'
+  }),
+]).conditions(({ waypointId }) => true),
+```
+
+```javascript
+// new
+field('title').validators([
+  r.required.make({
+    errorMsg: 'personal-details:field.title.empty'
+  }),
+]).conditions(({waypoint }) => true),
 ```

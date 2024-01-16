@@ -257,7 +257,7 @@ export {
 /**
  * @callback ValidateFunction
  * @param {any} value
- * @param {ValidateContext} context Vaildation context
+ * @param {ValidateContext} context Validation context
  * @returns {ValidationError[]}
  */
 
@@ -280,7 +280,6 @@ export {
  * @property {string} fieldName Field name
  * @property {any} fieldValue Field value
  * @property {string} waypoint Waypoint
- * @property {string} waypointId [DEPRECATED] Waypoint (for backwards compatibility with v7)
  * @property {JourneyContext} journeyContext Journey Context
  */
 
