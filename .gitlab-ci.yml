@@ -69,15 +69,6 @@ e2e-dast:
       dast:
         - gl-dast-report.json
 
-# API documentation, published on GitLab Pages
-pages:
-  stage: publish
-  extends: .node-common
-  script: npm run build:api-docs -- -d ./public/ || true
-  artifacts:
-    paths:
-      - public
-
 # Manipulate publishing process to Gitlab
 node-publish-gitlab:
   variables:
