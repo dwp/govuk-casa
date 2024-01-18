@@ -3,10 +3,10 @@ schema_version: 1.0.0
 project:
   - project_id: "26878543"
     component_name: govuk-casa
-    version: 8.14.2
+    version: 9.0.0
     cmdb_id: null
     last_verified:
-      date: "2023-11-21"
+      date: "2024-01-18"
       name: james.gauld
     tags:
       payments: null

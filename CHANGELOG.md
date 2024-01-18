@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [9.0.0](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/-/compare/8.14.2...9.0.0) (2024-01-18)
+
+### ⚠ BREAKING CHANGES
+
+- to remove redundancy, the signature of the
+  PageField.runValidators() method no longer takes a duplicate of the
+  field value as its first argument.
+
+- where you could previously use conditions(), for example
+  to retrieve currently set field conditions, you must now use
+  getConditions(). The same applies for validators() and processors().
+
+- waypointId was kept in field validator condition functions
+  for compatibility with v7, but has now been removed in favour of "waypoint".
+
+- calls to JourneyContext.createEphemeralContext() and
+  JourneyContext.fromContext() now require the req function parameter.
+
+- all templates must now use casa.staticMountUrl in place of
+  casa.mountUrl when generating paths to assets served by the staticRouter
+
+- See govuk-frontend 5.0.0 release notes for more info
+  <https://github.com/alphagov/govuk-frontend/releases/tag/v5.0.0>
+
+- change runValidators() signature ([a7172a0](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/-/commit/a7172a0f186db2188be5c5b6c7864a2ac9220873))
+- force use of get..() methods to retrieve field attributes ([68d9a4b](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/-/commit/68d9a4b2a5fb09d1695eb712ff9bb2ab4eff7d77))
+- make req object mandatory for context creation ([5881c27](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/-/commit/5881c277626241fa031babdb34191ff4bcc6cbef))
+- remove deprecated use of mountUrl for static assets ([0026e87](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/-/commit/0026e876da1f0c6ba45f743835e0012267809989))
+- remove deprecated waypointId condition param ([b08c6a2](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/-/commit/b08c6a24dda266986fef442ea494eee23609373a))
+
+### Features
+
+- serve scss/css source maps ([06ad4d1](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/-/commit/06ad4d1f40832244965232d5b1c4e8e2a30863c6))
+- update CASA to govuk-frontend 5.0.0 ([554009b](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/-/commit/554009b8c1593f0a1c96d500c757ddb36c9774e2))
+
 ## [8.14.2](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/-/compare/8.14.1...8.14.2) (2023-12-20)
 
 ## [8.14.1](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/-/compare/8.14.0...8.14.1) (2023-12-01)
