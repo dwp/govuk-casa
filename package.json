@@ -74,7 +74,7 @@
     "sass": "1.69.7",
     "sinon": "17.0.1",
     "sinon-chai": "3.7.0",
-    "supertest": "6.3.3",
+    "supertest": "6.3.4",
     "uglify-js": "3.17.4",
     "uuid": "9.0.1",
     "yargs": "17.7.2"
