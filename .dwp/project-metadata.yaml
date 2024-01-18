@@ -3,10 +3,10 @@ schema_version: 1.0.0
 project:
   - project_id: "26878543"
     component_name: govuk-casa
-    version: "6.9.13"
+    version: 6.9.14
     cmdb_id: https://engineering.dwp.gov.uk/policies/engineering-policies/ep-3/
     last_verified:
-      date: "2023-11-09"
+      date: "2024-01-18"
       name: james.gauld
     tags:
       payments: false
