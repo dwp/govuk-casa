@@ -1,12 +1,9 @@
 /* eslint-disable camelcase, object-curly-newline */
-import chai, { expect } from 'chai';
-import { stub } from 'sinon';
-import sinonChai from 'sinon-chai';
+import { expect } from 'chai';
+import { default as sinon, stub } from 'sinon';
 
 import Plan from '../../src/lib/Plan.js';
 import JourneyContext from '../../src/lib/JourneyContext.js';
-
-chai.use(sinonChai);
 
 // Helper function to generate structure of a node that appears last in the
 // returned list of traversable nodes
@@ -117,14 +114,14 @@ describe('Plan', () => {
       plan.setRoute('a', 'b', stubNext, stubPrev);
 
       plan.traverseNextRoutes(stubContext, { startWaypoint: 'a' });
-      expect(stubNext).to.be.calledOnce;
-      expect(stubPrev).to.not.be.called;
+      sinon.assert.calledOnce(stubNext);
+      sinon.assert.notCalled(stubPrev);
 
       stubNext.resetHistory();
       stubPrev.resetHistory();
       plan.traversePrevRoutes(stubContext, { startWaypoint: 'b' });
-      expect(stubPrev).to.be.calledOnce;
-      expect(stubNext).to.not.be.called;
+      sinon.assert.calledOnce(stubPrev);
+      sinon.assert.notCalled(stubNext);
     });
 
     it('should create route with default prev condition that matches specified next condition', () => {
@@ -132,11 +129,11 @@ describe('Plan', () => {
       plan.setRoute('a', 'b', stubNext);
 
       plan.traverseNextRoutes(stubContext, { startWaypoint: 'a' });
-      expect(stubNext).to.be.calledOnce;
+      sinon.assert.calledOnce(stubNext);
 
       stubNext.resetHistory();
       plan.traversePrevRoutes(stubContext, { startWaypoint: 'b' });
-      expect(stubNext).to.be.calledOnce;
+      sinon.assert.calledOnce(stubNext);
     });
   });
 
@@ -184,8 +181,8 @@ describe('Plan', () => {
       const route_n1n2 = plan.getRoutes().filter((e) => `${e.source}${e.target}${e.name}` === 'n1n2next')[0];
 
       plan.traverseRoutes(context, { startWaypoint: 'n0', routeName: 'next' });
-      expect(stub_n0n1).to.be.calledOnceWithExactly(route_n0n1, context);
-      expect(stub_n1n2).to.be.calledOnceWithExactly(route_n1n2, context);
+      sinon.assert.calledOnceWithExactly(stub_n0n1, route_n0n1, context);
+      sinon.assert.calledOnceWithExactly(stub_n1n2, route_n1n2, context);
     });
 
     it('should not evaluate route condition with invalidated source, and validateBeforeRouteCondition == true', () => {
@@ -200,8 +197,8 @@ describe('Plan', () => {
       const route_n0n1 = planB.getRoutes().filter((e) => `${e.source}${e.target}${e.name}` === 'n0n1next')[0];
 
       planB.traverseRoutes(context, { startWaypoint: 'n0', routeName: 'next' });
-      expect(stub_n0n1).to.be.calledOnceWithExactly(route_n0n1, context);
-      expect(stub_n1n2).not.to.be.called;
+      sinon.assert.calledOnceWithExactly(stub_n0n1, route_n0n1, context);
+      sinon.assert.notCalled(stub_n1n2);
     });
 
     it('should stop traversing when multiple routes are satisfied between any waypoint pair', () => {

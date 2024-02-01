@@ -1,12 +1,9 @@
-import { stub } from 'sinon';
-import sinonChai from 'sinon-chai';
-import chai, { expect } from 'chai';
+import { default as sinon, stub } from 'sinon';
+import { expect } from 'chai';
 import ExpressJS from 'express';
 import request from 'supertest';
 
 import stripProxyPath from '../../src/middleware/strip-proxy-path.js';
-
-chai.use(sinonChai);
 
 describe('strip-proxy-path middleware', () => {
   it('passes through to next middleware', (done) => {
@@ -45,8 +42,8 @@ describe('strip-proxy-path middleware', () => {
 
     middleware(req, res, next);
 
-    expect(req.app.handle).to.be.calledOnceWithExactly(req, res, next);
-    expect(next).to.be.calledOnce;
+    sinon.assert.calledOnceWithExactly(req.app.handle, req, res, next);
+    sinon.assert.calledOnce(next);
     expect(req.baseUrl).to.equal('/mount');
     expect(req.originalUrl).to.equal('/mount/waypoint');
   });

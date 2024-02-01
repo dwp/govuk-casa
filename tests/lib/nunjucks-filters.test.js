@@ -1,4 +1,4 @@
-import sinonChai from 'sinon-chai';
+import sinon from 'sinon';
 import chai from 'chai';
 import nunjucks from 'nunjucks';
 
@@ -9,7 +9,6 @@ import {
   renderAsAttributes,
 } from '../../src/lib/nunjucks-filters.js';
 
-chai.use(sinonChai);
 const { expect } = chai;
 
 describe('View filter: formatDateObject', () => {

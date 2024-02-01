@@ -1,6 +1,5 @@
-import { stub } from 'sinon';
-import sinonChai from 'sinon-chai';
-import chai, { expect } from 'chai';
+import { default as sinon, stub } from 'sinon';
+import { expect } from 'chai';
 import { CONFIG_ERROR_VISIBILITY_ONSUBMIT, CONFIG_ERROR_VISIBILITY_ALWAYS } from '../../src/lib/constants.js';
 
 import ingest, {
@@ -24,8 +23,6 @@ import ingest, {
   validateFormMaxBytes,
   validateErrorVisibility,
 } from '../../src/lib/configuration-ingestor.js';
-
-chai.use(sinonChai);
 
 const minimalConfig = {
   i18n: {
@@ -82,7 +79,7 @@ describe('ConfigIngestor', () => {
       const stubCallback = stub().returns('test-response');
       const testInput = {};
       expect(validateI18nObject(testInput, stubCallback)).to.equal('test-response');
-      expect(stubCallback).to.be.calledOnceWithExactly(testInput);
+      sinon.assert.calledOnceWithExactly(stubCallback, testInput);
     });
   });
 
@@ -113,7 +110,7 @@ describe('ConfigIngestor', () => {
       const stubCallback = stub().returns('test-response');
       const testInput = {};
       expect(validateSessionObject(testInput, stubCallback)).to.equal('test-response');
-      expect(stubCallback).to.be.calledOnceWithExactly(testInput);
+      sinon.assert.calledOnceWithExactly(stubCallback, testInput);
     });
   });
 

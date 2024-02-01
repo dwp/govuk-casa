@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { stub, spy } from 'sinon';
+import { default as sinon, stub, spy } from 'sinon';
 
 import JourneyContext from '../../src/lib/JourneyContext.js';
 import ValidationError from '../../src/lib/ValidationError.js';
@@ -517,7 +517,7 @@ describe('JourneyContext', () => {
       const context = new JourneyContext();
       context.identity.id = '123e4567-e89b-12d3-a456-426614174000';
       JourneyContext.putContext(session, context);
-      expect(initSpy).to.be.calledOnceWithExactly(session);
+      sinon.assert.calledOnceWithExactly(initSpy, session);
       initSpy.restore();
     });
 
@@ -593,7 +593,7 @@ describe('JourneyContext', () => {
         body: { contextid: 'body' },
       });
 
-      expect(validateStub).to.be.calledWithExactly('params');
+      sinon.assert.calledWithExactly(validateStub, 'params');
     });
 
     it('finds a context id in req.query before body', () => {
@@ -602,7 +602,7 @@ describe('JourneyContext', () => {
         body: { contextid: 'body' },
       });
 
-      expect(validateStub).to.be.calledWithExactly('query');
+      sinon.assert.calledWithExactly(validateStub, 'query');
     });
 
     it('finds a context id in req.body', () => {
@@ -610,13 +610,13 @@ describe('JourneyContext', () => {
         body: { contextid: 'body' },
       });
 
-      expect(validateStub).to.be.calledWithExactly('body');
+      sinon.assert.calledWithExactly(validateStub, 'body');
     });
 
     it('defaults to "default" context ID', () => {
       JourneyContext.extractContextFromRequest({});
 
-      expect(validateStub).to.be.calledWithExactly(JourneyContext.DEFAULT_CONTEXT_ID);
+      sinon.assert.calledWithExactly(validateStub, JourneyContext.DEFAULT_CONTEXT_ID);
     });
 
     it('falls back to context ID is not a valid format', () => {

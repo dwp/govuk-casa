@@ -1,13 +1,10 @@
-import { stub } from 'sinon';
-import sinonChai from 'sinon-chai';
-import chai, { expect } from 'chai';
+import { default as sinon, stub } from 'sinon';
+import { expect } from 'chai';
 import ExpressJS from 'express';
 import request from 'supertest';
 import session from 'express-session';
 
 import csrfMiddleware from '../../src/middleware/csrf.js';
-
-chai.use(sinonChai);
 
 describe('csrf middleware', () => {
   it('passes through to next middleware', (done) => {
@@ -49,6 +46,6 @@ describe('csrf middleware', () => {
     middleware(req, res, next);
 
     expect(res.locals.casa.csrfToken).to.equal(csrfToken);
-    expect(next).to.be.calledOnce;
+    sinon.assert.calledOnce(next);
   });
 });
