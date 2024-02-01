@@ -6,7 +6,7 @@ include:
       - functions/auto-tag-merge.yml
 
 variables:
-  NODE_IMAGE: node:18.16.0@sha256:671ee8d49ce2a691fc3082203c5deb9522e0c80042aa0ff40c07f4a25e63668a
+  NODE_IMAGE: node:20.11.0@sha256:fd0115473b293460df5b217ea73ff216928f2b0bb7650c5e7aa56aae4c028426
   NODE_PUBLISH_TO_GITLAB: "true"
   NODE_PUBLISH_TO_NPMJS: "true"
   AUTO_TAG_MERGE_PREPARE_MR: "true"
@@ -20,7 +20,7 @@ unit-test:
   extends: .node-common
   parallel:
     matrix:
-      - node_image_version: node:20@sha256:242d81ad2a91353ac3a5ed3598582acb4a9a7761b16c60524b949a1603707848
+      - node_image_version: node:18.19.0@sha256:2a13079c6393cd19adfd8d362fac004b2d0eed462f3c3fedfad2c0d0de17b429
   stage: unit-test
   image: $node_image_version
   script:
