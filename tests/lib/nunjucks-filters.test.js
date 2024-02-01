@@ -1,4 +1,4 @@
-import chai from 'chai';
+import { expect} from 'chai';
 import nunjucks from 'nunjucks';
 
 import {
@@ -7,8 +7,6 @@ import {
   mergeObjects,
   renderAsAttributes,
 } from '../../src/lib/nunjucks-filters.js';
-
-const { expect } = chai;
 
 describe('View filter: formatDateObject', () => {
   it('should output INVALID DATE OBJECT when given an invalid object structure', () => {
