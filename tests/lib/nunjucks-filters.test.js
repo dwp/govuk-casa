@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import chai from 'chai';
 import nunjucks from 'nunjucks';
 

@@ -2,7 +2,6 @@ import lodash from 'lodash';
 import { isEmpty } from './utils.js';
 import logger from './logger.js';
 
-const log = logger('lib:field');
 const { isFunction } = lodash;
 
 /**
