@@ -1,6 +1,5 @@
 import lodash from 'lodash';
 import { isEmpty } from './utils.js';
-import logger from './logger.js';
 
 const { isFunction } = lodash;
 
