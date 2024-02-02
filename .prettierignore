@@ -1,0 +1,6 @@
+.coverage/
+.junit/
+.nyc_output/
+build/
+dist/
+CHANGELOG.md
