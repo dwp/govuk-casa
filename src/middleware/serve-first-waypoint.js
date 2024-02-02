@@ -1,13 +1,13 @@
-import { validateUrlPath } from '../lib/utils.js';
+import { validateUrlPath } from "../lib/utils.js";
 
 /**
+ * @typedef {import("express").RequestHandler} ExpressRequestHandler
  * @access private
- * @typedef {import('express').RequestHandler} ExpressRequestHandler
  */
 
 /**
+ * @typedef {import("../casa").Plan} Plan
  * @access private
- * @typedef {import('../casa').Plan} Plan
  */
 
 /**
@@ -17,12 +17,14 @@ import { validateUrlPath } from '../lib/utils.js';
  * @param {Plan} plan CASA Plan
  * @returns {ExpressRequestHandler[]} Array of middleware
  */
-export default ({
-  plan,
-}) => [(req, res) => {
-  const reqUrl = new URL(req.url, 'https://placeholder.test/');
-  const reqPath = validateUrlPath(`${req.baseUrl}${reqUrl.pathname}${plan.getWaypoints()[0]}`);
-  let reqParams = reqUrl.searchParams.toString();
-  reqParams = reqParams ? `?${reqParams}` : '';
-  res.redirect(302, `${reqPath}${reqParams}`);
-}];
+export default ({ plan }) => [
+  (req, res) => {
+    const reqUrl = new URL(req.url, "https://placeholder.test/");
+    const reqPath = validateUrlPath(
+      `${req.baseUrl}${reqUrl.pathname}${plan.getWaypoints()[0]}`,
+    );
+    let reqParams = reqUrl.searchParams.toString();
+    reqParams = reqParams ? `?${reqParams}` : "";
+    res.redirect(302, `${reqPath}${reqParams}`);
+  },
+];

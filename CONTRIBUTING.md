@@ -31,9 +31,9 @@ Our projects are built to last. We strive to ensure high quality throughout the 
 
 All code contributions must adhere to a few formatting rules which are best caught using pre-commit git hooks, which can be setup as follows:
 
-* [Install the **pre-commit** utility](https://pre-commit.com/#install)
-* Run `pre-commit install --install-hooks` inside your local clone directory
-* Add a git alias to assist with running pre-commit on rebases: `git config --global alias.prebase "rebase -x 'pre-commit run --from-ref HEAD~ --to-ref HEAD --hook-stage commit-msg --commit-msg-filename .git/COMMIT_EDITMSG'"` - and wherever you use `git rebase ...`, use `git prebase ...` instead.
+- [Install the **pre-commit** utility](https://pre-commit.com/#install)
+- Run `pre-commit install --install-hooks` inside your local clone directory
+- Add a git alias to assist with running pre-commit on rebases: `git config --global alias.prebase "rebase -x 'pre-commit run --from-ref HEAD~ --to-ref HEAD --hook-stage commit-msg --commit-msg-filename .git/COMMIT_EDITMSG'"` - and wherever you use `git rebase ...`, use `git prebase ...` instead.
 
 You're now good to go.
 
@@ -102,9 +102,9 @@ The DCO text can either be manually added to your commit body, or you can add ei
 
 We follow the [Semantic Versioning](http://semver.org/) standard. Our standard version numbers look like X.Y.Z which mean:
 
-* X is a major release, which may not be fully compatible with any prior major releases
-* Y is a minor release, which adds both new features and bug fixes
-* Z is a patch release, which adds bug fixes
+- X is a major release, which may not be fully compatible with any prior major releases
+- Y is a minor release, which adds both new features and bug fixes
+- Z is a patch release, which adds bug fixes
 
 ## Acknowledgements
 

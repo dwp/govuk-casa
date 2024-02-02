@@ -1,8 +1,8 @@
-import application from './app.js';
+import application from "./app.js";
 
 // Here we're injecting some config as it might be read from process.env
 application({
-  MOUNT_URL: '/multiapp/',
+  MOUNT_URL: "/multiapp/",
 }).listen(process.env.PORT ?? 3000, () => {
-  console.log('running');
+  console.log("running");
 });

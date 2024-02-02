@@ -1,33 +1,33 @@
-import { createInstance } from 'i18next';
-import { LanguageDetector, handle } from 'i18next-http-middleware';
-import { resolve, basename } from 'path';
-import { existsSync, readFileSync, readdirSync } from 'fs';
-import deepmerge from 'deepmerge';
-import yaml from 'js-yaml';
-import logger from '../lib/logger.js';
+import { createInstance } from "i18next";
+import { LanguageDetector, handle } from "i18next-http-middleware";
+import { resolve, basename } from "path";
+import { existsSync, readFileSync, readdirSync } from "fs";
+import deepmerge from "deepmerge";
+import yaml from "js-yaml";
+import logger from "../lib/logger.js";
 
-const log = logger('middleware:i18n');
+const log = logger("middleware:i18n");
 
 const loadJson = (file) => {
   // Strip out newlines (this is a legacy feature which we're keeping for
   // backwards compatibility).
   /* eslint-disable-next-line security/detect-non-literal-fs-filename */
-  const json = readFileSync(file, 'utf8');
-  return JSON.parse(json.replace(/[\r\n]/g, ''));
-}
+  const json = readFileSync(file, "utf8");
+  return JSON.parse(json.replace(/[\r\n]/g, ""));
+};
 
 /* eslint-disable-next-line security/detect-non-literal-fs-filename */
-const loadYaml = (file) => yaml.load(readFileSync(file, 'utf8'))
+const loadYaml = (file) => yaml.load(readFileSync(file, "utf8"));
 
 const extract = (file) => {
-  const ext = /.yaml$/i.test(file) ? '.yaml' : '.json';
-  const data = ext === '.yaml' ? loadYaml(file) : loadJson(file);
+  const ext = /.yaml$/i.test(file) ? ".yaml" : ".json";
+  const data = ext === ".yaml" ? loadYaml(file) : loadJson(file);
 
   return {
     ns: basename(file, ext),
     data,
   };
-}
+};
 
 const loadResources = (languages, directories) => {
   const store = Object.create(null);
@@ -45,7 +45,7 @@ const loadResources = (languages, directories) => {
         return;
       }
 
-      log.info('Loading %s language from %s ...', language, dir);
+      log.info("Loading %s language from %s ...", language, dir);
       /* eslint-disable-next-line security/detect-non-literal-fs-filename */
       readdirSync(dir).forEach((file) => {
         const { ns, data } = extract(resolve(dir, file));
@@ -61,10 +61,10 @@ const loadResources = (languages, directories) => {
   });
 
   return store;
-}
+};
 
 export default function i18nMiddleware({
-  languages = ['en', 'cy'],
+  languages = ["en", "cy"],
   directories = [],
 }) {
   // Load _all_ translations, from all directories into memory.
@@ -72,25 +72,23 @@ export default function i18nMiddleware({
 
   // Configure i18next
   const i18nInstance = createInstance();
-  i18nInstance
-    .use(LanguageDetector)
-    .init({
-      initImmediate: false, // because we need synchronous loading
-      supportedLngs: languages,
-      fallbackLng: false,
-      defaultNS: 'common',
-      // debug: true,
+  i18nInstance.use(LanguageDetector).init({
+    initImmediate: false, // because we need synchronous loading
+    supportedLngs: languages,
+    fallbackLng: false,
+    defaultNS: "common",
+    // debug: true,
 
-      // All translation resources
-      resources,
+    // All translation resources
+    resources,
 
-      // LanguageDetector options
-      detection: {
-        lookupQuerystring: 'lang',
-        lookupSession: 'language',
-        order: ['querystring', 'session'],
-      },
-    });
+    // LanguageDetector options
+    detection: {
+      lookupQuerystring: "lang",
+      lookupSession: "language",
+      order: ["querystring", "session"],
+    },
+  });
 
   // 2 middleware: one to read/set the session language, and one to enhance the
   // req/res objects with i18n features

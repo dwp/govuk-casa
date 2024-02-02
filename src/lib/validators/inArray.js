@@ -2,19 +2,18 @@
 /**
  * Test if a value is present in an array.
  *
- * Config options:
- *   Array source = Array of values to test against
+ * Config options: Array source = Array of values to test against
  *
  * If the value itself is an array, all values within that array must be present
  * in the `source` array in order to pass validation.
  */
-import ValidationError from '../ValidationError.js';
-import ValidatorFactory from '../ValidatorFactory.js';
-import { stringifyInput, isStringable } from '../utils.js';
+import ValidationError from "../ValidationError.js";
+import ValidatorFactory from "../ValidatorFactory.js";
+import { stringifyInput, isStringable } from "../utils.js";
 
 /**
+ * @typedef {import("../../casa").ErrorMessageConfig} ErrorMessageConfig
  * @access private
- * @typedef {import('../../casa').ErrorMessageConfig} ErrorMessageConfig
  */
 
 /**
@@ -36,17 +35,17 @@ import { stringifyInput, isStringable } from '../utils.js';
  */
 export default class InArray extends ValidatorFactory {
   /** @property {string} name Validator name ("inArray") */
-  name = 'inArray';
+  name = "inArray";
 
   validate(value, dataContext = {}) {
     let valid = false;
     const source = this.config.source || [];
     const errorMsg = this.config.errorMsg || {
-      inline: 'validation:rule.inArray.inline',
-      summary: 'validation:rule.inArray.summary',
+      inline: "validation:rule.inArray.inline",
+      summary: "validation:rule.inArray.summary",
     };
 
-    if (value !== null && typeof value !== 'undefined') {
+    if (value !== null && typeof value !== "undefined") {
       const search = Array.isArray(value) ? value : [value];
       for (let i = 0, l = search.length; i < l; i += 1) {
         if (source.indexOf(search[parseInt(i, 10)]) > -1) {
@@ -62,7 +61,7 @@ export default class InArray extends ValidatorFactory {
   }
 
   sanitise(value) {
-    const coerce = (val) => (stringifyInput(val, undefined));
+    const coerce = (val) => stringifyInput(val, undefined);
 
     // Basic stringable
     if (isStringable(value)) {

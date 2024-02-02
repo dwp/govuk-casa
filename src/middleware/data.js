@@ -1,28 +1,24 @@
 // Decorates the request with some contextual data about the user's journey
 // through the application. This is used by downstream middleware and templates.
 
-import lodash from 'lodash';
-import JourneyContext from '../lib/JourneyContext.js';
-import { validateUrlPath } from '../lib/utils.js';
-import waypointUrl from '../lib/waypoint-url.js';
+import lodash from "lodash";
+import JourneyContext from "../lib/JourneyContext.js";
+import { validateUrlPath } from "../lib/utils.js";
+import waypointUrl from "../lib/waypoint-url.js";
 
 const { has } = lodash;
 
 const editOrigin = (req) => {
-  if (has(req.query, 'editorigin')) {
+  if (has(req.query, "editorigin")) {
     return waypointUrl({ waypoint: req.query.editorigin });
   }
-  if (has(req?.body, 'editorigin')) {
+  if (has(req?.body, "editorigin")) {
     return waypointUrl({ waypoint: req.body.editorigin });
   }
-  return '';
-}
+  return "";
+};
 
-export default function dataMiddleware({
-  plan,
-  events,
-  contextIdGenerator,
-}) {
+export default function dataMiddleware({ plan, events, contextIdGenerator }) {
   return [
     (req, res, next) => {
       /* ------------------------------------------------ Request decorations */
@@ -36,10 +32,15 @@ export default function dataMiddleware({
 
         // Current journey context, loaded from session, specified by
         // `contextid` request parameter
-        journeyContext: JourneyContext.extractContextFromRequest(req).addEventListeners(events),
+        journeyContext:
+          JourneyContext.extractContextFromRequest(req).addEventListeners(
+            events,
+          ),
 
         // Edit mode
-        editMode: (has(req?.query, 'edit') && has(req?.query, 'editorigin')) || (has(req?.body, 'edit') && has(req?.body, 'editorigin')),
+        editMode:
+          (has(req?.query, "edit") && has(req?.query, "editorigin")) ||
+          (has(req?.body, "edit") && has(req?.body, "editorigin")),
         editOrigin: editOrigin(req),
       };
 
@@ -56,7 +57,7 @@ export default function dataMiddleware({
       /* ------------------------------------------------- Template variables */
 
       // Capture mount URL that will be used in generating all browser URLs
-      const mountUrl = validateUrlPath(`${req.baseUrl}/`.replace(/\/+/g, '/'));
+      const mountUrl = validateUrlPath(`${req.baseUrl}/`.replace(/\/+/g, "/"));
 
       // If this CASA app is mounted on a parameterised route, then all of its
       // static assets (served by `staticRouter`) will, by default, be served
@@ -77,7 +78,9 @@ export default function dataMiddleware({
       // Router, the `baseUrl` is different in each case, so we cannot rely
       // on it to be consistent. Hence the need for this property, which will
       // always be the non-parameterised version of the baseUrl.
-      const staticMountUrl = validateUrlPath(`${req.unparameterisedBaseUrl}/`.replace(/\/+/g, '/'));
+      const staticMountUrl = validateUrlPath(
+        `${req.unparameterisedBaseUrl}/`.replace(/\/+/g, "/"),
+      );
 
       // CASA and userland templates
       res.locals.casa = {
@@ -99,13 +102,14 @@ export default function dataMiddleware({
       // the template author does not have to be concerned about the current
       // "state" when generating URLs, but still has the ability to override
       // these curried defaults if needs be.
-      res.locals.waypointUrl = (args) => waypointUrl({
-        mountUrl,
-        journeyContext: req.casa.journeyContext,
-        edit: req.casa.editMode,
-        editOrigin: req.casa.editOrigin,
-        ...args,
-      });
+      res.locals.waypointUrl = (args) =>
+        waypointUrl({
+          mountUrl,
+          journeyContext: req.casa.journeyContext,
+          edit: req.casa.editMode,
+          editOrigin: req.casa.editOrigin,
+          ...args,
+        });
 
       next();
     },

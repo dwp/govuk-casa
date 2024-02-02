@@ -7,12 +7,12 @@ Use the `errorVisibility` option to keep page validation errors visible on GET r
 `errorVisibility` can accept three values
 
 - **`CONFIG_ERROR_VISIBILITY_ONSUBMIT`** (default); render errors only on submission of a form.
- use casa constants(`import { constants } from  '@dwp/govuk-casa';`) to use this flag
+  use casa constants(`import { constants } from  '@dwp/govuk-casa';`) to use this flag
 - **`CONFIG_ERROR_VISIBILITY_ALWAYS`**; always render the errors if the waypoint is in an invalid
-   state.
-   use casa constants(`import { constants } from  '@dwp/govuk-casa';`) to use this flag
+  state.
+  use casa constants(`import { constants } from  '@dwp/govuk-casa';`) to use this flag
 - **`function({ req })`**; a custom function that runs for each incoming request
-   and returns a true if certain conditions are met.
+  and returns a true if certain conditions are met.
 
 ## How to use errorVisibility
 
@@ -20,7 +20,7 @@ Use the `errorVisibility` option to keep page validation errors visible on GET r
 
 `errorVisibility` can be set on globally, if set globally every page validation error will follow the set rule.
 
-for example if Global `errorVisibility` set to  `CONFIG_ERROR_VISIBILITY_ALWAYS` all page validation error will be remain valid even after page refresh
+for example if Global `errorVisibility` set to `CONFIG_ERROR_VISIBILITY_ALWAYS` all page validation error will be remain valid even after page refresh
 
 #### Code Example
 

@@ -1,60 +1,66 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "baseBranches": [
-    "main",
-    "maintain/6.x",
-    "maintain/7.x",
-    "maintain/8.x"
-  ],
-  "ignoreDeps": [
-    "@dwp/govuk-casa"
-  ],
-  "packageRules": [{
-    "description": "v6 supports up to node v12. These packages require >=v14 so cannot be upgraded",
-    "matchBaseBranches": ["maintain/6.x"],
-    "matchPackageNames": ["fs-extra", "jsdom", "@stryker-mutator/core", "@stryker-mutator/mocha-runner"],
-    "matchUpdateTypes": ["major"],
-    "enabled": false
-  }, {
-    "description": "Cannot major upgrade govuk-frontend in older versions as they introduce potentially breaking changes to UI",
-    "matchBaseBranches": ["maintain/6.x", "maintain/7.x", "maintain/8.x"],
-    "matchPackageNames": ["govuk-frontend"],
-    "matchUpdateTypes": ["major"],
-    "enabled": false
-  }, {
-    "description": "Stick to major node versions on older branches ( as defined in .nvmrc)",
-    "matchBaseBranches": ["maintain/6.x", "maintain/7.x", "maintain/8.x"],
-    "matchManagers": ["nvm"],
-    "matchUpdateTypes": ["major"],
-    "enabled": false
-  }, {
-    "description": "Stick to major node and npm versions on older branches (as defined in engines)",
-    "matchBaseBranches": ["maintain/6.x", "maintain/7.x", "maintain/8.x"],
-    "matchManagers": ["npm"],
-    "matchPackageNames": ["node", "npm"],
-    "matchDepTypes": ["engines"],
-    "matchUpdateTypes": ["major"],
-    "enabled": false
-  }, {
-    "description": "Stick to current major node versions on older branches (as defined by docker images)",
-    "matchBaseBranches": ["maintain/6.x", "maintain/7.x", "maintain/8.x"],
-    "matchManagers": ["dockerfile"],
-    "matchPackageNames": ["node"],
-    "matchUpdateTypes": ["major"],
-    "enabled": false
-  }, {
-    "description": "Auto-merging without an MR",
-    "groupName": "non-major dependencies",
-    "matchUpdateTypes": ["minor", "patch", "pin", "pinDigest"],
-    "automerge": true,
-    "automergeType": "branch",
-    "platformAutomerge": true,
-    "gitLabIgnoreApprovals": true,
-    "addLabels": ["Automatic Merge"]
-  }, {
-    "description": "Ignore upgrades to the zap dast image as later versions break pipeline",
-    "matchUpdateTypes": ["pin", "pinDigest"],
-    "matchPackageNames": ["owasp/zap2docker-stable"],
-    "enabled": false
-  }]
+  "baseBranches": ["main", "maintain/6.x", "maintain/7.x", "maintain/8.x"],
+  "ignoreDeps": ["@dwp/govuk-casa"],
+  "packageRules": [
+    {
+      "description": "v6 supports up to node v12. These packages require >=v14 so cannot be upgraded",
+      "matchBaseBranches": ["maintain/6.x"],
+      "matchPackageNames": [
+        "fs-extra",
+        "jsdom",
+        "@stryker-mutator/core",
+        "@stryker-mutator/mocha-runner"
+      ],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "description": "Cannot major upgrade govuk-frontend in older versions as they introduce potentially breaking changes to UI",
+      "matchBaseBranches": ["maintain/6.x", "maintain/7.x", "maintain/8.x"],
+      "matchPackageNames": ["govuk-frontend"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "description": "Stick to major node versions on older branches ( as defined in .nvmrc)",
+      "matchBaseBranches": ["maintain/6.x", "maintain/7.x", "maintain/8.x"],
+      "matchManagers": ["nvm"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "description": "Stick to major node and npm versions on older branches (as defined in engines)",
+      "matchBaseBranches": ["maintain/6.x", "maintain/7.x", "maintain/8.x"],
+      "matchManagers": ["npm"],
+      "matchPackageNames": ["node", "npm"],
+      "matchDepTypes": ["engines"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "description": "Stick to current major node versions on older branches (as defined by docker images)",
+      "matchBaseBranches": ["maintain/6.x", "maintain/7.x", "maintain/8.x"],
+      "matchManagers": ["dockerfile"],
+      "matchPackageNames": ["node"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "description": "Auto-merging without an MR",
+      "groupName": "non-major dependencies",
+      "matchUpdateTypes": ["minor", "patch", "pin", "pinDigest"],
+      "automerge": true,
+      "automergeType": "branch",
+      "platformAutomerge": true,
+      "gitLabIgnoreApprovals": true,
+      "addLabels": ["Automatic Merge"]
+    },
+    {
+      "description": "Ignore upgrades to the zap dast image as later versions break pipeline",
+      "matchUpdateTypes": ["pin", "pinDigest"],
+      "matchPackageNames": ["owasp/zap2docker-stable"],
+      "enabled": false
+    }
+  ]
 }

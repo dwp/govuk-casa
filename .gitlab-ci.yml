@@ -44,7 +44,20 @@ e2e-dast:
     - name: owasp/zap2docker-stable@sha256:072670c616a33c5a5d985a8790738de76191d4e3222e19dc19f50026b5440436
       alias: zap
       entrypoint: ["zap.sh"]
-      command: ["-daemon", "-host", "0.0.0.0", "-port", "8080", "-config", "api.key=secret", "-config", "api.addrs.addr.name=.*", "-config", "api.addrs.addr.regex=true"]
+      command:
+        [
+          "-daemon",
+          "-host",
+          "0.0.0.0",
+          "-port",
+          "8080",
+          "-config",
+          "api.key=secret",
+          "-config",
+          "api.addrs.addr.name=.*",
+          "-config",
+          "api.addrs.addr.regex=true",
+        ]
   variables:
     # ref: https://docs.gitlab.com/runner/executors/docker.html#create-a-network-for-each-job
     # Required so ZAP can connect to servers being spun up in this build container

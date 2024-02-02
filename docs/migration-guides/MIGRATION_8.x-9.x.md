@@ -9,7 +9,7 @@ The following changes are **mandatory**:
 - [Use correct method to retrieve field attributes](#use-correct-method-to-retrieve-field-attributes)
 - [`PageField.runValidators()` signature changed](#pagefieldrunvalidators-signature-changed)
 
---------------------------------------------------------------------------------
+---
 
 ## Mandatory changes
 
@@ -72,10 +72,10 @@ field('title').validators([
 You must now use the `get...()` methods to retrieve field conditions, validators, or processors.
 
 ```js
-const f = field('name')
-  .validators([ new validator() ])
-  .processors([ new processor() ])
-  .conditions([ new condition() ]);
+const f = field("name")
+  .validators([new validator()])
+  .processors([new processor()])
+  .conditions([new condition()]);
 
 // Old
 validators = f.validators();
@@ -93,11 +93,11 @@ conditions = f.getConditions();
 The signature of the `PageField.runValidators()` method has changed to remove redundancy.
 
 ```js
-const f = field('name');
+const f = field("name");
 
 // Old
-f.runValidators('Joe Bloggs', { fieldValue: 'Joe Bloggs' });
+f.runValidators("Joe Bloggs", { fieldValue: "Joe Bloggs" });
 
 // New
-f.runValidators({ fieldValue: 'Joe Bloggs' });
+f.runValidators({ fieldValue: "Joe Bloggs" });
 ```

@@ -12,13 +12,13 @@ npm run build
 
 ## Directory structure
 
-* `src/` - JavaScript sources (using ES6 modules exclusively)
-* `docs/` - documentation
-* `locales/` - default language dictionaries
-* `scripts/` - utility scripts used in the build process
-* `assets/` - static assets, like images, css, etc
-* `tests/` - tests
-* `views/` - Nunjucks templates
+- `src/` - JavaScript sources (using ES6 modules exclusively)
+- `docs/` - documentation
+- `locales/` - default language dictionaries
+- `scripts/` - utility scripts used in the build process
+- `assets/` - static assets, like images, css, etc
+- `tests/` - tests
+- `views/` - Nunjucks templates
 
 Any code in `src/` that references files in `assets/` will do so via a relative path to `dist/assets/` rather than the root `assets/` directory. This is important because that reference must work in both the raw, un-compiled version of the code, but also in the code copied to `dist/`. For example, `../dist/assets/file.html` will resolve to the same file from both `src/script.js` and `dist/script.js`. We always use the `dist/assets/` version because assets need to compile regardless of whether we're running locally or packaging up the npm distributable.
 

@@ -9,12 +9,10 @@ Depending on the plugins you use, there are usually 2 steps needed to include th
 First, load the plugin:
 
 ```javascript
-import somePlugin from 'somewhere';
+import somePlugin from "somewhere";
 
 configure({
-  plugins: [
-    somePlugin(),
-  ],
+  plugins: [somePlugin()],
 });
 ```
 
@@ -24,8 +22,8 @@ Secondly - if the plugin requires it - make the necessary changes to your Nunjuc
 
 There are two phases during which a plugin establishes itself in the application:
 
-* A **configure** phase which allows the plugin to manipulate the raw configuration passed in by the application developer, and
-* A **bootstrap** phase during which the plugin can manipulate the CASA Nunjucks environment, routers or middleware
+- A **configure** phase which allows the plugin to manipulate the raw configuration passed in by the application developer, and
+- A **bootstrap** phase during which the plugin can manipulate the CASA Nunjucks environment, routers or middleware
 
 ## Configure phase
 
@@ -35,7 +33,7 @@ For example, to add some extra template directories you may do something like th
 
 ```javascript
 function configure(config) {
-  config.views.push('path/to/my/views/directory');
+  config.views.push("path/to/my/views/directory");
 }
 ```
 
@@ -47,8 +45,8 @@ For example, to add your own generic information page to the `ancillaryRouter`:
 
 ```javascript
 function bootstrap({ ancillaryRouter }) {
-  ancillaryRouter.get('/info', (req, res, next) => {
-    res.render('info.njk');
+  ancillaryRouter.get("/info", (req, res, next) => {
+    res.render("info.njk");
   });
 }
 ```
@@ -66,7 +64,7 @@ function bootstrap({ nunjucksEnv }) {
   // This will insert some content at the end of the named block. It will be
   // inserted into the first occurrence of this block as that is usually the
   // most specific, and overrides any other uses of the same block elsewhere.
-  nunjucksEnv.modifyBlock('blockName', () => {
+  nunjucksEnv.modifyBlock("blockName", () => {
     return 'This will add some content from another template at the beginning of the blockName block: {% include "my-plugin/thing.njk" %}';
   });
 

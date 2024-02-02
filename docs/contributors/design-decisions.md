@@ -8,16 +8,16 @@ The source for CASA is written with ES6 modules, but we make the distributable a
 
 This comes with a few challenges, but the aims are:
 
-* Make the raw source code (before any build steps) usable as-is. This is necessary in order to run tests, for example.
-* By using ES6 we are keeping up with the direction of travel in NodeJS
-* By supporting CommonJS we are bringing existing users with us
+- Make the raw source code (before any build steps) usable as-is. This is necessary in order to run tests, for example.
+- By using ES6 we are keeping up with the direction of travel in NodeJS
+- By supporting CommonJS we are bringing existing users with us
 
 The `npm run build` command will compile the ESM source into a CommonJS format that can be used by consumers using either ESM or CommonJS. An important file into this process is `scripts/esm-wrapper.js`. Whenever you makechanges to `src/casa.js`, those changes must be reflected in `esm-wrapper.js` too. This wrapper is used during compilation.
 
 References:
 
-* <https://nodejs.org/api/packages.html#packages_dual_commonjs_es_module_packages>
-* <https://redfin.engineering/node-modules-at-war-why-commonjs-and-es-modules-cant-get-along-9617135eeca1>
+- <https://nodejs.org/api/packages.html#packages_dual_commonjs_es_module_packages>
+- <https://redfin.engineering/node-modules-at-war-why-commonjs-and-es-modules-cant-get-along-9617135eeca1>
 
 ### How to handle `__dirname`
 
@@ -28,9 +28,9 @@ The `__dirname` global is not available in ES6, and ES6's equivalent (using `imp
 module.exports = __dirname;
 
 // your-module.js (in same folder as dirname.cjs)
-import { resolve } from 'path';
-import dirname from './dirname.cjs';
-resolve(dirname, '../assets/');
+import { resolve } from "path";
+import dirname from "./dirname.cjs";
+resolve(dirname, "../assets/");
 ```
 
 ## Type definitions

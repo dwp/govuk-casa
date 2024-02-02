@@ -46,7 +46,9 @@ In VS Code for example, a typical `launch.json` file could look like this:
       },
       "outputCapture": "std",
       "sourceMaps": true,
-      "outFiles": ["${workspaceFolder}/node_modules/@dwp/govuk-casa/dist/**/*.js"],
+      "outFiles": [
+        "${workspaceFolder}/node_modules/@dwp/govuk-casa/dist/**/*.js"
+      ],
       "runtimeArgs": ["--preserve-symlinks"]
     }
   ]

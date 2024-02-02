@@ -1,30 +1,30 @@
-import { urlencoded as expressBodyParser } from 'express';
+import { urlencoded as expressBodyParser } from "express";
 
 const rProto = /__proto__/i;
 const rPrototype = /prototype[='"[\]]/i;
 const rConstructor = /constructor[='"[\]]/i;
 
 export function verifyBody(req, res, buf, encoding) {
-  const body = decodeURI(buf.toString(encoding)).replace(/[\s\u200B-\u200D\uFEFF]/g, '');
+  const body = decodeURI(buf.toString(encoding)).replace(
+    /[\s\u200B-\u200D\uFEFF]/g,
+    "",
+  );
   if (rProto.test(body)) {
-    throw new Error('Request body verification failed (__proto__)');
+    throw new Error("Request body verification failed (__proto__)");
   }
   if (rPrototype.test(body)) {
-    throw new Error('Request body verification failed (prototype)');
+    throw new Error("Request body verification failed (prototype)");
   }
   if (rConstructor.test(body)) {
-    throw new Error('Request body verification failed (constructor)');
+    throw new Error("Request body verification failed (constructor)");
   }
 }
 
-export default function bodyParserMiddleware({
-  formMaxParams,
-  formMaxBytes,
-}) {
+export default function bodyParserMiddleware({ formMaxParams, formMaxBytes }) {
   return [
     expressBodyParser({
       extended: true,
-      type: 'application/x-www-form-urlencoded',
+      type: "application/x-www-form-urlencoded",
       inflate: true,
       parameterLimit: formMaxParams,
       limit: formMaxBytes,

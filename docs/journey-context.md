@@ -4,8 +4,8 @@ The **Journey Context** is just a fancy way of referring to the "state" of a use
 
 As a user interacts with the waypoints along their journey through your service, the state is captured in two important ways:
 
-* The **data** that has been captured for each waypoint
-* The results of any **validation** that was performed on that data
+- The **data** that has been captured for each waypoint
+- The results of any **validation** that was performed on that data
 
 This state is stored as a plain JavaScript object in the server session
 
@@ -17,10 +17,10 @@ To assist retrieval, you can differentiate contexts from one another by altering
 
 ```javascript
 // Setting a unique name
-oneContext.identity.name = 'some-unique-name';
+oneContext.identity.name = "some-unique-name";
 
 // One or more general-purpose tags
-anotherContext.identity.tags = ['some-tag'];
+anotherContext.identity.tags = ["some-tag"];
 ```
 
 ## Interacting with the Journey Context
@@ -35,9 +35,9 @@ JourneyContext.getDefaultContext(req.session);
 JourneyContext.getContexts(req.session);
 
 // Retrieve any other context by various methods
-JourneyContext.getContextById(req.session, 'some-id');
-JourneyContext.getContextByName(req.session, 'some-name');
-JourneyContext.getContextsByTag(req.session, 'some-tag');
+JourneyContext.getContextById(req.session, "some-id");
+JourneyContext.getContextByName(req.session, "some-name");
+JourneyContext.getContextsByTag(req.session, "some-tag");
 
 // Persist any context changes to the session
 JourneyContext.putContext(req.session, myJourneyContext);
@@ -45,9 +45,9 @@ JourneyContext.putContext(req.session, myJourneyContext);
 // Remove contexts by various methods
 JourneyContext.removeContext(req.session, myJourneyContext);
 JourneyContext.removeContexts(req.session);
-JourneyContext.removeContextById(req.session, 'some-id');
-JourneyContext.removeContextByName(req.session, 'some-name');
-JourneyContext.removeContextsByTag(req.session, 'some-tag');
+JourneyContext.removeContextById(req.session, "some-id");
+JourneyContext.removeContextByName(req.session, "some-name");
+JourneyContext.removeContextsByTag(req.session, "some-tag");
 
 // Create a new ephemeral context, with a pre-generated id
 JourneyContext.createEphemeralContext(req);
@@ -65,9 +65,9 @@ const clone = JourneyContext.fromObject(context);
 
 Note that the Journey Context stored in `req.casa.journeyContext` could be any of the contexts held in session, as decided by the `contextid` request parameter. CASA will look in three places for this parameter (in this order):
 
-* `req.params` (only applicable to CASA apps mounted on a parameterised route containing `:contextid`), e.g. `GET /app/32e61fe2-47ca-43d0-84be-cf9f4d6c45cd`
-* `req.query`, e.g. `GET /app?contextid=32e61fe2-47ca-43d0-84be-cf9f4d6c45cd`
-* `req.body`, e.g. `POST` request with body `contextid=32e61fe2-47ca-43d0-84be-cf9f4d6c45cd`
+- `req.params` (only applicable to CASA apps mounted on a parameterised route containing `:contextid`), e.g. `GET /app/32e61fe2-47ca-43d0-84be-cf9f4d6c45cd`
+- `req.query`, e.g. `GET /app?contextid=32e61fe2-47ca-43d0-84be-cf9f4d6c45cd`
+- `req.body`, e.g. `POST` request with body `contextid=32e61fe2-47ca-43d0-84be-cf9f4d6c45cd`
 
 If no `contextid` is specified, the default Journey Context is used for the remainder of the request.
 
@@ -81,11 +81,11 @@ Therefore, CASA offers a feature whereby you can supply your own function - or c
 
 ```javascript
 // Example: using the default `uuid` generator
-import { configure } from '@dwp/govuk-casa';
+import { configure } from "@dwp/govuk-casa";
 configure();
 
 // Example: use the bundled sequential number generator
-import { configure, contextIdGenerators } from '@dwp/govuk-casa';
+import { configure, contextIdGenerators } from "@dwp/govuk-casa";
 configure({
   contextIdGenerator: contextIdGenerators.sequentialInteger(),
 });
@@ -101,13 +101,13 @@ configure({
 
 Important considerations:
 
-* This function MUST respond **synchronously**, so will not support any async logic
-* The returned ID MUST be unique among the other contexts that exist against the given request
-* The ID you generate **might not be used by a context** (see notes about sequential generators further below)
-* The returned ID MUST meet the following criteria:
-  * A string
-  * Between 1 and 64 characters
-  * Contain only the characters `a-z`, `0-9`, `-`
+- This function MUST respond **synchronously**, so will not support any async logic
+- The returned ID MUST be unique among the other contexts that exist against the given request
+- The ID you generate **might not be used by a context** (see notes about sequential generators further below)
+- The returned ID MUST meet the following criteria:
+  - A string
+  - Between 1 and 64 characters
+  - Contain only the characters `a-z`, `0-9`, `-`
 
 Here is a naive custom generator examples:
 
@@ -131,18 +131,20 @@ The generator function can be used anywhere in your code by calling `JourneyCont
 
 CASA provides a few [bundled generators](../src/lib/context-id-generators.js) for convenience:
 
-* **`uuid()`**:
-  * Default generator
+- **`uuid()`**:
 
-* **`shortGuid({ length, prefix, pool ])`**:
-  * Generates a random, short string made up of letters and numbers
-  * `length`: preferred length of IDs (default: `5`)
-  * `prefix`: prefix ID with this string (default: `""`)
-  * `pool`: pool of characters to choose from (default: `"abcdefhkmnprtwxy346789"`)
+  - Default generator
 
-* **`sequentialInteger()`**:
-  * Returns an incremental integer based on the ID of the last context in the current session
-  * Be mindful of the limitation around sequential IDs (see below)
+- **`shortGuid({ length, prefix, pool ])`**:
+
+  - Generates a random, short string made up of letters and numbers
+  - `length`: preferred length of IDs (default: `5`)
+  - `prefix`: prefix ID with this string (default: `""`)
+  - `pool`: pool of characters to choose from (default: `"abcdefhkmnprtwxy346789"`)
+
+- **`sequentialInteger()`**:
+  - Returns an incremental integer based on the ID of the last context in the current session
+  - Be mindful of the limitation around sequential IDs (see below)
 
 ### Avoid sequential/ordered sequences if possible
 
@@ -159,7 +161,7 @@ configure({
     if (!req.session.__hidden_id_tracker__) {
       req.session.__hidden_id_tracker__ = 0;
     }
-    return ++ req.session.__hidden_id_tracker__;
+    return ++req.session.__hidden_id_tracker__;
   },
 });
 
@@ -186,7 +188,7 @@ Therefore we recommend using user-friendly GUIDs instead of sequences.
 
 If you use CASA sub-apps that share a session, be mindful that each will have its own independently configured `contextIdGenerator` function. This may lead to some undesirable behaviours such as:
 
-* "gaps" in sequential IDs from each app's point of view, e.g. `/main/1`, `/main/2`, `/sub/3`, `/main/4`, ...
-* generating an ID in one app's middleware, for use in the other app, will introduce inconsistencies. For example, if "main" app is generating UUIDs, and "sub" app is generating sequential numbers, then generating an ID in main's middleware won't necessarily be usable by middleware in "sub".
+- "gaps" in sequential IDs from each app's point of view, e.g. `/main/1`, `/main/2`, `/sub/3`, `/main/4`, ...
+- generating an ID in one app's middleware, for use in the other app, will introduce inconsistencies. For example, if "main" app is generating UUIDs, and "sub" app is generating sequential numbers, then generating an ID in main's middleware won't necessarily be usable by middleware in "sub".
 
 Generally, unless you have a specific case not to, it's recommended to use the same generator for all sub-apps.

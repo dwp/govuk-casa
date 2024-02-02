@@ -1,17 +1,19 @@
 /* eslint-disable class-methods-use-this */
-import ValidatorFactory from '../ValidatorFactory.js';
-import ValidationError from '../ValidationError.js';
-import { stringifyInput } from '../utils.js';
+import ValidatorFactory from "../ValidatorFactory.js";
+import ValidationError from "../ValidationError.js";
+import { stringifyInput } from "../utils.js";
 
 /**
+ * @typedef {import("../../casa").ErrorMessageConfig} ErrorMessageConfig
  * @access private
- * @typedef {import('../../casa').ErrorMessageConfig} ErrorMessageConfig
  */
 
 /**
  * @typedef {object} StrlenConfigOptions
- * @property {ErrorMessageConfig} errorMsgMax Error message to use on max length failure
- * @property {ErrorMessageConfig} errorMsgMin Error message to use on min length failure
+ * @property {ErrorMessageConfig} errorMsgMax Error message to use on max length
+ *   failure
+ * @property {ErrorMessageConfig} errorMsgMin Error message to use on min length
+ *   failure
  * @property {number} max Maximum string length allowed
  * @property {number} min Minimum string length required
  */
@@ -25,17 +27,17 @@ import { stringifyInput } from '../utils.js';
  * @augments ValidatorFactory
  */
 export default class Strlen extends ValidatorFactory {
-  name = 'strlen';
+  name = "strlen";
 
-  validate(inputValue = '', dataContext = {}) {
+  validate(inputValue = "", dataContext = {}) {
     const {
       errorMsgMax = {
-        inline: 'validation:rule.strlen.max.inline',
-        summary: 'validation:rule.strlen.max.summary',
+        inline: "validation:rule.strlen.max.inline",
+        summary: "validation:rule.strlen.max.summary",
       },
       errorMsgMin = {
-        inline: 'validation:rule.strlen.min.inline',
-        summary: 'validation:rule.strlen.min.summary',
+        inline: "validation:rule.strlen.min.inline",
+        summary: "validation:rule.strlen.min.summary",
       },
       min,
       max,
@@ -44,12 +46,12 @@ export default class Strlen extends ValidatorFactory {
     let errorMsg;
     let valid = true;
 
-    if (typeof max !== 'undefined' && inputValue.length > max) {
+    if (typeof max !== "undefined" && inputValue.length > max) {
       valid = false;
       errorMsg = errorMsgMax;
     }
 
-    if (typeof min !== 'undefined' && inputValue.length < min) {
+    if (typeof min !== "undefined" && inputValue.length < min) {
       valid = false;
       errorMsg = errorMsgMin;
     }

@@ -4,7 +4,7 @@ Extends the [`govukTextarea()`](https://design-system.service.gov.uk/components/
 
 Custom parameters:
 
-* `casaErrors` - form errors (just pass `formErrors`)
+- `casaErrors` - form errors (just pass `formErrors`)
 
 ## Example usage
 
@@ -24,7 +24,7 @@ casaGovukTextarea({
 
 The following attributes will be attached to the error `<p>` tag if `casaWithAnalytics` is `true`:
 
-* `data-ga-question`: Holds the fieldset label's text content after removing all html tags
+- `data-ga-question`: Holds the fieldset label's text content after removing all html tags
 
 These are the conventions used by DWP.
 

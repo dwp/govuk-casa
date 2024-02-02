@@ -1,57 +1,59 @@
-import { field, validators as r } from '@dwp/govuk-casa';
+import { field, validators as r } from "@dwp/govuk-casa";
 
 export default () => [
-  field('title').validators([
+  field("title")
+    .validators([
+      r.required.make({
+        errorMsg: "personal-details:field.title.empty",
+      }),
+      r.strlen.make({
+        max: 10,
+        errorMsg: "personal-details:field.title.tooLong",
+      }),
+    ])
+    .processors([
+      (value) => {
+        // Example: uppercase the field value
+        return String(value).toUpperCase();
+      },
+    ]),
+
+  field("firstName").validators([
     r.required.make({
-      errorMsg: 'personal-details:field.title.empty'
+      errorMsg: "personal-details:field.firstName.empty",
     }),
-    r.strlen.make({
-      max: 10,
-      errorMsg: 'personal-details:field.title.tooLong'
-    }),
-  ]).processors([
-    (value) => {
-      // Example: uppercase the field value
-      return String(value).toUpperCase();
-    },
   ]),
 
-  field('firstName').validators([
-    r.required.make({
-      errorMsg: 'personal-details:field.firstName.empty'
-    }),
-  ]),
-
-  field('middleName', { optional: true }).validators([
+  field("middleName", { optional: true }).validators([
     r.regex.make({
-      pattern: /^[a-z ]+$/i
+      pattern: /^[a-z ]+$/i,
     }),
   ]),
 
-  field('lastName').validators([
+  field("lastName").validators([
     r.required.make({
-      errorMsg: 'personal-details:field.lastName.empty'
+      errorMsg: "personal-details:field.lastName.empty",
     }),
   ]),
 
-  field('dob').validators([
+  field("dob").validators([
     r.required.make({
       errorMsg: {
-        summary: 'Enter date of birth',
-        focusSuffix: ['[dd]', '[mm]', '[yyyy]']
-      }
+        summary: "Enter date of birth",
+        focusSuffix: ["[dd]", "[mm]", "[yyyy]"],
+      },
     }),
     r.dateObject.make({
       beforeOffsetFromNow: { days: 1 },
       errorMsgBeforeOffset: {
-        summary: 'Date of birth cannot be in the future',
+        summary: "Date of birth cannot be in the future",
       },
     }),
   ]),
 
-  field('nino').validators([
+  field("nino").validators([
     r.required.make({
-      errorMsg: 'personal-details:field.nino.empty'
+      errorMsg: "personal-details:field.nino.empty",
     }),
     r.nino.make(),
   ]),

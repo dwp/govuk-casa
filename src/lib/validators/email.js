@@ -1,14 +1,14 @@
 /* eslint-disable class-methods-use-this */
-import validatorPkg from 'validator';
-import ValidationError from '../ValidationError.js';
-import ValidatorFactory from '../ValidatorFactory.js';
-import { stringifyInput } from '../utils.js';
+import validatorPkg from "validator";
+import ValidationError from "../ValidationError.js";
+import ValidatorFactory from "../ValidatorFactory.js";
+import { stringifyInput } from "../utils.js";
 
 const { isEmail } = validatorPkg; // CommonJS
 
 /**
+ * @typedef {import("../../casa").ErrorMessageConfig} ErrorMessageConfig
  * @access private
- * @typedef {import('../../casa').ErrorMessageConfig} ErrorMessageConfig
  */
 
 /**
@@ -28,7 +28,7 @@ const { isEmail } = validatorPkg; // CommonJS
  */
 export default class Email extends ValidatorFactory {
   /** @property {string} name Validator name ("email") */
-  name = 'email';
+  name = "email";
 
   validate(value, dataContext = {}) {
     let isValid;
@@ -39,8 +39,8 @@ export default class Email extends ValidatorFactory {
     }
 
     const errorMsg = this.config.errorMsg || {
-      summary: 'validation:rule.email.summary',
-      inline: 'validation:rule.email.inline',
+      summary: "validation:rule.email.summary",
+      inline: "validation:rule.email.inline",
     };
 
     return isValid ? [] : [ValidationError.make({ errorMsg, dataContext })];

@@ -2,9 +2,9 @@
 
 Custom parameters:
 
-* `value` - the value of the address object, in `{address1: '', address2: '', address3: '', address4: '', postcode: ''}` format
-* `casaErrors` - form errors (just pass `formErrors`)
-* `address[1-4]` and `postcode` - for specifying extra attributes for each of the address input components
+- `value` - the value of the address object, in `{address1: '', address2: '', address3: '', address4: '', postcode: ''}` format
+- `casaErrors` - form errors (just pass `formErrors`)
+- `address[1-4]` and `postcode` - for specifying extra attributes for each of the address input components
 
 ## Example usage
 
@@ -57,7 +57,7 @@ And when using the `required` field validator in conjunction with this macro, yo
 
 The following attributes will be attached to the error `<p>` tags if `casaWithAnalytics` is `true`:
 
-* `data-ga-question`: Holds the specific item's label's text content after removing all html tags
+- `data-ga-question`: Holds the specific item's label's text content after removing all html tags
 
 These are the conventions used by DWP.
 

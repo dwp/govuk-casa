@@ -5,7 +5,7 @@ The following changes are **mandatory**:
 - [Change custom field validator functions, and validator conditionals](#field-validation)
 - [Field validators must reject with a `ValidationError` (or array of `ValidationError`s)](#reject-with-validationerrors)
 
---------------------------------------------------------------------------------
+---
 
 ## Mandatory changes
 
@@ -24,7 +24,10 @@ function checkFieldMatchesAnotherFieldOnTheSamePage(fieldValue, dataContext) {
 ... would be refactored as so:
 
 ```javascript
-function checkFieldMatchesAnotherFieldOnTheSamePage(fieldValue, { waypointId, fieldName, journeyContext }) {
+function checkFieldMatchesAnotherFieldOnTheSamePage(
+  fieldValue,
+  { waypointId, fieldName, journeyContext },
+) {
   return fieldValue === journeyContext.getDataForPage(waypointId).anotherField;
 }
 ```
@@ -37,11 +40,14 @@ Where you may have had something like this previously ...
 
 ```javascript
 const fieldValidators = {
-  fieldA: new SimpleField([
-    // rules
-  ], (pageData, fieldName) => {
-    return pageData[fieldName] > 50;
-  }),
+  fieldA: new SimpleField(
+    [
+      // rules
+    ],
+    (pageData, fieldName) => {
+      return pageData[fieldName] > 50;
+    },
+  ),
 };
 ```
 
@@ -49,11 +55,14 @@ const fieldValidators = {
 
 ```javascript
 const fieldValidators = {
-  fieldA: new SimpleField([
-    // rules
-  ], ({ waypointId, fieldName, journeyContext }) => {
-    return journeyContext.getDataForPage(waypointId)[fieldName] > 50;
-  }),
+  fieldA: new SimpleField(
+    [
+      // rules
+    ],
+    ({ waypointId, fieldName, journeyContext }) => {
+      return journeyContext.getDataForPage(waypointId)[fieldName] > 50;
+    },
+  ),
 };
 ```
 
@@ -62,8 +71,8 @@ Previously the following would have been acceptable:
 
 ```javascript
 const pages = {
-  'personal-details': {
-    view: 'common/check-and-change.njk',
+  "personal-details": {
+    view: "common/check-and-change.njk",
   },
 };
 ```
@@ -72,8 +81,8 @@ However, it now requires a `fieldValidators` object assigned to it like the foll
 
 ```javascript
 const pages = {
-  'personal-details': {
-    view: 'common/check-and-change.njk',
+  "personal-details": {
+    view: "common/check-and-change.njk",
     fieldValidators: {},
   },
 };
@@ -90,8 +99,8 @@ function myValidator(value, dataContext) {
   // ... do some checks ...
   Promise.reject({
     errorMsg: {
-      summary: 'message key',
-    }
+      summary: "message key",
+    },
   });
 }
 ```
@@ -101,11 +110,13 @@ A convenient `ValidationError.make()` static method is available to convert prim
 ```javascript
 function myValidator(value, dataContext) {
   // ... do some checks ...
-  Promise.reject(ValidationError.make({
-    errorMsg: {
-      summary: 'message key',
-    }
-  }));
+  Promise.reject(
+    ValidationError.make({
+      errorMsg: {
+        summary: "message key",
+      },
+    }),
+  );
 }
 ```
 
@@ -114,9 +125,11 @@ Or, without the `.make()` method, you could do this:
 ```javascript
 function myValidator(value, dataContext) {
   // ... do some checks ...
-  Promise.reject(new ValidationError({
-    summary: 'message key',
-  }));
+  Promise.reject(
+    new ValidationError({
+      summary: "message key",
+    }),
+  );
 }
 ```
 

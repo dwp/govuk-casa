@@ -8,13 +8,13 @@
    * @returns {void}
    * @throws {Error}
    */
-   function attachEventPolyfill(obj, ev, func) {
+  function attachEventPolyfill(obj, ev, func) {
     if (obj.addEventListener) {
       obj.addEventListener(ev, func, false);
     } else if (obj.attachEvent) {
-      obj.attachEvent('on' + ev, func);
+      obj.attachEvent("on" + ev, func);
     } else {
-      throw new Error('This browser does not support modern event listeners');
+      throw new Error("This browser does not support modern event listeners");
     }
   }
 
@@ -25,8 +25,10 @@
    * @returns {void}
    */
   function casaV1InitShowHide(node) {
-    var fieldName = node.getAttribute('name');
-    var initNodes = document.querySelectorAll('[name="' + fieldName + '"]:not([data-target-init-done])');
+    var fieldName = node.getAttribute("name");
+    var initNodes = document.querySelectorAll(
+      '[name="' + fieldName + '"]:not([data-target-init-done])',
+    );
     var nodeGroup = document.querySelectorAll('[name="' + fieldName + '"]');
 
     /**
@@ -37,8 +39,8 @@
      */
     function showTarget(targetEl) {
       /* eslint-disable-next-line no-param-reassign */
-      console.log('show', targetEl);
-      targetEl.className = targetEl.className.replace(/ *js-hidden/, '');
+      console.log("show", targetEl);
+      targetEl.className = targetEl.className.replace(/ *js-hidden/, "");
     }
 
     /**
@@ -49,8 +51,9 @@
      */
     function hideTarget(targetEl) {
       /* eslint-disable-next-line no-param-reassign */
-      console.log('hide', targetEl);
-      targetEl.className = targetEl.className.replace(/ *js-hidden/, '') + ' js-hidden';
+      console.log("hide", targetEl);
+      targetEl.className =
+        targetEl.className.replace(/ *js-hidden/, "") + " js-hidden";
     }
 
     /**
@@ -60,8 +63,10 @@
      */
     function clickNode() {
       for (var i = 0, l = nodeGroup.length; i < l; i += 1) {
-        if (nodeGroup[i].getAttribute('data-target')) {
-          var targetEl = document.getElementById(nodeGroup[i].getAttribute('data-target'));
+        if (nodeGroup[i].getAttribute("data-target")) {
+          var targetEl = document.getElementById(
+            nodeGroup[i].getAttribute("data-target"),
+          );
           if (nodeGroup[i].checked) {
             showTarget(targetEl);
           } else {
@@ -72,8 +77,8 @@
     }
 
     for (var i = 0, l = initNodes.length; i < l; i += 1) {
-      attachEventPolyfill(initNodes[i], 'click', clickNode);
-      initNodes[i].setAttribute('data-target-init-done', true);
+      attachEventPolyfill(initNodes[i], "click", clickNode);
+      initNodes[i].setAttribute("data-target-init-done", true);
     }
 
     // Initialise state based on pre-populated inputs
@@ -84,8 +89,8 @@
     var nodeList;
     var i;
     var l;
-    if (document.readyState === 'complete') {
-      nodeList = document.querySelectorAll('[data-target]');
+    if (document.readyState === "complete") {
+      nodeList = document.querySelectorAll("[data-target]");
       for (i = 0, l = nodeList.length; i < l; i += 1) {
         casaV1InitShowHide(nodeList[i]);
       }

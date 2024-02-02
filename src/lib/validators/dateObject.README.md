@@ -5,14 +5,14 @@ Validates dates captured from the [`casaGovukDateInput()`](views/casa/components
 All date comparison and format validation is done with the [`Luxon`](https://moment.github.io/luxon/#/) library.
 
 ```javascript
-import { validators } from '@dwp/govuk-casa';
+import { validators } from "@dwp/govuk-casa";
 // Minimal
 validators.dateObject.make();
 ```
 
 ```javascript
-import { Duration, DateTime } from 'luxon';
-import { validators } from '@dwp/govuk-casa';
+import { Duration, DateTime } from "luxon";
+import { validators } from "@dwp/govuk-casa";
 
 // All configuration options
 validators.dateObject.make({
@@ -34,16 +34,16 @@ validators.dateObject.make({
   // Use `focusSuffix` to denote which of the separate fields should be highlighted
   // when an invalid date is provided (different examples shown below).
   errorMsg: {
-    summary: 'validation:rule.dateObject.summary',
-    focusSuffix: '[dd]',
+    summary: "validation:rule.dateObject.summary",
+    focusSuffix: "[dd]",
   },
   errorMsgAfterOffset: {
-    summary: 'validation:rule.dateObject.afterOffset.summary',
-    focusSuffix: ['[dd]', '[mm]', '[yyyy]'],
+    summary: "validation:rule.dateObject.afterOffset.summary",
+    focusSuffix: ["[dd]", "[mm]", "[yyyy]"],
   },
   errorMsgBeforeOffset: {
-    summary: 'validation:rule.dateObject.beforeOffset.summary',
-    focusSuffix: ['[yyyy]'],
+    summary: "validation:rule.dateObject.beforeOffset.summary",
+    focusSuffix: ["[yyyy]"],
   },
-})
+});
 ```

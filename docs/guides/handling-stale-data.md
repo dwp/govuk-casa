@@ -20,9 +20,9 @@ flowchart LR
   C --> D
 ```
 
-* If the user travels `A -> B -> D`, then the back link will point to `B`
-* If the user travels `A -> B -> C -> D` then the back link will point to `C`
-* If the user travels `A -> B -> D`, but then changes their mind and takes the `A -> B -> C -> D` route, then we run into a problem ...
+- If the user travels `A -> B -> D`, then the back link will point to `B`
+- If the user travels `A -> B -> C -> D` then the back link will point to `C`
+- If the user travels `A -> B -> D`, but then changes their mind and takes the `A -> B -> C -> D` route, then we run into a problem ...
 
 Both the `D -> B` and `D -> C` back routes are valid, because both `B` and `C` contain validated data. So how does CASA decide which to choose?
 
@@ -50,12 +50,12 @@ Traversal will stop at the first point where multiple choices are present.
 ```javascript
 // Plan config
 const plan = new Plan({
-  arbiter: 'auto',
+  arbiter: "auto",
 });
 
 // Example of using it directly
 plan.traversePrevRoutes(journeyContext, {
-  arbiter: 'auto',
+  arbiter: "auto",
 });
 ```
 
@@ -86,24 +86,28 @@ This gives you the opportunity to decide which route is best to take.
 // Run this at an appropriate place in the request lifecycle; perhaps in a
 // global `journey.postgather` hook.
 configure({
-  hooks: [{
-    hook: 'journey.postvalidate',
-    middleware: (req, res, next) => {
-      // If the current waypoint contains error, don't perform purging as it
-      // will remove all data beyond this waypoint
-      const errors = req.casa.journeyContext.getValidationErrorsForPage(req.casa.waypoint);
-      if (errors.length) {
-        return next();
-      }
+  hooks: [
+    {
+      hook: "journey.postvalidate",
+      middleware: (req, res, next) => {
+        // If the current waypoint contains error, don't perform purging as it
+        // will remove all data beyond this waypoint
+        const errors = req.casa.journeyContext.getValidationErrorsForPage(
+          req.casa.waypoint,
+        );
+        if (errors.length) {
+          return next();
+        }
 
-      // Purge waypoints that can no longer be reached
-      const traversed = plan.traverse(req.casa.journeyContext);
-      const all = plan.getWaypoints();
-      const toPurge = all.filter(e => !traversed.includes(e));
-      req.casa.journeyContext.purge(toPurge);
-      req.session.save(next);
+        // Purge waypoints that can no longer be reached
+        const traversed = plan.traverse(req.casa.journeyContext);
+        const all = plan.getWaypoints();
+        const toPurge = all.filter((e) => !traversed.includes(e));
+        req.casa.journeyContext.purge(toPurge);
+        req.session.save(next);
+      },
     },
-  }],
+  ],
 });
 ```
 

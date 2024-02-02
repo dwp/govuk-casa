@@ -41,25 +41,25 @@ errors:
   live-with-partner:
     - yes: click()
       messages:
-      - en: Enter your partner’s date of birth.
+        - en: Enter your partner’s date of birth.
     - yes: click()
       day: x
       month: y
       year: z
       messages:
-      - en: Enter a real date of birth.
+        - en: Enter a real date of birth.
     - yes: click()
       day: 11
       month: 11
       year: 3000
       messages:
-      - en: Enter a date of birth that is in the past.
+        - en: Enter a date of birth that is in the past.
   your-partners-name:
     - messages:
-      - en: Enter their full name.
+        - en: Enter their full name.
     - fullName: randomString(101)
       messages:
-      - en: Full name must be 100 characters or less.
+        - en: Full name must be 100 characters or less.
 
 templateVars:
   check-your-answers:

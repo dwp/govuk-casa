@@ -47,7 +47,7 @@ And some other notes:
 - Replaced custom i18n mechanisms with `i18next` and added support for Yaml locale dictionaries
 - Introduced a plugin architecture to make enhancing your application with common components a lot easier
 
---------------------------------------------------------------------------------
+---
 
 ## Mandatory changes
 
@@ -163,18 +163,18 @@ Editing is now always "sticky". If you need to control how a user is redirected 
 
 The Content-Security-Policy header is now entirely managed by **helmet**. There is a `cspNonce` variable available to all templates which can be used to mark inline CSS and script sources as valid.
 
-If you need to modify these CSP directive, you can use the [`helmetConfigurator()` configuration option]((guides/helmet.md)). For example:
+If you need to modify these CSP directive, you can use the [`helmetConfigurator()` configuration option](<(guides/helmet.md)>). For example:
 
 ```javascript
 // Old
 configure(app, {
   csp: {
-    'object-src': ['none'],
-    'media-src': ['somewhere.example.com'],
-    'script-src': [
-      'http://www.google-analytics.com/analytics.js',
-      'http://www.googletagmanager.com/gtm.js',
-      '\'sha256-Lenka3BD801+VZLHH+ZwRhIgOZCLmy55Fr8+MmyYuJ8=\'',
+    "object-src": ["none"],
+    "media-src": ["somewhere.example.com"],
+    "script-src": [
+      "http://www.google-analytics.com/analytics.js",
+      "http://www.googletagmanager.com/gtm.js",
+      "'sha256-Lenka3BD801+VZLHH+ZwRhIgOZCLmy55Fr8+MmyYuJ8='",
     ],
   },
 });
@@ -184,15 +184,15 @@ configure({
   helmetConfigurator: (config) => {
     // Note that the Google Analytics domains are now all provided by CASA out
     // of the box, so no need to re-add.
-    config.contentSecurityPolicy.directives['object-src'] = ['none'];
-    config.contentSecurityPolicy.directives['media-src'] = [webchatBaseUrl];
-    config.contentSecurityPolicy.directives['script-src'] = [
-      ...config.contentSecurityPolicy.directives['script-src'],
-      '\'sha256-Lenka3BD801+VZLHH+ZwRhIgOZCLmy55Fr8+MmyYuJ8=\'',
+    config.contentSecurityPolicy.directives["object-src"] = ["none"];
+    config.contentSecurityPolicy.directives["media-src"] = [webchatBaseUrl];
+    config.contentSecurityPolicy.directives["script-src"] = [
+      ...config.contentSecurityPolicy.directives["script-src"],
+      "'sha256-Lenka3BD801+VZLHH+ZwRhIgOZCLmy55Fr8+MmyYuJ8='",
     ];
     return config;
   },
-})
+});
 ```
 
 #### `headers.disabled` option removed
@@ -210,8 +210,8 @@ This was used to support cases where an upstream proxy uses url-rewriting to dir
 To mount behind a proxy now, you simply include the proxy prefix in the express mounting path, and specify what URL prefix you want to appear for users in their browser address bar via the `mountUrl` config option.
 
 ```javascript
-const proxyMountUrl = '/some-proxy-path';
-const mountUrl = '/context-path';
+const proxyMountUrl = "/some-proxy-path";
+const mountUrl = "/context-path";
 
 const { mount } = configure({
   mountUrl: `${mountUrl}/`,
@@ -230,7 +230,9 @@ See the [proxy guide](../guides/setup-behind-a-proxy.md) for more details.
 The preferred method is now to replace the default `/session-timeout` route, like so:
 
 ```javascript
-ancillaryRouter.replaceGet('/session-timeout', (req, res, next) => res.send(''));
+ancillaryRouter.replaceGet("/session-timeout", (req, res, next) =>
+  res.send(""),
+);
 ```
 
 #### Page and Plan definitions included during configure()
@@ -254,7 +256,7 @@ The format for defining page hooks has changed:
 
 ```javascript
 // old
-page['my-waypoint'] = {
+page["my-waypoint"] = {
   hooks: {
     prerender: [hook1, hook2],
   },
@@ -262,16 +264,21 @@ page['my-waypoint'] = {
 
 // new
 configure({
-  pages: [{
-    waypoint: 'my-waypoint',
-    hooks: [{
-      hook: 'prerender',
-      middleware: hook1,
-    }, {
-      hook: 'prerender',
-      middleware: hook2,
-    }],
-  }],
+  pages: [
+    {
+      waypoint: "my-waypoint",
+      hooks: [
+        {
+          hook: "prerender",
+          middleware: hook1,
+        },
+        {
+          hook: "prerender",
+          middleware: hook2,
+        },
+      ],
+    },
+  ],
 });
 ```
 
@@ -342,27 +349,32 @@ The `simpleFieldValidation()` function has been replaced with a new `field()` fu
 
 ```javascript
 // old
-const { simpleFieldValidation: sf } = require('@dwp/govuk-casa');
+const { simpleFieldValidation: sf } = require("@dwp/govuk-casa");
 
 pages = {
-  title: sf([
-    r.required.make({
-      errorMsg: 'personal-details:field.title.empty'
-    })
-  ], (value, { journeyContext, waypointId }) => true),
+  title: sf(
+    [
+      r.required.make({
+        errorMsg: "personal-details:field.title.empty",
+      }),
+    ],
+    (value, { journeyContext, waypointId }) => true,
+  ),
 };
 ```
 
 ```javascript
 // new
-const { field } = require('@dwp/govuk-casa');
+const { field } = require("@dwp/govuk-casa");
 
 pages = [
-  field('title').validators([
-    r.required.make({
-      errorMsg: 'personal-details:field.title.empty'
-    }),
-  ]).conditions(({ fieldValue, journeyContext, waypoint }) => true),
+  field("title")
+    .validators([
+      r.required.make({
+        errorMsg: "personal-details:field.title.empty",
+      }),
+    ])
+    .conditions(({ fieldValue, journeyContext, waypoint }) => true),
 ];
 ```
 
@@ -424,16 +436,16 @@ The built-in cookie banner has been removed and moved to a new plugin. This plug
 
 Some Nunjucks filters and variables have been deprecated and removed.
 
-| Deprecated | Alternative |
-|------------|-------------|
-| `mergeObjectsDeep()` | `mergeObjects()` |
-| `makeLink()`| `waypointUrl()` |
-| `serviceName` | Store service name in `common.yaml` locale dictionary, and use `t('common:serviceName')` in templates |
+| Deprecated           | Alternative                                                                                           |
+| -------------------- | ----------------------------------------------------------------------------------------------------- |
+| `mergeObjectsDeep()` | `mergeObjects()`                                                                                      |
+| `makeLink()`         | `waypointUrl()`                                                                                       |
+| `serviceName`        | Store service name in `common.yaml` locale dictionary, and use `t('common:serviceName')` in templates |
 
 The behaviour of the following nunjucks functions have changed:
 
-| Function | Old usage | New usage |
-|----------|-----------|-----------|
+| Function           | Old usage                        | New usage                      |
+| ------------------ | -------------------------------- | ------------------------------ |
 | `formatDateObject` | `{{ date \| formatDateObject }}` | `{{ formatDateObject(date) }}` |
 
 ### I18n changes
@@ -513,7 +525,7 @@ class MyValidator extends ValidatorFactory {
   validate(value, dataContext = {}) {
     if (failedValidation) {
       return [
-        ValidationError.make({ errorMsg: 'Failed message here', dataContext }),
+        ValidationError.make({ errorMsg: "Failed message here", dataContext }),
       ];
     } else {
       return [];
@@ -530,14 +542,10 @@ When adding any of the built-in validators, you must now always call their `.mak
 
 ```javascript
 // old
-SimpleField([
-  r.required,
-]);
+SimpleField([r.required]);
 
 // new
-field('fieldName').validators([
-  r.required.make(),
-]);
+field("fieldName").validators([r.required.make()]);
 ```
 
 ### Conditional and undefined fields are removed from the request body
@@ -601,12 +609,12 @@ The first variant of this plugin is currently held in the `examples/barebones/pl
 
 The following have moved:
 
-| Old location | New location | Notes |
-|--------------|--------------|-------|
-| `req.inEditMode` | `req.casa.editMode` | The ability to edit is now always on (i.e. the `allowEdit` config option has been removed) |
-| `req.editOriginUrl` | `req.casa.editOrigin` | Edit origin |
-| `req.casa.journeyWaypointId` | `req.casa.waypoint` | The current waypoint being requested |
-| `req.casa.preGatherTraversalSnapshot` | `req.casa.archivedJourneyContext` | The JourneyContext as it was before being updated after a form POST |
+| Old location                          | New location                      | Notes                                                                                      |
+| ------------------------------------- | --------------------------------- | ------------------------------------------------------------------------------------------ |
+| `req.inEditMode`                      | `req.casa.editMode`               | The ability to edit is now always on (i.e. the `allowEdit` config option has been removed) |
+| `req.editOriginUrl`                   | `req.casa.editOrigin`             | Edit origin                                                                                |
+| `req.casa.journeyWaypointId`          | `req.casa.waypoint`               | The current waypoint being requested                                                       |
+| `req.casa.preGatherTraversalSnapshot` | `req.casa.archivedJourneyContext` | The JourneyContext as it was before being updated after a form POST                        |
 
 Note also that `req.casa.editOrigin` will _only_ contain a value if an `editorigin` parameter has been specified on the request URL. This behaviour differs from CASA v7, where `req.editOriginUrl` was always defined (by default to the current page).
 
@@ -620,9 +628,11 @@ Alternatively, you can check for error as shown below, and execute your logic on
 
 ```javascript
 hook = {
-  hook: 'postvalidate',
+  hook: "postvalidate",
   middleware: (req, res, next) => {
-    if (!req.casa.journeyContext.hasValidationErrorsForPage(req.casa.waypoint)) {
+    if (
+      !req.casa.journeyContext.hasValidationErrorsForPage(req.casa.waypoint)
+    ) {
       // Perform your old logic here
     } else {
       // Falling through the next middleware will render the errors as normal
@@ -684,7 +694,7 @@ In previous versions, any waypoint could be skippable. In version 8, you now hav
 ```javascript
 const plan = new Plan();
 
-plan.addSkippables('country');
+plan.addSkippables("country");
 ```
 
 ## Session data structure changed
@@ -735,11 +745,11 @@ These files have been removed:
 
 And the location of the CSS/JS assets have also been changed:
 
-| Previous location | New location |
-|-------------------|---------------|
-| `govuk/casa/css/casa.css` | `casa/assets/css/casa.css` |
-| `govuk/frontend/js/all.js` | `govuk/assets/js/all.js` |
-| `govuk/casa/js/casa.js` | _removed_ |
+| Previous location          | New location               |
+| -------------------------- | -------------------------- |
+| `govuk/casa/css/casa.css`  | `casa/assets/css/casa.css` |
+| `govuk/frontend/js/all.js` | `govuk/assets/js/all.js`   |
+| `govuk/casa/js/casa.js`    | _removed_                  |
 
 ### `govuk-frontend` updated
 

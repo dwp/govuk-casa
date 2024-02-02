@@ -1,11 +1,11 @@
 /* eslint-disable class-methods-use-this */
-import ValidatorFactory from '../ValidatorFactory.js';
-import ValidationError from '../ValidationError.js';
-import { stringifyInput } from '../utils.js';
+import ValidatorFactory from "../ValidatorFactory.js";
+import ValidationError from "../ValidationError.js";
+import { stringifyInput } from "../utils.js";
 
 /**
+ * @typedef {import("../../casa").ErrorMessageConfig} ErrorMessageConfig
  * @access private
- * @typedef {import('../../casa').ErrorMessageConfig} ErrorMessageConfig
  */
 
 /**
@@ -24,16 +24,16 @@ import { stringifyInput } from '../utils.js';
  * @augments ValidatorFactory
  */
 export default class Regex extends ValidatorFactory {
-  name = 'regex';
+  name = "regex";
 
-  validate(value = '', dataContext = {}) {
+  validate(value = "", dataContext = {}) {
     const invert = this.config.invert || false;
     const match = value.match(this.config.pattern || /.*/);
     const valid = invert ? !match : match;
 
     const errorMsg = this.config.errorMsg || {
-      inline: 'validation:rule.regex.inline',
-      summary: 'validation:rule.regex.summary',
+      inline: "validation:rule.regex.inline",
+      summary: "validation:rule.regex.summary",
     };
 
     return valid ? [] : [ValidationError.make({ errorMsg, dataContext })];

@@ -15,17 +15,12 @@
     "functions": [60, 80],
     "branches": [60, 80]
   },
-  "include": [
-    "src/**/*.js"
-  ],
+  "include": ["src/**/*.js"],
   "exclude": [
     "node_modules/**",
     "src/lib/**/index.js",
     "src/casa.js",
     "tests/**"
   ],
-  "reporter": [
-    "text",
-    "lcov"
-  ]
+  "reporter": ["text", "lcov"]
 }

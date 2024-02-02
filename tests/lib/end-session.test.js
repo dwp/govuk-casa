@@ -1,5 +1,5 @@
-import { expect } from 'chai';
-import endSession from '../../src/lib/end-session.js';
+import { expect } from "chai";
+import endSession from "../../src/lib/end-session.js";
 
 const makeRequestSession = (attrs = {}) => {
   const req = {
@@ -9,26 +9,26 @@ const makeRequestSession = (attrs = {}) => {
     },
   };
 
-  Object.defineProperty(req.session, 'save', {
+  Object.defineProperty(req.session, "save", {
     enumerable: false,
     configurable: true,
     value: (cb) => cb(),
   });
 
-  Object.defineProperty(req.session, 'regenerate', {
+  Object.defineProperty(req.session, "regenerate", {
     enumerable: false,
     configurable: true,
     value: (cb) => cb(),
   });
 
   return req;
-}
+};
 
-describe('endSession()', () => {
-  it('clears all data from the session, except the language and cookie data', (done) => {
+describe("endSession()", () => {
+  it("clears all data from the session, except the language and cookie data", (done) => {
     const req = makeRequestSession({
-      language: 'en',
-      attr1: 'test',
+      language: "en",
+      attr1: "test",
       attr2: true,
     });
 
@@ -36,7 +36,7 @@ describe('endSession()', () => {
       try {
         expect(req.session).to.deep.equal({
           cookie: true,
-          language: 'en',
+          language: "en",
           attr1: null,
           attr2: null,
         });
@@ -44,24 +44,24 @@ describe('endSession()', () => {
       } catch (err) {
         done(err);
       }
-    })
+    });
   });
 
-  it('passes regeneration error back to callback', (done) => {
+  it("passes regeneration error back to callback", (done) => {
     const req = makeRequestSession();
 
-    Object.defineProperty(req.session, 'regenerate', {
+    Object.defineProperty(req.session, "regenerate", {
       enumerable: false,
-      value: (cb) => cb(new Error('regen_error')),
+      value: (cb) => cb(new Error("regen_error")),
     });
 
     endSession(req, (err) => {
       try {
-        expect(err).to.have.property('message').that.equals('regen_error');
+        expect(err).to.have.property("message").that.equals("regen_error");
         done();
       } catch (ex) {
         done(ex);
       }
-    })
+    });
   });
 });

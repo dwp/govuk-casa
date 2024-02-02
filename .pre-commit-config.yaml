@@ -118,9 +118,9 @@ repos:
         entry: bash -c 'trufflehog git file://. --since-commit HEAD'
         language: system
         pass_filenames: false
-  # - repo: https://github.com/pre-commit/mirrors-prettier
-  #   rev: v3.1.0
-  #   hooks:
-  #     - id: prettier
-  #       additional_dependencies:
-  #         - prettier@3.2.4
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.1.0
+    hooks:
+      - id: prettier
+        additional_dependencies:
+          - prettier@3.2.4

@@ -1,31 +1,31 @@
 /* eslint-disable class-methods-use-this */
-import lodash from 'lodash';
+import lodash from "lodash";
 
 const { isPlainObject } = lodash; // CommonJS
 
 /**
+ * @typedef {import("../casa").ErrorMessageConfig} ErrorMessageConfig
  * @access private
- * @typedef {import('../casa').ErrorMessageConfig} ErrorMessageConfig
  */
 
 /**
+ * @typedef {import("./index").JourneyContext} JourneyContext
  * @access private
- * @typedef {import('./index').JourneyContext} JourneyContext
  */
 
 /**
+ * @typedef {import("./index").ValidationError} ValidationError
  * @access private
- * @typedef {import('./index').ValidationError} ValidationError
  */
 
 /**
+ * @typedef {import("../casa").ValidateContext} ValidateContext
  * @access private
- * @typedef {import('../casa').ValidateContext} ValidateContext
  */
 
 /**
+ * @typedef {import("../casa").Validator} Validator
  * @access private
- * @typedef {import('../casa').Validator} Validator
  */
 
 /**
@@ -34,28 +34,29 @@ const { isPlainObject } = lodash; // CommonJS
  */
 
 /**
- * @class
  * @memberof module:@dwp/govuk-casa
+ * @class
  */
 export default class ValidatorFactory {
   /**
    * This is a convenience method that will return a consistently object
    * structure containing validation and sanitisation methods.
    *
-   * @param {ValidatorFactoryOptions} config Validator config (custom to each validator)
+   * @param {ValidatorFactoryOptions} config Validator config (custom to each
+   *   validator)
    * @returns {Validator} Validator object
    * @throws {TypeError} When configuration is invalid.
    */
   static make(config = {}) {
     if (!isPlainObject(config)) {
-      throw new TypeError('Configuration must be an object');
+      throw new TypeError("Configuration must be an object");
     }
 
     const validator = Reflect.construct(this, [config]);
 
     /* eslint-disable-next-line sonarjs/prefer-object-literal */
     const instance = {};
-    instance.name = validator.name || 'unknown';
+    instance.name = validator.name || "unknown";
     instance.config = config;
     instance.validate = validator.validate.bind(instance);
     instance.sanitise = validator.sanitise.bind(instance);
@@ -68,11 +69,14 @@ export default class ValidatorFactory {
   /**
    * NEVER CALL THIS DIRECTLY. USE `make()`.
    *
-   * @param {ValidatorFactoryOptions} config Validator config (custom to each validator)
+   * @param {ValidatorFactoryOptions} config Validator config (custom to each
+   *   validator)
    */
   constructor(config = {}) {
     if (new.target === ValidatorFactory) {
-      throw new TypeError('Cannot instantiate the abstract class, ValidatorFactory');
+      throw new TypeError(
+        "Cannot instantiate the abstract class, ValidatorFactory",
+      );
     }
     this.config = config;
   }
@@ -89,7 +93,7 @@ export default class ValidatorFactory {
    * @throws {Error}
    */
   validate(fieldValue, context) {
-    throw new Error('validate() method has not been implemented');
+    throw new Error("validate() method has not been implemented");
   }
 
   /* eslint-disable-next-line jsdoc/require-returns-check */

@@ -9,9 +9,7 @@
       "type": "pwa-node",
       "request": "launch",
       "name": "Debug testsuite",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
+      "skipFiles": ["<node_internals>/**"],
       "program": "test",
       "outputCapture": "std",
       "runtimeArgs": ["--preserve-symlinks"],
@@ -23,9 +21,7 @@
       "type": "pwa-node",
       "request": "launch",
       "name": "Example: fully-loaded",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
+      "skipFiles": ["<node_internals>/**"],
       "program": "server.js",
       "cwd": "${workspaceFolder}/examples/fully-loaded/",
       "env": {
@@ -33,7 +29,9 @@
       },
       "outputCapture": "std",
       "sourceMaps": true,
-      "outFiles": ["${workspaceFolder}/node_modules/@dwp/govuk-casa/dist/**/*.js"],
+      "outFiles": [
+        "${workspaceFolder}/node_modules/@dwp/govuk-casa/dist/**/*.js"
+      ],
       "runtimeArgs": ["--preserve-symlinks"]
     }
   ]

@@ -28,18 +28,20 @@ First, setup some route handlers for displaying and processing the form:
 
 // Handle the GET route by just displaying the form
 export function get(req, res, next) {
-  res.render('feedback-form.njk');
+  res.render("feedback-form.njk");
 }
 
 // Handle the POST route by sending data to a backend API, or showing errors
 // Note that Express doesn't support async handlers, so we have to handle the
 // promise wholly within this function
 export function post(req, res, next) {
-  sendToApi(req.body).then((res) => {
-    res.render('feedback-form.njk', { displayThanks: true });
-  }).catch((err) => {
-    res.render('feedback.form.njk', { error: err.message });
-  });
+  sendToApi(req.body)
+    .then((res) => {
+      res.render("feedback-form.njk", { displayThanks: true });
+    })
+    .catch((err) => {
+      res.render("feedback.form.njk", { error: err.message });
+    });
 }
 ```
 

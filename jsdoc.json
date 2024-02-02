@@ -1,18 +1,14 @@
 {
   "plugins": [
-      "node_modules/@ckeditor/jsdoc-plugins/lib/export-fixer/export-fixer/",
-      "node_modules/@ckeditor/jsdoc-plugins/lib/relation-fixer/",
-      "node_modules/jsdoc-tsimport-plugin/",
-      "plugins/markdown"
+    "node_modules/@ckeditor/jsdoc-plugins/lib/export-fixer/export-fixer/",
+    "node_modules/@ckeditor/jsdoc-plugins/lib/relation-fixer/",
+    "node_modules/jsdoc-tsimport-plugin/",
+    "plugins/markdown"
   ],
   "docdash": {
     "static": true,
     "sort": true,
-    "sectionOrder": [
-      "Modules",
-      "Namespaces",
-      "Classes"
-    ],
+    "sectionOrder": ["Modules", "Namespaces", "Classes"],
     "meta": {
       "title": "CASA API Documentation"
     },

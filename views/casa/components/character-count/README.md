@@ -4,7 +4,7 @@ Extends the [`govukCharacterCount()`](https://design-system.service.gov.uk/compo
 
 Custom parameters:
 
-* `casaErrors` - form errors (just pass `formErrors`)
+- `casaErrors` - form errors (just pass `formErrors`)
 
 ## Example usage
 
@@ -24,7 +24,7 @@ casaGovukCharacterCount({
 
 The following attributes will be attached to the error `<p>` tag if `casaWithAnalytics` is `true`:
 
-* `data-ga-question`: Holds the fieldset label's text content
+- `data-ga-question`: Holds the fieldset label's text content
 
 These are the conventions used by DWP.
 

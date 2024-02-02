@@ -8,7 +8,7 @@ Use the `logger` utility to create a log function that is scoped to a specific f
 
 ```javascript
 // This is in the file `src/lib/widget.js'
-import logger from './logger.js';
+import logger from "./logger.js";
 
-const log = logger('lib:widget');
+const log = logger("lib:widget");
 ```

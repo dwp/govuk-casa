@@ -1,36 +1,36 @@
-import lodash from 'lodash';
-import { isEmpty } from './utils.js';
+import lodash from "lodash";
+import { isEmpty } from "./utils.js";
 
 const { isFunction } = lodash;
 
 /**
+ * @typedef {import("./index").JourneyContext} JourneyContext
  * @access private
- * @typedef {import('./index').JourneyContext} JourneyContext
  */
 
 /**
+ * @typedef {import("../casa").Validator} Validator
  * @access private
- * @typedef {import('../casa').Validator} Validator
  */
 
 /**
+ * @typedef {import("../casa").ValidateContext} ValidateContext
  * @access private
- * @typedef {import('../casa').ValidateContext} ValidateContext
  */
 
 /**
+ * @typedef {import("../casa").ValidatorConditionFunction} ValidatorConditionFunction
  * @access private
- * @typedef {import('../casa').ValidatorConditionFunction} ValidatorConditionFunction
  */
 
 /**
+ * @typedef {import("../casa").FieldProcessorFunction} FieldProcessorFunction
  * @access private
- * @typedef {import('../casa').FieldProcessorFunction} FieldProcessorFunction
  */
 
 /**
+ * @typedef {import("./index").ValidationError} ValidationError
  * @access private
- * @typedef {import('./index').ValidationError} ValidationError
  */
 
 // Quick check to see if the field name corresponds to a non-primitive complex
@@ -46,29 +46,19 @@ const reInvalidName = /[^a-z0-9_.\-[\]]/i;
  * @class
  */
 export class PageField {
-  /**
-   * @type {string}
-   */
+  /** @type {string} */
   #name;
 
-  /**
-   * @type {FieldProcessorFunction[]}
-   */
+  /** @type {FieldProcessorFunction[]} */
   #processors;
 
-  /**
-   * @type {Validator[]}
-   */
+  /** @type {Validator[]} */
   #validators;
 
-  /**
-   * @type {ValidatorConditionFunction[]}
-   */
+  /** @type {ValidatorConditionFunction[]} */
   #conditions;
 
-  /**
-   * @type {object}
-   */
+  /** @type {object} */
   #meta;
 
   /**
@@ -76,12 +66,19 @@ export class PageField {
    *
    * @param {string} name Field name
    * @param {object} [opts] Options
-   * @param {boolean} [opts.optional=false] Whether this field is optional
-   * @param {boolean} [opts.persist=true] Whether this field will persist in `req.body`
+   * @param {boolean} [opts.optional=false] Whether this field is optional.
+   *   Default is `false`
+   * @param {boolean} [opts.persist=true] Whether this field will persist in
+   *   `req.body`. Default is `true`
    */
-  constructor(name, { optional = false, persist = true } = Object.create(null)) {
+  constructor(
+    name,
+    { optional = false, persist = true } = Object.create(null),
+  ) {
     if (!name) {
-      throw new SyntaxError('A name for this field is required, i.e. "field(\'myField\')".');
+      throw new SyntaxError(
+        "A name for this field is required, i.e. \"field('myField')\".",
+      );
     }
 
     this.#name = undefined;
@@ -137,7 +134,9 @@ export class PageField {
    */
   getValue(obj = Object.create(null)) {
     if (this.#meta.complex) {
-      return obj[this.#meta.complexFieldName]?.[this.#meta.complexFieldProperty];
+      return obj[this.#meta.complexFieldName]?.[
+        this.#meta.complexFieldProperty
+      ];
     }
     return obj[this.#name];
   }
@@ -186,7 +185,9 @@ export class PageField {
    */
   rename(name) {
     if (reInvalidName.test(String(name))) {
-      throw new SyntaxError(`Field '${String(name)}' name contains invalid characters.`);
+      throw new SyntaxError(
+        `Field '${String(name)}' name contains invalid characters.`,
+      );
     }
 
     // Complex names are only supported to one level deep. For example,
@@ -194,7 +195,9 @@ export class PageField {
     // early to aid developer.
     const isComplex = reComplexType.test(name);
     if (isComplex && name.match(/\[/g).length > 1) {
-      throw new SyntaxError('Complex field names are only supported to 1 property depth. E.g. a[b] is ok, a[b][c] is not');
+      throw new SyntaxError(
+        "Complex field names are only supported to 1 property depth. E.g. a[b] is ok, a[b][c] is not",
+      );
     }
 
     this.#name = String(name);
@@ -219,18 +222,19 @@ export class PageField {
   }
 
   /**
-   * Add value validators
-   * Some validators will include a `sanitise()` method which will be run at the
-   * same time as other "processors".
+   * Add value validators Some validators will include a `sanitise()` method
+   * which will be run at the same time as other "processors".
    *
    * @param {Validator[]} items Validation functions
    * @returns {PageField} Chain
    */
   validators(items = []) {
     if (!items.length) {
-      throw new Error('Calling validators() to get all validators is no longer supported, please use getValidators()');
+      throw new Error(
+        "Calling validators() to get all validators is no longer supported, please use getValidators()",
+      );
     }
-    this.#validators = [...this.#validators, ...(items.flat())];
+    this.#validators = [...this.#validators, ...items.flat()];
     return this;
   }
 
@@ -244,18 +248,20 @@ export class PageField {
   }
 
   /**
-   * Add value pre-processors
-   * This is most often used to sanitise values to a particular data type.
+   * Add value pre-processors This is most often used to sanitise values to a
+   * particular data type.
    *
    * @param {FieldProcessorFunction[]} items Processor functions
    * @returns {PageField} Chain
    */
   processors(items = []) {
     if (!items.length) {
-      throw new Error('Calling processors() to get all processors is no longer supported, please use getProcessors()');
+      throw new Error(
+        "Calling processors() to get all processors is no longer supported, please use getProcessors()",
+      );
     }
 
-    this.#processors = [...this.#processors, ...(items.flat())];
+    this.#processors = [...this.#processors, ...items.flat()];
     return this;
   }
 
@@ -269,18 +275,19 @@ export class PageField {
   }
 
   /**
-   * Add conditions
-   * All conditions must be met in order for this field to be considered
-   * "actionable".
+   * Add conditions All conditions must be met in order for this field to be
+   * considered "actionable".
    *
    * @param {ValidatorConditionFunction[]} items Condition functions
    * @returns {PageField} Chain
    */
   conditions(items = []) {
     if (!items.length) {
-      throw new Error('Calling conditions() to get all conditions is no longer supported, please use getConditions()');
+      throw new Error(
+        "Calling conditions() to get all conditions is no longer supported, please use getConditions()",
+      );
     }
-    this.#conditions = [...this.#conditions, ...(items.flat())];
+    this.#conditions = [...this.#conditions, ...items.flat()];
     return this;
   }
 
@@ -309,22 +316,26 @@ export class PageField {
       // ESLint disabled as `i` is an integer
       /* eslint-disable security/detect-object-injection */
       // TODO: Replace `value` with `context.fieldValue` here
-      let fieldErrors = this.#validators[i].validate(context.fieldValue, context)
+      let fieldErrors = this.#validators[i].validate(
+        context.fieldValue,
+        context,
+      );
       if (!Array.isArray(fieldErrors)) {
         // Friendly message for developer
-        throw new TypeError(`The validator at index ${i} (name: ${this.#validators[i].name || 'unknown'}) for field '${this.#name}' did not return an array`);
+        throw new TypeError(
+          `The validator at index ${i} (name: ${this.#validators[i].name || "unknown"}) for field '${this.#name}' did not return an array`,
+        );
       }
 
-      fieldErrors = fieldErrors.map((e) => e.withContext({
-        ...context,
-        validator: this.#validators[i].name,
-      }));
+      fieldErrors = fieldErrors.map((e) =>
+        e.withContext({
+          ...context,
+          validator: this.#validators[i].name,
+        }),
+      );
       /* eslint-enable security/detect-object-injection */
 
-      errors = [
-        ...errors,
-        ...(fieldErrors ?? []),
-      ];
+      errors = [...errors, ...(fieldErrors ?? [])];
     }
 
     return errors;
@@ -430,8 +441,10 @@ export class PageField {
  * @memberof module:@dwp/govuk-casa
  * @param {string} name Field name
  * @param {object} [opts] Options
- * @param {boolean} [opts.optional=false] Whether this field is optional
- * @param {boolean} [opts.persist=true] Whether this field will persist in `req.body`
+ * @param {boolean} [opts.optional=false] Whether this field is optional.
+ *   Default is `false`
+ * @param {boolean} [opts.persist=true] Whether this field will persist in
+ *   `req.body`. Default is `true`
  * @returns {PageField} A PageField
  */
 export default function field(name, opts) {

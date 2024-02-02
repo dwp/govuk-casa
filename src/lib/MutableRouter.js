@@ -1,23 +1,15 @@
 /* eslint-disable sonarjs/no-duplicate-string,class-methods-use-this */
-import { Router } from 'express';
+import { Router } from "express";
 
-/**
- * @memberof module:@dwp/govuk-casa
- */
+/** @memberof module:@dwp/govuk-casa */
 export default class MutableRouter {
-  /**
-   * @type {Array}
-   */
+  /** @type {Array} */
   #stack;
 
-  /**
-   * @type {Router}
-   */
+  /** @type {Router} */
   #router;
 
-  /**
-   * @type {boolean}
-   */
+  /** @type {boolean} */
   #sealed;
 
   /**
@@ -35,7 +27,7 @@ export default class MutableRouter {
 
   #append(method, path, ...callbacks) {
     if (this.#sealed) {
-      throw new Error('Cannot alter middleware in a sealed mutable router');
+      throw new Error("Cannot alter middleware in a sealed mutable router");
     }
 
     this.#stack.push({
@@ -47,7 +39,7 @@ export default class MutableRouter {
 
   #prepend(method, path, ...callbacks) {
     if (this.#sealed) {
-      throw new Error('Cannot alter middleware in a sealed mutable router');
+      throw new Error("Cannot alter middleware in a sealed mutable router");
     }
 
     this.#stack.splice(0, 0, {
@@ -61,10 +53,11 @@ export default class MutableRouter {
   // given path
   #replace(method, path, ...callbacks) {
     if (this.#sealed) {
-      throw new Error('Cannot alter middleware in a sealed mutable router');
+      throw new Error("Cannot alter middleware in a sealed mutable router");
     }
 
-    const finder = (command) => `${command.method}|${command.path}` === `${method}|${path}`;
+    const finder = (command) =>
+      `${command.method}|${command.path}` === `${method}|${path}`;
     const index = this.#stack.findIndex(finder);
 
     if (index > -1) {
@@ -74,7 +67,9 @@ export default class MutableRouter {
         args: [path, ...callbacks],
       });
 
-      this.#stack = this.#stack.filter((command, idx) => idx <= index || !finder(command))
+      this.#stack = this.#stack.filter(
+        (command, idx) => idx <= index || !finder(command),
+      );
     }
   }
 
@@ -105,67 +100,67 @@ export default class MutableRouter {
   /**
    * Prepend middleware function(s) using the `all()` method.
    *
-   * @param {string | Function} path route path or middleware function
-   * @param  {...Function} callbacks Additional middleware functions
+   * @param {string | Function} path Route path or middleware function
+   * @param {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   prependAll(path, ...callbacks) {
-    this.#prepend('all', path, ...callbacks);
+    this.#prepend("all", path, ...callbacks);
   }
 
   /**
    * Prepend middleware function(s) using the `get()` method.
    *
-   * @param {string | Function} path route path or middleware function
-   * @param  {...Function} callbacks Additional middleware functions
+   * @param {string | Function} path Route path or middleware function
+   * @param {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   prependGet(path, ...callbacks) {
-    this.#prepend('get', path, ...callbacks);
+    this.#prepend("get", path, ...callbacks);
   }
 
   /**
    * Prepend middleware function(s) using the `post()` method.
    *
-   * @param {string | Function} path route path or middleware function
-   * @param  {...Function} callbacks Additional middleware functions
+   * @param {string | Function} path Route path or middleware function
+   * @param {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   prependPost(path, ...callbacks) {
-    this.#prepend('post', path, ...callbacks);
+    this.#prepend("post", path, ...callbacks);
   }
 
   /**
    * Prepend middleware function(s) using the `delete()` method.
    *
-   * @param {string | Function} path route path or middleware function
-   * @param  {...Function} callbacks Additional middleware functions
+   * @param {string | Function} path Route path or middleware function
+   * @param {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   prependDelete(path, ...callbacks) {
-    this.#prepend('delete', path, ...callbacks);
+    this.#prepend("delete", path, ...callbacks);
   }
 
   /**
    * Prepend middleware function(s) using the `put()` method.
    *
-   * @param {string | Function} path route path or middleware function
-   * @param  {...Function} callbacks Additional middleware functions
+   * @param {string | Function} path Route path or middleware function
+   * @param {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   prependPut(path, ...callbacks) {
-    this.#prepend('put', path, ...callbacks);
+    this.#prepend("put", path, ...callbacks);
   }
 
   /**
    * Prepend middleware function(s) using the `use()` method.
    *
-   * @param {string | Function} path route path or middleware function
-   * @param  {...Function} callbacks Additional middleware functions
+   * @param {string | Function} path Route path or middleware function
+   * @param {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   prependUse(path, ...callbacks) {
-    this.#prepend('use', path, ...callbacks);
+    this.#prepend("use", path, ...callbacks);
   }
 
   /* -------------------------------------------------------------- replacers */
@@ -173,67 +168,68 @@ export default class MutableRouter {
   /**
    * Replace middleware function(s) that were mounted using the `all()` method.
    *
-   * @param {string | Function} path route path or middleware function
-   * @param  {...Function} callbacks Additional middleware functions
+   * @param {string | Function} path Route path or middleware function
+   * @param {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   replaceAll(path, ...callbacks) {
-    this.#replace('all', path, ...callbacks);
+    this.#replace("all", path, ...callbacks);
   }
 
   /**
    * Replace middleware function(s) that were mounted using the `get()` method.
    *
-   * @param {string | Function} path route path or middleware function
-   * @param  {...Function} callbacks Additional middleware functions
+   * @param {string | Function} path Route path or middleware function
+   * @param {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   replaceGet(path, ...callbacks) {
-    this.#replace('get', path, ...callbacks);
+    this.#replace("get", path, ...callbacks);
   }
 
   /**
    * Replace middleware function(s) that were mounted using the `post()` method.
    *
-   * @param {string | Function} path route path or middleware function
-   * @param  {...Function} callbacks Additional middleware functions
+   * @param {string | Function} path Route path or middleware function
+   * @param {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   replacePost(path, ...callbacks) {
-    this.#replace('post', path, ...callbacks);
+    this.#replace("post", path, ...callbacks);
   }
 
   /**
-   * Replace middleware function(s) that were mounted using the `delete()` method.
+   * Replace middleware function(s) that were mounted using the `delete()`
+   * method.
    *
-   * @param {string | Function} path route path or middleware function
-   * @param  {...Function} callbacks Additional middleware functions
+   * @param {string | Function} path Route path or middleware function
+   * @param {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   replaceDelete(path, ...callbacks) {
-    this.#replace('delete', path, ...callbacks);
+    this.#replace("delete", path, ...callbacks);
   }
 
   /**
    * Replace middleware function(s) that were mounted using the `put()` method.
    *
-   * @param {string | Function} path route path or middleware function
-   * @param  {...Function} callbacks Additional middleware functions
+   * @param {string | Function} path Route path or middleware function
+   * @param {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   replacePut(path, ...callbacks) {
-    this.#replace('put', path, ...callbacks);
+    this.#replace("put", path, ...callbacks);
   }
 
   /**
    * Replace middleware function(s) that were mounted using the `use()` method.
    *
-   * @param {string | Function} path route path or middleware function
-   * @param  {...Function} callbacks Additional middleware functions
+   * @param {string | Function} path Route path or middleware function
+   * @param {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   replaceUse(path, ...callbacks) {
-    this.#replace('use', path, ...callbacks);
+    this.#replace("use", path, ...callbacks);
   }
 
   /* ---------------------------------------------- express.Router() wrappers */
@@ -241,70 +237,72 @@ export default class MutableRouter {
   /**
    * Append middleware function(s) using the `all()` method.
    *
-   * @param {string | Function} path route path or middleware function
-   * @param  {...Function} callbacks Additional middleware functions
+   * @param {string | Function} path Route path or middleware function
+   * @param {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   all(path, ...callbacks) {
-    this.#append('all', path, ...callbacks);
+    this.#append("all", path, ...callbacks);
   }
 
   /**
    * Append middleware function(s) using the `get()` method.
    *
-   * @param {string | Function} path route path or middleware function
-   * @param  {...Function} callbacks Additional middleware functions
+   * @param {string | Function} path Route path or middleware function
+   * @param {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   get(path, ...callbacks) {
-    this.#append('get', path, ...callbacks);
+    this.#append("get", path, ...callbacks);
   }
 
   /**
    * Append middleware function(s) using the `post()` method.
    *
-   * @param {string | Function} path route path or middleware function
-   * @param  {...Function} callbacks Additional middleware functions
+   * @param {string | Function} path Route path or middleware function
+   * @param {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   post(path, ...callbacks) {
-    this.#append('post', path, ...callbacks);
+    this.#append("post", path, ...callbacks);
   }
 
   /**
    * Append middleware function(s) using the `delete()` method.
    *
-   * @param {string | Function} path route path or middleware function
-   * @param  {...Function} callbacks Additional middleware functions
+   * @param {string | Function} path Route path or middleware function
+   * @param {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   delete(path, ...callbacks) {
-    this.#append('delete', path, ...callbacks);
+    this.#append("delete", path, ...callbacks);
   }
 
   /**
    * Append middleware function(s) using the `put()` method.
    *
-   * @param {string | Function} path route path or middleware function
-   * @param  {...Function} callbacks Additional middleware functions
+   * @param {string | Function} path Route path or middleware function
+   * @param {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   put(path, ...callbacks) {
-    this.#append('put', path, ...callbacks);
+    this.#append("put", path, ...callbacks);
   }
 
   /**
    * Append middleware function(s) using the `use()` method.
    *
-   * @param {string | Function} path route path or middleware function
-   * @param  {...Function} callbacks Additional middleware functions
+   * @param {string | Function} path Route path or middleware function
+   * @param {...Function} callbacks Additional middleware functions
    * @returns {void}
    */
   use(path, ...callbacks) {
-    this.#append('use', path, ...callbacks);
+    this.#append("use", path, ...callbacks);
   }
 
   route() {
-    throw new Error('route() method is not supported on MutableRouter. Use verb methods for now.');
+    throw new Error(
+      "route() method is not supported on MutableRouter. Use verb methods for now.",
+    );
   }
 }

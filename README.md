@@ -4,12 +4,12 @@ A framework for building forms based on the [GOV.UK Design System](https://desig
 
 ## Features
 
-* Adopts the [GOVUK Design System](https://design-system.service.gov.uk/) which provides well-researched, accessible markup out of the box
-* Handles complex journey routing so you can easily tailor users' journeys to provide the best experience
-* Multi-language support
-* A small core, but highly extensible through hook and plugin mechanisms
-* Built on ExpressJS so offers a shallow learning curve
-* Distributable supports both ES6 and CommonJS codebases
+- Adopts the [GOVUK Design System](https://design-system.service.gov.uk/) which provides well-researched, accessible markup out of the box
+- Handles complex journey routing so you can easily tailor users' journeys to provide the best experience
+- Multi-language support
+- A small core, but highly extensible through hook and plugin mechanisms
+- Built on ExpressJS so offers a shallow learning curve
+- Distributable supports both ES6 and CommonJS codebases
 
 ## Getting started
 
@@ -17,9 +17,9 @@ A framework for building forms based on the [GOV.UK Design System](https://desig
 npm -E @dwp/govuk-casa
 ```
 
-* [Documentation](docs/index.md)
-* [API Reference](docs/api-reference.md)
-* [Examples](examples/)
+- [Documentation](docs/index.md)
+- [API Reference](docs/api-reference.md)
+- [Examples](examples/)
 
 ## Migrating between versions
 

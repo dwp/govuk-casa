@@ -61,7 +61,7 @@ errors:
   live-with-partner:
     - yes: click()
       messages:
-      - en: Enter your partner’s date of birth.
+        - en: Enter your partner’s date of birth.
 
 templateVars:
   check-your-answers:

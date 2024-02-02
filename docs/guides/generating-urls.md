@@ -5,13 +5,13 @@ Whenever you want to generate a URL that points to a waypoint within your Plan, 
 You can use this in your middleware:
 
 ```javascript
-import { waypointUrl } from '@dwp/govuk-casa';
+import { waypointUrl } from "@dwp/govuk-casa";
 
 middleware = (req, res, next) => {
   // Generate a URL pointing to the `personal-details` waypoint
   res.locals.url = waypointUrl({
     mountUrl: req.baseUrl,
-    waypoint: 'personal-details',
+    waypoint: "personal-details",
   });
 
   next();

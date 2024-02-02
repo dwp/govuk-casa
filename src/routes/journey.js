@@ -1,31 +1,31 @@
 /* eslint-disable object-curly-newline,max-len */
-import MutableRouter from '../lib/MutableRouter.js';
-import skipWaypointMiddlewareFactory from '../middleware/skip-waypoint.js';
-import steerJourneyMiddlewareFactory from '../middleware/steer-journey.js';
-import sanitiseFieldsMiddlewareFactory from '../middleware/sanitise-fields.js';
-import gatherFieldsMiddlewareFactory from '../middleware/gather-fields.js';
-import validateFieldsMiddlewareFactory from '../middleware/validate-fields.js';
-import progressJourneyMiddlewareFactory from '../middleware/progress-journey.js';
-import waypointUrl from '../lib/waypoint-url.js';
-import logger from '../lib/logger.js';
-import { resolveMiddlewareHooks } from '../lib/utils.js';
-import { CONFIG_ERROR_VISIBILITY_ALWAYS } from '../lib/constants.js';
+import MutableRouter from "../lib/MutableRouter.js";
+import skipWaypointMiddlewareFactory from "../middleware/skip-waypoint.js";
+import steerJourneyMiddlewareFactory from "../middleware/steer-journey.js";
+import sanitiseFieldsMiddlewareFactory from "../middleware/sanitise-fields.js";
+import gatherFieldsMiddlewareFactory from "../middleware/gather-fields.js";
+import validateFieldsMiddlewareFactory from "../middleware/validate-fields.js";
+import progressJourneyMiddlewareFactory from "../middleware/progress-journey.js";
+import waypointUrl from "../lib/waypoint-url.js";
+import logger from "../lib/logger.js";
+import { resolveMiddlewareHooks } from "../lib/utils.js";
+import { CONFIG_ERROR_VISIBILITY_ALWAYS } from "../lib/constants.js";
 
-const log = logger('routes:journey');
+const log = logger("routes:journey");
 
 /**
+ * @param {import("../casa.js").GlobalHook} GlobalHook
  * @access private
- * @param {import('../casa.js').GlobalHook} GlobalHook
  */
 
 /**
+ * @param {import("../casa.js").Page} Page
  * @access private
- * @param {import('../casa.js').Page} Page
  */
 
 /**
+ * @param {import("../casa.js").Plan} Plan
  * @access private
- * @param {import('../casa.js').Plan} Plan
  */
 
 /**
@@ -38,49 +38,58 @@ const log = logger('routes:journey');
 
 const renderMiddlewareFactory = (view, contextFactory) => [
   (req, res, next) => {
-    res.render(view, {
-      // Common template variables for both GET and POST requests
-      inEditMode: req.casa.editMode,
-      editOriginUrl: req.casa.editOrigin,
-      activeContextId: req.casa.journeyContext.identity.id,
-      ...contextFactory(req),
-    }, (err, templateString) => {
-      if (err) {
-        next(err);
-      } else {
-        res.send(templateString);
-      }
-    });
+    res.render(
+      view,
+      {
+        // Common template variables for both GET and POST requests
+        inEditMode: req.casa.editMode,
+        editOriginUrl: req.casa.editOrigin,
+        activeContextId: req.casa.journeyContext.identity.id,
+        ...contextFactory(req),
+      },
+      (err, templateString) => {
+        if (err) {
+          next(err);
+        } else {
+          res.send(templateString);
+        }
+      },
+    );
   },
 ];
 
 /**
- * generate page validation error
+ * Generate page validation error
  *
- * @param {object} errors object of page validation error
- * @param {object} req casa request object
- * @returns {object[]} array of error objects
+ * @param {object} errors Object of page validation error
+ * @param {object} req Casa request object
+ * @returns {object[]} Array of error objects
  */
-const generateGovukErrors = (errors, req) => Object.values(errors || {}).map(([error]) => ({
-  text: req.t(error.summary, error.variables),
-  href: error.fieldHref,
-}))
+const generateGovukErrors = (errors, req) =>
+  Object.values(errors || {}).map(([error]) => ({
+    text: req.t(error.summary, error.variables),
+    href: error.fieldHref,
+  }));
 /**
- * handle errorVisibility flag and function and return boolean
+ * Handle errorVisibility flag and function and return boolean
  *
- * @param {symbol | Function} errorVisibility errorVisibility config option
- * @param {object} req casa request object
- * @returns {boolean} true if errorVisibility is "always" or function condition true
+ * @param {object} req Casa request object
+ * @param {symbol | Function} errorVisibility ErrorVisibility config option
+ * @returns {boolean} True if errorVisibility is "always" or function condition
+ *   true
  */
-const resolveErrorVisibility = (req, errorVisibility) => (typeof errorVisibility === 'function' ? errorVisibility({ req }) : errorVisibility === CONFIG_ERROR_VISIBILITY_ALWAYS)
+const resolveErrorVisibility = (req, errorVisibility) =>
+  typeof errorVisibility === "function"
+    ? errorVisibility({ req })
+    : errorVisibility === CONFIG_ERROR_VISIBILITY_ALWAYS;
 
 /**
  * Create an instance of the router for all waypoints visited during a Journey
  * through the Plan.
  *
- * @access private
  * @param {JourneyRouterOptions} opts Options
  * @returns {MutableRouter} Router
+ * @access private
  */
 export default function journeyRouter({
   globalHooks,
@@ -94,7 +103,7 @@ export default function journeyRouter({
 
   // Special "_" route which handles redirecting the user between sub-apps
   // /app1/_/?refmount=app2&route=prev
-  router.all('/_', (req, res) => {
+  router.all("/_", (req, res) => {
     const mountUrl = `${req.baseUrl}/`;
     const refmount = req.query?.refmount;
     const route = req.query?.route;
@@ -104,7 +113,7 @@ export default function journeyRouter({
     const fallback = waypointUrl({
       mountUrl,
       waypoint: plan.traverse(req.casa.journeyContext, {
-        stopCondition: () => (true), // we only need one; stop at the first
+        stopCondition: () => true, // we only need one; stop at the first
       })[0],
     });
 
@@ -113,37 +122,49 @@ export default function journeyRouter({
     // the user to our Plan and we don't intend to link back.
     if (!plan.getWaypoints().includes(refmount)) {
       redirectTo = fallback;
-    } else if (route === 'prev') {
-      const routes = plan.traversePrevRoutes(req.casa.journeyContext, { startWaypoint: refmount });
-      redirectTo = routes.length ? waypointUrl({ mountUrl, waypoint: routes[0].target }) : fallback;
+    } else if (route === "prev") {
+      const routes = plan.traversePrevRoutes(req.casa.journeyContext, {
+        startWaypoint: refmount,
+      });
+      redirectTo = routes.length
+        ? waypointUrl({ mountUrl, waypoint: routes[0].target })
+        : fallback;
     } else {
-      const routes = plan.traverseNextRoutes(req.casa.journeyContext, { startWaypoint: refmount });
+      const routes = plan.traverseNextRoutes(req.casa.journeyContext, {
+        startWaypoint: refmount,
+      });
       if (routes[0].target !== null) {
-        redirectTo = routes.length ? waypointUrl({ mountUrl, waypoint: routes[0].target }) : fallback;
+        redirectTo = routes.length
+          ? waypointUrl({ mountUrl, waypoint: routes[0].target })
+          : fallback;
       } else {
         redirectTo = fallback;
       }
     }
 
     // Carry over any params
-    const url = new URL(redirectTo, 'https://placeholder.test/');
+    const url = new URL(redirectTo, "https://placeholder.test/");
     const searchParams = new URLSearchParams(req.query);
-    searchParams.delete('refmount');
-    searchParams.delete('route');
+    searchParams.delete("refmount");
+    searchParams.delete("route");
     url.search = searchParams.toString();
-    redirectTo = `${url.pathname.replace(/\/+/g, '/')}${url.search}`;
+    redirectTo = `${url.pathname.replace(/\/+/g, "/")}${url.search}`;
 
     log.trace(`Redirect to ${redirectTo}`);
     return res.redirect(redirectTo);
   });
 
   // Create GET / POST routes for each page
-  const commonMiddleware = [
-    ...csrfMiddleware,
-  ];
+  const commonMiddleware = [...csrfMiddleware];
 
   pages.forEach((page) => {
-    const { waypoint, view, hooks: pageHooks = [], fields, errorVisibility } = page;
+    const {
+      waypoint,
+      view,
+      hooks: pageHooks = [],
+      fields,
+      errorVisibility,
+    } = page;
     const waypointPath = `/${waypoint}`;
 
     let commonWaypointMiddleware = [
@@ -167,22 +188,40 @@ export default function journeyRouter({
       ...commonMiddleware,
       ...commonWaypointMiddleware,
 
-      ...resolveMiddlewareHooks('journey.presteer', waypointPath, [...globalHooks, ...pageHooks]),
+      ...resolveMiddlewareHooks("journey.presteer", waypointPath, [
+        ...globalHooks,
+        ...pageHooks,
+      ]),
       ...steerJourneyMiddlewareFactory({ waypoint, plan }),
-      ...resolveMiddlewareHooks('journey.poststeer', waypointPath, [...globalHooks, ...pageHooks]),
+      ...resolveMiddlewareHooks("journey.poststeer", waypointPath, [
+        ...globalHooks,
+        ...pageHooks,
+      ]),
 
-      ...resolveMiddlewareHooks('journey.prerender', waypointPath, [...globalHooks, ...pageHooks]),
+      ...resolveMiddlewareHooks("journey.prerender", waypointPath, [
+        ...globalHooks,
+        ...pageHooks,
+      ]),
       renderMiddlewareFactory(view, (req) => {
-        const displayErrors = resolveErrorVisibility(req, globalErrorVisibility) || resolveErrorVisibility(req, errorVisibility);
-        const errors = displayErrors && (req.casa.journeyContext.getValidationErrorsForPageByField(waypoint) ?? Object.create(null));
+        const displayErrors =
+          resolveErrorVisibility(req, globalErrorVisibility) ||
+          resolveErrorVisibility(req, errorVisibility);
+        const errors =
+          displayErrors &&
+          (req.casa.journeyContext.getValidationErrorsForPageByField(
+            waypoint,
+          ) ??
+            Object.create(null));
         const govukErrors = displayErrors && generateGovukErrors(errors, req);
 
-        return ({
+        return {
           formUrl: waypointUrl({ mountUrl: `${req.baseUrl}/`, waypoint }),
           formData: req.casa.journeyContext.getDataForPage(waypoint),
-          formErrors: (Object.keys(errors).length && displayErrors) ? errors : null,
-          formErrorsGovukArray: (govukErrors.length && displayErrors) ? govukErrors : null,
-        })
+          formErrors:
+            Object.keys(errors).length && displayErrors ? errors : null,
+          formErrorsGovukArray:
+            govukErrors.length && displayErrors ? govukErrors : null,
+        };
       }),
     );
 
@@ -191,35 +230,70 @@ export default function journeyRouter({
       ...commonMiddleware,
       ...commonWaypointMiddleware,
 
-      ...resolveMiddlewareHooks('journey.presteer', waypointPath, [...globalHooks, ...pageHooks]),
+      ...resolveMiddlewareHooks("journey.presteer", waypointPath, [
+        ...globalHooks,
+        ...pageHooks,
+      ]),
       ...steerJourneyMiddlewareFactory({ waypoint, plan }),
-      ...resolveMiddlewareHooks('journey.poststeer', waypointPath, [...globalHooks, ...pageHooks]),
+      ...resolveMiddlewareHooks("journey.poststeer", waypointPath, [
+        ...globalHooks,
+        ...pageHooks,
+      ]),
 
-      ...resolveMiddlewareHooks('journey.presanitise', waypointPath, [...globalHooks, ...pageHooks]),
+      ...resolveMiddlewareHooks("journey.presanitise", waypointPath, [
+        ...globalHooks,
+        ...pageHooks,
+      ]),
       ...sanitiseFieldsMiddlewareFactory({ waypoint, fields }),
-      ...resolveMiddlewareHooks('journey.postsanitise', waypointPath, [...globalHooks, ...pageHooks]),
+      ...resolveMiddlewareHooks("journey.postsanitise", waypointPath, [
+        ...globalHooks,
+        ...pageHooks,
+      ]),
 
-      ...resolveMiddlewareHooks('journey.pregather', waypointPath, [...globalHooks, ...pageHooks]),
+      ...resolveMiddlewareHooks("journey.pregather", waypointPath, [
+        ...globalHooks,
+        ...pageHooks,
+      ]),
       ...gatherFieldsMiddlewareFactory({ waypoint, fields }),
-      ...resolveMiddlewareHooks('journey.postgather', waypointPath, [...globalHooks, ...pageHooks]),
+      ...resolveMiddlewareHooks("journey.postgather", waypointPath, [
+        ...globalHooks,
+        ...pageHooks,
+      ]),
 
-      ...resolveMiddlewareHooks('journey.prevalidate', waypointPath, [...globalHooks, ...pageHooks]),
+      ...resolveMiddlewareHooks("journey.prevalidate", waypointPath, [
+        ...globalHooks,
+        ...pageHooks,
+      ]),
       ...validateFieldsMiddlewareFactory({ waypoint, fields, plan }),
-      ...resolveMiddlewareHooks('journey.postvalidate', waypointPath, [...globalHooks, ...pageHooks]),
+      ...resolveMiddlewareHooks("journey.postvalidate", waypointPath, [
+        ...globalHooks,
+        ...pageHooks,
+      ]),
 
       // If there were validation errors, jump out of this route and into the
       // next, where the errors will be rendered
-      (req, res, next) => (req.casa.journeyContext.hasValidationErrorsForPage(waypoint) ? next('route') : next()),
+      (req, res, next) =>
+        req.casa.journeyContext.hasValidationErrorsForPage(waypoint)
+          ? next("route")
+          : next(),
 
-      ...resolveMiddlewareHooks('journey.preredirect', waypointPath, [...globalHooks, ...pageHooks]),
+      ...resolveMiddlewareHooks("journey.preredirect", waypointPath, [
+        ...globalHooks,
+        ...pageHooks,
+      ]),
       ...progressJourneyMiddlewareFactory({ waypoint, plan }),
     );
 
     router.post(
       waypointPath,
-      ...resolveMiddlewareHooks('journey.prerender', waypointPath, [...globalHooks, ...pageHooks]),
+      ...resolveMiddlewareHooks("journey.prerender", waypointPath, [
+        ...globalHooks,
+        ...pageHooks,
+      ]),
       renderMiddlewareFactory(view, (req) => {
-        const errors = req.casa.journeyContext.getValidationErrorsForPageByField(waypoint) ?? Object.create(null);
+        const errors =
+          req.casa.journeyContext.getValidationErrorsForPageByField(waypoint) ??
+          Object.create(null);
 
         // This is a convenience for the template. The `govukErrorSummary` macro
         // requires the errors be in a particular format, so here we provide our
@@ -228,7 +302,7 @@ export default function journeyRouter({
         // first one is shown.
         // Disabling security/detect-object-injection rule because both `errors`
         // and the `k` property are known entities
-        const govukErrors = generateGovukErrors(errors, req)
+        const govukErrors = generateGovukErrors(errors, req);
 
         return {
           formUrl: waypointUrl({ mountUrl: `${req.baseUrl}/`, waypoint }),

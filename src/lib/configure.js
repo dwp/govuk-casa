@@ -1,42 +1,42 @@
-import { MemoryStore } from 'express-session';
-import { resolve } from 'path';
-import { createRequire } from 'module';
-import cookieParserFactory from 'cookie-parser';
-import dirname from './dirname.cjs';
+import { MemoryStore } from "express-session";
+import { resolve } from "path";
+import { createRequire } from "module";
+import cookieParserFactory from "cookie-parser";
+import dirname from "./dirname.cjs";
 
-import configurationIngestor from './configuration-ingestor.js';
-import nunjucks from './nunjucks.js';
-import mountFactory from './mount.js';
+import configurationIngestor from "./configuration-ingestor.js";
+import nunjucks from "./nunjucks.js";
+import mountFactory from "./mount.js";
 
-import staticRoutes from '../routes/static.js';
-import ancillaryRoutes from '../routes/ancillary.js';
-import journeyRoutes from '../routes/journey.js';
+import staticRoutes from "../routes/static.js";
+import ancillaryRoutes from "../routes/ancillary.js";
+import journeyRoutes from "../routes/journey.js";
 
-import preMiddlewareFactory from '../middleware/pre.js';
-import postMiddlewareFactory from '../middleware/post.js';
+import preMiddlewareFactory from "../middleware/pre.js";
+import postMiddlewareFactory from "../middleware/post.js";
 
-import sessionMiddlewareFactory from '../middleware/session.js';
-import i18nMiddlewareFactory from '../middleware/i18n.js';
-import dataMiddlewareFactory from '../middleware/data.js';
+import sessionMiddlewareFactory from "../middleware/session.js";
+import i18nMiddlewareFactory from "../middleware/i18n.js";
+import dataMiddlewareFactory from "../middleware/data.js";
 
-import bodyParserMiddlewareFactory from '../middleware/body-parser.js';
-import csrfMiddlewareFactory from '../middleware/csrf.js';
+import bodyParserMiddlewareFactory from "../middleware/body-parser.js";
+import csrfMiddlewareFactory from "../middleware/csrf.js";
 
-import { CONFIG_ERROR_VISIBILITY_ONSUBMIT } from './constants.js';
+import { CONFIG_ERROR_VISIBILITY_ONSUBMIT } from "./constants.js";
 
 /**
+ * @typedef {import("../casa").ConfigurationOptions} ConfigurationOptions
  * @access private
- * @typedef {import('../casa').ConfigurationOptions} ConfigurationOptions
  */
 
 /**
+ * @typedef {import("../casa").ConfigureResult} ConfigureResult
  * @access private
- * @typedef {import('../casa').ConfigureResult} ConfigureResult
  */
 
 /**
+ * @typedef {import("../casa").Mounter} Mounter
  * @access private
- * @typedef {import('../casa').Mounter} Mounter
  */
 
 /**
@@ -60,12 +60,12 @@ export default function configure(config = {}) {
     errorVisibility = CONFIG_ERROR_VISIBILITY_ONSUBMIT,
     views = [],
     session = {
-      secret: 'secret',
-      name: 'casasession',
+      secret: "secret",
+      name: "casasession",
       secure: false,
       ttl: 3600,
       cookieSameSite: true,
-      cookiePath: '/',
+      cookiePath: "/",
       store: undefined,
     },
     pages = [],
@@ -75,7 +75,7 @@ export default function configure(config = {}) {
     events = [],
     i18n = {
       dirs: [],
-      locales: ['en', 'cy'],
+      locales: ["en", "cy"],
     },
     helmetConfigurator = undefined,
     formMaxParams,
@@ -86,7 +86,7 @@ export default function configure(config = {}) {
   // Prepare all page hooks so they are prefixed with the `journey.` scope.
   pages.forEach((page) => {
     /* eslint-disable-next-line no-param-reassign,no-return-assign */
-    (page?.hooks ?? []).forEach((h) => h.hook = `journey.${h.hook}`);
+    (page?.hooks ?? []).forEach((h) => (h.hook = `journey.${h.hook}`));
   });
 
   // Prepare a Nunjucks environment for rendering all templates.
@@ -94,8 +94,8 @@ export default function configure(config = {}) {
   const nunjucksEnv = nunjucks({
     views: [
       ...views,
-      resolve(dirname, '../../views'),
-      resolve(createRequire(dirname).resolve('govuk-frontend'), '../../'),
+      resolve(dirname, "../../views"),
+      resolve(createRequire(dirname).resolve("govuk-frontend"), "../../"),
     ],
   });
 
@@ -120,7 +120,7 @@ export default function configure(config = {}) {
   const i18nMiddleware = i18nMiddlewareFactory({
     directories: [
       // Order is important; latter directories take precedence
-      resolve(dirname, '../../locales/'),
+      resolve(dirname, "../../locales/"),
       ...i18n.dirs,
     ],
     languages: i18n.locales,
@@ -148,7 +148,7 @@ export default function configure(config = {}) {
   });
 
   // Setup waypoint router, which includes routes for every defined waypoint
-  const globalErrorVisibility = errorVisibility
+  const globalErrorVisibility = errorVisibility;
   const journeyRouter = journeyRoutes({
     globalHooks: hooks,
     pages,
@@ -207,7 +207,9 @@ export default function configure(config = {}) {
   };
 
   // Bootstrap all plugins
-  plugins.filter((p) => p.bootstrap).forEach((plugin) => plugin?.bootstrap(configOutput));
+  plugins
+    .filter((p) => p.bootstrap)
+    .forEach((plugin) => plugin?.bootstrap(configOutput));
 
   // Finished configuration
   return configOutput;

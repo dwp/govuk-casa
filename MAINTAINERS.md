@@ -6,17 +6,17 @@ Please refer to our [Contributors Guide](docs/contributors/index.md) for more in
 
 Review tips:
 
-* Is the intent of the change clear? Ask for clarity if needed, whether that's documentation or a change to code.
-* Does the change cater for the widest number of scenarios, or is it for a specific user-case? If the latter, explore with the contributor whether there is scope for generalising the solution.
-* Is the solution optimal; using appropriate data structures and controls? If you have alternative suggestions, work with the contributor to explore the potential advantages of those alternatives approaches.
-* Are tests included, and do they cover happy and unhappy paths appropriately?
-* Confirm the change doesn't contain any exploitative or malicious code (whether intentional or not)
-* If new dependencies are introduced, review those dependencies to get a sense of the community support behind it. Try to avoid including older, infrequently maintained modules, unless they are stable.
-* Where content has been changed, has it been provided in all supported languages (English and Welsh)?
-* Are commits squashed appropriately, where changes to the same scope are grouped into one commit?
-* Ensure that the MR is rebased onto the tip of `main` branch
-* Are any breaking changes introduced; if so does the commit log include a BREAKING CHANGE comment in the footer?
-* Is documentation included where appropriate?
+- Is the intent of the change clear? Ask for clarity if needed, whether that's documentation or a change to code.
+- Does the change cater for the widest number of scenarios, or is it for a specific user-case? If the latter, explore with the contributor whether there is scope for generalising the solution.
+- Is the solution optimal; using appropriate data structures and controls? If you have alternative suggestions, work with the contributor to explore the potential advantages of those alternatives approaches.
+- Are tests included, and do they cover happy and unhappy paths appropriately?
+- Confirm the change doesn't contain any exploitative or malicious code (whether intentional or not)
+- If new dependencies are introduced, review those dependencies to get a sense of the community support behind it. Try to avoid including older, infrequently maintained modules, unless they are stable.
+- Where content has been changed, has it been provided in all supported languages (English and Welsh)?
+- Are commits squashed appropriately, where changes to the same scope are grouped into one commit?
+- Ensure that the MR is rebased onto the tip of `main` branch
+- Are any breaking changes introduced; if so does the commit log include a BREAKING CHANGE comment in the footer?
+- Is documentation included where appropriate?
 
 ### Handling contributions from a GitHub PR
 

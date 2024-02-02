@@ -2,46 +2,51 @@
 
 Whenever changes are made to your Journey Context, and placed in session via the `JourneyContext.putContext()` function, this may trigger some events:
 
-* `waypoint-change`: Data has changed on a waypoint (you can also filter by a specific field)
-* `context-change`: The whole context has been updated (this happens after all `waypoint-change` events have completed)
+- `waypoint-change`: Data has changed on a waypoint (you can also filter by a specific field)
+- `context-change`: The whole context has been updated (this happens after all `waypoint-change` events have completed)
 
 You can attach listeners to these events as so:
 
 ```javascript
 configure({
-  events: [{
-    event: 'waypoint-change',
-    handler: ({ journeyContext, previousContext, session, userInfo }) => {
-      // This will fire for all waypoints
+  events: [
+    {
+      event: "waypoint-change",
+      handler: ({ journeyContext, previousContext, session, userInfo }) => {
+        // This will fire for all waypoints
+      },
     },
-  }, {
-    event: 'waypoint-change',
-    waypoint: 'contact-details',
-    handler: ({ journeyContext, previousContext, session, userInfo }) => {
-      // This will fire if data has changed on the `contact-details` waypoint
+    {
+      event: "waypoint-change",
+      waypoint: "contact-details",
+      handler: ({ journeyContext, previousContext, session, userInfo }) => {
+        // This will fire if data has changed on the `contact-details` waypoint
+      },
     },
-  }, {
-    event: 'waypoint-change',
-    waypoint: 'contact-details',
-    field: 'tel',
-    handler: ({ journeyContext, previousContext, session, userInfo }) => {
-      // This will fire if the `tel` field has changed on the `contact-details` waypoint
+    {
+      event: "waypoint-change",
+      waypoint: "contact-details",
+      field: "tel",
+      handler: ({ journeyContext, previousContext, session, userInfo }) => {
+        // This will fire if the `tel` field has changed on the `contact-details` waypoint
+      },
     },
-  }, {
-    event: 'context-change',
-    handler: ({ journeyContext, previousContext, session, userInfo }) => {
-      // This will be fired on every save to the session, after all other `waypoint-change` events have completed
+    {
+      event: "context-change",
+      handler: ({ journeyContext, previousContext, session, userInfo }) => {
+        // This will be fired on every save to the session, after all other `waypoint-change` events have completed
+      },
     },
-  }],
+  ],
 });
 ```
 
 Where:
 
-* `journeyContext` is the newly updated context,
-* `previousContext` is a snapshot of the context as it was at the beginning of the request lifecycle, and
-* `session` the current session to which the change has been written
-* `userInfo` (default = undefined) an object holding general data that _may_ have been passed through from point at which the event was triggered (read more below)
+- `journeyContext` is the newly updated context,
+- `previousContext` is a snapshot of the context as it was at the beginning of the request lifecycle, and
+- `session` the current session to which the change has been written
+- `userInfo` (default = undefined) an object holding general data that _may_ have been passed through from point at which the event was triggered (read more below)
 
 Note that the `waypoint-change` events are only triggered if data has actually _changed_. If there was no data previously stored for a waypoint, then no event is triggered. If you need an alternative to this mechanism, then consider using the `context-change` event instead as this will be triggered on _every_ persisted change to the context.
 
@@ -67,15 +72,17 @@ You can force a user to re-visit a page by invalidating it, and the events syste
 
 ```javascript
 configure({
-  events: [{
-    event: 'waypoint-change',
-    waypoint: 'do-you-have-a-partner',
-    field: 'havePartner',
-    handler: ({ journeyContext }) => {
-      // Invalidate the 'do-you-pay-rent' waypoint
-      journeyContext.removeValidationForPage('do-you-pay-rent');
+  events: [
+    {
+      event: "waypoint-change",
+      waypoint: "do-you-have-a-partner",
+      field: "havePartner",
+      handler: ({ journeyContext }) => {
+        // Invalidate the 'do-you-pay-rent' waypoint
+        journeyContext.removeValidationForPage("do-you-pay-rent");
+      },
     },
-  }],
+  ],
 });
 ```
 
@@ -86,34 +93,41 @@ For a simplistic way to purge data from waypoints that are no longer accessible 
 NOTE: Use this approach cautiously as the context can be changed multiple times during the request lifecycle, some of which may leave it in a transitional state where traversing can give you different results than you might expect. An example of handling this using the request phase is shown below.
 
 ```javascript
-import { constants } from '@dwp/govuk-casa';
+import { constants } from "@dwp/govuk-casa";
 
 configure({
-  events: [{
-    event: 'context-change',
-    handler: ({ journeyContext, userInfo }) => {
-      // Ignore the event when the context is updated at the "gather" phase of
-      // the request lifecycle, because the waypoint being gathered will
-      // _always_ be invalidated at that point. We instead need to wait until
-      // the data has been validated before we test traversals here.
-      if (userInfo?.casaRequestPhase === constants.REQUEST_PHASE_GATHER) {
-        console.log('Skipping purge at the "gather" phase');
-        return;
-      }
+  events: [
+    {
+      event: "context-change",
+      handler: ({ journeyContext, userInfo }) => {
+        // Ignore the event when the context is updated at the "gather" phase of
+        // the request lifecycle, because the waypoint being gathered will
+        // _always_ be invalidated at that point. We instead need to wait until
+        // the data has been validated before we test traversals here.
+        if (userInfo?.casaRequestPhase === constants.REQUEST_PHASE_GATHER) {
+          console.log('Skipping purge at the "gather" phase');
+          return;
+        }
 
-      // If the last traversed waypoint has errors, ignore the event and allow
-      // the user to correct errors before we purge.
-      const traversed = plan.traverse(journeyContext);
-      if (!traversed.length || journeyContext.getValidationErrorsForPage(traversed.at(-1)).length) {
-        console.log(`Waypoint "${traversed.at(-1)}" has errors, so won't purge`);
-        return;
-      }
+        // If the last traversed waypoint has errors, ignore the event and allow
+        // the user to correct errors before we purge.
+        const traversed = plan.traverse(journeyContext);
+        if (
+          !traversed.length ||
+          journeyContext.getValidationErrorsForPage(traversed.at(-1)).length
+        ) {
+          console.log(
+            `Waypoint "${traversed.at(-1)}" has errors, so won't purge`,
+          );
+          return;
+        }
 
-      const traversed = plan.traverse(journeyContext);
-      const all = plan.getWaypoints();
-      const toPurge = all.filter(e => !traversed.includes(e));
-      journeyContext.purge(toPurge);
+        const traversed = plan.traverse(journeyContext);
+        const all = plan.getWaypoints();
+        const toPurge = all.filter((e) => !traversed.includes(e));
+        journeyContext.purge(toPurge);
+      },
     },
-  }],
+  ],
 });
 ```

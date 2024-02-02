@@ -8,7 +8,7 @@ For all the examples below, we recommend defining your Plan in its own file, wra
 
 ```javascript
 /* definitions/plan.js */
-import { Plan } from '@dwp/govuk-casa';
+import { Plan } from "@dwp/govuk-casa";
 
 export default function () {
   const plan = new Plan();
@@ -20,7 +20,7 @@ export default function () {
 Passing your Plan into `configure()`:
 
 ```javascript
-import plan from './definitions/plan.js';
+import plan from "./definitions/plan.js";
 
 configure({
   plan: plan(),
@@ -29,11 +29,11 @@ configure({
 
 ## Terminology
 
-* **Plan**: The sum of all _Waypoints_ and _Routes_
-* **Waypoint**: A visitable point in a user's journey through your plan (the _node_ in a directed graph)
-* **Route**: A connection between any two Waypoints in the plan; can be directed either two-ways, or one-way between the waypoints (the _edge_ in a directed graph)
-* **Condition**: A boolean decision of whether a particular route will be followed or not during a traversal
-* **Journey Context**: Some state information about the user's interaction with the Plan (contains data and validation state)
+- **Plan**: The sum of all _Waypoints_ and _Routes_
+- **Waypoint**: A visitable point in a user's journey through your plan (the _node_ in a directed graph)
+- **Route**: A connection between any two Waypoints in the plan; can be directed either two-ways, or one-way between the waypoints (the _edge_ in a directed graph)
+- **Condition**: A boolean decision of whether a particular route will be followed or not during a traversal
+- **Journey Context**: Some state information about the user's interaction with the Plan (contains data and validation state)
 
 Whilst the terms _Waypoint_ and _Page_ are interchangeable for the most part, you should think of _Waypoints_ as abstractions, and _Pages_ as concrete implementations (i.e. visible web pages) of the same concept.
 
@@ -41,8 +41,8 @@ Whilst the terms _Waypoint_ and _Page_ are interchangeable for the most part, yo
 
 Waypoints are denoted by strings in any of the following format:
 
-* Simple: `personal-details`, `contact`, `contact/telephone`, `check-your-answers`, `money/bank-accounts`, etc
-* Sub-app urls: `url:///slug/to/somewhere` would take the user to `/slug/to/somewhere`. When linking to the url of another Plan, you must specify the mount URL of that app rather than a specific waypoint, and leave it up to that app to decide how to redirect the user, based on the Journey context.
+- Simple: `personal-details`, `contact`, `contact/telephone`, `check-your-answers`, `money/bank-accounts`, etc
+- Sub-app urls: `url:///slug/to/somewhere` would take the user to `/slug/to/somewhere`. When linking to the url of another Plan, you must specify the mount URL of that app rather than a specific waypoint, and leave it up to that app to decide how to redirect the user, based on the Journey context.
 
 > **NOTE:** You can only link to a sub-app once in a Plan. If you need to reuse the functionality of the sub-app elsewhere in your Plan, create a duplicate instance of that sub-app and mount it on an alternative URL.
 
@@ -57,18 +57,18 @@ If you want to allow this behaviour, then you must tell CASA which waypoints are
 ```javascript
 const plan = new Plan();
 
-plan.addSkippables('details', 'info', 'another');
+plan.addSkippables("details", "info", "another");
 ```
 
 And you can use the `waypointUrl()` function to generate these URLs as so:
 
 ```javascript
-import waypointUrl from '@dwp/govuk-casa';
+import waypointUrl from "@dwp/govuk-casa";
 
 const url = waypointUrl({
-  mountUrl: '/',
-  waypoint: 'details',
-  skipTo: 'other',
+  mountUrl: "/",
+  waypoint: "details",
+  skipTo: "other",
 });
 ```
 
@@ -78,7 +78,7 @@ Connect two waypoints with a two-way route as follows:
 
 ```javascript
 const plan = new Plan();
-plan.setRoute('a', 'b');
+plan.setRoute("a", "b");
 ```
 
 This will create two routes for you; a `next` and a `prev` route. These are used to control forwards and backwards navigation through the service.
@@ -87,23 +87,23 @@ For convenience, you can setup a sequence of two-way routes using the `Plan.addS
 
 ```javascript
 const plan = new Plan();
-plan.addSequence('a', 'b', 'c', 'd', 'e');
+plan.addSequence("a", "b", "c", "d", "e");
 ```
 
 You can also create one-way routes. This can be useful if you want to force a user's journey to go back to a different waypoint than the one just visited:
 
 ```javascript
 const plan = new Plan();
-plan.setRoute('a', 'b');
-plan.setNextRoute('b', 'c');
-plan.setPrevRoute('c', 'a');
+plan.setRoute("a", "b");
+plan.setNextRoute("b", "c");
+plan.setPrevRoute("c", "a");
 ```
 
 ## Route conditions
 
 You can attach conditions to routes that control how the user traverses through them. By default, there are conditions attached to each route that will prevent them being traversed unless the following are satisfied:
 
-* The "source" waypoint has been successfully validated (i.e. validation has been executed, and no errors found)
+- The "source" waypoint has been successfully validated (i.e. validation has been executed, and no errors found)
 
 However, you can override this behaviour with your own conditional functions, which must match the following signature:
 
@@ -111,7 +111,7 @@ However, you can override this behaviour with your own conditional functions, wh
 /**
  * @param {object} route Information about the route being traversed
  * @param {JourneyContext} context Contextual state information
- * @returns {boolean} whether the route should be followed or not
+ * @returns {boolean} Whether the route should be followed or not
  */
 myCondition = (route, context) => {
   return trueOrFalse;
@@ -122,9 +122,9 @@ Here's a simple example that checks the journey's data context to determine whet
 
 ```javascript
 const plan = new Plan();
-plan.setRoute('a', 'b', (r, c) => (c.data.a.ticked === true));
-plan.setRoute('a', 'c', (r, c) => (c.data.a.ticked !== true));
-plan.setRoute('b', 'c');
+plan.setRoute("a", "b", (r, c) => c.data.a.ticked === true);
+plan.setRoute("a", "c", (r, c) => c.data.a.ticked !== true);
+plan.setRoute("b", "c");
 ```
 
 When `ticked` is `true`, the traversal sequence will be: `a <--> b <--> c`
@@ -149,12 +149,12 @@ Internally, CASA takes a snapshot of their journey both before and after submitt
 
 The rules that govern how a user is redirected are outlined below:
 
-| "Before" | "After" | Rules |
-|----------|---------|-------|
-| `a, b, c` | `a, b, x, c` | A new waypoint `x` has been inserted, so the user will stop at `x` |
-| `a, b, c, d` | `a, b, d` | Waypoint `c` has been removed from the middle of a journey, so the user will stop at the last incomplete waypoint, `d` |
-| `a, b, c, d` | `a, c, d` | _(as above)_ |
-| `a, b, c` | `a, c, d` | Waypoint `b` has been removed, and `d` has been added to the end; user will stop at the new waypoint, `d` |
+| "Before"     | "After"      | Rules                                                                                                                  |
+| ------------ | ------------ | ---------------------------------------------------------------------------------------------------------------------- |
+| `a, b, c`    | `a, b, x, c` | A new waypoint `x` has been inserted, so the user will stop at `x`                                                     |
+| `a, b, c, d` | `a, b, d`    | Waypoint `c` has been removed from the middle of a journey, so the user will stop at the last incomplete waypoint, `d` |
+| `a, b, c, d` | `a, c, d`    | _(as above)_                                                                                                           |
+| `a, b, c`    | `a, c, d`    | Waypoint `b` has been removed, and `d` has been added to the end; user will stop at the new waypoint, `d`              |
 
 ## Visualising the Plan
 
@@ -163,13 +163,13 @@ The Plan is described by a directed graph data structure under the hood, which c
 You can get hold of this raw graph structure by using the `plan.getGraphStructure()` method. Here's a very simplistic example of how to convert the graph into a DOT language representation, which can then be fed into Graphviz:
 
 ```javascript
-const graphlib = require('@dagrejs/graphlib');
-const dot = require('graphlib-dot');
-const { Plan } = require('@dwp/govuk-casa');
+const graphlib = require("@dagrejs/graphlib");
+const dot = require("graphlib-dot");
+const { Plan } = require("@dwp/govuk-casa");
 
 const plan = new Plan();
-plan.addSequence('a', 'b', 'c');
-plan.addSequence('name', 'age', 'dob');
+plan.addSequence("a", "b", "c");
+plan.addSequence("name", "age", "dob");
 
 // JSON serialisation is needed to remove any undefined labels, which can trip
 // up graphlib-dot
@@ -185,8 +185,8 @@ process.stdout.write(dot.write(graphcopy));
 Graph edges (routes) will be labelled with the name of the routing function. For example:
 
 ```javascript
-plan.setRoute('start', 'forest', function goNorth(r, c) {
-  return c.data.a.direction === 'north';
+plan.setRoute("start", "forest", function goNorth(r, c) {
+  return c.data.a.direction === "north";
 });
 ```
 
@@ -196,13 +196,13 @@ Arrow functions assume the names of the variables they were initially assigned t
 
 ```javascript
 // `start <--[ goEast ]--> cave`
-const goEast = (r, c) => c.data.start.direction === 'east';
-plan.setRoute('start', 'east', goEast);
+const goEast = (r, c) => c.data.start.direction === "east";
+plan.setRoute("start", "east", goEast);
 
 // `start <-----> castle`
-plan.setRoute('start', 'south', (r, c) => c.data.start.direction === 'south');
-plan.setRoute('start', 'south', function (r, c) {
-  return c.data.start.direction === 'south';
+plan.setRoute("start", "south", (r, c) => c.data.start.direction === "south");
+plan.setRoute("start", "south", function (r, c) {
+  return c.data.start.direction === "south";
 });
 ```
 
@@ -219,16 +219,16 @@ const isEqualTo = (field, value) => {
 };
 
 // `start <-- "direction" equals "west" --> field`
-plan.setRoute('start', 'field', isEqualTo('direction', 'west'));
+plan.setRoute("start", "field", isEqualTo("direction", "west"));
 ```
 
 The original name will be retained even if nested further:
 
 ```javascript
-const walkTo = direction => isEqualTo('direction', direction);
+const walkTo = (direction) => isEqualTo("direction", direction);
 
 // `start <-- "direction" equals "west" --> field`
-plan.setRoute('start', 'field', walkTo('west'));
+plan.setRoute("start", "field", walkTo("west"));
 ```
 
 ## Traversing a Plan

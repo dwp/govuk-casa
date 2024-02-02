@@ -4,7 +4,7 @@ start:
 
 country:
   england: 'input[name="country"][value="ENGLAND"]'
-  skipLink: '#skip-waypoint'
+  skipLink: "#skip-waypoint"
 
 date-of-birth:
   day: 'input[name="dateOfBirth[dd]"]'

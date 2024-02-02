@@ -4,9 +4,9 @@ Extends the [`govukSelect()`](https://design-system.service.gov.uk/components/se
 
 Custom parameters:
 
-* `casaValue` - the value of the selected option. This is a convenience for toggling the `selected` flag on the appropriate `item`, but you can also manually set `selected` on each item of you need to use more specific logic for determining selected state.
-* `casaErrors` - form errors (just pass `formErrors`)
-* `casaWithAnalytics` - enable DWP's conventional Google Analytics attributes (`data-ga-question` and `data-ga-answer`) - `false` by default; **IMPORTANT: DO NOT ENABLE this option if the question or answer may contain personally-identifiable information as values will be pushed to Google**
+- `casaValue` - the value of the selected option. This is a convenience for toggling the `selected` flag on the appropriate `item`, but you can also manually set `selected` on each item of you need to use more specific logic for determining selected state.
+- `casaErrors` - form errors (just pass `formErrors`)
+- `casaWithAnalytics` - enable DWP's conventional Google Analytics attributes (`data-ga-question` and `data-ga-answer`) - `false` by default; **IMPORTANT: DO NOT ENABLE this option if the question or answer may contain personally-identifiable information as values will be pushed to Google**
 
 ## Example usage
 
@@ -53,12 +53,12 @@ The error summary link must set focus on the select item in the group. Unless yo
 
 The following attributes will be attached to each `<input>` option if `casaWithAnalytics` is `true`:
 
-* `data-ga-question`: Holds the fieldset legend's content
-* `data-ga-answer`: Holds the specific answer's text/html value
+- `data-ga-question`: Holds the fieldset legend's content
+- `data-ga-answer`: Holds the specific answer's text/html value
 
 The following attributes will be attached to the error `<p>` tag if `casaWithAnalytics` is `true`:
 
-* `data-ga-question`: Holds the fieldset legend's content after removing all html tags
+- `data-ga-question`: Holds the fieldset legend's content after removing all html tags
 
 These are the conventions used by DWP.
 

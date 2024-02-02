@@ -10,7 +10,7 @@ This is particularly useful for plugins that might need to ensure certain middle
 // Prepend a `.use()` mounting, so we can be sure these template variables are
 // available to all rendered pages
 ancillaryRouter.prependUse((req, res, next) => {
-  res.locals.importantVariable = 'must be present';
+  res.locals.importantVariable = "must be present";
 
   next();
 });
@@ -19,16 +19,16 @@ ancillaryRouter.prependUse((req, res, next) => {
 mount(app);
 
 // If we try to mount anything on that router now, we get complaints ...
-ancillaryRouter.use((res, req, next) => {});  // throws an Error!
+ancillaryRouter.use((res, req, next) => {}); // throws an Error!
 ```
 
 You can also prepend any existing middleware on a particular path:
 
 ```javascript
-ancillaryRouter.prependAll('/session-timeout', (req, res, next) => {
+ancillaryRouter.prependAll("/session-timeout", (req, res, next) => {
   // do something extra
 
-  next()
+  next();
 });
 ```
 

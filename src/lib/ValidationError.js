@@ -1,27 +1,27 @@
-import lodash from 'lodash';
+import lodash from "lodash";
 
 const { isPlainObject } = lodash; // CommonJS
 
 const params = new WeakMap();
 
 /**
+ * @typedef {import("../casa").ValidateContext} ValidateContext
  * @access private
- * @typedef {import('../casa').ValidateContext} ValidateContext
  */
 
 /**
+ * @typedef {import("../casa").ErrorMessageConfig} ErrorMessageConfig
  * @access private
- * @typedef {import('../casa').ErrorMessageConfig} ErrorMessageConfig
  */
 
 /**
+ * @typedef {import("../casa").ErrorMessageConfigObject} ErrorMessageConfigObject
  * @access private
- * @typedef {import('../casa').ErrorMessageConfigObject} ErrorMessageConfigObject
  */
 
 /**
- * @class
  * @memberof module:@dwp/govuk-casa
+ * @class
  */
 export default class ValidationError {
   /**
@@ -30,24 +30,25 @@ export default class ValidationError {
    * <br/><br/>
    *
    * In the case of `errorMsg` being a function, this will be called at runtime,
-   * at the point that errors are generated within the `validate()`,
-   * methods, and will be passed the `dataContext`.
-   * <br/><br/>
+   * at the point that errors are generated within the `validate()`, methods,
+   * and will be passed the `dataContext`. <br/><br/>
    *
    * `dataContext` is an object containing the same data passed to all
-   * validators' `validate()` methods. In the case of `errorMsg` being
-   * a function, this data is passed to that function in order to help resolve to
+   * validators' `validate()` methods. In the case of `errorMsg` being a
+   * function, this data is passed to that function in order to help resolve to
    * an error message config object.
    *
    * @param {object} args Arguments
-   * @param {ErrorMessageConfig} args.errorMsg Error message config to seed ValidationError
-   * @param {ValidateContext} [args.dataContext={}] Data for error msg function
+   * @param {ErrorMessageConfig} args.errorMsg Error message config to seed
+   *   ValidationError
+   * @param {ValidateContext} [args.dataContext={}] Data for error msg function.
+   *   Default is `{}`
    * @returns {ValidationError} Error instance
    * @throws {TypeError} If errorMsg is not in a valid type
    */
   static make({ errorMsg, dataContext = {} }) {
     // Convert strings to the most basic object primitive
-    if (typeof errorMsg === 'string') {
+    if (typeof errorMsg === "string") {
       return new ValidationError({
         summary: errorMsg,
         inline: errorMsg,
@@ -63,7 +64,7 @@ export default class ValidationError {
 
     // Use the user-defined function to generate an error primitive for the
     // given context
-    if (typeof errorMsg === 'function') {
+    if (typeof errorMsg === "function") {
       return new ValidationError(errorMsg.call(null, { ...dataContext }));
     }
 
@@ -77,19 +78,22 @@ export default class ValidationError {
     }
 
     // Unsupported
-    throw new TypeError('errorMsg must be a string, Error, primitive object or function that generates a primitive object');
+    throw new TypeError(
+      "errorMsg must be a string, Error, primitive object or function that generates a primitive object",
+    );
   }
 
   /**
    * Create a ValidationError.
    *
-   * @param {string|ErrorMessageConfigObject} errorParam Error configuration
+   * @param {string | ErrorMessageConfigObject} errorParam Error configuration
    */
   constructor(errorParam = {}) {
-    if (!isPlainObject(errorParam) && typeof errorParam !== 'string') {
-      throw new TypeError('Constructor requires a string or object');
+    if (!isPlainObject(errorParam) && typeof errorParam !== "string") {
+      throw new TypeError("Constructor requires a string or object");
     }
-    const error = typeof errorParam === 'string' ? { summary: errorParam } : errorParam;
+    const error =
+      typeof errorParam === "string" ? { summary: errorParam } : errorParam;
 
     // Store parameters for later use in applying contexts
     const originals = {
@@ -133,7 +137,7 @@ export default class ValidationError {
     const originals = params.get(this);
 
     // Expand variables
-    if (typeof originals.variables === 'function') {
+    if (typeof originals.variables === "function") {
       this.variables = originals.variables.call(this, context);
     }
 
@@ -150,7 +154,7 @@ export default class ValidationError {
         fieldHref += focusSuffix[0];
       }
 
-      this.field = context.fieldName + (originals.fieldKeySuffix || '');
+      this.field = context.fieldName + (originals.fieldKeySuffix || "");
       this.fieldHref = fieldHref;
       this.focusSuffix = focusSuffix || [];
     }

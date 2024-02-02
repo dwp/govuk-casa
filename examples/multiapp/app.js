@@ -1,14 +1,12 @@
 // This is the "parent" application, off which the other sub-apps will hang.
-import ExpressJS from 'express';
+import ExpressJS from "express";
 
-import { MemoryStore } from 'express-session';
+import { MemoryStore } from "express-session";
 
-import mainApplication from './app-main/app.js';
-import subApplication from './app-sub/app.js';
+import mainApplication from "./app-main/app.js";
+import subApplication from "./app-sub/app.js";
 
-const application = ({
-  MOUNT_URL = '/',
-}) => {
+const application = ({ MOUNT_URL = "/" }) => {
   // Create a session store. This is important. If you don't use the same session
   // store for all sub-apps, they will effectively operate independently of each
   // other
@@ -28,7 +26,7 @@ const application = ({
     // This is a little middleware to prevent users from accessing the sub-app
     // without first completing the main-app journey
     entrypointCondition: (req, res, next) => {
-      if (req.casa.journeyContext.validation['require-dj'] === null) {
+      if (req.casa.journeyContext.validation["require-dj"] === null) {
         next();
       } else {
         res.redirect(302, `${MOUNT_URL}main/`);

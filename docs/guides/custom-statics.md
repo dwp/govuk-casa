@@ -2,9 +2,9 @@
 
 There are 3 elements in adding some static assets to your CASA app.
 
-* The asset files themselves (.js, .css, .png, etc)
-* The ExpressJS route to serve them (always mounted on CASA's `staticRouter`)
-* Including template markup to load your assets into the browser
+- The asset files themselves (.js, .css, .png, etc)
+- The ExpressJS route to serve them (always mounted on CASA's `staticRouter`)
+- Including template markup to load your assets into the browser
 
 Let's say you want to serve up the CSS file `/src/assets/css/application.css` via the URL `/css/application.css`, this is what a basic route might look like:
 

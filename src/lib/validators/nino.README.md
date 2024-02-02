@@ -3,7 +3,7 @@
 Validates that the provided value conforms to the [UK national insurance number format](https://en.wikipedia.org/wiki/National_Insurance_number#Format). The test is case-insensitive.
 
 ```javascript
-import { validators } from '@dwp/govuk-casa';
+import { validators } from "@dwp/govuk-casa";
 // Minimal
 validators.nino.make();
 ```
@@ -16,7 +16,7 @@ validators.nino.make({
 
   // Error message
   errorMsg: {
-    summary: 'validation:rule.nino.summary',
+    summary: "validation:rule.nino.summary",
   },
-})
+});
 ```

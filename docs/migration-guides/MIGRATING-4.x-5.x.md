@@ -18,7 +18,7 @@ The following new features have been added:
 
 - [Added utility to flag a waypoint as "skipped"](#support-for-skipping-waypoints)
 
---------------------------------------------------------------------------------
+---
 
 ## Mandatory changes
 
@@ -27,14 +27,14 @@ The following new features have been added:
 All public CASA classes and functions are now exported as part of the main module. Where you previously did something like this:
 
 ```javascript
-const JourneyData = require('@dwp/govuk-casa/lib/JourneyData.js');
+const JourneyData = require("@dwp/govuk-casa/lib/JourneyData.js");
 ```
 
 You would now import each individual asset using `const { ... } = require(...)` syntax, as follows:
 
 ```javascript
 // JourneyData has been replaced with JourneyContext - see further below
-const { JourneyContext } = require('@dwp/govuk-casa');
+const { JourneyContext } = require("@dwp/govuk-casa");
 ```
 
 See the [full list of public APIs](api/imports.md) to see what other modules can be imported in this way.
@@ -69,11 +69,11 @@ Everywhere you are currently referring to `journeyData` should be changed to `jo
 
 This class has the same `getData()`, `getDataForPage()` methods, but also adds convenient getters for data and validation too. Here are the equivalents:
 
-| Before | After |
-|--------|-------|
-| `journeyContext.getData()` | `journeyContext.data` |
-| `journeyContext.getDataForPage('my-page')` | `journeyContext.data['my-page']` |
-| `journeyContext.getValidationErrors()` | `journeyContext.validation` |
+| Before                                                 | After                                  |
+| ------------------------------------------------------ | -------------------------------------- |
+| `journeyContext.getData()`                             | `journeyContext.data`                  |
+| `journeyContext.getDataForPage('my-page')`             | `journeyContext.data['my-page']`       |
+| `journeyContext.getValidationErrors()`                 | `journeyContext.validation`            |
 | `journeyContext.getValidationErrorsForPage('my-page')` | `journeyContext.validation['my-page']` |
 
 When storing a `JourneyContext` instance in session, use the new `toObject()` method to prepare it for storage:
@@ -115,7 +115,7 @@ plan.traverse(new JourneyContext(data, validation));
 
 You can no longer use `/` in waypoint IDs. This is due to how the URLs are now parsed to extract the "origin traversal waypoint".
 
---------------------------------------------------------------------------------
+---
 
 ## Recommend changes
 
@@ -130,7 +130,7 @@ To ease migration, you can convert your existing `UserJourney.Map` instances to 
 ```javascript
 // Existing code:
 const startJourney = new UserJourney.Road();
-startJourney.addWaypoints(['waypoint1', 'etc']);
+startJourney.addWaypoints(["waypoint1", "etc"]);
 // ...
 const myMap = new UserJourney.Map();
 myMap.startAt(startJourney);
@@ -144,12 +144,12 @@ If you are using multiple journeys, bear in mind that you now have just one `Pla
 
 Here's a summary of example changes that you will likely need to to make:
 
-| Example | Before | After |
-|---------|--------|-------|
-| Basic road | <code>r = new UserJourney.Road();<br/>r.addWaypoints(['a', 'b', 'c']);<br/>r.end();</code> | <code>p = new Plan();<br/>p.addSequence('a', 'b', 'c')</code> |
-| Merging roads | <code>r1 = new UserJourney.Road();<br/>r1.addWaypoints(['a', 'b']);<br/><br/>r2 = new UserJourney.Road();<br/>r2.addWaypoints(['c', 'd']);<br/><br/>r1.mergeWith(r2);</code> | <code>p = new Plan();<br/>p.addSequence('a', 'b', 'c', 'd');</code> |
+| Example           | Before                                                                                                                                                                                                                                                                           | After                                                                                                                              |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Basic road        | <code>r = new UserJourney.Road();<br/>r.addWaypoints(['a', 'b', 'c']);<br/>r.end();</code>                                                                                                                                                                                       | <code>p = new Plan();<br/>p.addSequence('a', 'b', 'c')</code>                                                                      |
+| Merging roads     | <code>r1 = new UserJourney.Road();<br/>r1.addWaypoints(['a', 'b']);<br/><br/>r2 = new UserJourney.Road();<br/>r2.addWaypoints(['c', 'd']);<br/><br/>r1.mergeWith(r2);</code>                                                                                                     | <code>p = new Plan();<br/>p.addSequence('a', 'b', 'c', 'd');</code>                                                                |
 | Conditional forks | <code>r1 = new UserJourney.Road();<br/>r1.addWaypoints(['a', 'b']);<br/><br/>r2 = new UserJourney.Road();<br/>r2.addWaypoints(['c', 'd']);<br/><br/>r3 = new UserJourney.Road();<br/>r3.addWaypoints(['e', 'f']);<br/><br/>r1.fork([r2, r3], () => (someTest ? r2 : r3));</code> | <code>p = new Plan();<br/>p.addSequence('a', 'b');<br/>p.setRoute('b', 'c', someTest);<br/>p.setRoute('b', 'e', !someTest);</code> |
-| Creating a plan | <code>r = new UserJourney.Road();<br/>r.addWaypoints(['a', 'b', 'c']);<br/><br/>j = new UserJourney.Map();<br/>j.startAt(r);<br/>return j;</code> | <code>p = new Plan();<br/>p.setSequence('a', 'b', 'c');<br/>return p;</code> |
+| Creating a plan   | <code>r = new UserJourney.Road();<br/>r.addWaypoints(['a', 'b', 'c']);<br/><br/>j = new UserJourney.Map();<br/>j.startAt(r);<br/>return j;</code>                                                                                                                                | <code>p = new Plan();<br/>p.setSequence('a', 'b', 'c');<br/>return p;</code>                                                       |
 
 ### `mergeObjects` replaced with `mergeObjectsDeep`
 
@@ -157,7 +157,7 @@ The `mergeObjectsDeep` template function is more descriptive, and uses safer dee
 
 `mergeObjects` still exists as an alias, but may be removed in future versions so we recommend replacing it.
 
---------------------------------------------------------------------------------
+---
 
 ## New Features
 

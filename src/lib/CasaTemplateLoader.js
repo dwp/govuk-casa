@@ -1,29 +1,29 @@
-import { FileSystemLoader } from 'nunjucks';
+import { FileSystemLoader } from "nunjucks";
 
 /**
+ * @typedef {import("nunjucks").FileSystemLoaderOptions} FileSystemLoaderOptions
  * @access private
- * @typedef {import('nunjucks').FileSystemLoaderOptions} FileSystemLoaderOptions
  */
 
 /**
+ * @typedef {import("nunjucks").LoaderSource} LoaderSource
  * @access private
- * @typedef {import('nunjucks').LoaderSource} LoaderSource
  */
 
 const VALID_BLOCKS = [
-  'beforeContent',
-  'bodyEnd',
-  'bodyStart',
-  'casaPageTitle',
-  'content',
-  'footer',
-  'head',
-  'header',
-  'headIcons',
-  'journey_form',
-  'main',
-  'pageTitle',
-  'skipLink',
+  "beforeContent",
+  "bodyEnd",
+  "bodyStart",
+  "casaPageTitle",
+  "content",
+  "footer",
+  "head",
+  "header",
+  "headIcons",
+  "journey_form",
+  "main",
+  "pageTitle",
+  "skipLink",
 ];
 
 /**
@@ -33,8 +33,8 @@ const VALID_BLOCKS = [
  */
 
 /**
- * @access private
  * @augments FileSystemLoader
+ * @access private
  */
 export default class CasaTemplateLoader extends FileSystemLoader {
   #blockModifiers;
@@ -73,7 +73,9 @@ export default class CasaTemplateLoader extends FileSystemLoader {
   modifyBlock(block, modifier) {
     // Limit to only known block so the user can't do general string replacements
     if (!VALID_BLOCKS.includes(block)) {
-      throw new Error(`Block "${String(block)}" is not a recognised template block.`);
+      throw new Error(
+        `Block "${String(block)}" is not a recognised template block.`,
+      );
     }
 
     this.#blockModifiers.push({
@@ -96,7 +98,10 @@ export default class CasaTemplateLoader extends FileSystemLoader {
       const { block, modifier } = this.#blockModifiers[i];
       if (source.src.indexOf(`block ${block}`) > -1) {
         /* eslint-disable-next-line no-param-reassign */
-        source.src = source.src.replace(`block ${block} %}`, `block ${block} %}${modifier(name)}`);
+        source.src = source.src.replace(
+          `block ${block} %}`,
+          `block ${block} %}${modifier(name)}`,
+        );
       }
     }
     return source;

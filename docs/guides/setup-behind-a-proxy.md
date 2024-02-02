@@ -12,23 +12,23 @@ Given this request pathway:
 
 In this case your app will need to ...
 
-* Specify a `mountUrl` of `/app/`
-* Mount your CASA app onto the `/host/app` path
+- Specify a `mountUrl` of `/app/`
+- Mount your CASA app onto the `/host/app` path
 
 And here's the minimal setup to do that:
 
 ```javascript
-import ExpressJS from 'express';
-import { configure } from '@dwp/govuk-casa';
+import ExpressJS from "express";
+import { configure } from "@dwp/govuk-casa";
 
 // Set the specific prefix you want to appear in the browser address bar
 const { mount } = configure({
-  mountUrl: '/app/',
+  mountUrl: "/app/",
 });
 
 // Mount onto the full proxy path + mountUrl combo
 const app = ExpressJS();
-app.use('/host/app', mount(ExpressJS()));
+app.use("/host/app", mount(ExpressJS()));
 
 app.listen();
 ```
@@ -42,8 +42,8 @@ If you are using the `secure` option for sessions, then your app will by default
 In this case, you will need to tell Express to trust that the proxy is serving TLS requests:
 
 ```javascript
-import ExpressJS from 'express';
-import { configure } from '@dwp/govuk-casa';
+import ExpressJS from "express";
+import { configure } from "@dwp/govuk-casa";
 
 const { mount } = configure({
   session: {
@@ -52,11 +52,11 @@ const { mount } = configure({
 });
 
 const casaApp = ExpressJS();
-casaApp.set('trust proxy', 1);
+casaApp.set("trust proxy", 1);
 mount(casaApp);
 
 const app = ExpressJS();
-app.use('/', casaApp);
+app.use("/", casaApp);
 
 app.listen();
 ```

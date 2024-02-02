@@ -1,12 +1,12 @@
-import { stub } from 'sinon';
-import express from 'express';
-import request from 'supertest';
+import { stub } from "sinon";
+import express from "express";
+import request from "supertest";
 
-import Plan from '../../src/lib/Plan.js';
-import MutableRouter from '../../src/lib/MutableRouter.js';
-import mountFactory from '../../src/lib/mount.js';
+import Plan from "../../src/lib/Plan.js";
+import MutableRouter from "../../src/lib/MutableRouter.js";
+import mountFactory from "../../src/lib/mount.js";
 
-describe('mount()', () => {
+describe("mount()", () => {
   let factoryArgs;
 
   beforeEach(() => {
@@ -24,15 +24,15 @@ describe('mount()', () => {
       i18nMiddleware: [(req, res, next) => next()],
       bodyParserMiddleware: [(req, res, next) => next()],
       dataMiddleware: [(req, res, next) => next()],
-      postMiddleware: [(req, res) => res.status(200).send('done')],
+      postMiddleware: [(req, res) => res.status(200).send("done")],
     };
   });
 
-  describe('serving first waypoint', () => {
+  describe("serving first waypoint", () => {
     const firstWaypointTestFactory = (serveFirstWaypoint, status) => (done) => {
       // Setup
       const plan = new Plan();
-      plan.setRoute('first', 'second');
+      plan.setRoute("first", "second");
       const mount = mountFactory({
         ...factoryArgs,
         plan,
@@ -45,13 +45,20 @@ describe('mount()', () => {
       });
 
       // Assert
-      request(app)
-        .get('/')
-        .expect(status, done);
+      request(app).get("/").expect(status, done);
     };
 
-    it('does not mount a first-waypoint serving handler when the serveFirstWaypoint flag is not defined', firstWaypointTestFactory(undefined, 200));
-    it('does not mount a first-waypoint serving handler when the serveFirstWaypoint flag is false', firstWaypointTestFactory(false, 200));
-    it('mounts a first-waypoint serving handler when the serveFirstWaypoint flag is true', firstWaypointTestFactory(true, 302));
+    it(
+      "does not mount a first-waypoint serving handler when the serveFirstWaypoint flag is not defined",
+      firstWaypointTestFactory(undefined, 200),
+    );
+    it(
+      "does not mount a first-waypoint serving handler when the serveFirstWaypoint flag is false",
+      firstWaypointTestFactory(false, 200),
+    );
+    it(
+      "mounts a first-waypoint serving handler when the serveFirstWaypoint flag is true",
+      firstWaypointTestFactory(true, 302),
+    );
   });
 });

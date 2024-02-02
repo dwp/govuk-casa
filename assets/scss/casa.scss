@@ -1,6 +1,6 @@
 // Sets the mount url
 // In the CASA middleware, this will import the configured mount url dynamically.
-@import 'casaMountUrl.scss';
+@import "casaMountUrl.scss";
 
 // Import GOV.UK elements, this will import from govuk-frontend.
-@import 'govuk/all.scss';
+@import "govuk/all.scss";

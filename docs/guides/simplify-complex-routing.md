@@ -9,21 +9,42 @@ When we get to A->B, A->C, A->D, we start needing to negate all other conditions
 For example, something like this:
 
 ```javascript
-plan.setRoute('a', 'b', (r, c) => c.data['a'].conditionB && !c.data['a'].conditionC && !c.data['a'].conditionD);
-plan.setRoute('a', 'c', (r, c) => !c.data['a'].conditionB && c.data['a'].conditionC && !c.data['a'].conditionD);
-plan.setRoute('a', 'd', (r, c) => !c.data['a'].conditionB && !c.data['a'].conditionC && c.data['a'].conditionD);
+plan.setRoute(
+  "a",
+  "b",
+  (r, c) =>
+    c.data["a"].conditionB &&
+    !c.data["a"].conditionC &&
+    !c.data["a"].conditionD,
+);
+plan.setRoute(
+  "a",
+  "c",
+  (r, c) =>
+    !c.data["a"].conditionB &&
+    c.data["a"].conditionC &&
+    !c.data["a"].conditionD,
+);
+plan.setRoute(
+  "a",
+  "d",
+  (r, c) =>
+    !c.data["a"].conditionB &&
+    !c.data["a"].conditionC &&
+    c.data["a"].conditionD,
+);
 ```
 
 Could be be more easily read by refactoring the condition into a reusable function. For example:
 
 ```javascript
 const test = (r, c) => {
-  if (c.data['a'].conditionB) return r.target === 'b';
-  if (c.data['a'].conditionC) return r.target === 'c';
-  if (c.data['a'].conditionD) return r.target === 'd';
-}
+  if (c.data["a"].conditionB) return r.target === "b";
+  if (c.data["a"].conditionC) return r.target === "c";
+  if (c.data["a"].conditionD) return r.target === "d";
+};
 
-plan.setRoute('a', 'b', test);
-plan.setRoute('a', 'c', test);
-plan.setRoute('a', 'd', test);
+plan.setRoute("a", "b", test);
+plan.setRoute("a", "c", test);
+plan.setRoute("a", "d", test);
 ```

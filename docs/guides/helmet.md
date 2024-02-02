@@ -11,7 +11,7 @@ configure({
   helmetConfigurator: (config) => {
     // This will add the `data:` schema to the list of valid sources in the
     // `img-src` directive
-    config.contentSecurityPolicy.directives['img-src'].push('data:');
+    config.contentSecurityPolicy.directives["img-src"].push("data:");
     return config;
   },
 });
@@ -30,10 +30,13 @@ configure({
   helmetConfigurator: (config) => {
     // Filter out CASA's named `casaCspNonce` function, which provides the
     // nonce directive
-    config.contentSecurityPolicy.directives['style-src'] = [
-      ...config.contentSecurityPolicy.directives['style-src'],
-      '\'unsafe-inline\'',
-    ].filter((directive) => !(directive instanceof Function) || directive.name !== 'casaCspNonce');
+    config.contentSecurityPolicy.directives["style-src"] = [
+      ...config.contentSecurityPolicy.directives["style-src"],
+      "'unsafe-inline'",
+    ].filter(
+      (directive) =>
+        !(directive instanceof Function) || directive.name !== "casaCspNonce",
+    );
 
     return config;
   },

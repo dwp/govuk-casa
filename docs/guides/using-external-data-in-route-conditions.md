@@ -38,6 +38,10 @@ For example, in your pages file:
 Then in your plan file:
 
 ```javascript
-plan.setRoute('pageA', 'pageB', (r, c) => c.data['pageA'].is_customer === true);
-plan.setRoute('pageA', 'pageC', (r, c) => c.data['pageA'].is_customer === false);
+plan.setRoute("pageA", "pageB", (r, c) => c.data["pageA"].is_customer === true);
+plan.setRoute(
+  "pageA",
+  "pageC",
+  (r, c) => c.data["pageA"].is_customer === false,
+);
 ```

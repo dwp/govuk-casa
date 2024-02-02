@@ -19,8 +19,8 @@ For simplicity, each app in this example is entirely separate, but you could con
 
 Potential use cases for this pattern:
 
-* "Hub and Spoke" navigation pattern, where each Plan represents an isolated gathering journey
-* Where parts of your user journey require the user to repeatedly enter new data items in a sub-section of your Plan, you could isolate those sections as separate sub-apps and clear them down prior to sending the user back through that section again.
+- "Hub and Spoke" navigation pattern, where each Plan represents an isolated gathering journey
+- Where parts of your user journey require the user to repeatedly enter new data items in a sub-section of your Plan, you could isolate those sections as separate sub-apps and clear them down prior to sending the user back through that section again.
 
 ## Running the example
 

@@ -38,7 +38,7 @@ Not all macros make use of the translation function, but we recommend adding `wi
 If you use any of the following global template variables (available on `res.locals`), they now live within the new `casa` global variable, and you will need to modify them as shown:
 
 | Current name (`v3.x`) | New name (`v4.x`)         |
-|-----------------------|---------------------------|
+| --------------------- | ------------------------- |
 | `journeyPreviousUrl`  | `casa.journeyPreviousUrl` |
 | `casaPackageVersions` | `casa.packageVersions`    |
 | `casaMountUrl`        | `casa.mountUrl`           |

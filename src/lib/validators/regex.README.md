@@ -3,11 +3,11 @@
 Ensure that a provided values meets the rules of a regular expression.
 
 ```javascript
-import { validators } from '@dwp/govuk-casa';
+import { validators } from "@dwp/govuk-casa";
 // Minimal
 validators.regex.make({
   pattern: /^[0-9]{3}$/,
-})
+});
 ```
 
 ```javascript
@@ -22,7 +22,7 @@ validators.regex.make({
 
   // Error message
   errorMsg: {
-    summary: 'validation:rule.regex.summary',
+    summary: "validation:rule.regex.summary",
   },
-})
+});
 ```

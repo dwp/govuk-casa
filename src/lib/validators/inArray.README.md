@@ -3,16 +3,16 @@
 Test whether the field's value occurs within a predefined array.
 
 ```javascript
-import { validators } from '@dwp/govuk-casa';
+import { validators } from "@dwp/govuk-casa";
 // Minimal
 validators.inArray.make({
   // Validate if value contains any of these options
-  source: ['apples', 'pears', 'lemons'],
-})
+  source: ["apples", "pears", "lemons"],
+});
 ```
 
 ```javascript
-// All configuration optiona
+// All configuration optional
 validators.inArray.make({
   // Validate if value contains any of these options
   source: ['apples', 'pears', 'lemons']

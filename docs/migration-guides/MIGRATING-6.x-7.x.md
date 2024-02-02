@@ -17,7 +17,7 @@ The following changes are **optional**:
 
 - [Add active context ID to journey form macro](#add-active-context-id-to-form)
 
---------------------------------------------------------------------------------
+---
 
 ## Mandatory changes
 
@@ -57,11 +57,11 @@ For example, to pass in 1 week, instead of doing this:
 
 ```javascript
 r.dateObject.make({
-  beforeOffsetFromNow: moment.duration(1, 'week'),
+  beforeOffsetFromNow: moment.duration(1, "week"),
   errorMsgBeforeOffset: {
-    summary: 'Date of birth cannot be in the future'
-  }
-})
+    summary: "Date of birth cannot be in the future",
+  },
+});
 ```
 
 Do this:
@@ -70,9 +70,9 @@ Do this:
 r.dateObject.make({
   beforeOffsetFromNow: { weeks: 1 },
   errorMsgBeforeOffset: {
-    summary: 'Date of birth cannot be in the future'
-  }
-})
+    summary: "Date of birth cannot be in the future",
+  },
+});
 ```
 
 If you are working with `luxon` and want to pass in a `luxon.Duration` object you can. However, in most cases using plain objects is recommended for flexibility and simplicity.
@@ -89,8 +89,12 @@ Instead, you should only ever use `req.casa.journeyContext` and write any change
 /* OLD METHOD */
 
 // Update the request object
-req.casa.journeyContext.setDataForPage('a-waypoint-id', { /* some data */ });
-req.casa.journeyContext.setValidationErrorsForPage('a-waypoint-id', { /* errors */});
+req.casa.journeyContext.setDataForPage("a-waypoint-id", {
+  /* some data */
+});
+req.casa.journeyContext.setValidationErrorsForPage("a-waypoint-id", {
+  /* errors */
+});
 
 // Update the session with a plain object representation of the journey context
 req.session.journeyContext = req.casa.journeyContext.toObject();
@@ -103,8 +107,12 @@ req.session.save(callback);
 /* NEW METHOD */
 
 // Update the request object
-req.casa.journeyContext.setDataForPage('a-waypoint-id', { /* some data */ });
-req.casa.journeyContext.setValidationErrorsForPage('a-waypoint-id', { /* errors */});
+req.casa.journeyContext.setDataForPage("a-waypoint-id", {
+  /* some data */
+});
+req.casa.journeyContext.setValidationErrorsForPage("a-waypoint-id", {
+  /* errors */
+});
 
 // Update the session with a plain object representation of the journey context
 JourneyContext.putContext(req.session, req.casa.journeyContext);
@@ -125,7 +133,7 @@ createGetRequest({
   waypoint: `/absolute/url/to/waypoint/including/waypoint-origin`,
   skipTo: `waypoint`, // Use this to generate a "skipto" link
   editMode: true,
-  editOrigin: '/url/to/which/user/is/returned/after/editing',
+  editOrigin: "/url/to/which/user/is/returned/after/editing",
   contextId: req.casa.journeyContext.identity.id, // The current context ID
 });
 ```
@@ -149,13 +157,15 @@ The `req.editSearchParams` has been removed. This was a convenience string for a
 For example, where you once may have used it as so:
 
 ```javascript
-link = `?skipto=${waypoint}${editSearchParams}`
+link = `?skipto=${waypoint}${editSearchParams}`;
 ```
 
 You would now do this:
 
 ```javascript
-const { utils: { createGetRequest }} = require('@dwp/govuk-casa');
+const {
+  utils: { createGetRequest },
+} = require("@dwp/govuk-casa");
 
 link = createGetRequest({
   skipTo: waypoint,
@@ -197,7 +207,6 @@ validators = {
   ]),
 };
 
-
 /* NEW */
 validators = {
   field1: SimpleField([
@@ -216,12 +225,12 @@ If you have written your own custom validators, these will now need to be encaps
 module.exports = function (value, context) {
   // ... do validation and return Promise ...
   const errorMessage = this.errorMsg;
-}
+};
 ```
 
 ```javascript
 /* NEW */
-const { ValidatorFactory } = require('@dwp/govuk-casa');
+const { ValidatorFactory } = require("@dwp/govuk-casa");
 
 class MyValidator extends ValidatorFactory {
   validate(value, context) {
@@ -289,9 +298,11 @@ To enable this, simply add the `activeContextId` parameter when calling the `cas
 The `activeContextId` template variable is only available to pages rendered using CASA's get/post rendering middleware, so you will need to manually make it available to any custom forms using something like this:
 
 ```javascript
-router.get('/my-form', csrf, function(req, res, next) {
-  res.render('my-form.njk', {
-    activeContextId: req.casa.journeyContext.isDefault() ? undefined : req.casa.journeyContext.identity.id,
+router.get("/my-form", csrf, function (req, res, next) {
+  res.render("my-form.njk", {
+    activeContextId: req.casa.journeyContext.isDefault()
+      ? undefined
+      : req.casa.journeyContext.identity.id,
   });
 });
 ```

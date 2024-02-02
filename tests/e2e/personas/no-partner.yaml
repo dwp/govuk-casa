@@ -33,10 +33,10 @@ journey:
 errors:
   country:
     - messages:
-      - en: Select the country you live in.
+        - en: Select the country you live in.
   date-of-birth:
     - messages:
-       - en: Enter your date of birth.
+        - en: Enter your date of birth.
     - day: x
       month: y
       year: z
@@ -49,30 +49,30 @@ errors:
         - en: Enter a date of birth that is in the past.
   live-with-partner:
     - messages:
-      - en: Select yes if you have a partner.
+        - en: Select yes if you have a partner.
   your-name:
     - messages:
-      - en: Enter your full name.
+        - en: Enter your full name.
     - fullName: randomString(101)
       messages:
-      - en: Full name must be 100 characters or less.
+        - en: Full name must be 100 characters or less.
   your-address:
     - messages:
-      - en: Enter the building and street.
-      - en: Enter the postcode.
+        - en: Enter the building and street.
+        - en: Enter the postcode.
     - addr1: Street
       postcode: bad
       messages:
-      - en: Enter a real postcode.
+        - en: Enter a real postcode.
   your-assets:
     - messages:
-      - en: Enter the total value of your accounts or investments.
+        - en: Enter the total value of your accounts or investments.
     - assetsValue: -10
       messages:
-      - en: The total value must be greater than £0
+        - en: The total value must be greater than £0
     - assetsValue: 10000000000
       messages:
-      - en: The total value must be less than £1000000000
+        - en: The total value must be less than £1000000000
 
 templateVars:
   check-your-answers:

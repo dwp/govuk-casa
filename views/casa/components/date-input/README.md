@@ -4,8 +4,8 @@ Extends the [`govukDateInput()`](https://design-system.service.gov.uk/components
 
 Custom parameters:
 
-* `casaValue` (`object`) - the value of the date object, in `{dd: "", mm: "", yyyy: ""}` format
-* `casaErrors` - form errors (just pass `formErrors`)
+- `casaValue` (`object`) - the value of the date object, in `{dd: "", mm: "", yyyy: ""}` format
+- `casaErrors` - form errors (just pass `formErrors`)
 
 Note that the underlying GOVUK macro has no support for a `name` parameter, and instead you will need to use the `namePrefix` attribute.
 
@@ -72,11 +72,11 @@ module.exports = {
   myDateField: sf([
     r.required.make({
       errorMsg: {
-        summary: 'Your error message',
-        focusSuffix: '[dd]'
-      }
+        summary: "Your error message",
+        focusSuffix: "[dd]",
+      },
     }),
-    r.dateObject
+    r.dateObject,
   ]),
 };
 ```
@@ -107,7 +107,7 @@ You can also pass a locale:
 
 The following attributes will be attached to the error `<p>` tag if `casaWithAnalytics` is `true`:
 
-* `data-ga-question`: Holds the fieldset label's text content after removing all html tags
+- `data-ga-question`: Holds the fieldset label's text content after removing all html tags
 
 These are the conventions used by DWP.
 
