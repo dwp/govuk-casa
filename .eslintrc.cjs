@@ -7,7 +7,7 @@ module.exports = {
     "@dwp/eslint-config-base",
     "plugin:import/recommended",
     "plugin:sonarjs/recommended",
-    "plugin:security/recommended",
+    "plugin:security/recommended-legacy",
   ],
   plugins: ["import", "jsdoc", "no-unsafe-regex", "sonarjs", "security"],
   rules: {
