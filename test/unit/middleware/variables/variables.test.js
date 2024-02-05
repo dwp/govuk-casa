@@ -62,6 +62,7 @@ describe('Middleware: session/expiry', () => {
           serviceName: 'test-service_translated',
           serviceUrl: '/test-mount/',
           homepageUrl: 'https://www.gov.uk/',
+          useTudorCrown: true,
         },
       },
     });
