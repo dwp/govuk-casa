@@ -24,6 +24,7 @@ module.exports = (args) => (req, res, next) => {
         serviceName: req.i18nTranslator.t(serviceName),
         serviceUrl: mountUrl,
         homepageUrl: 'https://www.gov.uk/',
+        useTudorCrown: true,
       },
     },
   };

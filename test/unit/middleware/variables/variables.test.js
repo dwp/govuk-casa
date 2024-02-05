@@ -10,7 +10,7 @@ const logger = require('../../helpers/logger-mock.js');
 
 const mwVariables = require('../../../../middleware/variables/variables.js');
 
-describe('Middleware: session/expiry', () => {
+describe('Middleware: variables/variables', () => {
   let mockLogger;
   let mockRequest;
   let mockResponse;
@@ -62,6 +62,7 @@ describe('Middleware: session/expiry', () => {
           serviceName: 'test-service_translated',
           serviceUrl: '/test-mount/',
           homepageUrl: 'https://www.gov.uk/',
+          useTudorCrown: true,
         },
       },
     });
