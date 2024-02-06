@@ -1,23 +1,25 @@
 include:
-  - project: dwp/engineering/gitlab-ci-toolbox
-    ref: 3.x.x
-    file: blueprints/node.yml
+  - project: dwp/engineering/pipeline-solutions/gitlab/functions
+    ref: 4.17.4
+    file:
+      - functions/node.yml
+      - functions/auto-tag-merge.yml
 
 variables:
   NODE_IMAGE: node:10.18.1-alpine@sha256:60f531bebdb8023a1ecdcbb4ea5658eb499c1c71b4255ccbddf2d0277c947f93
+  NODE_PUBLISH_TO_GITLAB: "true"
+  NODE_PUBLISH_TO_NPMJS: "true"
+  AUTO_TAG_MERGE_PREPARE_MR: "true"
+  AUTO_TAG_MERGE_TAG_BRANCH: "maintain/5.x"
 
-# ---------------------------------------------------------- blueprint overrides 
+# ------------------------------------------------------------------ custom jobs
 
-# The unit tests rely on sources in dist/, and the `prepare` npm script will
-# throw a "cannot run in wd" failure due to permissions (in the blueprint,
-# `npm ci` is run as root, so we either need `--unsafe-perm` or run manually).
-# So we run that manually.
-node-modules:
-  after_script:
-    - npm run prepare
-  artifacts:
-    expire_in: 1 day
-    paths:
-      - artifact.tgz
-      - node_modules/
-      - dist/
+# Manipulate publishing process to Gitlab
+node-publish-gitlab:
+  variables:
+    NPM_PUBLISH_TAG: "maintain5x"
+
+# Use a version-specific branch name for auto-packaging
+auto-tag-merge-prepare-mr:
+  variables:
+    MR_BRANCH: chore/auto-package-v5
