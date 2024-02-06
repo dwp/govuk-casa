@@ -18,6 +18,11 @@ variables:
 node-publish-gitlab:
   variables:
     NPM_PUBLISH_TAG: "maintain5x"
+  before_script:
+    # Need to install a slightly newer npm version in order to support the
+    # `--location` cli option (min v7), which is used in the
+    # `.node-publish-package-template` job template.
+    - npm i -g npm@7.24.2
 
 # Use a version-specific branch name for auto-packaging
 auto-tag-merge-prepare-mr:
