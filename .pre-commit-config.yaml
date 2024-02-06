@@ -123,4 +123,4 @@ repos:
     hooks:
       - id: prettier
         additional_dependencies:
-          - prettier@3.2.4
+          - prettier@3.2.5
