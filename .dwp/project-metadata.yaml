@@ -4,10 +4,10 @@ project:
   - project_id: "26878543"
     component_name: govuk-casa
     version: 8.14.3
-    cmdb_id: null
+    cmdb_id: https://engineering.dwp.gov.uk/policies/engineering-policies/ep-3/
     last_verified:
-      date: "2024-01-17"
+      date: "2024-02-06"
       name: james.gauld
     tags:
-      payments: null
-      personally_identifying_information: null
+      payments: false
+      personally_identifying_information: false
