@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [5.3.1](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/-/compare/5.3.0...5.3.1) (2024-02-06)
+
 ## [5.3.0](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/-/compare/5.2.4...5.3.0) (2024-02-06)
 
 ### Features
