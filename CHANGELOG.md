@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [7.2.0](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/-/compare/7.1.16...7.2.0) (2024-02-06)
+
+### Features
+
+- enable tudor crown ([f47e531](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/-/commit/f47e531246609dc9b3dd5a4c65c00e8f97b7c42b))
+
 ## [7.1.16](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/-/compare/7.1.15...7.1.16) (2024-01-16)
 
 ## [7.1.15](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/compare/7.1.14...7.1.15) (2023-06-04)
