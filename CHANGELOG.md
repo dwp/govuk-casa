@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [9.2.0](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/-/compare/9.1.0...9.2.0) (2024-02-13)
+
+### Features
+
+* add JourneyContext.setSkipped() and JourneyContext.isSkipped() ([3edc37c](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/-/commit/3edc37c8d29aa0f3eafbe132637c9e2344b2c0c7))
+
 ## [9.1.0](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/-/compare/9.0.0...9.1.0) (2024-02-06)
 
 ### Features
