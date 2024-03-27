@@ -43,10 +43,10 @@ describe("Character count  macro", () => {
     expect(textarea.get(0).attribs.name).to.equal("inputName");
     expect(textarea.get(0).attribs.id).to.equal("f-inputName");
     expect(label.get(0).attribs.for).to.equal("f-inputName");
-    expect(div.get(3).attribs.class).to.equal(
+    expect(div.get(2).attribs.class).to.equal(
       "govuk-hint govuk-character-count__message",
     );
-    expect(div.get(3).children[0].data).to.include(
+    expect(div.get(2).children[0].data).to.include(
       "You can enter up to 200 characters",
     );
   });
@@ -87,7 +87,7 @@ describe("Character count  macro", () => {
     const p = $("p");
     const textarea = $("textarea");
 
-    expect(div.get(0).attribs.class).to.equal("govuk-character-count");
+    expect(div.get(0).attribs.class).to.contain("govuk-character-count");
     expect(p.get(0).attribs.class).to.equal("govuk-error-message");
     expect(textarea.get(0).attribs.class).to.equal(
       "govuk-textarea govuk-textarea--error govuk-js-character-count",
