@@ -7,4 +7,3 @@ docs/api/
 node_modules/
 examples/**/package-lock.json
 markdownlint-cli2-codequality.json
-
