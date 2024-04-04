@@ -30,13 +30,13 @@
     "url": "git@github.com:dwp/govuk-casa.git"
   },
   "dependencies": {
-    "@dagrejs/graphlib": "2.1.13",
+    "@dagrejs/graphlib": "2.2.1",
     "body-parser": "1.20.2",
     "colors": "1.4.0",
     "csurf": "1.11.0",
     "debug": "4.3.4",
     "dot-object": "2.1.4",
-    "fast-copy": "3.0.1",
+    "fast-copy": "3.0.2",
     "fs-extra": "11.2.0",
     "govuk_template_jinja": "0.26.0",
     "govuk-frontend": "3.15.0",
@@ -68,7 +68,7 @@
     "eslint": "8.56.0",
     "eslint-plugin-no-unsafe-regex": "1.0.0",
     "eslint-plugin-sonarjs": "0.23.0",
-    "express": "4.18.2",
+    "express": "4.19.2",
     "express-session": "1.18.0",
     "husky": "8.0.3",
     "jsdom": "22.1.0",
@@ -83,7 +83,7 @@
     "yargs": "17.7.2"
   },
   "peerDependencies": {
-    "express": "4.18.2",
+    "express": "4.19.2",
     "express-session": "1.18.0"
   },
   "scripts": {
