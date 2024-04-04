@@ -1,6 +1,6 @@
 include:
   - project: dwp/engineering/pipeline-solutions/gitlab/functions
-    ref: 4.17.5
+    ref: 4.17.9
     file:
       - functions/node.yml
       - functions/auto-tag-merge.yml
@@ -11,6 +11,7 @@ variables:
   NODE_PUBLISH_TO_NPMJS: "true"
   AUTO_TAG_MERGE_TAG_BRANCH: "maintain/6.x"
   AUTO_TAG_MERGE_PREPARE_MR: "true"
+  DWP_FF_POLICY_DEV211: "true"
 
 # ---------------------------------------------------------- blueprint overrides
 
