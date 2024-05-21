@@ -92,3 +92,36 @@ app.listen();
 To get the most out of this setup, you will want to link the Plans via some `url://` waypoint references.
 
 See the [multiapp example app](../../examples/multiapp/) to see this in action.
+
+## Sub-apps with different cookie settings
+
+You may wish to run a sub-app that uses an entirely different cookie to hold information about its session. For example, its name or path is different between sub-apps.
+
+In these cases, you _must_ use a different _instance_ of the session `store`. Note that each `store` instance can connect to same backing persistence store, using the same credentials for example, but the instances in code must be separate.
+
+For example:
+
+```js
+import ExpressJS from "express";
+import { configure } from "@dwp/govuk-casa";
+
+function createApp(sessionName) {
+  const { mount } = configure({
+    session: {
+      store: createNewStoreInstance(), // e.g. might create a new RedisStore instance
+      name: sessionName,
+    },
+  });
+  const app = ExpressJS();
+  return mount(app);
+}
+
+const app1 = createApp("app-1");
+const app2 = createApp("app-2");
+
+const parent = ExpressJS();
+parent.use("/one/", app1);
+parent.use("/two/", app2);
+
+app.listen();
+```
