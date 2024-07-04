@@ -71,7 +71,7 @@
     "@babel/core": "7.24.7",
     "@babel/eslint-parser": "7.24.7",
     "@babel/preset-env": "7.24.7",
-    "@ckeditor/jsdoc-plugins": "39.6.3",
+    "@ckeditor/jsdoc-plugins": "40.2.3",
     "@commitlint/config-conventional": "19.2.2",
     "@dwp/casa-spiderplan": "4.0.0",
     "@dwp/casa-spiderplan-a11y-plugin": "1.0.0",
