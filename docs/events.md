@@ -5,7 +5,7 @@ Whenever changes are made to your Journey Context, and placed in session via the
 - `waypoint-change`: Data has changed on a waypoint (you can also filter by a specific field)
 - `context-change`: The whole context has been updated (this happens after all `waypoint-change` events have completed)
 
-You can attach listeners to these events as so:
+You can attach listeners to these events as so (**note that asynchronous listeners are _not_ supported**):
 
 ```javascript
 configure({
@@ -47,6 +47,8 @@ Where:
 - `previousContext` is a snapshot of the context as it was at the beginning of the request lifecycle, and
 - `session` the current session to which the change has been written
 - `userInfo` (default = undefined) an object holding general data that _may_ have been passed through from point at which the event was triggered (read more below)
+
+Note that each event listener function **MUST** be synchronous. The events may be triggered multiple times throughout each request lifecycle so are _not_ suitable for asynchronous operations.
 
 Note that the `waypoint-change` events are only triggered if data has actually _changed_. If there was no data previously stored for a waypoint, then no event is triggered. If you need an alternative to this mechanism, then consider using the `context-change` event instead as this will be triggered on _every_ persisted change to the context.
 
