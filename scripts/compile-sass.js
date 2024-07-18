@@ -5,7 +5,7 @@
  *  node compile-sass.js.
  */
 
-import sass from 'sass';
+import * as sass from 'sass';
 import { writeFile } from 'fs/promises';
 
 const { renderSync } = sass;
