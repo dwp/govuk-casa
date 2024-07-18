@@ -30,11 +30,11 @@
     "url": "git@github.com:dwp/govuk-casa.git"
   },
   "dependencies": {
-    "@dagrejs/graphlib": "2.2.1",
+    "@dagrejs/graphlib": "2.2.3",
     "body-parser": "1.20.2",
     "colors": "1.4.0",
     "csurf": "1.11.0",
-    "debug": "4.3.4",
+    "debug": "4.3.5",
     "fast-copy": "3.0.2",
     "fs-extra": "10.1.0",
     "govuk_template_jinja": "0.26.0",
@@ -46,7 +46,7 @@
     "object-resolve-path": "1.1.1",
     "serve-favicon": "2.5.0",
     "uid-safe": "2.1.5",
-    "validator": "13.11.0"
+    "validator": "13.12.0"
   },
   "devDependencies": {
     "@commitlint/cli": "18.6.0",
