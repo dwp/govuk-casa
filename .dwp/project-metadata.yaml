@@ -6,7 +6,7 @@ project:
     version: 8.15.2
     cmdb_id: https://engineering.dwp.gov.uk/policies/engineering-policies/ep-3/
     last_verified:
-      date: "2024-04-04"
+      date: "2024-07-18"
       name: james.gauld
     tags:
       payments: false
