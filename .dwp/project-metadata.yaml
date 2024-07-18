@@ -6,7 +6,7 @@ project:
     version: 9.2.3
     cmdb_id: unallocated
     last_verified:
-      date: "2024-05-24"
+      date: "2024-07-18"
       name: james.gauld
     tags:
       payments: false
