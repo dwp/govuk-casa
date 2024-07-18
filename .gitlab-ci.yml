@@ -42,10 +42,23 @@ e2e-dast:
     # The image is broken from `owasp/zap2docker-stable:s2023-02-06` onwards,
     # which conincides with when ZAP starts to build multi-platform images.
     # DO NOT UPDATE THIS IMAGE UNTIL SOURCES ARE FIXED.
-    - name: owasp/zap2docker-stable@sha256:072670c616a33c5a5d985a8790738de76191d4e3222e19dc19f50026b5440436
+    - name: ghcr.io/zaproxy/zaproxy:bare@sha256:24a4037a3e8607d9fedbd75e4a7f1336d11998e1c331aab9991ef074f5de4b22
       alias: zap
       entrypoint: ["zap.sh"]
-      command: ["-daemon", "-host", "0.0.0.0", "-port", "8080", "-config", "api.key=secret", "-config", "api.addrs.addr.name=.*", "-config", "api.addrs.addr.regex=true"]
+      command:
+        [
+          "-daemon",
+          "-host",
+          "0.0.0.0",
+          "-port",
+          "8080",
+          "-config",
+          "api.key=secret",
+          "-config",
+          "api.addrs.addr.name=.*",
+          "-config",
+          "api.addrs.addr.regex=true",
+        ]
   variables:
     # ref: https://docs.gitlab.com/runner/executors/docker.html#create-a-network-for-each-job
     # Required so ZAP can connect to servers being spun up in this build container
