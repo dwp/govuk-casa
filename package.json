@@ -90,7 +90,7 @@
     "eslint-plugin-jsdoc": "48.7.0",
     "eslint-plugin-no-unsafe-regex": "1.0.0",
     "eslint-plugin-security": "2.1.1",
-    "eslint-plugin-sonarjs": "0.24.0",
+    "eslint-plugin-sonarjs": "0.25.1",
     "fast-check": "3.20.0",
     "jsdoc": "4.0.3",
     "jsdoc-tsimport-plugin": "1.0.5",
