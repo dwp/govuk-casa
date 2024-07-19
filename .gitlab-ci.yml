@@ -2,8 +2,8 @@ include:
   - project: dwp/engineering/pipeline-solutions/gitlab/functions
     ref: next
     file:
-      - functions/node.yml
-      - functions/auto-tag-merge.yml
+      - functions/node.gitlab-ci.yml
+      - functions/auto-tag-merge.gitlab-ci.yml
 
 variables:
   NODE_IMAGE: node:20.11.0@sha256:fd0115473b293460df5b217ea73ff216928f2b0bb7650c5e7aa56aae4c028426
