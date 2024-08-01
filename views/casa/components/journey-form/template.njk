@@ -20,7 +20,7 @@
       }) }}
 
       {% if params.inEditMode %}
-        <a href="{{ params.editOriginUrl }}" class="govuk-link govuk-link--no-visited-state">{{ t('common:form.buttons.cancel.label') }}</a>
+        <a href="{{ params.editCancelUrl if params.editCancelUrl else params.editOriginUrl }}" class="govuk-link govuk-link--no-visited-state">{{ t('common:form.buttons.cancel.label') }}</a>
       {% endif %}
     </div>
   {% endif %}

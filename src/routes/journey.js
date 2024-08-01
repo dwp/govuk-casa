@@ -42,6 +42,7 @@ const renderMiddlewareFactory = (view, contextFactory) => [
       // Common template variables for both GET and POST requests
       inEditMode: req.casa.editMode,
       editOriginUrl: req.casa.editOrigin,
+      editCancelUrl: generateEditCancelUrl(req.casa.editOrigin, req.casa.waypoint),
       activeContextId: req.casa.journeyContext.identity.id,
       ...contextFactory(req),
     }, (err, templateString) => {
@@ -65,6 +66,13 @@ const generateGovukErrors = (errors, req) => Object.values(errors || {}).map(([e
   text: req.t(error.summary, error.variables),
   href: error.fieldHref,
 }))
+
+const generateEditCancelUrl = (editOrigin, waypoint) => {
+  const url = new URL(editOrigin, 'https://placeholder.test/');
+  url.searchParams.set('editcancel', waypoint);
+  return `${url.pathname}${url.search}`;
+};
+
 /**
  * handle errorVisibility flag and function and return boolean
  *
