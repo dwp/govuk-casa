@@ -1,0 +1,12 @@
+pageTitle: Personal details
+h1: Personal details
+field:
+  firstName:
+    label: First name
+    empty: Enter first name
+  lastName:
+    label: Last name
+    empty: Enter last name
+  nino:
+    label: National Insurance number
+    empty: Enter your National Insurance number

@@ -1,0 +1,52 @@
+{% extends "layouts/journey.njk" %}
+
+{# CASA wrapper macros #}
+{% from "casa/components/input/macro.njk" import casaGovukInput with context %}
+
+{% block casaPageTitle %}
+  {{ t('personal-details:pageTitle') }}
+{% endblock %}
+
+
+{% block journey_form %}
+  <h1 class="govuk-heading-xl">
+    {{ t('personal-details:h1') }}
+  </h1>
+
+  <p class="govuk-body">
+    This page demonstrates a few commonly used fields, along with some basic validation, which will be used to populate a <a href="https://design-system.dwp.gov.uk/components/key-details-bar/" class="govuk-link">key details bar</a>.
+  </p>
+
+  {{ casaGovukInput({
+    name: 'firstName',
+    value: formData['firstName'],
+    label: {
+      text: t('personal-details:field.firstName.label'),
+      classes: 'govuk-label--m'
+    },
+    classes: 'govuk-!-width-one-half',
+    casaErrors: formErrors
+  }) }}
+
+  {{ casaGovukInput({
+    name: 'lastName',
+    value: formData.lastName,
+    label: {
+      text: t('personal-details:field.lastName.label'),
+      classes: 'govuk-label--m'
+    },
+    classes: 'govuk-!-width-one-half',
+    casaErrors: formErrors
+  }) }}
+
+  {{ casaGovukInput({
+    name: 'nino',
+    value: formData.nino,
+    label: {
+      text: t('personal-details:field.nino.label'),
+      classes: 'govuk-label--m'
+    },
+    classes: 'govuk-input--width-10',
+    casaErrors: formErrors
+  }) }}
+{% endblock %}

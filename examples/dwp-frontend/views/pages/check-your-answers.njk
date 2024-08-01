@@ -1,0 +1,35 @@
+{% extends "layouts/journey.njk" %}
+
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% set buttonBarHidden = true %}
+
+{% block casaPageTitle %}
+  {{ t('check-your-answers:pageTitle') }}
+{% endblock %}
+
+
+{% block journey_form %}
+  <h1 class="govuk-heading-xl">{{ t('check-your-answers:pageTitle') }}</h1>
+
+    <h2 class="govuk-heading-l">{{ t('personal-details:h1') }}</h2>
+
+    {{ govukSummaryList({
+      classes: "govuk-!-margin-bottom-9",
+      rows: [
+        {
+            key: { text: t('personal-details:field.firstName.label') },
+            value: { text: personalData.firstName }
+        },
+        {
+            key: { text: t('personal-details:field.lastName.label') },
+            value: { text: personalData.lastName }
+        },
+        {
+            key: { text: t('personal-details:field.nino.label') },
+            value: { text: personalData.nino }
+        }
+      ]
+    }) }}
+
+{% endblock %}

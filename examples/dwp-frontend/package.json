@@ -1,0 +1,26 @@
+{
+  "name": "govuk-casa-barebones-example-width-dwp-frontend",
+  "version": "1.0.0",
+  "description": "CASA example: barebones application with dwp frontend",
+  "keywords": [],
+  "license": "ISC",
+  "author": "DWP Digital",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "compile:sass": "sass ./assets/dwp-frontend.scss ./assets/dwp-frontend.css",
+    "compile:js": "esbuild ./assets/govuk-dwp-frontend.js --bundle --minify --outfile=./assets/govuk-dwp-frontend.min.js",
+    "start": "node server.js",
+    "dev": "DEBUG=casa:* nodemon server.js"
+  },
+  "dependencies": {
+    "@dwp/dwp-frontend": "2.7.0",
+    "@dwp/govuk-casa": "^9.0.0",
+    "express": "4.19.2"
+  },
+  "devDependencies": {
+    "esbuild": "0.21.5",
+    "nodemon": "3.1.3",
+    "sass": "1.77.4"
+  }
+}

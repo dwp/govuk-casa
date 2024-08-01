@@ -1,0 +1,11 @@
+// @dwp/dwp-frontend: set internal font to Arial
+// If you are using this as an internal system - you must not use the GDS transport font
+// https://designnotes.blog.gov.uk/2015/03/11/can-i-use-the-gov-uk-fonts/
+$govuk-font-family: Arial, sans-serif;
+
+// @dwp/dwp-frontend: include all base govuk styles
+@import "../node_modules/govuk-frontend/dist/govuk/all.scss";
+
+// @dwp/dwp-frontend: included addtional imports from the https://design-system.dwp.gov.uk/index
+@import "../node_modules/@dwp/dwp-frontend/components/internal-service-header/_internal-service-header.scss";
+@import "../node_modules/@dwp/dwp-frontend/components/key-details-bar/_key-details-bar.scss";

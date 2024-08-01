@@ -1,0 +1,29 @@
+{% extends "casa/layouts/main.njk" %}
+
+{% from "components/internal-service-header/macro.njk" import dwpHeader %}
+{% from "components/internal-service-footer/macro.njk" import dwpFooter %}
+
+{% block header %}
+{{
+    dwpHeader({
+        serviceName: t('common:serviceName') if t else '',
+        serviceUrl: casa.mountUrl,
+        container: true
+    })
+}}
+{% endblock %}
+
+{% block head %}
+  {% include "partials/styles.njk" %}
+{% endblock %}
+
+{% block bodyEnd %}
+  {# @dwp/dwp-frontend: custom asset include based on /assets/govuk-dwp-frontend.min.js #}
+  {% include "partials/scripts.njk" %}
+{% endblock %}
+
+{% block footer %}
+{{
+    dwpFooter()
+}}
+{% endblock %}

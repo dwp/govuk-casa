@@ -1,0 +1,74 @@
+{% extends "casa/layouts/journey.njk" %}
+
+{% from "components/internal-service-header/macro.njk" import dwpHeader %}
+{% from "components/internal-service-footer/macro.njk" import dwpFooter %}
+{% from "components/key-details-bar/macro.njk" import dwpKeyDetailsBar %}
+
+{% block header %}
+{# @dwp/dwp-frontend: override of header for internal system #}
+{{
+    dwpHeader({
+        serviceName: t('common:serviceName') if t else '',
+        serviceUrl: casa.mountUrl,
+        container: true
+    })
+}}
+{# @dwp/dwp-frontend: example of a key details bar if loaded hook example #}
+{% if personalData %}
+  {{ 
+      dwpKeyDetailsBar({
+          primaryIdentifier: {
+              text: 'Name:',
+              value: personalData.firstName + " " + personalData.lastName 
+          },
+          secondaryIdentifier: {
+              text: 'National Insurance Number:',
+              value: personalData.nino
+          }
+      })
+  }}
+{% endif %}
+{% endblock %}
+
+{% block head %}
+  {# @dwp/dwp-frontend: custom asset include based on /assets/dwp-frontend.css #}
+  {% include "partials/styles.njk" %}
+{% endblock %}
+
+
+{% block bodyEnd %}
+  {# @dwp/dwp-frontend: custom asset include based on /assets/govuk-dwp-frontend.min.js #}
+  {% include "partials/scripts.njk" %}
+{% endblock %}
+
+
+{# A default content block. Override this if you want a customised form #}
+{% block content %}
+  {% if formErrorsGovukArray %}
+    {{ govukErrorSummary({
+      titleText: t("error:summary.h1"),
+      descriptionText: errorDescription or t('error:summary.defaultDescription'),
+      errorList: formErrorsGovukArray
+    }) }}
+  {% endif %}
+
+  {% call casaJourneyForm({
+    formUrl: formUrl,
+    csrfToken: casa.csrfToken,
+    inEditMode: inEditMode,
+    editOriginUrl: editOriginUrl,
+    activeContextId: activeContextId,
+    buttonBarHidden: buttonBarHidden | d(false)
+  }) %}
+    {% block journey_form %}{% endblock %}
+  {% endcall %}
+{% endblock %}
+
+
+
+{% block footer %}
+{# @dwp/dwp-frontend: override of footer for internal system example #}
+{{
+    dwpFooter()
+}}
+{% endblock %}
