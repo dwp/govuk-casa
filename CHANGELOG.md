@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [9.3.0](https://github.com/dwp/govuk-casa/-/compare/9.2.4...9.3.0) (2024-08-07)
+
+### Features
+
+* add source of edit cancellation ([006bebf](https://github.com/dwp/govuk-casa/-/commit/006bebfc814d9e7abddf9ee9721211191f3d43aa))
+
 ## [9.2.4](https://github.com/dwp/govuk-casa/-/compare/9.2.3...9.2.4) (2024-07-18)
 
 ## [9.2.3](https://github.com/dwp/govuk-casa/compare/9.2.2...9.2.3) (2024-07-05)
