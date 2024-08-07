@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [8.16.0](https://github.com/dwp/govuk-casa/-/compare/8.15.3...8.16.0) (2024-08-07)
+
+### Features
+
+- add source of edit cancellation ([28a5746](https://github.com/dwp/govuk-casa/-/commit/28a574651f27d55c6583c71042f88ada42cb7cb2))
+
 ## [8.15.3](https://github.com/dwp/govuk-casa/-/compare/8.15.2...8.15.3) (2024-07-18)
 
 ## [8.15.2](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/-/compare/8.15.1...8.15.2) (2024-04-04)
