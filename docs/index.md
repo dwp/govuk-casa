@@ -29,6 +29,7 @@ Guides
 - [Using external data in route conditions](guides/using-external-data-in-route-conditions.md)
 - [Simplify complex routing](guides/simplify-complex-routing.md)
 - [Configuring error visibility on pages](guides/error-visibility.md)
+- [Edit mode](guides/edit-mode.md)
 
 ## API Reference
 

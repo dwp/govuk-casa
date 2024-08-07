@@ -13,10 +13,11 @@ A "Continue" button (and "Cancel" link if in edit mode) will also be added.
 {% from "casa/components/journey-form/macro.njk" import casaJourneyForm with context %}
 
 {% call casaJourneyForm({
-  formUrl: '/form/url',
+  formUrl: formUrl,
   csrfToken: casa.csrfToken,
-  inEditMode: true,
-  editOriginUrl: '/url/to/review/page',
+  inEditMode: inEditMode,
+  editOriginUrl: editOriginUrl,
+  editCancelUrl: editCancelUrl,
   activeContextId: activeContextId,
   buttonBarHidden: false
 }) %}
@@ -75,6 +76,7 @@ Note that the submit button is configured to prevent double-clicks and avoid dup
 | `csrfToken`       | string  | Yes      | Token used to protect form from CSRF (available to user's templates via the global `casa.csrfToken` variable)                                                                           |
 | `inEditMode`      | boolean | No       | Toggle edit-mode of the form (available to page templates using default GET/POST handlers via the local `inEditMode` variable)                                                          |
 | `editOriginUrl`   | string  | No       | Absolute URL to the page from which the edit request came (defaults to `review`) (available to user's templates using default GET/POST handlers via the local `editOriginUrl` variable) |
+| `editCancelUrl`   | string  | No       | Absolute URL to the page that will cancel edit mode. Usually the same as `editorigin` with `?editcancel=<waypoint-that-cancelled>` appended (default: same as `editorigin`) |
 | `activeContextId` | string  | No       | ID of the active context to save data into. Won't be present if the "default" context is active                                                                                         |
 | `buttonBarHidden` | boolean | No       | Toggle the rendering of the bar containing the "Continue" button and "Cancel" link.Useful if you want to render your own buttons                                                        |
 | `buttonText`      | string  | No       | Overrides default button text i.e Save changes. If you need to retain the save changes switch you will need to add this logic                                                           |
