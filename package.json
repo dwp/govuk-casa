@@ -88,7 +88,6 @@
     "eslint": "8.57.0",
     "eslint-plugin-import": "2.30.0",
     "eslint-plugin-jsdoc": "48.7.0",
-    "eslint-plugin-no-unsafe-regex": "1.0.0",
     "eslint-plugin-security": "2.1.1",
     "eslint-plugin-sonarjs": "0.25.1",
     "fast-check": "3.22.0",

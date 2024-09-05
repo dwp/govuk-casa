@@ -78,17 +78,6 @@ repos:
           - markdownlint-rule-titlecase
           - markdownlint-cli2-formatter-codequality
 
-  # - repo: https://github.com/pre-commit/mirrors-eslint
-  #   rev: v8.35.0
-  #   hooks:
-  #     - id: eslint
-  #       additional_dependencies:
-  #         - eslint@8.57.0
-  #         - "@dwp/eslint-config-base"
-  #         - eslint-plugin-no-unsafe-regex
-  #         - eslint-plugin-security
-  #         - eslint-plugin-sonarjs
-
   - repo: https://gitlab.com/adam-moss/pre-commit-trailer
     rev: v1.1.0
     hooks:
