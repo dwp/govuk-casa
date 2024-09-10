@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [7.2.3](https://github.com/dwp/govuk-casa/-/compare/7.2.2...7.2.3) (2024-09-10)
+
 ## [7.2.2](https://github.com/dwp/govuk-casa/-/compare/7.2.1...7.2.2) (2024-07-18)
 
 ## [7.2.1](https://gitlab.com/dwp/engineering/capture-and-submit-application/govuk-casa/-/compare/7.2.0...7.2.1) (2024-04-04)
@@ -178,23 +180,17 @@ All notable changes to this project will be documented in this file. See [commit
 
 - package SCSS files for users who wish to compile their own CSS ([79bd972](https://github.com/dwp/govuk-casa/commit/79bd972b100665553c7420c2161b5db02dd08ba6))
 
-
-
 ## [6.6.1](https://github.com/dwp/govuk-casa/compare/6.6.0...6.6.1) (2020-06-02)
 
 ### Performance Improvements
 
 - moment is slow so removing from session expiry which is a hot path ([8c63f8d](https://github.com/dwp/govuk-casa/commit/8c63f8d))
 
-
-
 ## [6.6.0](https://github.com/dwp/govuk-casa/compare/6.5.0...6.6.0) (2020-05-26)
 
 ### Features
 
 - add current language to journey context ([5b3e682](https://github.com/dwp/govuk-casa/commit/5b3e682))
-
-
 
 ## [6.5.0](https://github.com/dwp/govuk-casa/compare/6.4.1...6.5.0) (2020-05-13)
 
@@ -212,15 +208,11 @@ All notable changes to this project will be documented in this file. See [commit
 - unnecessary spread ([b1565ed](https://github.com/dwp/govuk-casa/commit/b1565ed))
 - wrap main code to avoid validating options every on every call ([9dfbcde](https://github.com/dwp/govuk-casa/commit/9dfbcde))
 
-
-
 ## [6.4.1](https://github.com/dwp/govuk-casa/compare/6.4.0...6.4.1) (2020-05-05)
 
 ### Performance Improvements
 
 - user faster clone when reading page data ([45ba9e4](https://github.com/dwp/govuk-casa/commit/45ba9e4))
-
-
 
 ## [6.4.0](https://github.com/dwp/govuk-casa/compare/6.3.2...6.4.0) (2020-05-04)
 
@@ -228,19 +220,13 @@ All notable changes to this project will be documented in this file. See [commit
 
 - add option to check validation state during traversal ([210dfb0](https://github.com/dwp/govuk-casa/commit/210dfb0)), closes [#118](https://github.com/dwp/govuk-casa/issues/118)
 
-
-
 ## [6.3.2](https://github.com/dwp/govuk-casa/compare/6.3.1...6.3.2) (2020-04-28)
-
-
 
 ## [6.3.1](https://github.com/dwp/govuk-casa/compare/6.3.0...6.3.1) (2020-04-24)
 
 ### Bug Fixes
 
 - changelog typo ([9f3103a](https://github.com/dwp/govuk-casa/commit/9f3103a))
-
-
 
 ## [6.3.0](https://github.com/dwp/govuk-casa/compare/6.2.0...6.3.0) (2020-04-24)
 
@@ -253,8 +239,6 @@ All notable changes to this project will be documented in this file. See [commit
 - label graph edges with routing function name ([ddba1ba](https://github.com/dwp/govuk-casa/commit/ddba1ba))
 - **components:** add wrapper for govukCharacterCount component ([0f4d54a](https://github.com/dwp/govuk-casa/commit/0f4d54a))
 
-
-
 ## [6.2.0](https://github.com/dwp/govuk-casa/compare/6.1.0...6.2.0) (2020-04-22)
 
 ### Bug Fixes
@@ -265,16 +249,12 @@ All notable changes to this project will be documented in this file. See [commit
 
 - add means to access Plan's raw graph structure ([650a0a7](https://github.com/dwp/govuk-casa/commit/650a0a7))
 
-
-
 ## [6.1.0](https://github.com/dwp/govuk-casa/compare/6.0.0...6.1.0) (2020-04-21)
 
 ### Features
 
 - add proxyMountUrl to support proxying servers ([f8ce731](https://github.com/dwp/govuk-casa/commit/f8ce731))
 - **templates:** add Google Tag Manager attributes to radio/checkboxes ([7d36f9b](https://github.com/dwp/govuk-casa/commit/7d36f9b)), closes [#116](https://github.com/dwp/govuk-casa/issues/116)
-
-
 
 ## [6.0.0](https://github.com/dwp/govuk-casa/compare/5.2.2...6.0.0) (2020-03-26)
 
@@ -302,15 +282,11 @@ All notable changes to this project will be documented in this file. See [commit
   will need to be modified to continue working as expected. See MIGRATING-5.x-6.x.md
   for details on these changes.
 
-
-
 ## [5.2.2](https://github.com/dwp/govuk-casa/compare/5.2.1...5.2.2) (2020-03-16)
 
 ### Bug Fixes
 
 - **ci:** include locale specifically when running zap ([677a575](https://github.com/dwp/govuk-casa/commit/677a575))
-
-
 
 ## [5.2.1](https://github.com/dwp/govuk-casa/compare/5.2.0...5.2.1) (2020-01-15)
 
@@ -318,15 +294,11 @@ All notable changes to this project will be documented in this file. See [commit
 
 - traverse to correct page after edit if linear journey is shortened ([6d3beb2](https://github.com/dwp/govuk-casa/commit/6d3beb2))
 
-
-
 ## [5.2.0](https://github.com/dwp/govuk-casa/compare/5.1.0...5.2.0) (2019-12-05)
 
 ### Features
 
 - stop traversal beyond a given editorigin ([9228cb5](https://github.com/dwp/govuk-casa/commit/9228cb5))
-
-
 
 ## [5.1.0](https://github.com/dwp/govuk-casa/compare/5.1.0-beta.3...5.1.0) (2019-11-08)
 
@@ -376,15 +348,11 @@ All notable changes to this project will be documented in this file. See [commit
 
 - **plan:** add option to stop traversal early when conditions are met ([c4ab26e](https://github.com/dwp/govuk-casa/commit/c4ab26e))
 
-
-
 ## [5.0.1](https://github.com/dwp/govuk-casa/compare/5.0.0...5.0.1) (2019-09-08)
 
 ### Bug Fixes
 
 - strip invalid characters from editorigin ([0a9d8a8](https://github.com/dwp/govuk-casa/commit/0a9d8a8))
-
-
 
 ## [5.0.0](https://github.com/dwp/govuk-casa/compare/5.0.0-alpha.4...5.0.0) (2019-08-15)
 
@@ -409,27 +377,17 @@ All notable changes to this project will be documented in this file. See [commit
 - The UserJourney.\* classes are no longer supported and existing journey
   definitions will need to be modified to use the new `Plan` class.
 
-
-
 ## [4.0.5](https://github.com/dwp/govuk-casa/compare/4.0.4...4.0.5) (2019-07-24)
-
-
 
 ## [4.0.4](https://github.com/dwp/govuk-casa/compare/4.0.3...4.0.4) (2019-07-13)
 
-
-
 ## [4.0.3](https://github.com/dwp/govuk-casa/compare/4.0.2...4.0.3) (2019-07-01)
-
-
 
 ## [4.0.2](https://github.com/dwp/govuk-casa/compare/4.0.1...4.0.2) (2019-05-28)
 
 ### Bug Fixes
 
 - **journey:** obey conditional on very first waypoint in journey ([4145df0](https://github.com/dwp/govuk-casa/commit/4145df0)), closes [#60](https://github.com/dwp/govuk-casa/issues/60)
-
-
 
 ## [4.0.1](https://github.com/dwp/govuk-casa/compare/4.0.0...4.0.1) (2019-05-24)
 
@@ -449,8 +407,6 @@ All notable changes to this project will be documented in this file. See [commit
   are now mandatory if the data submitted for those fields is required to
   be ingested into the CASA session.
 
-
-
 ## [4.0.0](https://github.com/dwp/govuk-casa/compare/3.0.1...4.0.0) (2019-05-17)
 
 ### Features
@@ -467,11 +423,7 @@ All notable changes to this project will be documented in this file. See [commit
   templates being rendered, so must be imported with context. See
   docs/MIGRATING-3.x-4.x.md
 
-
-
 ## [3.0.1](https://github.com/dwp/govuk-casa/compare/3.0.0...3.0.1) (2019-05-09)
-
-
 
 ## [3.0.0](https://github.com/dwp/govuk-casa/compare/2.4.2...3.0.0) (2019-05-02)
 
@@ -521,8 +473,6 @@ Signed-off-by: Niall Molloy <niall.molloy@engineering.digital.dwp.gov.uk>
 
 Signed-off-by: james.gauld <james.gauld@engineering.digital.dwp.gov.uk>
 
-
-
 ## [2.4.2](https://github.com/dwp/govuk-casa/compare/2.4.1...2.4.2) (2019-04-10)
 
 ### Bug Fixes
@@ -536,15 +486,11 @@ Signed-off-by: james.gauld <james.gauld@engineering.digital.dwp.gov.uk>
 
 - **static:** back to the future fix ([49353d0](https://github.com/dwp/govuk-casa/commit/49353d0))
 
-
-
 ## [2.4.1](https://github.com/dwp/govuk-casa/compare/2.4.0...2.4.1) (2019-03-20)
 
 ### Performance Improvements
 
 - **memory:** remove potential source of memory leaks ([7dd658d](https://github.com/dwp/govuk-casa/commit/7dd658d))
-
-
 
 ## [2.4.0](https://github.com/dwp/govuk-casa/compare/2.3.1...2.4.0) (2019-03-05)
 
@@ -556,11 +502,7 @@ Signed-off-by: james.gauld <james.gauld@engineering.digital.dwp.gov.uk>
 
 - **middleware:** allow extra middleware from config ([61db293](https://github.com/dwp/govuk-casa/commit/61db293))
 
-
-
 ## [2.3.1](https://github.com/dwp/govuk-casa/compare/2.3.0...2.3.1) (2019-02-14)
-
-
 
 ## [2.3.0](https://github.com/dwp/govuk-casa/compare/2.2.2...2.3.0) (2019-02-13)
 
@@ -580,8 +522,6 @@ Signed-off-by: james.gauld <james.gauld@engineering.digital.dwp.gov.uk>
 - protect against double-submission of journey form ([a366777](https://github.com/dwp/govuk-casa/commit/a366777))
 - update journey-form to allow removing footer ([dd9801e](https://github.com/dwp/govuk-casa/commit/dd9801e))
 
-
-
 ## [2.2.2](https://github.com/dwp/govuk-casa/compare/2.2.1...2.2.2) (2019-01-18)
 
 ### Bug Fixes
@@ -589,15 +529,11 @@ Signed-off-by: james.gauld <james.gauld@engineering.digital.dwp.gov.uk>
 - **postcode-validation:** replace post code validator with a better one ([62280b2](https://github.com/dwp/govuk-casa/commit/62280b2))
 - **validation:** allow numeric first line address ([470d9df](https://github.com/dwp/govuk-casa/commit/470d9df))
 
-
-
 ## [2.2.1](https://github.com/dwp/govuk-casa/compare/2.1.1...2.2.1) (2018-12-20)
 
 ### Features
 
 - **data gatherers:** add support for gather modifiers ([23f9afc](https://github.com/dwp/govuk-casa/commit/23f9afc))
 - **validation:** update nino validation rule with allowWhitespace flag ([5a4e01a](https://github.com/dwp/govuk-casa/commit/5a4e01a))
-
-
 
 ## 2.1.1 (2018-10-27)
