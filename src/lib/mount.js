@@ -80,7 +80,7 @@ export default ({
   // the plan
   if (serveFirstWaypoint && plan) {
     const re = pathToRegexp(`${route}`.replace(/\/+/g, '/'));
-    app.use(re, serveFirstWaypointMiddlewareFactory({ plan }));
+    app.use(re.regexp, serveFirstWaypointMiddlewareFactory({ plan }));
   }
 
   // Capture the mount path of this CASA app, before any parameterised path
@@ -94,7 +94,7 @@ export default ({
   });
 
   // Serve static assets from the `app` rather than the `router`. The router
-  // may contain paramaterised path segments which would mean serving static
+  // may contain parameterised path segments which would mean serving static
   // assets over a dynamic URL each time, thus causing lots of cache misses on
   // the browser.
   const sealedStaticRouter = staticRouter.seal();
