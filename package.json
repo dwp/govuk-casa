@@ -68,7 +68,7 @@
     "eslint": "8.57.0",
     "eslint-plugin-no-unsafe-regex": "1.0.0",
     "eslint-plugin-sonarjs": "0.25.1",
-    "express": "4.19.2",
+    "express": "4.20.0",
     "express-session": "1.18.0",
     "husky": "8.0.3",
     "jsdom": "22.1.0",
