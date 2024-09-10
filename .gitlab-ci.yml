@@ -1,6 +1,6 @@
 include:
   - project: dwp/engineering/pipeline-solutions/gitlab/functions
-    ref: 4.19.4
+    ref: 4.19.5
     file:
       - functions/node.yml
       - functions/auto-tag-merge.yml
