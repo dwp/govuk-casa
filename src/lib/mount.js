@@ -76,7 +76,7 @@ export default ({
     // the plan
     if (serveFirstWaypoint && plan) {
       const re = pathToRegexp(`${route}`.replace(/\/+/g, "/"));
-      app.use(re, serveFirstWaypointMiddlewareFactory({ plan }));
+      app.use(re.regexp, serveFirstWaypointMiddlewareFactory({ plan }));
     }
 
     // Capture the mount path of this CASA app, before any parameterised path
