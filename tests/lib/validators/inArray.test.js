@@ -68,28 +68,28 @@ describe("validators/inArray", () => {
   });
 
   describe("sanitise()", () => {
-    [
+    for (const [type, target, input, output] of [
       // type | input | expected output
       ["string", "string", "", ""],
       ["number", "string", 123, "123"],
       ["array", "array", [], []],
-    ].forEach(([type, target, input, output]) => {
+    ]) {
       it(`coerces ${type} to a ${target}`, () => {
         expect(sanitise(input)).to.deep.equal(output);
       });
-    });
-    [
+    }
+    for (const [type, input] of [
       // type | input | expected output
       ["object", {}],
       ["function", () => {}],
       ["boolean", true],
-    ].forEach(([type, input]) => {
+    ]) {
       it(`coerces ${type} to an undefined value`, () => {
         expect(sanitise(input)).to.be.undefined;
       });
-    });
+    }
 
-    [
+    for (const [type, input, output] of [
       // type | input | expected output
       ["mixed array", ["12", 3], ["12", "3"]],
       ["numeric array", [1, 2, 3], ["1", "2", "3"]],
@@ -98,11 +98,11 @@ describe("validators/inArray", () => {
         [{}, () => {}, []],
         [undefined, undefined, undefined],
       ],
-    ].forEach(([type, input, output]) => {
+    ]) {
       it(`coerces ${type} elements to a one-dimensional array`, () => {
         expect(sanitise(input)).to.deep.equal(output);
       });
-    });
+    }
 
     it("lets an undefined value pass through", () => {
       expect(sanitise()).to.be.undefined;

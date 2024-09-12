@@ -33,7 +33,7 @@ describe("validators/required", () => {
   });
 
   describe("sanitise()", () => {
-    [
+    for (const [type, target, input, output] of [
       // type | target-type | input | expected output
       ["string", "string", "123", "123"],
       ["number", "string", 123, "123"],
@@ -43,15 +43,15 @@ describe("validators/required", () => {
       ["boolean", "undefined", true, undefined],
       ["string with whitespace", "string", " ", ""],
       ["string with whitespace", "string", "\t", ""],
-    ].forEach(([type, target, input, output]) => {
+    ]) {
       it(`should coerce ${type} to ${target}`, () => {
         const sanitise = required.make().sanitise;
 
         expect(sanitise(input)).to.deep.equal(output);
       });
-    });
+    }
 
-    [
+    for (const [type, input, output] of [
       // type | input | expected output
       ["mixed array", ["12", 3], ["12", "3"]],
       ["numeric array", [1, 2, 3], ["1", "2", "3"]],
@@ -60,15 +60,15 @@ describe("validators/required", () => {
         [{}, () => {}, []],
         [undefined, undefined, undefined],
       ],
-    ].forEach(([type, input, output]) => {
+    ]) {
       it(`should coerce ${type} elements to a one-dimensional array`, () => {
         const sanitise = required.make().sanitise;
 
         expect(sanitise(input)).to.deep.equal(output);
       });
-    });
+    }
 
-    [
+    for (const [type, input, output] of [
       // type | input | expected output
       ["simple object", { a: 1, b: "2" }, { a: "1", b: "2" }],
       [
@@ -76,12 +76,12 @@ describe("validators/required", () => {
         { a: { b: "1" }, c: "2", d: [1, 2] },
         { a: undefined, c: "2", d: undefined },
       ],
-    ].forEach(([type, input, output]) => {
+    ]) {
       it(`should coerce ${type} elements to a one-dimensional object`, () => {
         const sanitise = required.make().sanitise;
 
         expect(sanitise(input)).to.deep.equal(output);
       });
-    });
+    }
   });
 });

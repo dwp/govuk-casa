@@ -43,7 +43,7 @@ describe("validators/email", () => {
   });
 
   describe("sanitise()", () => {
-    [
+    for (const [type, input, output] of [
       // type | input | expected output
       ["string", "", ""],
       ["number", 123, "123"],
@@ -51,11 +51,11 @@ describe("validators/email", () => {
       ["function", () => {}, ""],
       ["array", [], ""],
       ["boolean", true, ""],
-    ].forEach(([type, input, output]) => {
+    ]) {
       it(`coerces ${type} to a string`, () => {
         expect(sanitise(input)).to.equal(output);
       });
-    });
+    }
 
     it("lets an undefined value pass through", () => {
       expect(sanitise()).to.be.undefined;

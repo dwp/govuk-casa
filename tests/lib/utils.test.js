@@ -64,11 +64,11 @@ describe("stripWhitespace", () => {
 });
 
 describe("notProto", () => {
-  ["__proto__", "prototype", "constructor"].forEach((key) => {
+  for (const key of ["__proto__", "prototype", "constructor"]) {
     it(`throws when passed "${key}"`, () => {
       expect(() => notProto(key)).to.throw(Error);
     });
-  });
+  }
 
   it("returns same key when given a valid key", () => {
     expect(notProto("valid")).to.equal("valid");
@@ -83,14 +83,14 @@ describe("validateUrlPath", () => {
     );
   });
 
-  "!@$%&~?".split("").forEach((char) => {
+  for (const char of "!@$%&~?".split("")) {
     it(`throws if path contains invalid character "${char}"`, () => {
       expect(() => validateUrlPath(`${char}`)).to.throw(
         SyntaxError,
         "URL path must contain only a-z, 0-9, -, _ and / characters",
       );
     });
-  });
+  }
 
   it("does not thrown if path contains valid characters", () => {
     expect(() => validateUrlPath("/abc-123/this_that")).to.not.throw();
@@ -109,7 +109,7 @@ describe("validateUrlPath", () => {
 });
 
 describe("coerceInputToInteger", () => {
-  [
+  for (const [type, input, output] of [
     // type | input | expected output
     ["empty string", "", 0],
     ["string", "123", 123],
@@ -121,9 +121,9 @@ describe("coerceInputToInteger", () => {
     ["boolean", true, 1],
     ["boolean", false, 0],
     ["float", 1.23, 1],
-  ].forEach(([type, input, output]) => {
+  ]) {
     it(`should coerce ${type} to an integer`, () => {
       expect(coerceInputToInteger(input)).to.equal(output);
     });
-  });
+  }
 });

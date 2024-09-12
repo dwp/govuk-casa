@@ -49,9 +49,9 @@ import { CONFIG_ERROR_VISIBILITY_ONSUBMIT } from "./constants.js";
 export default function configure(config = {}) {
   // Pass the raw config through each plugin's configure phase so they can
   // optionally modify it
-  (config.plugins ?? []).forEach((plugin) => {
+  for (const plugin of config.plugins ?? []) {
     plugin.configure(config);
-  });
+  }
 
   // Extract config
   const ingestedConfig = configurationIngestor(config);
@@ -84,10 +84,13 @@ export default function configure(config = {}) {
   } = ingestedConfig;
 
   // Prepare all page hooks so they are prefixed with the `journey.` scope.
-  pages.forEach((page) => {
-    /* eslint-disable-next-line no-param-reassign,no-return-assign */
-    (page?.hooks ?? []).forEach((h) => (h.hook = `journey.${h.hook}`));
-  });
+  for (const page of pages) {
+    if (page?.hooks) {
+      for (const h of page.hooks) {
+        h.hook = `journey.${h.hook}`
+      }
+    }
+  }
 
   // Prepare a Nunjucks environment for rendering all templates.
   // Resolve priority: userland templates > CASA templates > GOVUK templates > Plugin templates
@@ -207,9 +210,9 @@ export default function configure(config = {}) {
   };
 
   // Bootstrap all plugins
-  plugins
-    .filter((p) => p.bootstrap)
-    .forEach((plugin) => plugin?.bootstrap(configOutput));
+  for (const plugin of plugins.filter((p) => p.bootstrap)) {
+    plugin?.bootstrap(configOutput)
+  }
 
   // Finished configuration
   return configOutput;

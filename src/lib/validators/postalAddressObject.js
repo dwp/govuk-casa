@@ -95,13 +95,11 @@ export default class PostalAddressObject extends ValidatorFactory {
     // Work out required/optional parts based on config
     const reqF = Object.create(null);
     const reqC = cfg.requiredFields;
-    ["address1", "address2", "address3", "address4", "postcode"].forEach(
-      (k) => {
-        // ESLint disabled as `k` is a known value from a constant list
-        /* eslint-disable-next-line security/detect-object-injection */
-        reqF[k] = reqC.indexOf(k) > -1;
-      },
-    );
+    reqF.address1 = reqC.indexOf("address1") > -1;
+    reqF.address2 = reqC.indexOf("address2") > -1;
+    reqF.address3 = reqC.indexOf("address3") > -1;
+    reqF.address4 = reqC.indexOf("address4") > -1;
+    reqF.postcode = reqC.indexOf("postcode") > -1;
 
     let valid = true;
     const errorMsgs = [];
@@ -129,7 +127,7 @@ export default class PostalAddressObject extends ValidatorFactory {
       };
       // ESLint disabled as `k` is a known value from the constant list above
       /* eslint-disable security/detect-object-injection */
-      Object.keys(attributes).forEach((k) => {
+      for (const k of Object.keys(attributes)) {
         const attr = attributes[k];
         const hasProperty = Object.hasOwn(value, k);
         const hasContent = hasProperty && value[k].length > 0;
@@ -147,7 +145,7 @@ export default class PostalAddressObject extends ValidatorFactory {
             }),
           );
         }
-      });
+      }
       /* eslint-enable security/detect-object-injection */
     } else {
       valid = false;

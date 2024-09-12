@@ -32,22 +32,22 @@ const extract = (file) => {
 const loadResources = (languages, directories) => {
   const store = Object.create(null);
 
-  languages.forEach((language) => {
+  for (const language of languages) {
     // ESLint disabled as `store`, `language` and `ns` are all dev-controlled,
     // and this function is only called once, at boot-time.
     /* eslint-disable security/detect-object-injection */
     store[language] = Object.create(null);
 
-    directories.forEach((basedir) => {
+    for (const basedir of directories) {
       const dir = resolve(basedir, language);
       /* eslint-disable-next-line security/detect-non-literal-fs-filename */
       if (!existsSync(dir)) {
-        return;
+        continue;
       }
 
       log.info("Loading %s language from %s ...", language, dir);
       /* eslint-disable-next-line security/detect-non-literal-fs-filename */
-      readdirSync(dir).forEach((file) => {
+      for (const file of readdirSync(dir)) {
         const { ns, data } = extract(resolve(dir, file));
 
         if (store[language][ns] === undefined) {
@@ -55,10 +55,10 @@ const loadResources = (languages, directories) => {
         }
 
         store[language][ns] = deepmerge(store[language][ns], data);
-      });
-    });
+      }
+    }
     /* eslint-enable security/detect-object-injection */
-  });
+  }
 
   return store;
 };

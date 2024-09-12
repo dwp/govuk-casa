@@ -98,11 +98,11 @@ export default class DateObject extends ValidatorFactory {
         formats: ["dd-MMM-yyyy", "dd-MMMM-yyyy"],
       },
     ];
-    formatTests.forEach((test) => {
+    for (const test of formatTests) {
       if (test.flags.every((v) => v === true)) {
         formats = [...formats, ...test.formats];
       }
-    });
+    };
 
     if (typeof value === "object") {
       formats.find((format) => {

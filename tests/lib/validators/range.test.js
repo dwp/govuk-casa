@@ -66,7 +66,7 @@ describe("validators/range", () => {
   });
 
   describe("sanitise()", () => {
-    [
+    for (const [type, input, output] of [
       // type | input | expected output
       ["string", "", undefined],
       ["number", 123, "123"],
@@ -75,13 +75,13 @@ describe("validators/range", () => {
       ["array", [], "0"],
       ["boolean", true, "1"],
       ["float", 1.23, "1"],
-    ].forEach(([type, input, output]) => {
+    ]) {
       it(`should coerce ${type} to an integer`, () => {
         const sanitise = range.make().sanitise;
 
         expect(sanitise(input)).to.equal(output);
       });
-    });
+    }
 
     it("should let an undefined value pass through", () => {
       const sanitise = range.make().sanitise;

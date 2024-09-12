@@ -374,18 +374,18 @@ describe("validators/dateObject", () => {
   });
 
   describe("sanitise", () => {
-    [
+    for (const [type, input, output] of [
       // type | input | expected output
       ["string", "", {}],
       ["number", 123, {}],
       ["function", () => {}, {}],
       ["array", [], {}],
       ["boolean", true, {}],
-    ].forEach(([type, input, output]) => {
+    ]) {
       it(`should coerce ${type} to an empty object`, () => {
         expect(sanitise(input)).to.deep.equal(output);
       });
-    });
+    }
 
     it("should include dd/mm/yyyy properties", () => {
       expect(sanitise({})).to.deep.equal({ dd: "", mm: "", yyyy: "" });

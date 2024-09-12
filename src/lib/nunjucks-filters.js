@@ -11,7 +11,8 @@ const { all: deepmergeAll } = merge;
 const combineMerge = (target, source, options) => {
   const destination = target.slice();
 
-  source.forEach((item, index) => {
+  for (let index = 0; index < source.length; index++) {
+    const item = source[index];
     // ESLint disabled as `index` is only an integer
     /* eslint-disable security/detect-object-injection */
     if (typeof destination[index] === "undefined") {
@@ -22,7 +23,7 @@ const combineMerge = (target, source, options) => {
       destination.push(item);
     }
     /* eslint-enable security/detect-object-injection */
-  });
+  }
   return destination;
 };
 
@@ -119,7 +120,7 @@ function formatDateObject(date, config = {}) {
 function renderAsAttributes(attrsObject) {
   const attrsList = [];
   if (typeof attrsObject === "object") {
-    Object.keys(attrsObject).forEach((key) => {
+    for (const key of Object.keys(attrsObject)) {
       // ESLint disable as `attrsObject` is dev-controlled, `Object.keys()` has
       // been used (to get "own" properties) and `m` is one of the characters
       // found by the regex.
@@ -137,7 +138,7 @@ function renderAsAttributes(attrsObject) {
       );
       /* eslint-enable security/detect-object-injection */
       attrsList.push(`${key}="${value}"`);
-    });
+    }
   }
   return new nunjucks.runtime.SafeString(attrsList.join(" "));
 }

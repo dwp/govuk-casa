@@ -23,7 +23,9 @@ export default ({ waypoints = ["check-your-answers"] }) => {
   const configure = (config) => {
     // Structure pages to make it more easily searchable by waypoint
     const pages = {};
-    config.pages.forEach((page) => (pages[page.waypoint] = page));
+    for (const page of config.pages) {
+      pages[page.waypoint] = page;
+    }
 
     // Add a views directory
     config.views.push(resolve(__dirname, "views"));
@@ -42,7 +44,7 @@ export default ({ waypoints = ["check-your-answers"] }) => {
               const traversed = config.plan.traverse(req.casa.journeyContext);
 
               const sections = [];
-              traversed.forEach((wp) => {
+              for (const wp of traversed) {
                 // TODO: Need to handle exit nodes (e.g. waypoints using `url://` protocol)
                 sections.push({
                   waypoint: req.t(`${slug(wp)}:pageTitle`),
@@ -82,7 +84,7 @@ export default ({ waypoints = ["check-your-answers"] }) => {
                       },
                     })),
                 });
-              });
+              }
 
               res.locals.sections = sections.filter((s) => s.rows.length);
 

@@ -74,7 +74,7 @@ describe("validators/wordCount", () => {
   });
 
   describe("sanitise()", () => {
-    [
+    for (const [type, input, output] of [
       // type | input | expected output
       ["string", "", ""],
       ["number", 123, "123"],
@@ -82,13 +82,13 @@ describe("validators/wordCount", () => {
       ["function", () => {}, ""],
       ["array", [], ""],
       ["boolean", true, ""],
-    ].forEach(([type, input, output]) => {
+    ]) {
       it(`should coerce ${type} to a string`, () => {
         const sanitise = wordCount.make().sanitise;
 
         expect(sanitise(input)).to.equal(output);
       });
-    });
+    }
 
     it("should let an undefined value pass through", () => {
       const sanitise = wordCount.make().sanitise;

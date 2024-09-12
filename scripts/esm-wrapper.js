@@ -12,11 +12,11 @@ import casa from \'../casa.js\';
 
 `;
 
-Object.keys(casa).forEach((key) => {
+for (const key of Object.keys(casa)) {
   if (key !== "__esModule" && key !== "default") {
     data += `export const { ${key} } = casa;\n`;
   }
-});
+}
 
 writeFile("./dist/mjs/esm-wrapper.js", data, (err) => {
   if (err) {

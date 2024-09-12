@@ -277,7 +277,7 @@ describe("validators/postalAddressObject", () => {
   });
 
   describe("sanitise", () => {
-    [
+    for (const [type, input, output] of [
       // type | input | expected output
       ["string", "", {}],
       ["number", 123, {}],
@@ -285,11 +285,11 @@ describe("validators/postalAddressObject", () => {
       ["array", [], {}],
       ["boolean", true, {}],
       ["undefined", undefined, {}],
-    ].forEach(([type, input, output]) => {
+    ]) {
       it(`should coerce ${type} to an object`, () => {
         expect(sanitise(input)).to.deep.equal(output);
       });
-    });
+    }
 
     it("should prune unrecognised attributes", () => {
       expect(

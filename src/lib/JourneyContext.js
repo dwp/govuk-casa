@@ -297,11 +297,11 @@ export default class JourneyContext {
       );
     }
 
-    errors.forEach((error) => {
+    for (const error of errors) {
       if (!(error instanceof ValidationError)) {
         throw new SyntaxError("Field errors must be a ValidationError");
       }
-    });
+    }
 
     this.#validation[validateObjectKey(pageId)] = errors;
 
@@ -847,9 +847,9 @@ export default class JourneyContext {
    * @returns {void}
    */
   static removeContextsByTag(session, tag) {
-    JourneyContext.getContextsByTag(session, tag).forEach((c) =>
-      JourneyContext.removeContext(session, c),
-    );
+    for (const c of JourneyContext.getContextsByTag(session, tag)) {
+      JourneyContext.removeContext(session, c);
+    }
   }
 
   /**
@@ -859,9 +859,9 @@ export default class JourneyContext {
    * @returns {void}
    */
   static removeContexts(session) {
-    JourneyContext.getContexts(session).forEach((c) =>
-      JourneyContext.removeContext(session, c),
-    );
+    for (const c of JourneyContext.getContexts(session)) {
+      JourneyContext.removeContext(session, c);
+    }
   }
 
   /**

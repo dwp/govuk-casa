@@ -18,14 +18,14 @@ const log = logger("lib:end-session");
 export default function endSession(req, next) {
   const { language } = req.session;
 
-  Object.entries(req.session).forEach(([k]) => {
-    if (!["cookie"].includes(k)) {
-      // ESLint disabled as `Object.entries()` returns "own" properties, and
+  for (const key of Object.keys(req.session)) {
+    if (!["cookie"].includes(key)) {
+      // ESLint disabled as `Object.keys()` returns "own" properties, and
       // all values are being null'd, so not assigned any user-controlled values
       /* eslint-disable-next-line security/detect-object-injection */
-      req.session[k] = null;
+      req.session[key] = null;
     }
-  });
+  }
 
   req.session.save((saveErr) => {
     if (saveErr) {

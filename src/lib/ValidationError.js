@@ -113,7 +113,7 @@ export default class ValidationError {
     // Duplicate parameters to make them available in public scope. These are
     // the values that will be readable, and reflect any context that may have
     // been applied
-    Object.keys(originals).forEach((o) => {
+    for (const o of Object.keys(originals)) {
       // ESLint disabled as `o` is an "own" property of `originals`, which is
       // dev-controlled
       /* eslint-disable security/detect-object-injection */
@@ -123,7 +123,7 @@ export default class ValidationError {
         writable: true,
       });
       /* eslint-enable security/detect-object-injection */
-    });
+    }
   }
 
   /**

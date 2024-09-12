@@ -165,7 +165,7 @@ export default function journeyRouter({
   // Create GET / POST routes for each page
   const commonMiddleware = [...csrfMiddleware];
 
-  pages.forEach((page) => {
+  for (const page of pages) {
     const {
       waypoint,
       view,
@@ -320,7 +320,7 @@ export default function journeyRouter({
         };
       }),
     );
-  });
+  }
 
   return router;
 }

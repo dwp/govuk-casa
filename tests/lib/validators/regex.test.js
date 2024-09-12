@@ -61,7 +61,7 @@ describe("validators/regex", () => {
   });
 
   describe("sanitise()", () => {
-    [
+    for (const [type, input, output] of [
       // type | input | expected output
       ["string", "", ""],
       ["number", 123, "123"],
@@ -69,13 +69,13 @@ describe("validators/regex", () => {
       ["function", () => {}, ""],
       ["array", [], ""],
       ["boolean", true, ""],
-    ].forEach(([type, input, output]) => {
+    ]) {
       it(`should coerce ${type} to a string`, () => {
         const sanitise = regex.make().sanitise;
 
         expect(sanitise(input)).to.equal(output);
       });
-    });
+    }
 
     it("should let an undefined value pass through", () => {
       const sanitise = regex.make().sanitise;
