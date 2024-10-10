@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@dagrejs/graphlib": "2.2.3",
-    "body-parser": "1.20.2",
+    "body-parser": "1.20.3",
     "colors": "1.4.0",
     "csurf": "1.11.0",
     "debug": "4.3.5",
