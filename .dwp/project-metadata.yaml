@@ -3,7 +3,7 @@ schema_version: 1.0.0
 project:
   - project_id: "26878543"
     component_name: govuk-casa
-    version: 8.16.1
+    version: 8.16.2
     cmdb_id: https://engineering.dwp.gov.uk/policies/engineering-policies/ep-3/
     last_verified:
       date: "2024-10-10"
