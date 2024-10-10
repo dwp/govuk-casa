@@ -16,7 +16,7 @@
   "dependencies": {
     "@dwp/dwp-frontend": "2.7.0",
     "@dwp/govuk-casa": "^9.0.0",
-    "express": "4.19.2"
+    "express": "4.20.0"
   },
   "devDependencies": {
     "esbuild": "0.21.5",
