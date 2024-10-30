@@ -107,7 +107,7 @@ export default function journeyRouter({
   globalErrorVisibility,
 }) {
   // Router
-  const router = new MutableRouter();
+  const router = new MutableRouter({ mergeParams: true });
 
   // Special "_" route which handles redirecting the user between sub-apps
   // /app1/_/?refmount=app2&route=prev

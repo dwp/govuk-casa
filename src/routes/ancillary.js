@@ -14,7 +14,7 @@ import MutableRouter from "../lib/MutableRouter.js";
  */
 export default function ancillaryRouter({ sessionTtl }) {
   // Router
-  const router = new MutableRouter();
+  const router = new MutableRouter({ mergeParams: true });
 
   // Session timeout
   router.all("/session-timeout", (req, res) => {

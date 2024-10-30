@@ -61,4 +61,44 @@ describe("mount()", () => {
       firstWaypointTestFactory(true, 302),
     );
   });
+
+  describe("request parameters are available in nested middleware", function () {
+    it("passes request parameters to ancillaryRouter middleware", (done) => {
+      // Setup
+      const ancillaryRouter = new MutableRouter({ mergeParams: true });
+      ancillaryRouter.get("/ancillary-route", (req, res) => res.status(200).send(JSON.stringify(req.params)));
+
+      const mount = mountFactory({
+        ...factoryArgs,
+        ancillaryRouter,
+      });
+
+      const app = express();
+
+      // Execute
+      mount(app, { route: "/:param1/" });
+
+      // Assert
+      request(app).get("/123/ancillary-route/").expect(JSON.stringify({param1: "123"}), done);
+    });
+
+    it("passes request parameters to journeyRouter middleware", (done) => {
+      // Setup
+      const journeyRouter = new MutableRouter({ mergeParams: true });
+      journeyRouter.get("/journey-route", (req, res) => res.status(200).send(JSON.stringify(req.params)));
+
+      const mount = mountFactory({
+        ...factoryArgs,
+        journeyRouter,
+      });
+
+      const app = express();
+
+      // Execute
+      mount(app, { route: "/:param1/" });
+
+      // Assert
+      request(app).get("/123/journey-route/").expect(JSON.stringify({param1: "123"}), done);
+    });
+  });
 });

@@ -18,9 +18,10 @@ export default class MutableRouter {
    * mounting it on your Express app.
    *
    * @class
+   * @param {import("express").RouterOptions} [options] Router options
    */
-  constructor() {
-    this.#router = Router();
+  constructor(options) {
+    this.#router = Router(options);
     this.#stack = [];
     this.#sealed = false;
   }
