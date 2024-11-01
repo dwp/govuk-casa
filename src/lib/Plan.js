@@ -40,10 +40,7 @@ const log = logger("lib:plan");
  * @access private
  */
 function defaultNextFollow(r, context) {
-  const { validation: v = {} } = context.toObject();
-  return (
-    Object.prototype.hasOwnProperty.call(v, r.source) && v[r.source] === null
-  );
+  return context.validation?.[r.source] === null;
 }
 
 /**
@@ -54,10 +51,7 @@ function defaultNextFollow(r, context) {
  * @access private
  */
 function defaultPrevFollow(r, context) {
-  const { validation: v = {} } = context.toObject();
-  return (
-    Object.prototype.hasOwnProperty.call(v, r.target) && v[r.target] === null
-  );
+  return context.validation?.[r.target] === null;
 }
 
 /**
