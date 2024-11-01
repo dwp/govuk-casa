@@ -1,6 +1,6 @@
 import { MemoryStore } from "express-session";
-import { resolve } from "path";
-import { createRequire } from "module";
+import { resolve } from "node:path";
+import { createRequire } from "node:module";
 import cookieParserFactory from "cookie-parser";
 import dirname from "./dirname.cjs";
 

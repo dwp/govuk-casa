@@ -1,7 +1,7 @@
 import { createInstance } from "i18next";
 import { LanguageDetector, handle } from "i18next-http-middleware";
-import { resolve, basename } from "path";
-import { existsSync, readFileSync, readdirSync } from "fs";
+import { resolve, basename } from "node:path";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import deepmerge from "deepmerge";
 import yaml from "js-yaml";
 import logger from "../lib/logger.js";

@@ -1,8 +1,8 @@
 import ExpressJS from "express";
-import { readFileSync } from "fs";
-import { URL } from "url";
-import { resolve } from "path";
-import { createRequire } from "module";
+import { readFileSync } from "node:fs";
+import { URL } from "node:url";
+import { resolve } from "node:path";
+import { createRequire } from "node:module";
 
 import dirname from "./dirname.cjs";
 import MutableRouter from "../lib/MutableRouter.js";
