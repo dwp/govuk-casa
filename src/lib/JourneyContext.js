@@ -7,6 +7,7 @@
  * - Navigation information about how the user got where they are.
  */
 import lodash from "lodash";
+import rfdc from "rfdc";
 import ValidationError from "./ValidationError.js";
 import logger from "./logger.js";
 import { notProto } from "./utils.js";
@@ -17,6 +18,8 @@ const { isPlainObject, isObject, has, isEqual } = lodash; // CommonJS
 const log = logger("lib:journey-context");
 
 const uuid = uuidGenerator();
+
+const clone = rfdc({ proto: false });
 
 /**
  * @typedef {import("../casa").ContextEventUserInfo} ContextEventUserInfo
@@ -123,10 +126,10 @@ export default class JourneyContext {
    */
   toObject() {
     return Object.assign(Object.create(null), {
-      data: structuredClone(this.#data),
-      validation: structuredClone(this.#validation),
-      nav: structuredClone(this.#nav),
-      identity: structuredClone(this.#identity),
+      data: clone(this.#data),
+      validation: clone(this.#validation),
+      nav: clone(this.#nav),
+      identity: clone(this.#identity),
     });
   }
 
