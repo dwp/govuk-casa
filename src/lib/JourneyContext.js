@@ -13,7 +13,7 @@ import logger from "./logger.js";
 import { notProto } from "./utils.js";
 import { uuid as uuidGenerator } from "./context-id-generators.js";
 
-const { isPlainObject, isObject, has, isEqual } = lodash; // CommonJS
+const { isPlainObject, isObject, isEqual } = lodash; // CommonJS
 
 const log = logger("lib:journey-context");
 
@@ -565,7 +565,7 @@ export default class JourneyContext {
     }
 
     // Initialise new context list in the session
-    if (!has(session, "journeyContextList")) {
+    if (!Object.hasOwn(session, "journeyContextList")) {
       log.trace("Initialising session with a default journey context list");
       /* eslint-disable-next-line no-param-reassign */
       session.journeyContextList = [];
@@ -741,7 +741,7 @@ export default class JourneyContext {
    * @returns {Array} Array of contexts
    */
   static getContexts(session) {
-    if (has(session, "journeyContextList")) {
+    if (session && Object.hasOwn(session, "journeyContextList")) {
       return session.journeyContextList.map(([, contextObj]) =>
         JourneyContext.fromObject(contextObj),
       );
@@ -771,7 +771,7 @@ export default class JourneyContext {
     }
 
     // Initialise the session if necessary
-    if (!has(session, "journeyContextList")) {
+    if (Object.hasOwn(session, "journeyContextList") === false) {
       JourneyContext.initContextStore(session);
     }
 
@@ -878,13 +878,13 @@ export default class JourneyContext {
     JourneyContext.initContextStore(req.session);
 
     let contextId;
-    if (has(req?.params, "contextid")) {
+    if (req.params && Object.hasOwn(req.params, "contextid")) {
       log.trace("Context ID found in req.params.contextid");
       contextId = String(req.params.contextid);
-    } else if (has(req.query, "contextid")) {
+    } else if (req.query && Object.hasOwn(req.query, "contextid")) {
       log.trace("Context ID found in req.query.contextid");
       contextId = String(req.query.contextid);
-    } else if (has(req?.body, "contextid")) {
+    } else if (req.body && Object.hasOwn(req.body, "contextid")) {
       log.trace("Context ID found in req.body.contextid");
       contextId = String(req.body.contextid);
     } else {

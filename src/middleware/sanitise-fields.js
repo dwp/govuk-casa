@@ -2,7 +2,6 @@
 // - Coerce each field to its correct type
 // - Remove an extraneous fields that are not know to the application
 
-import _ from "lodash";
 import fieldFactory from "../lib/field.js";
 import JourneyContext from "../lib/JourneyContext.js";
 
@@ -39,7 +38,7 @@ export default ({ waypoint, fields = [] }) => {
       const prunedBody = Object.create(null);
       for (let i = 0, l = fields.length; i < l; i++) {
         if (
-          _.has(req.body, fields[i].name) &&
+          Object.hasOwn(req.body, fields[i].name) &&
           req.body[fields[i].name] !== undefined
         ) {
           prunedBody[fields[i].name] = req.body[fields[i].name];

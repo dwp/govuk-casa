@@ -1,18 +1,15 @@
 // Decorates the request with some contextual data about the user's journey
 // through the application. This is used by downstream middleware and templates.
 
-import lodash from "lodash";
 import JourneyContext from "../lib/JourneyContext.js";
 import { validateUrlPath } from "../lib/utils.js";
 import waypointUrl from "../lib/waypoint-url.js";
 
-const { has } = lodash;
-
 const editOrigin = (req) => {
-  if (has(req.query, "editorigin")) {
+  if (Object.hasOwn(req.query, "editorigin")) {
     return waypointUrl({ waypoint: req.query.editorigin });
   }
-  if (has(req?.body, "editorigin")) {
+  if (req.body && Object.hasOwn(req.body, "editorigin")) {
     return waypointUrl({ waypoint: req.body.editorigin });
   }
   return "";
@@ -39,8 +36,8 @@ export default function dataMiddleware({ plan, events, contextIdGenerator }) {
 
         // Edit mode
         editMode:
-          (has(req?.query, "edit") && has(req?.query, "editorigin")) ||
-          (has(req?.body, "edit") && has(req?.body, "editorigin")),
+          (Object.hasOwn(req.query, "edit") && Object.hasOwn(req.query, "editorigin")) ||
+          (Object.hasOwn(req.body, "edit") && Object.hasOwn(req.body, "editorigin")),
         editOrigin: editOrigin(req),
       };
 

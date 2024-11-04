@@ -145,13 +145,13 @@ export default class DateObject extends ValidatorFactory {
       // Check presence of each object component (dd, mm, yyyy) in order to log
       // which specific parts are in error
       errorMsg.focusSuffix = [];
-      if (!Object.prototype.hasOwnProperty.call(value, "dd") || !value.dd) {
+      if (!Object.hasOwn(value, "dd") || !value.dd) {
         errorMsg.focusSuffix.push("[dd]");
       }
-      if (!Object.prototype.hasOwnProperty.call(value, "mm") || !value.mm) {
+      if (!Object.hasOwn(value, "mm") || !value.mm) {
         errorMsg.focusSuffix.push("[mm]");
       }
-      if (!Object.prototype.hasOwnProperty.call(value, "yyyy") || !value.yyyy) {
+      if (!Object.hasOwn(value, "yyyy") || !value.yyyy) {
         errorMsg.focusSuffix.push("[yyyy]");
       }
 

@@ -131,7 +131,7 @@ export default class PostalAddressObject extends ValidatorFactory {
       /* eslint-disable security/detect-object-injection */
       Object.keys(attributes).forEach((k) => {
         const attr = attributes[k];
-        const hasProperty = Object.prototype.hasOwnProperty.call(value, k);
+        const hasProperty = Object.hasOwn(value, k);
         const hasContent = hasProperty && value[k].length > 0;
 
         const condMissingOrRegexMismatch =

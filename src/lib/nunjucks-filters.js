@@ -48,8 +48,7 @@ function isPlainObjectOrArray(o) {
   if (isObject(prot) === false) {
     return false;
   }
-  // eslint-disable-next-line no-prototype-builtins
-  return prot.hasOwnProperty("isPrototypeOf");
+  return Object.hasOwn(prot, "isPrototypeOf");
 }
 
 function mergeObjects(...objects) {
