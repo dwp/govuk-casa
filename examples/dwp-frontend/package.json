@@ -14,13 +14,13 @@
     "dev": "DEBUG=casa:* nodemon server.js"
   },
   "dependencies": {
-    "@dwp/dwp-frontend": "2.7.0",
+    "@dwp/dwp-frontend": "2.8.0",
     "@dwp/govuk-casa": "^9.0.0",
-    "express": "4.20.0"
+    "express": "4.21.1"
   },
   "devDependencies": {
-    "esbuild": "0.21.5",
-    "nodemon": "3.1.3",
-    "sass": "1.77.4"
+    "esbuild": "0.24.0",
+    "nodemon": "3.1.7",
+    "sass": "1.80.6"
   }
 }
