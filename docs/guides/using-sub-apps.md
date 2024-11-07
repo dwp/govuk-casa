@@ -8,6 +8,12 @@ These can each run in isolation, you can combine them all into a larger service,
 
 THe methods used to set these up are all geared around the concept of keeping apps as de-coupled from each other as possible, to make them more portable and less brittle when making changes.
 
+* [Supported configurations](#supported-configurations)
+* [Isolated sub-apps](#isolated-sub-apps)
+* [Sequenced sub-apps](#sequenced-sub-apps)
+* [Sub-apps with different cookie settings](#sub-apps-with-different-cookie-settings)
+* [Tips on reusing session stores](#tips-on-reusing-session-stores)
+
 ## Supported configurations
 
 If we think of sub-apps in terms of their Plans, CASA supports the following configurations:
@@ -124,4 +130,21 @@ parent.use("/one/", app1);
 parent.use("/two/", app2);
 
 app.listen();
+```
+
+## Tips on reusing session stores
+
+If you reuse the same session `store` instance between sub-apps, be aware that it will have various event listeners attached to it for each sub-app. Despite incurring a small resource overhead, this is not functionally deterimental.
+
+In some scenarios with many sub-apps (more than 10), this can lead to a warning similar to this however:
+
+```
+MaxListenersExceededWarning: Possible EventEmitter memory leak detected.
+```
+
+You can choose to disable this warning by setting a new limit on your `store`, for example:
+
+```js
+const store = new MemoryStore();
+store.setMaxListeners(20);
 ```
