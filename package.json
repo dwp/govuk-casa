@@ -83,7 +83,7 @@
     "yargs": "17.7.2"
   },
   "peerDependencies": {
-    "express": "4.19.2",
+    "express": "4.21.0",
     "express-session": "1.18.0"
   },
   "scripts": {
