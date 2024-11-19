@@ -15,7 +15,7 @@ fail_fast: true
 
 repos:
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
-    rev: v9.16.0
+    rev: v9.18.0
     hooks:
       - id: commitlint
         stages:
@@ -71,7 +71,7 @@ repos:
           - --markdown-linebreak-ext=md
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2/
-    rev: v0.13.0
+    rev: v0.15.0
     hooks:
       - id: markdownlint-cli2
         additional_dependencies:
