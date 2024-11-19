@@ -1,6 +1,6 @@
 {
   "name": "@dwp/govuk-casa",
-  "version": "9.3.4",
+  "version": "9.3.5",
   "description": "A framework for building GOVUK Collect-And-Submit-Applications",
   "repository": {
     "type": "git",
