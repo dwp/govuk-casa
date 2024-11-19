@@ -31,6 +31,10 @@ Guides
 - [Configuring error visibility on pages](guides/error-visibility.md)
 - [Edit mode](guides/edit-mode.md)
 
+Core internal plugins:
+
+- [Edit snapshots](../src/core-plugins/edit-snapshot/readme.md)
+
 ## API Reference
 
 A lot of the functionality is described in more detail by the API reference.

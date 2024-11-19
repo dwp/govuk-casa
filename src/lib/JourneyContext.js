@@ -163,6 +163,13 @@ export default class JourneyContext {
     return new JourneyContext(data, deserialisedValidation, nav, identity);
   }
 
+  configureFromObject(object) {
+    const source = JourneyContext.fromObject(object);
+    this.#data = source.data;
+    this.#validation = source.validation;
+    this.#nav = source.nav;
+  }
+
   get data() {
     return this.#data;
   }

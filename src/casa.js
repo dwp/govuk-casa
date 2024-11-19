@@ -12,6 +12,7 @@ import endSession from "./lib/end-session.js";
 import * as nunjucksFilters from "./lib/nunjucks-filters.js";
 import * as constants from "./lib/constants.js";
 import * as contextIdGenerators from "./lib/context-id-generators.js";
+import * as corePlugins from "./core-plugins/index.js";
 
 /** @module @dwp/govuk-casa */
 export {
@@ -36,6 +37,9 @@ export {
 
   // Context ID generators
   contextIdGenerators,
+
+  // Core plugins
+  corePlugins,
 };
 
 /* ----------------------------------------------------------------- Typedefs */

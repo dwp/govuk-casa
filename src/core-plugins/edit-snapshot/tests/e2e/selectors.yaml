@@ -1,0 +1,17 @@
+_global:
+  cancelButton: 'a[href*="editcancel"]'
+
+branch:
+  routeA: 'input[name="choice"][value="route-a"]'
+  routeB: 'input[name="choice"][value="route-b"]'
+
+cya:
+  editLink: 'a[href^="/branch"]'
+
+start:
+
+route-a-first:
+route-a-second:
+
+route-b-first:
+route-b-second:

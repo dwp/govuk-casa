@@ -1,0 +1,25 @@
+{% extends "casa/layouts/journey.njk" %}
+
+{% from "casa/components/radios/macro.njk" import casaGovukRadios with context %}
+
+{% block journey_form %}
+  {{ casaGovukRadios({
+    name: "choice",
+    fieldset: {
+      legend: {
+        text: "Choose route",
+        isPageHeading: true,
+        classes: "govuk-fieldset__legend--xl"
+      }
+    },
+    items: [{
+      value: "route-a",
+      text: "Route A"
+    }, {
+      value: "route-b",
+      text: "Route B"
+    }],
+    casaValue: formData.choice,
+    casaErrors: formErrors
+  }) }}
+{% endblock %}

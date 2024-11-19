@@ -20,6 +20,7 @@
     "node_modules/**",
     "src/lib/**/index.js",
     "src/casa.js",
+    "src/core-plugins/**/tests/**",
     "tests/**"
   ],
   "reporter": ["text", "lcov"]

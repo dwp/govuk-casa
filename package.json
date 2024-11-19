@@ -17,7 +17,9 @@
     "dist/**/*",
     "locales/**/*",
     "src/**/*.{js,cjs,mjs}",
-    "views/**/*"
+    "views/**/*",
+    "!dist/core-plugins/**/tests/",
+    "!src/core-plugins/**/tests/"
   ],
   "engines": {
     "node": "^18.0.0 || ^20.0.0 || ^22.0.0",
@@ -26,7 +28,7 @@
   "scripts": {
     "pipeline": "npm run coverage && npm run lint",
     "coverage": "c8 npm test",
-    "test": "npm run test:unit && npm run test:e2e",
+    "test": "npm run test:unit && npm run test:e2e && npm run core-plugin:edit-snapshot:test:e2e",
     "test:unit": "mocha './tests/**/*.test.js'",
     "test:e2e": "spiderplan --worker-init ./tests/e2e/worker-init.js --language en ./tests/e2e/personas/**/*.yaml",
     "test:dast": "spiderplan --worker-init ./tests/e2e/worker-init.js --language en ./tests/e2e/personas/**/traversal.yaml --workers 1 --zap --zap-proxy 'http://localhost:8080/' --zap-target-hostname 'host.docker.internal'",
@@ -41,7 +43,8 @@
     "build:css-assets": "node scripts/compile-sass.js",
     "build:api-docs": "npx jsdoc -c ./jsdoc.json -d ./docs/api/ --debug -P '' -r -R ./README.md --verbose -t ./node_modules/docdash ./src",
     "prepare": "npm run build",
-    "upgrade-deps": "OD=$(npm outdated --long --parseable); echo \"$OD\" | grep ':devDependencies:' | awk -F: '{ print $4 }' | xargs npm i -DE; echo \"$OD\" | grep ':dependencies:' | awk -F: '{ print $4 }' | xargs npm i -E"
+    "upgrade-deps": "OD=$(npm outdated --long --parseable); echo \"$OD\" | grep ':devDependencies:' | awk -F: '{ print $4 }' | xargs npm i -DE; echo \"$OD\" | grep ':dependencies:' | awk -F: '{ print $4 }' | xargs npm i -E",
+    "core-plugin:edit-snapshot:test:e2e": "spiderplan --worker-init ./src/core-plugins/edit-snapshot/tests/e2e/worker-init.js --language en \"./src/core-plugins/edit-snapshot/tests/e2e/personas/**/*.yaml\""
   },
   "keywords": [],
   "author": "DWP Digital",

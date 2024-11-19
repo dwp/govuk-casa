@@ -1,0 +1,22 @@
+# - Complete journey to CYA along route A
+# - Edit a page to start traversing route B, and complete all the way to CYA
+
+journey:
+  start:
+  branch:
+    routeA: click()
+  route-a-first:
+  route-a-second:
+  cya:
+    editLink: click()
+  branch--1:
+    routeB: click()
+  route-b-first:
+  route-b-second:
+  cya--1:
+
+templateVars:
+  cya:
+    expectedSequencw: "start, branch, route-a-first, route-a-second, cya"
+  cya--1:
+    expectedSequencw: "start, branch, route-b-first, route-b-second, cya"

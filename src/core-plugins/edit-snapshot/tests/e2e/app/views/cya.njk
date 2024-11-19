@@ -1,0 +1,20 @@
+{% extends "casa/layouts/journey.njk" %}
+
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% block journey_form %}
+  <h1 class="govuk-heading-xl">Check your answers</h1>
+
+  <p class="govuk-body">
+    Traversed waypoints: {{ traversedWaypoints | join(", ") }}
+  </p>
+
+  <p class="govuk-body">
+    <a href="{{ waypointUrl({ waypoint: "branch", edit: true, editOrigin: casa.waypoint }) }}">Edit choice</a>
+  </p>
+
+  {{ govukSummaryList({
+    classes: 'govuk-!-margin-bottom-6',
+    rows: rows
+  }) }}
+{% endblock %}

@@ -1,0 +1,21 @@
+# - Complete journey to CYA along route B
+# - Edit a page that doesn't affect route B
+# - Save changes; should still be able to return to CYA
+
+journey:
+  start:
+  branch:
+    routeB: click()
+  route-b-first:
+  route-b-second:
+  cya:
+    editLink: click()
+  branch--1:
+    routeB: click()
+  cya--1:
+
+templateVars:
+  cya:
+    expectedSequencw: "start, branch, route-b-first, route-b-second, cya"
+  cya--1:
+    expectedSequencw: "start, branch, route-b-first, route-b-second, cya"
