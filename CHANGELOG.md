@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [9.4.0](https://github.com/dwp/govuk-casa/-/compare/9.3.5...9.4.0) (2024-12-03)
+
+### Features
+
+* edit snapshot rollbacks ([05be689](https://github.com/dwp/govuk-casa/-/commit/05be689238062f1abd5d6f579eea9c1d18b9b5fd)), closes [#119](https://github.com/dwp/govuk-casa/-/issues/119)
+
 ## [9.3.5](https://github.com/dwp/govuk-casa/-/compare/9.3.4...9.3.5) (2024-11-19)
 
 ## [9.3.4](https://github.com/dwp/govuk-casa/-/compare/9.3.3...9.3.4) (2024-11-07)
