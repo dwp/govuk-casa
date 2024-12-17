@@ -223,6 +223,7 @@ describe("validators/postalAddressObject", () => {
     });
   }
 
+  /* eslint-disable sonarjs/assertions-in-tests */
   it("should reject invalid postcodes", () => {
     testInvalidPostcodeChecker("");
     testInvalidPostcodeChecker("0A 8AA");
@@ -275,6 +276,7 @@ describe("validators/postalAddressObject", () => {
     testInvalidPostcodeChecker("BFPO");
     testInvalidPostcodeChecker("BFPO 3AA");
   });
+  /* eslint-enable sonarjs/assertions-in-tests */
 
   describe("sanitise", () => {
     for (const [type, input, output] of [
