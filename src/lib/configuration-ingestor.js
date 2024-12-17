@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/no-duplicate-string */
 import bytes from "bytes";
 import { PageField } from "./field.js";
 import Plan from "./Plan.js";
@@ -196,7 +195,7 @@ export function validateSessionTtl(ttl = 3600) {
 /**
  * Validates and sanitises sessions name.
  *
- * @param {string} [name=casa-session] Session name. Default is `casa-session`
+ * @param {string} [name] Session name. Default is `casa-session`
  * @returns {string} Name.
  * @throws {ReferenceError} For missing value type.
  * @throws {TypeError} For invalid value.
@@ -300,6 +299,10 @@ export function validateErrorVisibility(
   );
 }
 
+/**
+ * @param cookieSameSite
+ * @param defaultFlag
+ */
 export function validateSessionCookieSameSite(cookieSameSite, defaultFlag) {
   const validValues = [true, false, "Strict", "Lax", "None"];
 
@@ -335,6 +338,7 @@ const validatePageHook = (hook, index) => {
   }
 };
 
+/** @param hooks */
 export function validatePageHooks(hooks) {
   if (!Array.isArray(hooks)) {
     throw new TypeError("Hooks must be an array");
@@ -358,6 +362,7 @@ const validateField = (field, index) => {
   }
 };
 
+/** @param fields */
 export function validateFields(fields) {
   if (!Array.isArray(fields)) {
     throw new TypeError("Page fields must be an array (page[].fields)");
@@ -387,6 +392,7 @@ const validatePage = (page, index) => {
   }
 };
 
+/** @param pages */
 export function validatePages(pages = []) {
   if (!Array.isArray(pages)) {
     throw new TypeError("Pages must be an array (pages)");
@@ -397,6 +403,7 @@ export function validatePages(pages = []) {
   return pages;
 }
 
+/** @param plan */
 export function validatePlan(plan) {
   if (plan === undefined) {
     return plan;
@@ -424,6 +431,7 @@ const validateGlobalHook = (hook, index) => {
   }
 };
 
+/** @param hooks */
 export function validateGlobalHooks(hooks) {
   if (hooks === undefined) {
     return [];
@@ -437,10 +445,12 @@ export function validateGlobalHooks(hooks) {
   return hooks;
 }
 
+/** @param plugins */
 export function validatePlugins(plugins) {
   return plugins;
 }
 
+/** @param events */
 export function validateEvents(events) {
   return events;
 }
@@ -464,6 +474,10 @@ export function validateHelmetConfigurator(helmetConfigurator) {
   return helmetConfigurator;
 }
 
+/**
+ * @param value
+ * @param defaultValue
+ */
 export function validateFormMaxParams(value, defaultValue = 25) {
   // CASA needs to send certain hidden form fields (see `sanitise-fields`
   // middleware), plus some padding here.
@@ -482,6 +496,10 @@ export function validateFormMaxParams(value, defaultValue = 25) {
   return value;
 }
 
+/**
+ * @param value
+ * @param defaultValue
+ */
 export function validateFormMaxBytes(value, defaultValue = 1024 * 50) {
   const MIN_BYTES = 1024;
 
@@ -502,6 +520,7 @@ export function validateFormMaxBytes(value, defaultValue = 1024 * 50) {
   return parsedValue;
 }
 
+/** @param generator */
 export function validateContextIdGenerator(generator) {
   if (generator === undefined) {
     return contextIdGenerators.uuid();

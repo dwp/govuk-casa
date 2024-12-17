@@ -66,9 +66,9 @@ export class PageField {
    *
    * @param {string} name Field name
    * @param {object} [opts] Options
-   * @param {boolean} [opts.optional=false] Whether this field is optional.
-   *   Default is `false`
-   * @param {boolean} [opts.persist=true] Whether this field will persist in
+   * @param {boolean} [opts.optional] Whether this field is optional. Default is
+   *   `false`
+   * @param {boolean} [opts.persist] Whether this field will persist in
    *   `req.body`. Default is `true`
    */
   constructor(
@@ -95,7 +95,7 @@ export class PageField {
     };
 
     // Apply name
-    /* eslint-disable-next-line security/detect-non-literal-fs-filename */
+
     this.rename(name);
   }
 
@@ -153,13 +153,11 @@ export class PageField {
    */
   putValue(obj = Object.create(null), value = undefined) {
     if (this.#meta.complex) {
-      /* eslint-disable-next-line no-param-reassign */
       obj[this.#meta.complexFieldName] = {
         ...(obj[this.#meta.complexFieldName] ?? {}),
         [this.#meta.complexFieldProperty]: value,
       };
     } else {
-      /* eslint-disable-next-line no-param-reassign */
       obj[this.#name] = value;
     }
 
@@ -441,9 +439,9 @@ export class PageField {
  * @memberof module:@dwp/govuk-casa
  * @param {string} name Field name
  * @param {object} [opts] Options
- * @param {boolean} [opts.optional=false] Whether this field is optional.
- *   Default is `false`
- * @param {boolean} [opts.persist=true] Whether this field will persist in
+ * @param {boolean} [opts.optional] Whether this field is optional. Default is
+ *   `false`
+ * @param {boolean} [opts.persist] Whether this field will persist in
  *   `req.body`. Default is `true`
  * @returns {PageField} A PageField
  */

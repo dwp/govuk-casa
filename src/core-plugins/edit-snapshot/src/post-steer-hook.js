@@ -9,7 +9,9 @@ export default (req, res, next) => {
   // to redirect if the journey cannot be traversed to the edit origin.
   // eslint-disable-next-line security/detect-object-injection
   if (req.casa[FLAG_FOR_PURGING] === true) {
-    log.debug(`Snapshot purging flag has been set for context '${req.casa.journeyContext.identity.id}'. Snapshot will be deleted.`);
+    log.debug(
+      `Snapshot purging flag has been set for context '${req.casa.journeyContext.identity.id}'. Snapshot will be deleted.`,
+    );
     deleteSnapshot(log, req);
     // eslint-disable-next-line security/detect-object-injection
     req.casa[FLAG_FOR_PURGING] = false;

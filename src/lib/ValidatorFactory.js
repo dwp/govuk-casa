@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import lodash from "lodash";
 
 const { isPlainObject } = lodash; // CommonJS
@@ -54,7 +53,6 @@ export default class ValidatorFactory {
 
     const validator = Reflect.construct(this, [config]);
 
-    /* eslint-disable-next-line sonarjs/prefer-object-literal */
     const instance = {};
     instance.name = validator.name || "unknown";
     instance.config = config;
@@ -96,7 +94,6 @@ export default class ValidatorFactory {
     throw new Error("validate() method has not been implemented");
   }
 
-  /* eslint-disable-next-line jsdoc/require-returns-check */
   /**
    * Sanitise the given value.
    *

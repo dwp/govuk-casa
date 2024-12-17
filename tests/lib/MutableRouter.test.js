@@ -5,7 +5,6 @@ import ExpressJS from "express";
 import MutableRouter from "../../src/lib/MutableRouter.js";
 
 const makeRouteTracer = (app) => {
-  /* eslint-disable-next-line no-param-reassign */
   app.tracer = [];
   return (index) => (req, res, next) => {
     app.tracer.push(index);
@@ -15,7 +14,6 @@ const makeRouteTracer = (app) => {
 
 describe("MutableRouter", () => {
   describe("ordering of routes", () => {
-    /* eslint-disable-next-line no-restricted-syntax */
     for (const pair of ["all:get", "get", "post", "put", "delete", "use:get"]) {
       const [classMethod, httpMethod] = pair.includes(":")
         ? pair.split(":")

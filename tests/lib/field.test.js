@@ -16,8 +16,9 @@ describe("PageField", () => {
   });
 
   it("throws an exception if the field name is invalid", () => {
-    expect(() => field("abcdefghijklmnopqrstuvwxyz0123456789.-[]")).to.not
-      .throw();
+    expect(() =>
+      field("abcdefghijklmnopqrstuvwxyz0123456789.-[]"),
+    ).to.not.throw();
     expect(() => field("$")).to.throw(SyntaxError);
     expect(() => field("()")).to.throw(SyntaxError);
     expect(() => field("ok[$not_ok]")).to.throw(SyntaxError);

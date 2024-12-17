@@ -25,9 +25,7 @@ const application = () => {
     },
     pages: pageFactory(plan),
     plan: plan,
-    plugins: [
-      corePlugins.editSnapshot(),
-    ],
+    plugins: [corePlugins.editSnapshot()],
   });
 
   const casaApp = ExpressJS();

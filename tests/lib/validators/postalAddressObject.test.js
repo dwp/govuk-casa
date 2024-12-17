@@ -19,7 +19,6 @@ describe("validators/postalAddressObject", () => {
   const errorInlinePostcode =
     "validation:rule.postalAddressObject.postcode.inline";
 
-  /* eslint-disable-next-line arrow-body-style */
   it("should reject with an Array of ValidationError objects", () => {
     return expect(validate("bad-args")).to.satisfy(
       (result) =>
@@ -205,6 +204,7 @@ describe("validators/postalAddressObject", () => {
     );
   });
 
+  /** @param postcode */
   function testPostcodeChecker(postcode) {
     return validate({
       address1: "street",
@@ -213,9 +213,11 @@ describe("validators/postalAddressObject", () => {
     });
   }
 
+  /** @param postcode */
   function testValidPostcodeChecker(postcode) {
     expect(testPostcodeChecker(postcode)).to.be.empty;
   }
+  /** @param postcode */
   function testInvalidPostcodeChecker(postcode) {
     return expect(testPostcodeChecker(postcode)).to.satisfy((v) => {
       const s = JSON.stringify(v);

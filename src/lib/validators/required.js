@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import lodash from "lodash";
 import { isEmpty, isStringable, stringifyInput } from "../utils.js";
 import ValidatorFactory from "../ValidatorFactory.js";

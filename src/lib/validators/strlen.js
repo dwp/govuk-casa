@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import ValidatorFactory from "../ValidatorFactory.js";
 import ValidationError from "../ValidationError.js";
 import { stringifyInput } from "../utils.js";

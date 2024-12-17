@@ -3,10 +3,7 @@ import { Plan } from "../../../../../casa.js";
 export default () => {
   const plan = new Plan();
 
-  plan.setRoute(
-    "start",
-    "branch",
-  );
+  plan.setRoute("start", "branch");
 
   plan.setRoute(
     "branch",
@@ -20,17 +17,9 @@ export default () => {
     (r, c) => c.data?.branch?.choice === "route-b",
   );
 
-  plan.addSequence(
-    "route-a-first",
-    "route-a-second",
-    "cya",
-  );
+  plan.addSequence("route-a-first", "route-a-second", "cya");
 
-  plan.addSequence(
-    "route-b-first",
-    "route-b-second",
-    "cya",
-  );
+  plan.addSequence("route-b-first", "route-b-second", "cya");
 
   return plan;
 };

@@ -51,6 +51,7 @@ const clone = rfdc({ proto: false });
  * @access private
  */
 
+/** @param key */
 export function validateObjectKey(key = "") {
   const keyLower = String.prototype.toLowerCase.call(key);
   if (
@@ -567,14 +568,14 @@ export default class JourneyContext {
       log.trace(
         "Session context list already initialised as an object (legacy structure). Will convert from object to array.",
       );
-      /* eslint-disable-next-line no-param-reassign */
+
       session.journeyContextList = Object.entries(session.journeyContextList);
     }
 
     // Initialise new context list in the session
     if (!Object.hasOwn(session, "journeyContextList")) {
       log.trace("Initialising session with a default journey context list");
-      /* eslint-disable-next-line no-param-reassign */
+
       session.journeyContextList = [];
 
       const defaultContext = new JourneyContext();
@@ -697,7 +698,7 @@ export default class JourneyContext {
     const list = new Map(session?.journeyContextList);
     if (list.has(id)) {
       // ESLint disabled as `id` has been verified as an "own" property
-      /* eslint-disable-next-line security/detect-object-injection */
+
       return JourneyContext.fromObject(list.get(id));
     }
 
@@ -799,7 +800,7 @@ export default class JourneyContext {
 
     const list = new Map(session.journeyContextList);
     list.set(context.identity.id, context.toObject());
-    /* eslint-disable-next-line no-param-reassign */
+
     session.journeyContextList = [...list.entries()];
   }
 
@@ -953,7 +954,7 @@ export default class JourneyContext {
   /**
    * Tests if a page has been skipped.
    *
-   * @param {string} page Page ID (waypoint).
+   * @param {string} waypoint Page ID (waypoint).
    * @param {object} opts Skip ptions.
    * @param {string} opts.to Waypoint that should be skipped to.
    * @returns {boolean} True if the page has been skipped, or if it has been

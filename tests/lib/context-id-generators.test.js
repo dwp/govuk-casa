@@ -81,9 +81,7 @@ describe("context-id-generators", () => {
         session: {},
       };
 
-      expect(generator({ req, reservedIds: [] })).to.match(
-        /^test[a-z0-9]+$/,
-      );
+      expect(generator({ req, reservedIds: [] })).to.match(/^test[a-z0-9]+$/);
     });
   });
 });

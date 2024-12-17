@@ -1,5 +1,3 @@
-/* eslint-disable class-methods-use-this */
-
 import ValidatorFactory from "../ValidatorFactory.js";
 import ValidationError from "../ValidationError.js";
 import { coerceInputToInteger } from "../utils.js";

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { randomUUID } from "node:crypto";
 
 /** @typedef {import("../casa.js").ContextIdGenerator} ContextIdGenerator */

@@ -48,7 +48,6 @@ export function isStringable(value) {
  * @access private
  */
 export function resolveMiddlewareHooks(hookName, path, hooks = []) {
-  /* eslint-disable-next-line max-len */
   const pathMatch = (h) =>
     h.path === undefined ||
     (h.path instanceof RegExp && h.path.test(path)) ||

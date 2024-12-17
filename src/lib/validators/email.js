@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import validatorPkg from "validator";
 import ValidationError from "../ValidationError.js";
 import ValidatorFactory from "../ValidatorFactory.js";

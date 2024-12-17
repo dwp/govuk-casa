@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import { DateTime } from "luxon";
 import lodash from "lodash";
 import ValidationError from "../ValidationError.js";

@@ -30,10 +30,12 @@ const combineMerge = (target, source, options) => {
 // Allows objects to be deepmerged and retain their type, without becoming [object Object]
 // ref: https://github.com/jonschlinkert/is-plain-object/blob/master/is-plain-object.js
 
+/** @param o */
 function isObject(o) {
   return Object.prototype.toString.call(o) === "[object Object]";
 }
 
+/** @param o */
 function isPlainObjectOrArray(o) {
   if (Array.isArray(o)) {
     return true;
@@ -52,6 +54,7 @@ function isPlainObjectOrArray(o) {
   return Object.hasOwn(prot, "isPrototypeOf");
 }
 
+/** @param {...any} objects */
 function mergeObjects(...objects) {
   return deepmergeAll([Object.create(null), ...objects], {
     arrayMerge: combineMerge,

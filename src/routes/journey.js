@@ -1,4 +1,3 @@
-/* eslint-disable object-curly-newline,max-len */
 import MutableRouter from "../lib/MutableRouter.js";
 import skipWaypointMiddlewareFactory from "../middleware/skip-waypoint.js";
 import steerJourneyMiddlewareFactory from "../middleware/steer-journey.js";
@@ -44,7 +43,10 @@ const renderMiddlewareFactory = (view, contextFactory) => [
         // Common template variables for both GET and POST requests
         inEditMode: req.casa.editMode,
         editOriginUrl: req.casa.editOrigin,
-        editCancelUrl: generateEditCancelUrl(req.casa.editOrigin, req.casa.waypoint),
+        editCancelUrl: generateEditCancelUrl(
+          req.casa.editOrigin,
+          req.casa.waypoint,
+        ),
         activeContextId: req.casa.journeyContext.identity.id,
         ...contextFactory(req),
       },
@@ -73,8 +75,8 @@ const generateGovukErrors = (errors, req) =>
   }));
 
 const generateEditCancelUrl = (editOrigin, waypoint) => {
-  const url = new URL(editOrigin, 'https://placeholder.test/');
-  url.searchParams.set('editcancel', waypoint);
+  const url = new URL(editOrigin, "https://placeholder.test/");
+  url.searchParams.set("editcancel", waypoint);
   return `${url.pathname}${url.search}`;
 };
 

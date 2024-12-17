@@ -19,14 +19,12 @@ describe("JourneyContext", () => {
     it("should contain an empty data object in initialisation", () => {
       const data = new JourneyContext();
       expect(data.getData()).to.be.an("object");
-      expect(data.getData()).to.be
-        .empty; /* eslint-disable-line no-unused-expressions */
+      expect(data.getData()).to.be.empty;
     });
 
     it("should contain an empty validation object in initialisation", () => {
       const data = new JourneyContext({});
-      expect(data.getValidationErrors()).to.be.an("object").and.be
-        .empty; /* eslint-disable-line no-unused-expressions */
+      expect(data.getValidationErrors()).to.be.an("object").and.be.empty;
     });
   });
 
@@ -152,7 +150,10 @@ describe("JourneyContext", () => {
 
       expect(() => {
         data1.setValidationErrorsForPage("p0", {});
-      }).to.throw(SyntaxError, "Errors must be an Array. Received [object Object]");
+      }).to.throw(
+        SyntaxError,
+        "Errors must be an Array. Received [object Object]",
+      );
 
       expect(() => {
         data1.setValidationErrorsForPage("p0", [

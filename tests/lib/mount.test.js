@@ -66,7 +66,9 @@ describe("mount()", () => {
     it("passes request parameters to ancillaryRouter middleware", (done) => {
       // Setup
       const ancillaryRouter = new MutableRouter({ mergeParams: true });
-      ancillaryRouter.get("/ancillary-route", (req, res) => res.status(200).send(JSON.stringify(req.params)));
+      ancillaryRouter.get("/ancillary-route", (req, res) =>
+        res.status(200).send(JSON.stringify(req.params)),
+      );
 
       const mount = mountFactory({
         ...factoryArgs,
@@ -79,13 +81,17 @@ describe("mount()", () => {
       mount(app, { route: "/:param1/" });
 
       // Assert
-      request(app).get("/123/ancillary-route/").expect(JSON.stringify({param1: "123"}), done);
+      request(app)
+        .get("/123/ancillary-route/")
+        .expect(JSON.stringify({ param1: "123" }), done);
     });
 
     it("passes request parameters to journeyRouter middleware", (done) => {
       // Setup
       const journeyRouter = new MutableRouter({ mergeParams: true });
-      journeyRouter.get("/journey-route", (req, res) => res.status(200).send(JSON.stringify(req.params)));
+      journeyRouter.get("/journey-route", (req, res) =>
+        res.status(200).send(JSON.stringify(req.params)),
+      );
 
       const mount = mountFactory({
         ...factoryArgs,
@@ -98,7 +104,9 @@ describe("mount()", () => {
       mount(app, { route: "/:param1/" });
 
       // Assert
-      request(app).get("/123/journey-route/").expect(JSON.stringify({param1: "123"}), done);
+      request(app)
+        .get("/123/journey-route/")
+        .expect(JSON.stringify({ param1: "123" }), done);
     });
   });
 });

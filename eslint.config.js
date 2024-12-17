@@ -11,18 +11,18 @@ export default [
   sonarjsPlugin.configs.recommended,
   importPlugin.flatConfigs.recommended,
   {
-    files: ['**/*.{js,mjs,cjs}'],
+    files: ["**/*.{js,mjs,cjs}"],
     languageOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
+      ecmaVersion: "latest",
+      sourceType: "module",
     },
   },
   {
     rules: {
-      "jsdoc/tag-lines": ["warn", "any", {"startLines": 1}],
+      "jsdoc/tag-lines": ["warn", "any", { startLines: 1 }],
       "sonarjs/todo-tag": "warn",
       "sonarjs/cognitive-complexity": ["warn", 15],
-      "sonarjs/public-static-readonly": "off", /* Can only use in TypeScript */
+      "sonarjs/public-static-readonly": "off" /* Can only use in TypeScript */,
     },
   },
   {
@@ -48,6 +48,6 @@ export default [
     },
     rules: {
       "sonarjs/no-nested-functions": "off",
-    }
+    },
   },
 ];

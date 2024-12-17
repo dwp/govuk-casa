@@ -51,7 +51,7 @@ const sessionExpiryMiddleware =
             referrer: req.originalUrl,
             lang: language,
           });
-          /* eslint-disable-next-line prefer-template */
+
           res.redirect(
             302,
             validateUrlPath(`${req.baseUrl}/session-timeout`) +
@@ -70,6 +70,17 @@ const sessionExpiryMiddleware =
 // - set the session cookie
 // - parse request cookies
 // - handle expiry of server-side session
+/**
+ * @param opts
+ * @param opts.cookieParserMiddleware
+ * @param opts.secret
+ * @param opts.name
+ * @param opts.secure
+ * @param opts.ttl
+ * @param opts.cookieSameSite
+ * @param opts.cookiePath
+ * @param opts.store
+ */
 export default function sessionMiddleware({
   cookieParserMiddleware,
   secret,

@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import lodash from "lodash";
 import ValidationError from "../ValidationError.js";
 import ValidatorFactory from "../ValidatorFactory.js";
@@ -83,7 +82,6 @@ export default class PostalAddressObject extends ValidatorFactory {
       ...this.config,
     };
 
-    /* eslint-disable-next-line jsdoc/require-jsdoc */
     const objectifyError = (err) =>
       typeof err === "string"
         ? {
@@ -109,10 +107,10 @@ export default class PostalAddressObject extends ValidatorFactory {
       const reAddrLine1 = /^(\d+|[a-z0-9\-,.&#()/\\:;'" ]{2,})$/i;
       // UK Postcode regex taken from the dwp java pc checker
       // https://github.com/dwp/postcode-format-validation
-      /* eslint-disable sonarjs/regex-complexity,sonarjs/anchor-precedence */
+      /* eslint-disable sonarjs/regex-complexity */
       const rePostcode =
         /^(?![QVX])[A-Z]((?![IJZ])[A-Z]\d((\d?)|([ABEHMNPRVWXY]?))|(\d(\d?|[ABCDEFGHJKPSTUW]?))) ?\d((?![CIKMOV])[A-Z]){2}$|^(BFPO) ?\d{1,4}$/i;
-      /* eslint-enable sonarjs/regex-complexity,sonarjs/anchor-precedence */
+      /* eslint-enable sonarjs/regex-complexity */
 
       // [required, regex, strlenmax, error message]
       const attributes = {

@@ -61,14 +61,13 @@ const sanitiseWaypointWithAllowedParams = (w) => {
  *   });
  *
  * @param {object} obj Options
- * @param {string} [obj.waypoint=""] Waypoint. Default is `""`
- * @param {string} [obj.mountUrl="/"] Mount URL. Default is `"/"`
+ * @param {string} [obj.waypoint] Waypoint. Default is `""`
+ * @param {string} [obj.mountUrl] Mount URL. Default is `"/"`
  * @param {JourneyContext} [obj.journeyContext] JourneyContext
- * @param {boolean} [obj.edit=false] Turn edit mode on or off. Default is
- *   `false`
+ * @param {boolean} [obj.edit] Turn edit mode on or off. Default is `false`
  * @param {string} [obj.editOrigin] Edit mode original URL
  * @param {boolean} [obj.skipTo] Skip to this waypoint from the current one
- * @param {string} [obj.routeName=next] Plan route name; next | prev. Default is
+ * @param {string} [obj.routeName] Plan route name; next | prev. Default is
  *   `next`
  * @returns {string} URL
  */

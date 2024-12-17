@@ -4,6 +4,12 @@ const rProto = /__proto__/i;
 const rPrototype = /prototype[='"[\]]/i;
 const rConstructor = /constructor[='"[\]]/i;
 
+/**
+ * @param req
+ * @param res
+ * @param buf
+ * @param encoding
+ */
 export function verifyBody(req, res, buf, encoding) {
   const body = decodeURI(buf.toString(encoding)).replace(
     /[\s\u200B-\u200D\uFEFF]/g,
@@ -20,6 +26,11 @@ export function verifyBody(req, res, buf, encoding) {
   }
 }
 
+/**
+ * @param opts
+ * @param opts.formMaxParams
+ * @param opts.formMaxBytes
+ */
 export default function bodyParserMiddleware({ formMaxParams, formMaxBytes }) {
   return [
     expressBodyParser({

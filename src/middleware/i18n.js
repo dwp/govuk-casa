@@ -63,6 +63,11 @@ const loadResources = (languages, directories) => {
   return store;
 };
 
+/**
+ * @param opts
+ * @param opts.languages
+ * @param opts.directories
+ */
 export default function i18nMiddleware({
   languages = ["en", "cy"],
   directories = [],
@@ -95,7 +100,6 @@ export default function i18nMiddleware({
   return [
     (req, res, next) => {
       if (!req.session.language) {
-        /* eslint-disable-next-line prefer-destructuring */
         req.session.language = languages[0];
       }
       if (req?.query.lang && languages.includes(req.query.lang)) {

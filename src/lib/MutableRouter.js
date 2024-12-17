@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/no-duplicate-string,class-methods-use-this */
 import { Router } from "express";
 
 /** @memberof module:@dwp/govuk-casa */

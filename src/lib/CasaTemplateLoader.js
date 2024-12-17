@@ -97,7 +97,6 @@ export default class CasaTemplateLoader extends FileSystemLoader {
       /* eslint-disable-next-line security/detect-object-injection */
       const { block, modifier } = this.#blockModifiers[i];
       if (source.src.indexOf(`block ${block}`) > -1) {
-        /* eslint-disable-next-line no-param-reassign */
         source.src = source.src.replace(
           `block ${block} %}`,
           `block ${block} %}${modifier(name)}`,

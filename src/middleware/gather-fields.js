@@ -20,7 +20,7 @@ import { REQUEST_PHASE_GATHER } from "../lib/constants.js";
  *
  * @param {object} obj Options
  * @param {string} obj.waypoint Waypoint
- * @param {PageField[]} [obj.fields=[]] Fields. Default is `[]`
+ * @param {PageField[]} [obj.fields] Fields. Default is `[]`
  * @returns {Array} Array of middleware
  */
 export default ({ waypoint, fields = [] }) => [

@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 /**
  * Test if a value is present in an array.
  *

@@ -15,6 +15,12 @@ const editOrigin = (req) => {
   return "";
 };
 
+/**
+ * @param opts
+ * @param opts.plan
+ * @param opts.events
+ * @param opts.contextIdGenerator
+ */
 export default function dataMiddleware({ plan, events, contextIdGenerator }) {
   return [
     (req, res, next) => {
@@ -36,8 +42,10 @@ export default function dataMiddleware({ plan, events, contextIdGenerator }) {
 
         // Edit mode
         editMode:
-          (Object.hasOwn(req.query, "edit") && Object.hasOwn(req.query, "editorigin")) ||
-          (Object.hasOwn(req.body, "edit") && Object.hasOwn(req.body, "editorigin")),
+          (Object.hasOwn(req.query, "edit") &&
+            Object.hasOwn(req.query, "editorigin")) ||
+          (Object.hasOwn(req.body, "edit") &&
+            Object.hasOwn(req.body, "editorigin")),
         editOrigin: editOrigin(req),
       };
 

@@ -1,4 +1,3 @@
-/* eslint-disable camelcase, object-curly-newline */
 import { expect } from "chai";
 import { default as sinon, stub } from "sinon";
 

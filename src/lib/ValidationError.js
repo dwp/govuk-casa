@@ -41,7 +41,7 @@ export default class ValidationError {
    * @param {object} args Arguments
    * @param {ErrorMessageConfig} args.errorMsg Error message config to seed
    *   ValidationError
-   * @param {ValidateContext} [args.dataContext={}] Data for error msg function.
+   * @param {ValidateContext} [args.dataContext] Data for error msg function.
    *   Default is `{}`
    * @returns {ValidationError} Error instance
    * @throws {TypeError} If errorMsg is not in a valid type

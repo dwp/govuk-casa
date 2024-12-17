@@ -1,6 +1,4 @@
-/**
- * Worker-initialisation script.
- */
+/** Worker-initialisation script. */
 import { dirname, resolve } from "path";
 import { load } from "js-yaml";
 import { readFileSync } from "fs";
@@ -20,9 +18,7 @@ export default async () => {
     "utf8",
   );
 
-  const tplLoader = new FileSystemLoader(
-    resolve(__dirname, "content"),
-  );
+  const tplLoader = new FileSystemLoader(resolve(__dirname, "content"));
   const nunjucksEnv = new Environment(tplLoader, { autoescape: false });
 
   return {
