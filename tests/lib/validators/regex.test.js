@@ -6,7 +6,7 @@ import ValidationError from "../../../src/lib/ValidationError.js";
 describe("validators/regex", () => {
   it("should reject with a ValidationError", () => {
     const re1 = regex.make({
-      pattern: /^[0-9]$/,
+      pattern: /^\d$/,
     }).validate;
 
     expect(re1("bad-args")).to.satisfy(([e]) => e instanceof ValidationError);
@@ -16,7 +16,7 @@ describe("validators/regex", () => {
     expect(regex.make().validate("CAN BE ANYTHING BY DEFAULT")).to.be.empty;
 
     const re1 = regex.make({
-      pattern: /^[0-9]{3}$/,
+      pattern: /^\d{3}$/,
     }).validate;
     expect(re1("123")).to.be.empty;
     expect(re1("098")).to.be.empty;
@@ -24,7 +24,7 @@ describe("validators/regex", () => {
 
   it("should reject for mismatching regular expressions", () => {
     const re1 = regex.make({
-      pattern: /^[0-9]{3}$/,
+      pattern: /^\d{3}$/,
     }).validate;
     expect(re1("1234")).to.not.be.empty;
     expect(re1("12")).to.not.be.empty;
@@ -33,7 +33,7 @@ describe("validators/regex", () => {
 
   it("should use the custom error message for rejections", () => {
     const re1 = regex.make({
-      pattern: /^[0-9]{3}$/,
+      pattern: /^\d{3}$/,
       errorMsg: "REGEX_ERR",
     }).validate;
     expect(re1("1234")).to.satisfy(([e]) => e.inline === "REGEX_ERR");
@@ -41,7 +41,7 @@ describe("validators/regex", () => {
 
   it("should allow inverse matches - i.e. reject for matching expressions", () => {
     const re1 = regex.make({
-      pattern: /^[0-9]{3}$/,
+      pattern: /^\d{3}$/,
       errorMsg: "REGEX_ERR",
       invert: true,
     }).validate;
@@ -52,7 +52,7 @@ describe("validators/regex", () => {
 
   it("should resolve for mismatching regular expressions if inverse match is specified", () => {
     const re1 = regex.make({
-      pattern: /^[0-9]{3}$/,
+      pattern: /^\d{3}$/,
       invert: true,
     }).validate;
     expect(re1("1234")).to.be.empty;

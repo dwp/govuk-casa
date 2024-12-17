@@ -16,7 +16,10 @@ module.exports = {
       filename: "sonar-project.properties",
       updater: {
         readVersion: (contents) =>
-          (contents.match(/sonar.projectVersion=(.+)$/m) || [,])[1],
+          (contents.match(/sonar.projectVersion=(.+)$/m) || [
+            undefined,
+            undefined,
+          ])[1],
         writeVersion: (contents, version) =>
           contents.replace(
             /sonar.projectVersion=(.+)$/m,

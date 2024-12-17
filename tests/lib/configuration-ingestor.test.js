@@ -51,7 +51,8 @@ describe("ConfigIngestor", () => {
     });
 
     it("should throw an Error when given invalid configuration", () => {
-      expect(() => ingest()).to.throw();
+      /* eslint-disable-next-line sonarjs/test-check-exception */
+      expect(() => ingest()).to.throw(Error);
     });
 
     it("should return an immutable object when given valid configuration", () => {

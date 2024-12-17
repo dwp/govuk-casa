@@ -102,7 +102,7 @@ export default class DateObject extends ValidatorFactory {
       if (test.flags.every((v) => v === true)) {
         formats = [...formats, ...test.formats];
       }
-    };
+    }
 
     if (typeof value === "object") {
       formats.find((format) => {

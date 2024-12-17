@@ -55,7 +55,7 @@ describe("context-id-generators", () => {
         session: {},
       };
 
-      expect(generator({ req, reservedIds: [] })).to.match(/^[a-z0-9]{1,}$/);
+      expect(generator({ req, reservedIds: [] })).to.match(/^[a-z0-9]+$/);
     });
 
     it("throws if a unique ID cannot be generated", () => {
@@ -82,7 +82,7 @@ describe("context-id-generators", () => {
       };
 
       expect(generator({ req, reservedIds: [] })).to.match(
-        /^test[a-z0-9]{1,}$/,
+        /^test[a-z0-9]+$/,
       );
     });
   });

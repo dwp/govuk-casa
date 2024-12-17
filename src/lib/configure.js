@@ -87,7 +87,7 @@ export default function configure(config = {}) {
   for (const page of pages) {
     if (page?.hooks) {
       for (const h of page.hooks) {
-        h.hook = `journey.${h.hook}`
+        h.hook = `journey.${h.hook}`;
       }
     }
   }
@@ -211,7 +211,7 @@ export default function configure(config = {}) {
 
   // Bootstrap all plugins
   for (const plugin of plugins.filter((p) => p.bootstrap)) {
-    plugin?.bootstrap(configOutput)
+    plugin?.bootstrap(configOutput);
   }
 
   // Finished configuration

@@ -182,6 +182,7 @@ describe("waypointUrl()", () => {
   });
 
   /* --------------------------------------------------- property-based tests */
+  /* eslint-disable sonarjs/assertions-in-tests */
 
   it("sanitises mountUrl and waypoint", () => {
     // Check that the resulting url doesn't contain any unexpected characters
