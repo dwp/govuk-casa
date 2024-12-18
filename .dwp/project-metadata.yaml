@@ -7,7 +7,7 @@ project:
     cmdb_id: unallocated
     last_verified:
       date: "2024-12-18"
-      name: christopher.white2
+      name: james.gauld
     tags:
       payments: false
       personally_identifying_information: false
