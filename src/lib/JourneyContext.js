@@ -270,7 +270,7 @@ export default class JourneyContext {
    * @returns {JourneyContext} Chain.
    */
   removeValidationStateForPage(pageId) {
-    /* eslint-disable-next-line sonarjs/no-unused-vars */
+    /* eslint-disable-next-line sonarjs/no-unused-vars,no-unused-vars */
     const { [pageId]: dummy, ...remaining } = this.#validation;
     this.#validation = { ...remaining };
     return this;
