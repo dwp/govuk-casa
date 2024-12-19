@@ -15,7 +15,7 @@ node-lint-eslint:
   variables:
     PUPPETEER_SKIP_DOWNLOAD: "true"
   image:
-    name: registry.gitlab.com/dwp/engineering/pipeline-solutions/gitlab/fragments/eslint/v9:latest@sha256:4b18c5eaa723d6057106be76c243aa93432096e9fbd0422f2db3687f23203174
+    name: ${CI_REGISTRY}/dwp/engineering/pipeline-solutions/gitlab/fragments/eslint/v9:latest@sha256:4b18c5eaa723d6057106be76c243aa93432096e9fbd0422f2db3687f23203174
 
 # ------------------------------------------------------------------ custom jobs
 
