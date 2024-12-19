@@ -92,11 +92,12 @@ export function validateI18nDirs(dirs = []) {
   if (!Array.isArray(dirs)) {
     throw new TypeError("I18n directories must be an array (i18n.dirs)");
   }
-  for (let i = 0; i < dirs.length; i++) {
-    const dir = dirs[parseInt(i, 10)];
+
+  let i = 0;
+  for (const dir of dirs) {
     if (typeof dir !== "string") {
       throw new TypeError(
-        `I18n directory must be a string, got ${typeof dir} (i18n.dirs[${i}])`,
+        `I18n directory must be a string, got ${typeof dir} (i18n.dirs[${i++}])`,
       );
     }
   }
@@ -116,11 +117,12 @@ export function validateI18nLocales(locales = ["en", "cy"]) {
   if (!Array.isArray(locales)) {
     throw new TypeError("I18n locales must be an array (i18n.locales)");
   }
-  for (let i = 0; i < locales.length; i++) {
-    const locale = locales[parseInt(i, 10)];
+
+  let i = 0;
+  for (const locale of locales) {
     if (typeof locale !== "string") {
       throw new TypeError(
-        `I18n locale must be a string, got ${typeof locale} (i18n.locales[${i}])`,
+        `I18n locale must be a string, got ${typeof locale} (i18n.locales[${i++}])`,
       );
     }
   }
@@ -182,11 +184,12 @@ export function validateViews(dirs = []) {
   if (!Array.isArray(dirs)) {
     throw new TypeError("View directories must be an array (views)");
   }
-  for (let i = 0; i < dirs.length; i++) {
-    const dir = dirs[parseInt(i, 10)];
+
+  let i = 0;
+  for (const dir of dirs) {
     if (typeof dir !== "string") {
       throw new TypeError(
-        `View directory must be a string, got ${typeof dir} (views[${i}])`,
+        `View directory must be a string, got ${typeof dir} (views[${i++}])`,
       );
     }
   }
@@ -382,8 +385,10 @@ export function validatePageHooks(hooks) {
   if (!Array.isArray(hooks)) {
     throw new TypeError("Hooks must be an array");
   }
-  for (let i = 0; i < hooks.length; i++) {
-    validatePageHook(hooks[parseInt(i, 10)], i);
+
+  let i = 0;
+  for (const hook of hooks) {
+    validatePageHook(hook, i++);
   }
   return hooks;
 }
@@ -409,8 +414,10 @@ export function validateFields(fields) {
   if (!Array.isArray(fields)) {
     throw new TypeError("Page fields must be an array (page[].fields)");
   }
-  for (let i = 0; i < fields.length; i++) {
-    validateField(fields[parseInt(i, 10)], i);
+
+  let i = 0;
+  for (const field of fields) {
+    validateField(field, i++);
   }
   return fields;
 }
@@ -442,8 +449,10 @@ export function validatePages(pages = []) {
   if (!Array.isArray(pages)) {
     throw new TypeError("Pages must be an array (pages)");
   }
-  for (let i = 0; i < pages.length; i++) {
-    validatePage(pages[parseInt(i, 10)], i);
+
+  let i = 0;
+  for (const page of pages) {
+    validatePage(page, i++);
   }
   return pages;
 }
@@ -490,8 +499,10 @@ export function validateGlobalHooks(hooks) {
   if (!Array.isArray(hooks)) {
     throw new TypeError("Hooks must be an array");
   }
-  for (let i = 0; i < hooks.length; i++) {
-    validateGlobalHook(hooks[parseInt(i, 10)], i);
+
+  let i = 0;
+  for (const hook of hooks) {
+    validateGlobalHook(hook, i++);
   }
   return hooks;
 }
