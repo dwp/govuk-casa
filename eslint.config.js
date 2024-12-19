@@ -47,7 +47,19 @@ export default [
       },
     },
     rules: {
+      "jsdoc/require-param-description": "off",
+      "jsdoc/require-param-type": "off",
+      "jsdoc/require-returns": "off",
+      "security/detect-object-injection": "off",
       "sonarjs/no-nested-functions": "off",
+    },
+  },
+  {
+    name: "Validators",
+    files: ["src/lib/validators/**/*.js"],
+    rules: {
+      // the API docs builder requires use of @memberof which raises this finding
+      "jsdoc/no-undefined-types": "off",
     },
   },
 ];

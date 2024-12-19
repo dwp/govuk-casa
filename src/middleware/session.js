@@ -5,6 +5,11 @@ import expressSession, { MemoryStore } from "express-session";
 import logger from "../lib/logger.js";
 import { validateUrlPath } from "../lib/utils.js";
 
+/**
+ * @typedef {import("express").RequestHandler} RequestHandler
+ * @access private
+ */
+
 const log = logger("middleware:session");
 
 const sessionExpiryMiddleware =
@@ -66,20 +71,23 @@ const sessionExpiryMiddleware =
     }
   };
 
-// 3 middleware:
-// - set the session cookie
-// - parse request cookies
-// - handle expiry of server-side session
 /**
- * @param opts
- * @param opts.cookieParserMiddleware
- * @param opts.secret
- * @param opts.name
- * @param opts.secure
- * @param opts.ttl
- * @param opts.cookieSameSite
- * @param opts.cookiePath
- * @param opts.store
+ * Produces three middleware functions:
+ *
+ * - Set the session cookie
+ * - Parse request cookies
+ * - Handle expiry of server-side session
+ *
+ * @param {object} opts Options
+ * @param {RequestHandler} opts.cookieParserMiddleware Cookie parsing middleware
+ * @param {string} opts.secret Session encryption secret
+ * @param {string} opts.name Session cookie name
+ * @param {boolean} opts.secure Secure cookies only
+ * @param {number} opts.ttl Session data time-to-live
+ * @param {boolean | string} [opts.cookieSameSite] Cooke SameSite setting
+ * @param {string} [opts.cookiePath] Cookie path
+ * @param {object} [opts.store] Storage instance
+ * @returns {RequestHandler[]} Middleware functions
  */
 export default function sessionMiddleware({
   cookieParserMiddleware,

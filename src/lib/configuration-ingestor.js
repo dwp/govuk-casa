@@ -24,6 +24,41 @@ import {
  * @access private
  */
 
+/**
+ * @typedef {import("../casa").Page} Page
+ * @access private
+ */
+
+/**
+ * @typedef {import("../casa").PageField} PageField
+ * @access private
+ */
+
+/**
+ * @typedef {import("../casa").PageHook} PageHook
+ * @access private
+ */
+
+/**
+ * @typedef {import("../casa").GlobalHook} GlobalHook
+ * @access private
+ */
+
+/**
+ * @typedef {import("../casa").IPlugin} IPlugin
+ * @access private
+ */
+
+/**
+ * @typedef {import("../casa").ContextEventHandler} ContextEventHandler
+ * @access private
+ */
+
+/**
+ * @typedef {import("../casa").ContextIdGenerator} ContextIdGenerator
+ * @access private
+ */
+
 const log = logger("lib:configuration-ingestor");
 
 const echo = (a) => a;
@@ -58,7 +93,7 @@ export function validateI18nDirs(dirs = []) {
     throw new TypeError("I18n directories must be an array (i18n.dirs)");
   }
   for (let i = 0; i < dirs.length; i++) {
-    const dir = dirs[i];
+    const dir = dirs[parseInt(i, 10)];
     if (typeof dir !== "string") {
       throw new TypeError(
         `I18n directory must be a string, got ${typeof dir} (i18n.dirs[${i}])`,
@@ -82,7 +117,7 @@ export function validateI18nLocales(locales = ["en", "cy"]) {
     throw new TypeError("I18n locales must be an array (i18n.locales)");
   }
   for (let i = 0; i < locales.length; i++) {
-    const locale = locales[i];
+    const locale = locales[parseInt(i, 10)];
     if (typeof locale !== "string") {
       throw new TypeError(
         `I18n locale must be a string, got ${typeof locale} (i18n.locales[${i}])`,
@@ -148,7 +183,7 @@ export function validateViews(dirs = []) {
     throw new TypeError("View directories must be an array (views)");
   }
   for (let i = 0; i < dirs.length; i++) {
-    const dir = dirs[i];
+    const dir = dirs[parseInt(i, 10)];
     if (typeof dir !== "string") {
       throw new TypeError(
         `View directory must be a string, got ${typeof dir} (views[${i}])`,
@@ -300,8 +335,9 @@ export function validateErrorVisibility(
 }
 
 /**
- * @param cookieSameSite
- * @param defaultFlag
+ * @param {boolean | string} cookieSameSite Cookie SameSite value
+ * @param {boolean | string} defaultFlag Default value
+ * @returns {boolean | string} Validated value
  */
 export function validateSessionCookieSameSite(cookieSameSite, defaultFlag) {
   const validValues = [true, false, "Strict", "Lax", "None"];
@@ -338,13 +374,16 @@ const validatePageHook = (hook, index) => {
   }
 };
 
-/** @param hooks */
+/**
+ * @param {PageHook[]} hooks Page hook functions
+ * @returns {PageHook[]} Validated page hooks
+ */
 export function validatePageHooks(hooks) {
   if (!Array.isArray(hooks)) {
     throw new TypeError("Hooks must be an array");
   }
   for (let i = 0; i < hooks.length; i++) {
-    validatePageHook(hooks[i], i);
+    validatePageHook(hooks[parseInt(i, 10)], i);
   }
   return hooks;
 }
@@ -362,13 +401,16 @@ const validateField = (field, index) => {
   }
 };
 
-/** @param fields */
+/**
+ * @param {PageField[]} fields Page fields
+ * @returns {PageField[]} Validated fields
+ */
 export function validateFields(fields) {
   if (!Array.isArray(fields)) {
     throw new TypeError("Page fields must be an array (page[].fields)");
   }
   for (let i = 0; i < fields.length; i++) {
-    validateField(fields[i], i);
+    validateField(fields[parseInt(i, 10)], i);
   }
   return fields;
 }
@@ -392,18 +434,24 @@ const validatePage = (page, index) => {
   }
 };
 
-/** @param pages */
+/**
+ * @param {Page[]} [pages] Pages
+ * @returns {Page[]} Validated pages
+ */
 export function validatePages(pages = []) {
   if (!Array.isArray(pages)) {
     throw new TypeError("Pages must be an array (pages)");
   }
   for (let i = 0; i < pages.length; i++) {
-    validatePage(pages[i], i);
+    validatePage(pages[parseInt(i, 10)], i);
   }
   return pages;
 }
 
-/** @param plan */
+/**
+ * @param {Plan} plan Plan
+ * @returns {Plan} Validated plan
+ */
 export function validatePlan(plan) {
   if (plan === undefined) {
     return plan;
@@ -431,7 +479,10 @@ const validateGlobalHook = (hook, index) => {
   }
 };
 
-/** @param hooks */
+/**
+ * @param {GlobalHook[]} hooks Global hook functions
+ * @returns {GlobalHook[]} Validated global hooks
+ */
 export function validateGlobalHooks(hooks) {
   if (hooks === undefined) {
     return [];
@@ -440,17 +491,23 @@ export function validateGlobalHooks(hooks) {
     throw new TypeError("Hooks must be an array");
   }
   for (let i = 0; i < hooks.length; i++) {
-    validateGlobalHook(hooks[i], i);
+    validateGlobalHook(hooks[parseInt(i, 10)], i);
   }
   return hooks;
 }
 
-/** @param plugins */
+/**
+ * @param {IPlugin[]} plugins Plugins
+ * @returns {IPlugin[]} Validated plugins
+ */
 export function validatePlugins(plugins) {
   return plugins;
 }
 
-/** @param events */
+/**
+ * @param {ContextEventHandler[]} events Event handlers
+ * @returns {ContextEventHandler[]} Validated event handlers
+ */
 export function validateEvents(events) {
   return events;
 }
@@ -475,8 +532,11 @@ export function validateHelmetConfigurator(helmetConfigurator) {
 }
 
 /**
- * @param value
- * @param defaultValue
+ * @param {number} value Max params value
+ * @param {number} [defaultValue] Default value
+ * @returns {number} Valid value
+ * @throws {TypeError} If not an integer
+ * @throws {RangeError} If out of bounds
  */
 export function validateFormMaxParams(value, defaultValue = 25) {
   // CASA needs to send certain hidden form fields (see `sanitise-fields`
@@ -497,8 +557,11 @@ export function validateFormMaxParams(value, defaultValue = 25) {
 }
 
 /**
- * @param value
- * @param defaultValue
+ * @param {number} value Max bytes value
+ * @param {number} [defaultValue] Default value
+ * @returns {number} Valid value
+ * @throws {TypeError} If not an integer
+ * @throws {RangeError} If out of bounds
  */
 export function validateFormMaxBytes(value, defaultValue = 1024 * 50) {
   const MIN_BYTES = 1024;
@@ -520,7 +583,11 @@ export function validateFormMaxBytes(value, defaultValue = 1024 * 50) {
   return parsedValue;
 }
 
-/** @param generator */
+/**
+ * @param {ContextIdGenerator} generator ID generator function
+ * @returns {ContextIdGenerator} Validated generator
+ * @throws {TypeError} If not a function
+ */
 export function validateContextIdGenerator(generator) {
   if (generator === undefined) {
     return contextIdGenerators.uuid();

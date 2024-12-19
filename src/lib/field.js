@@ -313,7 +313,6 @@ export class PageField {
     for (let i = 0, l = this.#validators.length; i < l; i++) {
       // ESLint disabled as `i` is an integer
       /* eslint-disable security/detect-object-injection */
-      // TODO: Replace `value` with `context.fieldValue` here
       let fieldErrors = this.#validators[i].validate(
         context.fieldValue,
         context,

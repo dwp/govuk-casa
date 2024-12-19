@@ -12,9 +12,10 @@ const combineMerge = (target, source, options) => {
   const destination = target.slice();
 
   for (let index = 0; index < source.length; index++) {
-    const item = source[index];
     // ESLint disabled as `index` is only an integer
     /* eslint-disable security/detect-object-injection */
+    const item = source[index];
+
     if (typeof destination[index] === "undefined") {
       destination[index] = options.cloneUnlessOtherwiseSpecified(item, options);
     } else if (options.isMergeableObject(item)) {
@@ -30,12 +31,18 @@ const combineMerge = (target, source, options) => {
 // Allows objects to be deepmerged and retain their type, without becoming [object Object]
 // ref: https://github.com/jonschlinkert/is-plain-object/blob/master/is-plain-object.js
 
-/** @param o */
+/**
+ * @param {any} o Value to test
+ * @returns {boolean} True if an object
+ */
 function isObject(o) {
   return Object.prototype.toString.call(o) === "[object Object]";
 }
 
-/** @param o */
+/**
+ * @param {any} o Value to test
+ * @returns {boolean} True if a plain object or array
+ */
 function isPlainObjectOrArray(o) {
   if (Array.isArray(o)) {
     return true;
@@ -54,13 +61,17 @@ function isPlainObjectOrArray(o) {
   return Object.hasOwn(prot, "isPrototypeOf");
 }
 
-/** @param {...any} objects */
+/**
+ * @param {...any} objects Objects to merge
+ * @returns {object} Merged object
+ */
 function mergeObjects(...objects) {
   return deepmergeAll([Object.create(null), ...objects], {
     arrayMerge: combineMerge,
     isMergeableObject: isPlainObjectOrArray,
   });
 }
+
 /**
  * Determine whether a value exists in a list.
  *

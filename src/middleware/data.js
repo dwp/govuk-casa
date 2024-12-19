@@ -1,9 +1,26 @@
-// Decorates the request with some contextual data about the user's journey
-// through the application. This is used by downstream middleware and templates.
-
 import JourneyContext from "../lib/JourneyContext.js";
 import { validateUrlPath } from "../lib/utils.js";
 import waypointUrl from "../lib/waypoint-url.js";
+
+/**
+ * @typedef {import("express").RequestHandler} RequestHandler
+ * @access private
+ */
+
+/**
+ * @typedef {import("../casa.js").Plan} Plan
+ * @access private
+ */
+
+/**
+ * @typedef {import("../casa.js").ContextEventHandler} ContextEventHandler
+ * @access private
+ */
+
+/**
+ * @typedef {import("../casa.js").ContextIdGenerator} ContextIdGenerator
+ * @access private
+ */
 
 const editOrigin = (req) => {
   if (Object.hasOwn(req.query, "editorigin")) {
@@ -16,10 +33,17 @@ const editOrigin = (req) => {
 };
 
 /**
- * @param opts
- * @param opts.plan
- * @param opts.events
- * @param opts.contextIdGenerator
+ * Data middleware.
+ *
+ * Decorates the request with some contextual data about the user's journey
+ * through the application. This is used by downstream middleware and
+ * templates.
+ *
+ * @param {object} opts Options
+ * @param {Plan} opts.plan CASA Plan
+ * @param {ContextEventHandler[]} opts.events Event handlers
+ * @param {ContextIdGenerator} opts.contextIdGenerator Content ID generator
+ * @returns {RequestHandler[]} Middleware functions
  */
 export default function dataMiddleware({ plan, events, contextIdGenerator }) {
   return [

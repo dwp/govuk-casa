@@ -51,7 +51,10 @@ const clone = rfdc({ proto: false });
  * @access private
  */
 
-/** @param key */
+/**
+ * @param {any} key Object key to validate
+ * @returns {string} Validated key
+ */
 export function validateObjectKey(key = "") {
   const keyLower = String.prototype.toLowerCase.call(key);
   if (
@@ -927,6 +930,7 @@ export default class JourneyContext {
    * @param {string} opts.to Waypoint to skip to.
    */
   setSkipped(waypoint, opts) {
+    /* eslint-disable security/detect-object-injection */
     // Unset, with setSkipped(a, false)
     if (opts === false) {
       this.data[waypoint] ??= Object.create(null);
@@ -949,6 +953,7 @@ export default class JourneyContext {
         `setSkipped opts must be a boolean or object with a "to" prop of waypoint to skip to, got: ${typeof opts}`,
       );
     }
+    /* eslint-enable security/detect-object-injection */
   }
 
   /**
@@ -961,13 +966,12 @@ export default class JourneyContext {
    *   skipped to a specific page.
    */
   isSkipped(waypoint, opts) {
+    const wpData = this.data[String(waypoint)];
+
     if (opts === undefined) {
-      return (
-        this.data[waypoint]?.__skipped__ === true ||
-        this.data[waypoint]?.__skip__ !== undefined
-      );
+      return wpData?.__skipped__ === true || wpData?.__skip__ !== undefined;
     } else if (typeof opts.to === "string") {
-      return this.data[waypoint]?.__skip__?.to === opts.to;
+      return wpData?.__skip__?.to === opts.to;
     }
   }
 }

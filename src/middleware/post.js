@@ -1,8 +1,14 @@
 // 2 middleware: one as a fallback 404 handler, one to handle thrown errors
 import logger from "../lib/logger.js";
 
+/**
+ * @typedef {import("express").RequestHandler} RequestHandler
+ * @access private
+ */
+
 const log = logger("middleware:post");
 
+/** @returns {RequestHandler[]} Middleware functions */
 export default function postMiddleware() {
   return [
     (req, res) => {

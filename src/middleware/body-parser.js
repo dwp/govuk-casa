@@ -1,14 +1,33 @@
 import { urlencoded as expressBodyParser } from "express";
 
+/**
+ * @typedef {import("express").RequestHandler} RequestHandler
+ * @access private
+ */
+
+/**
+ * @typedef {import("express").Request} Request
+ * @access private
+ */
+
+/**
+ * @typedef {import("express").Response} Response
+ * @access private
+ */
+
 const rProto = /__proto__/i;
 const rPrototype = /prototype[='"[\]]/i;
 const rConstructor = /constructor[='"[\]]/i;
 
 /**
- * @param req
- * @param res
- * @param buf
- * @param encoding
+ * Verify request body.
+ *
+ * @param {Request} req HTTP request
+ * @param {Response} res HTTP response
+ * @param {Buffer} buf Buffer
+ * @param {string} encoding Character encoding
+ * @returns {void}
+ * @throws {Error} For invalid bodies
  */
 export function verifyBody(req, res, buf, encoding) {
   const body = decodeURI(buf.toString(encoding)).replace(
@@ -27,9 +46,13 @@ export function verifyBody(req, res, buf, encoding) {
 }
 
 /**
- * @param opts
- * @param opts.formMaxParams
- * @param opts.formMaxBytes
+ * Body parsing middleware.
+ *
+ * @param {object} opts Options
+ * @param {number} opts.formMaxParams Max number of parameters that should be
+ *   parsed
+ * @param {number} opts.formMaxBytes Max bytes that should be read
+ * @returns {RequestHandler[]} Middleware functions
  */
 export default function bodyParserMiddleware({ formMaxParams, formMaxBytes }) {
   return [
