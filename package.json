@@ -74,9 +74,9 @@
   "devDependencies": {
     "@ckeditor/jsdoc-plugins": "43.0.1",
     "@commitlint/config-conventional": "19.6.0",
-    "@dwp/casa-spiderplan": "4.0.2",
-    "@dwp/casa-spiderplan-a11y-plugin": "1.0.1",
-    "@dwp/casa-spiderplan-zap-plugin": "1.0.0",
+    "@dwp/casa-spiderplan": "4.1.1",
+    "@dwp/casa-spiderplan-a11y-plugin": "1.0.2",
+    "@dwp/casa-spiderplan-zap-plugin": "1.0.2",
     "@dwp/eslint-config-base": "9.0.2",
     "@types/express": "5.0.0",
     "@types/node": "22.10.2",
