@@ -54,7 +54,7 @@ describe("ConfigIngestor", () => {
     });
 
     it("should throw an Error when given invalid configuration", () => {
-      expect(() => ingest()).to.throw();
+      expect(() => ingest()).to.throw(ReferenceError);
     });
 
     it("should return an immutable object when given valid configuration", () => {

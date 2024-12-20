@@ -16,15 +16,16 @@ describe("PageField", () => {
   });
 
   it("throws an exception if the field name is invalid", () => {
-    expect(() => field("abcdefghijklmnopqrstuvwxyz0123456789.-[]")).to.not
-      .throw;
+    expect(() =>
+      field("abcdefghijklmnopqrstuvwxyz0123456789.-[]"),
+    ).to.not.throw();
     expect(() => field("$")).to.throw(SyntaxError);
     expect(() => field("()")).to.throw(SyntaxError);
     expect(() => field("ok[$not_ok]")).to.throw(SyntaxError);
   });
 
   it("throws an exception if it is a super-complex field name", () => {
-    expect(() => field("basic[complexity]")).to.not.throw;
+    expect(() => field("basic[complexity]")).to.not.throw();
     expect(() => field("super[complex][name]")).to.throw(
       SyntaxError,
       "Complex field names are only supported to 1 property depth. E.g. a[b] is ok, a[b][c] is not",

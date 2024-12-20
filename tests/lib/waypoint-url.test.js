@@ -183,6 +183,7 @@ describe("waypointUrl()", () => {
 
   /* --------------------------------------------------- property-based tests */
 
+  /* eslint-disable sonarjs/assertions-in-tests */
   it("sanitises mountUrl and waypoint", () => {
     // Check that the resulting url doesn't contain any unexpected characters
     const urlOk = (url) => !url.match(/[^/a-z0-9_-]/i) && !url.match(/\/{2,}/);
@@ -250,4 +251,5 @@ describe("waypointUrl()", () => {
       ),
     );
   });
+  /* eslint-enable sonarjs/assertions-in-tests */
 });

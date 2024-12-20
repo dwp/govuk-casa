@@ -15,6 +15,9 @@ export default [
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
+      globals: {
+        structuredClone: "readonly",
+      },
     },
   },
   {

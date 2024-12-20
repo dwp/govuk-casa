@@ -257,6 +257,7 @@ describe("validators/postalAddressObject", () => {
     testValidPostcodeChecker("DY5 9BG");
   });
 
+  /* eslint-disable sonarjs/assertions-in-tests */
   it("should reject invalid special case postcodes", () => {
     // givenQVXInTheFirstPosition
     testInvalidPostcodeChecker("QA9B 9DD");
@@ -276,7 +277,9 @@ describe("validators/postalAddressObject", () => {
     // givenCIKMOVInThePenultimatePosition
     testInvalidPostcodeChecker("AI9C 9KD");
   });
+  /* eslint-enable sonarjs/assertions-in-tests */
 
+  /* eslint-disable sonarjs/assertions-in-tests */
   it("handle BFPO postcodes", () => {
     // givenQVXInTheFirstPosition
     testValidPostcodeChecker("BFPO 1");
@@ -286,6 +289,7 @@ describe("validators/postalAddressObject", () => {
     testInvalidPostcodeChecker("BFPO");
     testInvalidPostcodeChecker("BFPO 3AA");
   });
+  /* eslint-enable sonarjs/assertions-in-tests */
 
   describe("sanitise", () => {
     [

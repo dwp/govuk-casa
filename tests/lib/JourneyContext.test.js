@@ -137,11 +137,11 @@ describe("JourneyContext", () => {
       const data1 = new JourneyContext();
       expect(() => {
         data1.setValidationErrorsForPage("p0", []);
-      }).to.not.throw(SyntaxError);
+      }).to.not.throw();
 
       expect(() => {
         data1.setValidationErrorsForPage("p0", {});
-      }).to.throw();
+      }).to.throw(SyntaxError, /Errors must be an Array/);
 
       expect(() => {
         data1.setValidationErrorsForPage("p0", [

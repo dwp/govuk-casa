@@ -51,6 +51,7 @@ const shortGuid =
     do {
       id = Array(length)
         .fill(0)
+        /* eslint-disable-next-line sonarjs/pseudo-random */
         .map(() => pool.charAt(Math.floor(Math.random() * poolSize)))
         .join("");
       attempts--;

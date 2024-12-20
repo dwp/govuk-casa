@@ -33,7 +33,7 @@ export default class Email extends ValidatorFactory {
     let isValid;
     try {
       isValid = isEmail(value);
-    } catch (e) {
+    } catch {
       isValid = false;
     }
 

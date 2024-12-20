@@ -66,7 +66,10 @@ describe("stripWhitespace", () => {
 describe("notProto", () => {
   ["__proto__", "prototype", "constructor"].forEach((key) => {
     it(`throws when passed "${key}"`, () => {
-      expect(() => notProto(key)).to.throw(Error);
+      expect(() => notProto(key)).to.throw(
+        Error,
+        "Attempt to use prototype key disallowed",
+      );
     });
   });
 

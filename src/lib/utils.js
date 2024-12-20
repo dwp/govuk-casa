@@ -118,10 +118,15 @@ export function stripWhitespace(value, options) {
     throw new TypeError("nested must be a string");
   }
 
-  return value
-    .replace(/^\s+/, opts.leading)
-    .replace(/\s+$/, opts.trailing)
-    .replace(/\s+/g, opts.nested);
+  // This approach avoids using `/s+$/` regex, which triggers the
+  // `sonarjs/slow-regex` eslint rule
+  let newValue = value.replace(/^\s+/, opts.leading);
+  if (newValue.match(/\s$/)) {
+    newValue = `${newValue.trimEnd()}${opts.trailing}`;
+  }
+  newValue = newValue.replace(/\s+/g, opts.nested);
+
+  return newValue;
 }
 
 /* ------------------------------------------------ validation / sanitisation */
