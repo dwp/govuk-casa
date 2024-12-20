@@ -1,13 +1,13 @@
-$schema: https://gitlab.com/dwp/secure-development/schema/project-metadata/-/raw/v1.0.0/schema/project-metadata.json
-schema_version: 1.0.0
+$schema: https://gitlab.com/dwp/secure-development/schema/project-metadata/-/raw/v2.0.0/schema/project-metadata.json
+schema_version: 2.0.0
 project:
   - project_id: "26878543"
     component_name: govuk-casa
     version: 8.16.2
-    cmdb_id: https://engineering.dwp.gov.uk/policies/engineering-policies/ep-3/
+    cmdb_id: unallocated
     last_verified:
-      date: "2024-10-10"
-      name: niall.molloy
+      date: "2024-12-20"
+      name: james.gauld
     tags:
       payments: false
       personally_identifying_information: false
