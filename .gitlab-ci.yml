@@ -92,3 +92,10 @@ node-publish-gitlab:
 auto-tag-merge-prepare-mr:
   variables:
     MR_BRANCH: chore/auto-package-v8
+
+# commitlint job compares to default branch (i.e. main) which contains
+# mis-formatted commit logs, so fails every time. Until the job is fixed
+# upstream to support comparing with the MR target branch, this job will remain
+# disabled
+commitlint:
+  allow_failure: true
