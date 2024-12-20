@@ -58,6 +58,7 @@ e2e-dast:
           "api.addrs.addr.name=.*",
           "-config",
           "api.addrs.addr.regex=true",
+          "-notel"
         ]
   variables:
     # ref: https://docs.gitlab.com/runner/executors/docker.html#create-a-network-for-each-job
