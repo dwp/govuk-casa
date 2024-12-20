@@ -3,7 +3,7 @@ schema_version: 2.0.0
 project:
   - project_id: "26878543"
     component_name: govuk-casa
-    version: 8.16.2
+    version: 8.16.3
     cmdb_id: unallocated
     last_verified:
       date: "2024-12-20"
