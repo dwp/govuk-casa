@@ -1,4 +1,4 @@
-import MutableRouter from '../lib/MutableRouter.js';
+import MutableRouter from "../lib/MutableRouter.js";
 
 /**
  * @typedef {object} AncillaryRouterOptions Options to configure static router
@@ -12,15 +12,13 @@ import MutableRouter from '../lib/MutableRouter.js';
  * @param {AncillaryRouterOptions} options Options
  * @returns {MutableRouter} ExpressJS Router instance
  */
-export default function ancillaryRouter({
-  sessionTtl,
-}) {
+export default function ancillaryRouter({ sessionTtl }) {
   // Router
   const router = new MutableRouter();
 
   // Session timeout
-  router.all('/session-timeout', (req, res) => {
-    res.render('casa/session-timeout.njk', {
+  router.all("/session-timeout", (req, res) => {
+    res.render("casa/session-timeout.njk", {
       sessionTtl: Math.floor(sessionTtl / 60),
     });
   });

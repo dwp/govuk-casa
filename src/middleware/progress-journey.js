@@ -2,13 +2,13 @@
 // We assume that the waypoint has been validated prior to reaching this
 // middleware.
 
-import Plan from '../lib/Plan.js';
-import JourneyContext from '../lib/JourneyContext.js';
-import waypointUrl from '../lib/waypoint-url.js';
-import logger from '../lib/logger.js';
-import { REQUEST_PHASE_REDIRECT } from '../lib/constants.js';
+import Plan from "../lib/Plan.js";
+import JourneyContext from "../lib/JourneyContext.js";
+import waypointUrl from "../lib/waypoint-url.js";
+import logger from "../lib/logger.js";
+import { REQUEST_PHASE_REDIRECT } from "../lib/constants.js";
 
-const log = logger('middleware:progress-journey');
+const log = logger("middleware:progress-journey");
 
 const saveAndRedirect = (session, journeyContext, url, res, next) => {
   JourneyContext.putContext(session, journeyContext, {
@@ -25,10 +25,7 @@ const saveAndRedirect = (session, journeyContext, url, res, next) => {
   });
 };
 
-export default ({
-  waypoint,
-  plan,
-}) => [
+export default ({ waypoint, plan }) => [
   (req, res, next) => {
     // Determine the next available waypoint after the current one
     const traversed = plan.traverse(req.casa.journeyContext);
@@ -38,7 +35,9 @@ export default ({
       Math.min(currentIndex + 1, traversed.length - 1),
     );
     const nextWaypoint = traversed[parseInt(nextIndex, 10)];
-    log.trace(`currentIndex = ${currentIndex}, nextIndex = ${nextIndex}, currentWaypoint = ${waypoint}, nextWaypoint = ${nextWaypoint}`);
+    log.trace(
+      `currentIndex = ${currentIndex}, nextIndex = ${nextIndex}, currentWaypoint = ${waypoint}, nextWaypoint = ${nextWaypoint}`,
+    );
 
     // Edit mode
     // Attempt to take the user back to their original URL. We rely on the
@@ -55,14 +54,21 @@ export default ({
     // they want to force the user to re-visit particular waypoints during this
     // "jumping" phase.
     if (req.casa.editMode && req.casa.editOrigin) {
-      const url = new URL(req.casa.editOrigin, 'https://placeholder.test/');
-      url.searchParams.append('edit', 'true');
-      url.searchParams.append('editorigin', req.casa.editOrigin);
-      const redirectUrl = waypointUrl({ waypoint: url.pathname }) + url.search.toString();
+      const url = new URL(req.casa.editOrigin, "https://placeholder.test/");
+      url.searchParams.append("edit", "true");
+      url.searchParams.append("editorigin", req.casa.editOrigin);
+      const redirectUrl =
+        waypointUrl({ waypoint: url.pathname }) + url.search.toString();
 
       log.debug(`Edit mode detected; redirecting to ${redirectUrl}`);
 
-      return saveAndRedirect(req.session, req.casa.journeyContext, redirectUrl, res, next);
+      return saveAndRedirect(
+        req.session,
+        req.casa.journeyContext,
+        redirectUrl,
+        res,
+        next,
+      );
     }
 
     // If the next URL is an "exit node", we need to flag that node as
@@ -76,7 +82,9 @@ export default ({
     //   setRoute('b', 'url:///otherapp/')
     //   setRoute('url:////otherapp/', 'c', (r, c) => checkIfOtherAppIsFinished())
     if (Plan.isExitNode(nextWaypoint)) {
-      log.trace(`Next waypoint is an exit node; clearing validation state on ${nextWaypoint}`);
+      log.trace(
+        `Next waypoint is an exit node; clearing validation state on ${nextWaypoint}`,
+      );
       req.casa.journeyContext.clearValidationErrorsForPage(nextWaypoint);
     }
 
@@ -91,6 +99,12 @@ export default ({
 
     // Save and move on
     log.trace(`Redirecting to ${nextUrl}`);
-    return saveAndRedirect(req.session, req.casa.journeyContext, nextUrl, res, next);
+    return saveAndRedirect(
+      req.session,
+      req.casa.journeyContext,
+      nextUrl,
+      res,
+      next,
+    );
   },
 ];

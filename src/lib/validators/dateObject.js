@@ -1,9 +1,8 @@
-/* eslint-disable class-methods-use-this */
-import { DateTime } from 'luxon';
-import lodash from 'lodash';
-import ValidationError from '../ValidationError.js';
-import ValidatorFactory from '../ValidatorFactory.js';
-import { stringifyInput, stripWhitespace } from '../utils.js';
+import { DateTime } from "luxon";
+import lodash from "lodash";
+import ValidationError from "../ValidationError.js";
+import ValidatorFactory from "../ValidatorFactory.js";
+import { stringifyInput, stripWhitespace } from "../utils.js";
 
 const { isPlainObject } = lodash;
 
@@ -43,21 +42,21 @@ const { isPlainObject } = lodash;
  */
 export default class DateObject extends ValidatorFactory {
   /** @property {string} name Validator name ("dateObject") */
-  name = 'dateObject';
+  name = "dateObject";
 
   validate(value, dataContext = {}) {
     const config = {
       errorMsg: {
-        inline: 'validation:rule.dateObject.inline',
-        summary: 'validation:rule.dateObject.summary',
+        inline: "validation:rule.dateObject.inline",
+        summary: "validation:rule.dateObject.summary",
       },
       errorMsgAfterOffset: {
-        inline: 'validation:rule.dateObject.afterOffset.inline',
-        summary: 'validation:rule.dateObject.afterOffset.summary',
+        inline: "validation:rule.dateObject.afterOffset.inline",
+        summary: "validation:rule.dateObject.afterOffset.summary",
       },
       errorMsgBeforeOffset: {
-        inline: 'validation:rule.dateObject.beforeOffset.inline',
-        summary: 'validation:rule.dateObject.beforeOffset.summary',
+        inline: "validation:rule.dateObject.beforeOffset.inline",
+        summary: "validation:rule.dateObject.beforeOffset.summary",
       },
       now: DateTime.local(),
       allowSingleDigitDay: false,
@@ -71,38 +70,44 @@ export default class DateObject extends ValidatorFactory {
     let valid = false;
     let { errorMsg } = config;
     let luxonDate;
-    const NOW = config.now.startOf('day');
+    const NOW = config.now.startOf("day");
 
     // Accepted formats
-    let formats = ['dd-MM-yyyy'];
-    const formatTests = [{
-      flags: [config.allowSingleDigitDay],
-      formats: ['d-MM-yyyy'],
-    }, {
-      flags: [config.allowSingleDigitDay, config.allowSingleDigitMonth],
-      formats: ['d-M-yyyy'],
-    }, {
-      flags: [config.allowSingleDigitDay, config.allowMonthNames],
-      formats: ['d-MMM-yyyy', 'd-MMMM-yyyy'],
-    }, {
-      flags: [config.allowSingleDigitMonth],
-      formats: ['dd-M-yyyy'],
-    }, {
-      flags: [config.allowMonthNames],
-      formats: ['dd-MMM-yyyy', 'dd-MMMM-yyyy'],
-    }];
+    let formats = ["dd-MM-yyyy"];
+    const formatTests = [
+      {
+        flags: [config.allowSingleDigitDay],
+        formats: ["d-MM-yyyy"],
+      },
+      {
+        flags: [config.allowSingleDigitDay, config.allowSingleDigitMonth],
+        formats: ["d-M-yyyy"],
+      },
+      {
+        flags: [config.allowSingleDigitDay, config.allowMonthNames],
+        formats: ["d-MMM-yyyy", "d-MMMM-yyyy"],
+      },
+      {
+        flags: [config.allowSingleDigitMonth],
+        formats: ["dd-M-yyyy"],
+      },
+      {
+        flags: [config.allowMonthNames],
+        formats: ["dd-MMM-yyyy", "dd-MMMM-yyyy"],
+      },
+    ];
     formatTests.forEach((test) => {
       if (test.flags.every((v) => v === true)) {
         formats = [...formats, ...test.formats];
       }
     });
 
-    if (typeof value === 'object') {
+    if (typeof value === "object") {
       formats.find((format) => {
         luxonDate = DateTime.fromFormat(
-          [value.dd, value.mm, value.yyyy].join('-'),
+          [value.dd, value.mm, value.yyyy].join("-"),
           format,
-        ).startOf('day');
+        ).startOf("day");
 
         valid = luxonDate.isValid;
 
@@ -113,7 +118,7 @@ export default class DateObject extends ValidatorFactory {
         // Check date is after the specified duration from now.
         // Need to use UTC() otherwise DST shifts can affect the calculated offset
         if (config.afterOffsetFromNow) {
-          const offsetDate = NOW.plus(config.afterOffsetFromNow).startOf('day');
+          const offsetDate = NOW.plus(config.afterOffsetFromNow).startOf("day");
 
           if (luxonDate <= offsetDate) {
             valid = false;
@@ -124,7 +129,9 @@ export default class DateObject extends ValidatorFactory {
         // Check date is before the specified duration from now
         // Need to use UTC() otherwise DST shifts can affect the calculated offset
         if (config.beforeOffsetFromNow) {
-          const offsetDate = NOW.plus(config.beforeOffsetFromNow).startOf('day');
+          const offsetDate = NOW.plus(config.beforeOffsetFromNow).startOf(
+            "day",
+          );
 
           if (luxonDate >= offsetDate) {
             valid = false;
@@ -136,20 +143,20 @@ export default class DateObject extends ValidatorFactory {
       // Check presence of each object component (dd, mm, yyyy) in order to log
       // which specific parts are in error
       errorMsg.focusSuffix = [];
-      if (!Object.prototype.hasOwnProperty.call(value, 'dd') || !value.dd) {
-        errorMsg.focusSuffix.push('[dd]');
+      if (!Object.prototype.hasOwnProperty.call(value, "dd") || !value.dd) {
+        errorMsg.focusSuffix.push("[dd]");
       }
-      if (!Object.prototype.hasOwnProperty.call(value, 'mm') || !value.mm) {
-        errorMsg.focusSuffix.push('[mm]');
+      if (!Object.prototype.hasOwnProperty.call(value, "mm") || !value.mm) {
+        errorMsg.focusSuffix.push("[mm]");
       }
-      if (!Object.prototype.hasOwnProperty.call(value, 'yyyy') || !value.yyyy) {
-        errorMsg.focusSuffix.push('[yyyy]');
+      if (!Object.prototype.hasOwnProperty.call(value, "yyyy") || !value.yyyy) {
+        errorMsg.focusSuffix.push("[yyyy]");
       }
 
       // If the date is invalid, but not specific parts have been highlighted in
       // error, then highlight all inputs, focusing on the [dd] first
       if (!valid && !errorMsg.focusSuffix.length) {
-        errorMsg.focusSuffix = ['[dd]', '[mm]', '[yyyy]'];
+        errorMsg.focusSuffix = ["[dd]", "[mm]", "[yyyy]"];
       }
     }
 
@@ -158,11 +165,13 @@ export default class DateObject extends ValidatorFactory {
 
   sanitise(value) {
     if (value !== undefined) {
-      return isPlainObject(value) ? {
-        dd: stripWhitespace(stringifyInput(value.dd)),
-        mm: stripWhitespace(stringifyInput(value.mm)),
-        yyyy: stripWhitespace(stringifyInput(value.yyyy)),
-      } : Object.create(null);
+      return isPlainObject(value)
+        ? {
+            dd: stripWhitespace(stringifyInput(value.dd)),
+            mm: stripWhitespace(stringifyInput(value.mm)),
+            yyyy: stripWhitespace(stringifyInput(value.yyyy)),
+          }
+        : Object.create(null);
     }
     return undefined;
   }

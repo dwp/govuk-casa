@@ -1,4 +1,4 @@
-import { FileSystemLoader } from 'nunjucks';
+import { FileSystemLoader } from "nunjucks";
 
 /**
  * @access private
@@ -11,19 +11,19 @@ import { FileSystemLoader } from 'nunjucks';
  */
 
 const VALID_BLOCKS = [
-  'beforeContent',
-  'bodyEnd',
-  'bodyStart',
-  'casaPageTitle',
-  'content',
-  'footer',
-  'head',
-  'header',
-  'headIcons',
-  'journey_form',
-  'main',
-  'pageTitle',
-  'skipLink',
+  "beforeContent",
+  "bodyEnd",
+  "bodyStart",
+  "casaPageTitle",
+  "content",
+  "footer",
+  "head",
+  "header",
+  "headIcons",
+  "journey_form",
+  "main",
+  "pageTitle",
+  "skipLink",
 ];
 
 /**
@@ -73,7 +73,9 @@ export default class CasaTemplateLoader extends FileSystemLoader {
   modifyBlock(block, modifier) {
     // Limit to only known block so the user can't do general string replacements
     if (!VALID_BLOCKS.includes(block)) {
-      throw new Error(`Block "${String(block)}" is not a recognised template block.`);
+      throw new Error(
+        `Block "${String(block)}" is not a recognised template block.`,
+      );
     }
 
     this.#blockModifiers.push({
@@ -95,8 +97,10 @@ export default class CasaTemplateLoader extends FileSystemLoader {
       /* eslint-disable-next-line security/detect-object-injection */
       const { block, modifier } = this.#blockModifiers[i];
       if (source.src.indexOf(`block ${block}`) > -1) {
-        /* eslint-disable-next-line no-param-reassign */
-        source.src = source.src.replace(`block ${block} %}`, `block ${block} %}${modifier(name)}`);
+        source.src = source.src.replace(
+          `block ${block} %}`,
+          `block ${block} %}${modifier(name)}`,
+        );
       }
     }
     return source;

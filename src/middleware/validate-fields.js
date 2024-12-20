@@ -1,6 +1,6 @@
 // Validate the data captured in the journey context
-import JourneyContext from '../lib/JourneyContext.js';
-import { REQUEST_PHASE_VALIDATE } from '../lib/constants.js';
+import JourneyContext from "../lib/JourneyContext.js";
+import { REQUEST_PHASE_VALIDATE } from "../lib/constants.js";
 
 const updateContext = ({
   waypoint,
@@ -21,13 +21,9 @@ const updateContext = ({
       casaRequestPhase: REQUEST_PHASE_VALIDATE,
     },
   });
-}
+};
 
-export default ({
-  waypoint,
-  fields = [],
-  plan,
-}) => [
+export default ({ waypoint, fields = [], plan }) => [
   (req, res, next) => {
     const mountUrl = `${req.baseUrl}/`;
 
@@ -50,10 +46,7 @@ export default ({
       };
       /* eslint-enable security/detect-object-injection */
 
-      errors = [
-        ...errors,
-        ...field.runValidators(fieldValue, context),
-      ];
+      errors = [...errors, ...field.runValidators(fieldValue, context)];
     }
 
     // Validation passed with no errors

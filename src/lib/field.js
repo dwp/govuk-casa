@@ -1,8 +1,8 @@
-import lodash from 'lodash';
-import { isEmpty } from './utils.js';
-import logger from './logger.js';
+import lodash from "lodash";
+import { isEmpty } from "./utils.js";
+import logger from "./logger.js";
 
-const log = logger('lib:field');
+const log = logger("lib:field");
 const { isFunction } = lodash;
 
 /**
@@ -78,12 +78,17 @@ export class PageField {
    *
    * @param {string} name Field name
    * @param {object} [opts] Options
-   * @param {boolean} [opts.optional=false] Whether this field is optional
-   * @param {boolean} [opts.persist=true] Whether this field will persist in `req.body`
+   * @param {boolean} [opts.optional] Whether this field is optional
+   * @param {boolean} [opts.persist] Whether this field will persist in `req.body`
    */
-  constructor(name, { optional = false, persist = true } = Object.create(null)) {
+  constructor(
+    name,
+    { optional = false, persist = true } = Object.create(null),
+  ) {
     if (!name) {
-      throw new SyntaxError('A name for this field is required, i.e. "field(\'myField\')".');
+      throw new SyntaxError(
+        "A name for this field is required, i.e. \"field('myField')\".",
+      );
     }
 
     this.#name = undefined;
@@ -100,7 +105,7 @@ export class PageField {
     };
 
     // Apply name
-    /* eslint-disable-next-line security/detect-non-literal-fs-filename */
+
     this.rename(name);
   }
 
@@ -139,7 +144,9 @@ export class PageField {
    */
   getValue(obj = Object.create(null)) {
     if (this.#meta.complex) {
-      return obj[this.#meta.complexFieldName]?.[this.#meta.complexFieldProperty];
+      return obj[this.#meta.complexFieldName]?.[
+        this.#meta.complexFieldProperty
+      ];
     }
     return obj[this.#name];
   }
@@ -156,13 +163,11 @@ export class PageField {
    */
   putValue(obj = Object.create(null), value = undefined) {
     if (this.#meta.complex) {
-      /* eslint-disable-next-line no-param-reassign */
       obj[this.#meta.complexFieldName] = {
         ...(obj[this.#meta.complexFieldName] ?? {}),
         [this.#meta.complexFieldProperty]: value,
       };
     } else {
-      /* eslint-disable-next-line no-param-reassign */
       obj[this.#name] = value;
     }
 
@@ -188,7 +193,9 @@ export class PageField {
    */
   rename(name) {
     if (reInvalidName.test(String(name))) {
-      throw new SyntaxError(`Field '${String(name)}' name contains invalid characters.`);
+      throw new SyntaxError(
+        `Field '${String(name)}' name contains invalid characters.`,
+      );
     }
 
     // Complex names are only supported to one level deep. For example,
@@ -196,7 +203,9 @@ export class PageField {
     // early to aid developer.
     const isComplex = reComplexType.test(name);
     if (isComplex && name.match(/\[/g).length > 1) {
-      throw new SyntaxError('Complex field names are only supported to 1 property depth. E.g. a[b] is ok, a[b][c] is not');
+      throw new SyntaxError(
+        "Complex field names are only supported to 1 property depth. E.g. a[b] is ok, a[b][c] is not",
+      );
     }
 
     this.#name = String(name);
@@ -232,10 +241,12 @@ export class PageField {
    */
   validators(items = []) {
     if (!items.length) {
-      log.warn('Calling validators() to get all validators is deprecated, please use getValidators()');
+      log.warn(
+        "Calling validators() to get all validators is deprecated, please use getValidators()",
+      );
       return this.getValidators();
     }
-    this.#validators = [...this.#validators, ...(items.flat())];
+    this.#validators = [...this.#validators, ...items.flat()];
     return this;
   }
 
@@ -259,11 +270,13 @@ export class PageField {
    */
   processors(items = []) {
     if (!items.length) {
-      log.warn('Calling processors() to get all processors is deprecated, please use getProcessors()');
+      log.warn(
+        "Calling processors() to get all processors is deprecated, please use getProcessors()",
+      );
       return this.getProcessors();
     }
 
-    this.#processors = [...this.#processors, ...(items.flat())];
+    this.#processors = [...this.#processors, ...items.flat()];
     return this;
   }
 
@@ -288,10 +301,12 @@ export class PageField {
    */
   conditions(items = []) {
     if (!items.length) {
-      log.warn('Calling conditions() to get all conditions is deprecated, please use getConditions()');
+      log.warn(
+        "Calling conditions() to get all conditions is deprecated, please use getConditions()",
+      );
       return this.getConditions();
     }
-    this.#conditions = [...this.#conditions, ...(items.flat())];
+    this.#conditions = [...this.#conditions, ...items.flat()];
     return this;
   }
 
@@ -325,22 +340,23 @@ export class PageField {
       // ESLint disabled as `i` is an integer
       /* eslint-disable security/detect-object-injection */
       // TODO: Replace `value` with `context.fieldValue` here
-      let fieldErrors = this.#validators[i].validate(value, context)
+      let fieldErrors = this.#validators[i].validate(value, context);
       if (!Array.isArray(fieldErrors)) {
         // Friendly message for developer
-        throw new TypeError(`The validator at index ${i} (name: ${this.#validators[i].name || 'unknown'}) for field '${this.#name}' did not return an array`);
+        throw new TypeError(
+          `The validator at index ${i} (name: ${this.#validators[i].name || "unknown"}) for field '${this.#name}' did not return an array`,
+        );
       }
 
-      fieldErrors = fieldErrors.map((e) => e.withContext({
-        ...context,
-        validator: this.#validators[i].name,
-      }));
+      fieldErrors = fieldErrors.map((e) =>
+        e.withContext({
+          ...context,
+          validator: this.#validators[i].name,
+        }),
+      );
       /* eslint-enable security/detect-object-injection */
 
-      errors = [
-        ...errors,
-        ...(fieldErrors ?? []),
-      ];
+      errors = [...errors, ...(fieldErrors ?? [])];
     }
 
     return errors;
@@ -447,8 +463,8 @@ export class PageField {
  * @memberof module:@dwp/govuk-casa
  * @param {string} name Field name
  * @param {object} [opts] Options
- * @param {boolean} [opts.optional=false] Whether this field is optional
- * @param {boolean} [opts.persist=true] Whether this field will persist in `req.body`
+ * @param {boolean} [opts.optional] Whether this field is optional
+ * @param {boolean} [opts.persist] Whether this field will persist in `req.body`
  * @returns {PageField} A PageField
  */
 export default function field(name, opts) {

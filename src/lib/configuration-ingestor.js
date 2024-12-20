@@ -1,16 +1,18 @@
-/* eslint-disable sonarjs/no-duplicate-string */
-import bytes from 'bytes';
-import { PageField } from './field.js';
-import Plan from './Plan.js';
-import logger from './logger.js';
+import bytes from "bytes";
+import { PageField } from "./field.js";
+import Plan from "./Plan.js";
+import logger from "./logger.js";
 import {
   validateWaypoint,
   validateHookName,
   validateHookPath,
   validateView,
-} from './utils.js';
-import * as contextIdGenerators from './context-id-generators.js';
-import { CONFIG_ERROR_VISIBILITY_ALWAYS, CONFIG_ERROR_VISIBILITY_ONSUBMIT } from './constants.js';
+} from "./utils.js";
+import * as contextIdGenerators from "./context-id-generators.js";
+import {
+  CONFIG_ERROR_VISIBILITY_ALWAYS,
+  CONFIG_ERROR_VISIBILITY_ONSUBMIT,
+} from "./constants.js";
 
 /**
  * @access private
@@ -22,9 +24,9 @@ import { CONFIG_ERROR_VISIBILITY_ALWAYS, CONFIG_ERROR_VISIBILITY_ONSUBMIT } from
  * @typedef {import('../casa').HelmetConfigurator} HelmetConfigurator
  */
 
-const log = logger('lib:configuration-ingestor');
+const log = logger("lib:configuration-ingestor");
 
-const echo = (a) => (a);
+const echo = (a) => a;
 
 /**
  * Validates and sanitises i18n object.
@@ -36,8 +38,8 @@ const echo = (a) => (a);
  * @returns {object} Sanitised i18n object.
  */
 export function validateI18nObject(i18n = Object.create(null), cb = echo) {
-  if (Object.prototype.toString.call(i18n) !== '[object Object]') {
-    throw new TypeError('I18n must be an object');
+  if (Object.prototype.toString.call(i18n) !== "[object Object]") {
+    throw new TypeError("I18n must be an object");
   }
   return cb(i18n);
 }
@@ -53,11 +55,13 @@ export function validateI18nObject(i18n = Object.create(null), cb = echo) {
  */
 export function validateI18nDirs(dirs = []) {
   if (!Array.isArray(dirs)) {
-    throw new TypeError('I18n directories must be an array (i18n.dirs)');
+    throw new TypeError("I18n directories must be an array (i18n.dirs)");
   }
   dirs.forEach((dir, i) => {
-    if (typeof dir !== 'string') {
-      throw new TypeError(`I18n directory must be a string, got ${typeof dir} (i18n.dirs[${i}])`);
+    if (typeof dir !== "string") {
+      throw new TypeError(
+        `I18n directory must be a string, got ${typeof dir} (i18n.dirs[${i}])`,
+      );
     }
   });
   return dirs;
@@ -72,13 +76,15 @@ export function validateI18nDirs(dirs = []) {
  * @throws {TypeError} For invalid type.
  * @returns {Array} Array of locales.
  */
-export function validateI18nLocales(locales = ['en', 'cy']) {
+export function validateI18nLocales(locales = ["en", "cy"]) {
   if (!Array.isArray(locales)) {
-    throw new TypeError('I18n locales must be an array (i18n.locales)');
+    throw new TypeError("I18n locales must be an array (i18n.locales)");
   }
   locales.forEach((locale, i) => {
-    if (typeof locale !== 'string') {
-      throw new TypeError(`I18n locale must be a string, got ${typeof locale} (i18n.locales[${i}])`);
+    if (typeof locale !== "string") {
+      throw new TypeError(
+        `I18n locale must be a string, got ${typeof locale} (i18n.locales[${i}])`,
+      );
     }
   });
   return locales;
@@ -93,11 +99,11 @@ export function validateI18nLocales(locales = ['en', 'cy']) {
  * @returns {string|undefined} Sanitised URL.
  */
 export function validateMountUrl(mountUrl) {
-  if (typeof mountUrl === 'undefined') {
+  if (typeof mountUrl === "undefined") {
     return undefined;
   }
   if (!mountUrl.match(/\/$/)) {
-    throw new SyntaxError('mountUrl must include a trailing slash (/)');
+    throw new SyntaxError("mountUrl must include a trailing slash (/)");
   }
   return mountUrl;
 }
@@ -111,13 +117,16 @@ export function validateMountUrl(mountUrl) {
  * @throws {TypeError} For invalid object.
  * @returns {object} Sanitised sessions object.
  */
-export function validateSessionObject(session = Object.create(null), cb = echo) {
+export function validateSessionObject(
+  session = Object.create(null),
+  cb = echo,
+) {
   if (session === undefined) {
     return cb(session);
   }
 
-  if (typeof session !== 'object') {
-    throw new TypeError('Session config has not been specified');
+  if (typeof session !== "object") {
+    throw new TypeError("Session config has not been specified");
   }
 
   return cb(session);
@@ -134,11 +143,13 @@ export function validateSessionObject(session = Object.create(null), cb = echo) 
  */
 export function validateViews(dirs = []) {
   if (!Array.isArray(dirs)) {
-    throw new TypeError('View directories must be an array (views)');
+    throw new TypeError("View directories must be an array (views)");
   }
   dirs.forEach((dir, i) => {
-    if (typeof dir !== 'string') {
-      throw new TypeError(`View directory must be a string, got ${typeof dir} (views[${i}])`);
+    if (typeof dir !== "string") {
+      throw new TypeError(
+        `View directory must be a string, got ${typeof dir} (views[${i}])`,
+      );
     }
   });
   return dirs;
@@ -154,10 +165,10 @@ export function validateViews(dirs = []) {
  * @returns {string} Secret.
  */
 export function validateSessionSecret(secret) {
-  if (typeof secret === 'undefined') {
-    throw ReferenceError('Session secret is missing (session.secret)')
-  } else if (typeof secret !== 'string') {
-    throw new TypeError('Session secret must be a string (session.secret)');
+  if (typeof secret === "undefined") {
+    throw ReferenceError("Session secret is missing (session.secret)");
+  } else if (typeof secret !== "string") {
+    throw new TypeError("Session secret must be a string (session.secret)");
   }
   return secret;
 }
@@ -172,8 +183,8 @@ export function validateSessionSecret(secret) {
  * @returns {number} Ttl.
  */
 export function validateSessionTtl(ttl = 3600) {
-  if (typeof ttl !== 'number') {
-    throw new TypeError('Session ttl must be an integer (session.ttl)');
+  if (typeof ttl !== "number") {
+    throw new TypeError("Session ttl must be an integer (session.ttl)");
   }
   return ttl;
 }
@@ -182,14 +193,14 @@ export function validateSessionTtl(ttl = 3600) {
  * Validates and sanitises sessions name.
  *
  * @access private
- * @param {string} [name=casa-session] Session name.
+ * @param {string} [name] Session name.
  * @throws {ReferenceError} For missing value type.
  * @throws {TypeError} For invalid value.
  * @returns {string} Name.
  */
-export function validateSessionName(name = 'casa-session') {
-  if (typeof name !== 'string') {
-    throw new TypeError('Session name must be a string (session.name)');
+export function validateSessionName(name = "casa-session") {
+  if (typeof name !== "string") {
+    throw new TypeError("Session name must be a string (session.name)");
   }
   return name;
 }
@@ -205,10 +216,12 @@ export function validateSessionName(name = 'casa-session') {
  */
 export function validateSessionSecure(secure) {
   if (secure === undefined) {
-    throw new Error('Session secure flag must be explicitly defined (session.secure)');
+    throw new Error(
+      "Session secure flag must be explicitly defined (session.secure)",
+    );
   }
-  if (typeof secure !== 'boolean') {
-    throw new TypeError('Session secure flag must be boolean (session.secure)');
+  if (typeof secure !== "boolean") {
+    throw new TypeError("Session secure flag must be boolean (session.secure)");
   }
   return secure;
 }
@@ -221,8 +234,10 @@ export function validateSessionSecure(secure) {
  * @returns {Function} Store.
  */
 export function validateSessionStore(store) {
-  if (typeof store === 'undefined') {
-    log.warn('Using MemoryStore session storage, which is not suitable for production');
+  if (typeof store === "undefined") {
+    log.warn(
+      "Using MemoryStore session storage, which is not suitable for production",
+    );
     return null;
   }
   return store;
@@ -236,8 +251,8 @@ export function validateSessionStore(store) {
  * @param {string} defaultPath Default path if none specified.
  * @returns {string} Cookie path.
  */
-export function validateSessionCookiePath(cookiePath, defaultPath = '/') {
-  if (typeof cookiePath === 'undefined') {
+export function validateSessionCookiePath(cookiePath, defaultPath = "/") {
+  if (typeof cookiePath === "undefined") {
     return defaultPath;
   }
   return cookiePath;
@@ -266,28 +281,47 @@ export function validateSessionCookiePath(cookiePath, defaultPath = '/') {
  * @throws {SyntaxError} For invalid errorVisibility flag.
  * @returns {symbol | Function} flag for error visibility.
  */
-export function validateErrorVisibility(errorVisibility = CONFIG_ERROR_VISIBILITY_ONSUBMIT) {
+export function validateErrorVisibility(
+  errorVisibility = CONFIG_ERROR_VISIBILITY_ONSUBMIT,
+) {
   if (errorVisibility === undefined) {
     return undefined;
   }
-  if (errorVisibility === CONFIG_ERROR_VISIBILITY_ALWAYS || errorVisibility === CONFIG_ERROR_VISIBILITY_ONSUBMIT || typeof errorVisibility === 'function') {
+  if (
+    errorVisibility === CONFIG_ERROR_VISIBILITY_ALWAYS ||
+    errorVisibility === CONFIG_ERROR_VISIBILITY_ONSUBMIT ||
+    typeof errorVisibility === "function"
+  ) {
     return errorVisibility;
   }
-  throw new TypeError('errorVisibility must be casa constant CONFIG_ERROR_VISIBILITY_ALWAYS | CONFIG_ERROR_VISIBILITY_ONSUBMIT or function');
+  throw new TypeError(
+    "errorVisibility must be casa constant CONFIG_ERROR_VISIBILITY_ALWAYS | CONFIG_ERROR_VISIBILITY_ONSUBMIT or function",
+  );
 }
 
+/**
+ *
+ * @param cookieSameSite
+ * @param defaultFlag
+ */
 export function validateSessionCookieSameSite(cookieSameSite, defaultFlag) {
-  const validValues = [true, false, 'Strict', 'Lax', 'None'];
+  const validValues = [true, false, "Strict", "Lax", "None"];
 
   if (defaultFlag === undefined) {
-    throw new TypeError('validateSessionCookieSameSite() requires an explicit default flag');
+    throw new TypeError(
+      "validateSessionCookieSameSite() requires an explicit default flag",
+    );
   } else if (!validValues.includes(defaultFlag)) {
-    throw new TypeError('validateSessionCookieSameSite() default flag must be set to one of true, false, Strict, Lax or None (session.cookieSameSite)');
+    throw new TypeError(
+      "validateSessionCookieSameSite() default flag must be set to one of true, false, Strict, Lax or None (session.cookieSameSite)",
+    );
   }
 
   const value = cookieSameSite !== undefined ? cookieSameSite : defaultFlag;
   if (!validValues.includes(value)) {
-    throw new TypeError('SameSite flag must be set to one of true, false, Strict, Lax or None (session.cookieSameSite)');
+    throw new TypeError(
+      "SameSite flag must be set to one of true, false, Strict, Lax or None (session.cookieSameSite)",
+    );
   }
 
   return value;
@@ -296,18 +330,22 @@ export function validateSessionCookieSameSite(cookieSameSite, defaultFlag) {
 const validatePageHook = (hook, index) => {
   try {
     validateHookName(hook.hook);
-    if (typeof hook.middleware !== 'function') {
-      throw new TypeError('Hook middleware must be a function');
+    if (typeof hook.middleware !== "function") {
+      throw new TypeError("Hook middleware must be a function");
     }
   } catch (err) {
     err.message = `Page hook at index ${index} is invalid: ${err.message}`;
     throw err;
   }
-}
+};
 
+/**
+ *
+ * @param hooks
+ */
 export function validatePageHooks(hooks) {
   if (!Array.isArray(hooks)) {
-    throw new TypeError('Hooks must be an array');
+    throw new TypeError("Hooks must be an array");
   }
   hooks.forEach((hook, index) => validatePageHook(hook, index));
   return hooks;
@@ -316,7 +354,9 @@ export function validatePageHooks(hooks) {
 const validateField = (field, index) => {
   try {
     if (!(field instanceof PageField)) {
-      throw new TypeError('Page field must be an instance of PageField (created via the "field()" function)');
+      throw new TypeError(
+        'Page field must be an instance of PageField (created via the "field()" function)',
+      );
     }
   } catch (err) {
     err.message = `Page field at index ${index} is invalid: ${err.message}`;
@@ -324,9 +364,13 @@ const validateField = (field, index) => {
   }
 };
 
+/**
+ *
+ * @param fields
+ */
 export function validateFields(fields) {
   if (!Array.isArray(fields)) {
-    throw new TypeError('Page fields must be an array (page[].fields)');
+    throw new TypeError("Page fields must be an array (page[].fields)");
   }
   fields.forEach((hook, index) => validateField(hook, index));
   return fields;
@@ -343,29 +387,37 @@ const validatePage = (page, index) => {
       validatePageHooks(page.hooks);
     }
     if (page.errorVisibility !== undefined) {
-      validateErrorVisibility(page.errorVisibility)
+      validateErrorVisibility(page.errorVisibility);
     }
   } catch (err) {
     err.message = `Page at index ${index} is invalid: ${err.message}`;
     throw err;
   }
-}
+};
 
+/**
+ *
+ * @param pages
+ */
 export function validatePages(pages = []) {
   if (!Array.isArray(pages)) {
-    throw new TypeError('Pages must be an array (pages)');
+    throw new TypeError("Pages must be an array (pages)");
   }
   pages.forEach((page, index) => validatePage(page, index));
   return pages;
 }
 
+/**
+ *
+ * @param plan
+ */
 export function validatePlan(plan) {
   if (plan === undefined) {
     return plan;
   }
 
   if (!(plan instanceof Plan)) {
-    throw new TypeError('Plan must be an instance the Plan class (plan)');
+    throw new TypeError("Plan must be an instance the Plan class (plan)");
   }
 
   return plan;
@@ -374,8 +426,8 @@ export function validatePlan(plan) {
 const validateGlobalHook = (hook, index) => {
   try {
     validateHookName(hook.hook);
-    if (typeof hook.middleware !== 'function') {
-      throw new TypeError('Hook middleware must be a function');
+    if (typeof hook.middleware !== "function") {
+      throw new TypeError("Hook middleware must be a function");
     }
     if (hook.path !== undefined) {
       validateHookPath(hook.path);
@@ -386,23 +438,35 @@ const validateGlobalHook = (hook, index) => {
   }
 };
 
+/**
+ *
+ * @param hooks
+ */
 export function validateGlobalHooks(hooks) {
   if (hooks === undefined) {
     return [];
   }
 
   if (!Array.isArray(hooks)) {
-    throw new TypeError('Hooks must be an array');
+    throw new TypeError("Hooks must be an array");
   }
 
   hooks.forEach((hook, index) => validateGlobalHook(hook, index));
   return hooks;
 }
 
+/**
+ *
+ * @param plugins
+ */
 export function validatePlugins(plugins) {
   return plugins;
 }
 
+/**
+ *
+ * @param events
+ */
 export function validateEvents(events) {
   return events;
 }
@@ -416,13 +480,21 @@ export function validateEvents(events) {
  * @throws {TypeError} when passed a non-function
  */
 export function validateHelmetConfigurator(helmetConfigurator) {
-  if (helmetConfigurator !== undefined && !(helmetConfigurator instanceof Function)) {
-    throw new TypeError('Helmet configurator must be a function');
+  if (
+    helmetConfigurator !== undefined &&
+    !(helmetConfigurator instanceof Function)
+  ) {
+    throw new TypeError("Helmet configurator must be a function");
   }
 
   return helmetConfigurator;
 }
 
+/**
+ *
+ * @param value
+ * @param defaultValue
+ */
 export function validateFormMaxParams(value, defaultValue = 25) {
   // CASA needs to send certain hidden form fields (see `sanitise-fields`
   // middleware), plus some padding here.
@@ -432,7 +504,7 @@ export function validateFormMaxParams(value, defaultValue = 25) {
     return defaultValue;
   }
   if (!Number.isInteger(value)) {
-    throw new TypeError('formMaxParams must be an integer');
+    throw new TypeError("formMaxParams must be an integer");
   }
   if (value < MIN_PARAMS) {
     throw new RangeError(`formMaxParams must be at least ${MIN_PARAMS}`);
@@ -441,6 +513,11 @@ export function validateFormMaxParams(value, defaultValue = 25) {
   return value;
 }
 
+/**
+ *
+ * @param value
+ * @param defaultValue
+ */
 export function validateFormMaxBytes(value, defaultValue = 1024 * 50) {
   const MIN_BYTES = 1024;
 
@@ -450,22 +527,28 @@ export function validateFormMaxBytes(value, defaultValue = 1024 * 50) {
 
   const parsedValue = bytes.parse(value);
   if (!Number.isInteger(parsedValue)) {
-    throw new TypeError('formMaxParams must be a string or an integer');
+    throw new TypeError("formMaxParams must be a string or an integer");
   }
   if (parsedValue < MIN_BYTES) {
-    throw new RangeError(`formMaxBytes must be at least ${MIN_BYTES} bytes (${bytes.format(MIN_BYTES)})`);
+    throw new RangeError(
+      `formMaxBytes must be at least ${MIN_BYTES} bytes (${bytes.format(MIN_BYTES)})`,
+    );
   }
 
   return parsedValue;
 }
 
+/**
+ *
+ * @param generator
+ */
 export function validateContextIdGenerator(generator) {
   if (generator === undefined) {
     return contextIdGenerators.uuid();
   }
 
   if (!(generator instanceof Function)) {
-    throw new TypeError('contextIdGenerator must be a function');
+    throw new TypeError("contextIdGenerator must be a function");
   }
 
   return generator;
@@ -500,8 +583,11 @@ export default function ingest(config = {}) {
       secure: validateSessionSecure(session.secure),
       ttl: validateSessionTtl(session.ttl),
       store: validateSessionStore(session.store),
-      cookiePath: validateSessionCookiePath(session.cookiePath, '/'),
-      cookieSameSite: validateSessionCookieSameSite(session.cookieSameSite, 'Strict'),
+      cookiePath: validateSessionCookiePath(session.cookiePath, "/"),
+      cookieSameSite: validateSessionCookieSameSite(
+        session.cookieSameSite,
+        "Strict",
+      ),
     })),
 
     // Views configuration

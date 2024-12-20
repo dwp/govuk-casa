@@ -6,17 +6,15 @@
  * - Validation errors on that data
  * - Navigation information about how the user got where they are.
  */
-import lodash from 'lodash';
-import ValidationError from './ValidationError.js';
-import logger from './logger.js';
-import { notProto } from './utils.js';
-import { uuid as uuidGenerator } from './context-id-generators.js';
+import lodash from "lodash";
+import ValidationError from "./ValidationError.js";
+import logger from "./logger.js";
+import { notProto } from "./utils.js";
+import { uuid as uuidGenerator } from "./context-id-generators.js";
 
-const {
-  isPlainObject, isObject, has, isEqual,
-} = lodash; // CommonJS
+const { isPlainObject, isObject, has, isEqual } = lodash; // CommonJS
 
-const log = logger('lib:journey-context');
+const log = logger("lib:journey-context");
 
 const uuid = uuidGenerator();
 
@@ -50,9 +48,17 @@ const uuid = uuidGenerator();
  * @typedef {import('express').Request} ExpressRequest
  */
 
-export function validateObjectKey(key = '') {
+/**
+ *
+ * @param key
+ */
+export function validateObjectKey(key = "") {
   const keyLower = String.prototype.toLowerCase.call(key);
-  if (keyLower === 'prototype' || keyLower === '__proto__' || keyLower === 'constructor') {
+  if (
+    keyLower === "prototype" ||
+    keyLower === "__proto__" ||
+    keyLower === "constructor"
+  ) {
     throw new SyntaxError(`Invalid object key used, ${key}`);
   }
   return String(key);
@@ -75,17 +81,17 @@ export default class JourneyContext {
 
   #eventListenerPreState;
 
-  static DEFAULT_CONTEXT_ID = 'default';
+  static DEFAULT_CONTEXT_ID = "default";
 
   /**
    * @type {symbol}
    */
-  static ID_GENERATOR_REQ_LOG = Symbol('generatedContextIds');
+  static ID_GENERATOR_REQ_LOG = Symbol("generatedContextIds");
 
   /**
    * @type {symbol}
    */
-  static ID_GENERATOR_REQ_KEY = Symbol('generateContextId');
+  static ID_GENERATOR_REQ_KEY = Symbol("generateContextId");
 
   /**
    * Constructor.
@@ -152,7 +158,9 @@ export default class JourneyContext {
       let dErrors = errors;
 
       if (Array.isArray(errors)) {
-        dErrors = errors.map((e) => (e instanceof ValidationError ? e : new ValidationError(e)));
+        dErrors = errors.map((e) =>
+          e instanceof ValidationError ? e : new ValidationError(e),
+        );
       }
 
       deserialisedValidation[notProto(waypoint)] = dErrors;
@@ -189,13 +197,15 @@ export default class JourneyContext {
    * @throws {TypeError} When page is invalid.
    */
   getDataForPage(page) {
-    if (typeof page === 'string') {
+    if (typeof page === "string") {
       return this.#data[validateObjectKey(page)];
     }
     if (isPlainObject(page)) {
       return this.#data[validateObjectKey(page.waypoint)];
     }
-    throw new TypeError(`Page must be a string or Page object. Got ${typeof page}`);
+    throw new TypeError(
+      `Page must be a string or Page object. Got ${typeof page}`,
+    );
   }
 
   /**
@@ -227,12 +237,14 @@ export default class JourneyContext {
    * @throws {TypeError} When page is invalid.
    */
   setDataForPage(page, webFormData) {
-    if (typeof page === 'string') {
+    if (typeof page === "string") {
       this.#data[validateObjectKey(page)] = webFormData;
     } else if (isPlainObject(page)) {
       this.#data[validateObjectKey(page.waypoint)] = webFormData;
     } else {
-      throw new TypeError(`Page must be a string or Page object. Got ${typeof page}`)
+      throw new TypeError(
+        `Page must be a string or Page object. Got ${typeof page}`,
+      );
     }
 
     return this;
@@ -286,12 +298,14 @@ export default class JourneyContext {
    */
   setValidationErrorsForPage(pageId, errors = []) {
     if (!Array.isArray(errors)) {
-      throw new SyntaxError(`Errors must be an Array. Received ${Object.prototype.toString.call(errors)}`);
+      throw new SyntaxError(
+        `Errors must be an Array. Received ${Object.prototype.toString.call(errors)}`,
+      );
     }
 
     errors.forEach((error) => {
       if (!(error instanceof ValidationError)) {
-        throw new SyntaxError('Field errors must be a ValidationError');
+        throw new SyntaxError("Field errors must be a ValidationError");
       }
     });
 
@@ -353,7 +367,7 @@ export default class JourneyContext {
    * @param {string} language Language to set (ISO 639-1 2-letter code).
    * @returns {JourneyContext} Chain.
    */
-  setNavigationLanguage(language = 'en') {
+  setNavigationLanguage(language = "en") {
     this.#nav.language = language;
     return this;
   }
@@ -376,7 +390,9 @@ export default class JourneyContext {
   purge(waypoints = []) {
     const newData = Object.create(null);
     const newValidation = Object.create(null);
-    const toKeep = Object.keys(this.#data).filter((w) => !waypoints.includes(w));
+    const toKeep = Object.keys(this.#data).filter(
+      (w) => !waypoints.includes(w),
+    );
 
     // ESLint disabled as `i` is an integer
     /* eslint-disable security/detect-object-injection */
@@ -439,7 +455,9 @@ export default class JourneyContext {
       return this;
     }
 
-    const previousContext = JourneyContext.fromObject(this.#eventListenerPreState);
+    const previousContext = JourneyContext.fromObject(
+      this.#eventListenerPreState,
+    );
     const listeners = this.#eventListeners.filter((l) => l.event === event);
 
     // ESLint disabled as `listeners[i]` uses an integer key, and the other keys
@@ -453,20 +471,21 @@ export default class JourneyContext {
       let runHandler = false;
 
       if (!waypoint && !field) {
-        logMessage = 'Calling generic event handler';
+        logMessage = "Calling generic event handler";
         runHandler = true;
       } else if (waypoint && !field) {
         logMessage = `Calling waypoint-specific event handler on "${waypoint}"`;
-        runHandler = previousContext.data?.[waypoint] !== undefined && !isEqual(
-          this.data?.[waypoint],
-          previousContext.data?.[waypoint],
-        );
+        runHandler =
+          previousContext.data?.[waypoint] !== undefined &&
+          !isEqual(this.data?.[waypoint], previousContext.data?.[waypoint]);
       } else if (waypoint && field) {
         logMessage = `Calling field-specific event handler on "${waypoint} : ${field}"`;
-        runHandler = previousContext.data?.[waypoint]?.[field] !== undefined && !isEqual(
-          this.data?.[waypoint]?.[field],
-          previousContext.data?.[waypoint]?.[field],
-        );
+        runHandler =
+          previousContext.data?.[waypoint]?.[field] !== undefined &&
+          !isEqual(
+            this.data?.[waypoint]?.[field],
+            previousContext.data?.[waypoint]?.[field],
+          );
       }
 
       if (runHandler) {
@@ -514,7 +533,7 @@ export default class JourneyContext {
    */
   static fromContext(context, req) {
     if (!(context instanceof JourneyContext)) {
-      throw new TypeError('Source context must be a JourneyContext');
+      throw new TypeError("Source context must be a JourneyContext");
     }
 
     const newContextObj = context.toObject();
@@ -543,15 +562,17 @@ export default class JourneyContext {
     // being remodelled as an array, we need to convert the "legacy" structure
     // into an equivalent array.
     if (isPlainObject(session?.journeyContextList)) {
-      log.trace('Session context list already initialised as an object (legacy structure). Will convert from object to array.');
-      /* eslint-disable-next-line no-param-reassign */
+      log.trace(
+        "Session context list already initialised as an object (legacy structure). Will convert from object to array.",
+      );
+
       session.journeyContextList = Object.entries(session.journeyContextList);
     }
 
     // Initialise new context list in the session
-    if (!has(session, 'journeyContextList')) {
-      log.trace('Initialising session with a default journey context list');
-      /* eslint-disable-next-line no-param-reassign */
+    if (!has(session, "journeyContextList")) {
+      log.trace("Initialising session with a default journey context list");
+
       session.journeyContextList = [];
 
       const defaultContext = new JourneyContext();
@@ -575,10 +596,10 @@ export default class JourneyContext {
       return JourneyContext.DEFAULT_CONTEXT_ID;
     }
 
-    if (typeof id !== 'string') {
-      throw new TypeError('Context ID must be a string');
+    if (typeof id !== "string") {
+      throw new TypeError("Context ID must be a string");
     } else if (!id.match(/^[a-z0-9-]{1,64}$/)) {
-      throw new SyntaxError('Context ID is not in the correct format');
+      throw new SyntaxError("Context ID is not in the correct format");
     }
 
     return id;
@@ -599,7 +620,9 @@ export default class JourneyContext {
     // Can't generate custom ID when no request object is provided, because the
     // custom generator function itself exists on that object.
     if (!req) {
-      log.warn('Generating a context ID without a given request object. Reverting to uuid().');
+      log.warn(
+        "Generating a context ID without a given request object. Reverting to uuid().",
+      );
       return uuid();
     }
 
@@ -611,14 +634,18 @@ export default class JourneyContext {
       .map((c) => c.identity.id)
       .filter((id) => id !== JourneyContext.DEFAULT_CONTEXT_ID);
     const inRequestIds = req[JourneyContext.ID_GENERATOR_REQ_LOG] ?? [];
-    const reservedIds = Array.from(new Set([...inSessionIds, ...inRequestIds]).values());
+    const reservedIds = Array.from(
+      new Set([...inSessionIds, ...inRequestIds]).values(),
+    );
 
     // Generate and log the ID
     const id = JourneyContext.validateContextId(
       req[JourneyContext.ID_GENERATOR_REQ_KEY].call(null, { req, reservedIds }),
     );
     if (reservedIds.includes(id)) {
-      throw new Error(`Regenerated a context ID, ${String(id)}. It has likely not yet been used to store a new context in session using JourneyContext.putContext().`);
+      throw new Error(
+        `Regenerated a context ID, ${String(id)}. It has likely not yet been used to store a new context in session using JourneyContext.putContext().`,
+      );
     }
 
     if (!req[JourneyContext.ID_GENERATOR_REQ_LOG]) {
@@ -641,7 +668,10 @@ export default class JourneyContext {
    * @returns {JourneyContext} The default Journey Context
    */
   static getDefaultContext(session) {
-    return JourneyContext.getContextById(session, JourneyContext.DEFAULT_CONTEXT_ID);
+    return JourneyContext.getContextById(
+      session,
+      JourneyContext.DEFAULT_CONTEXT_ID,
+    );
   }
 
   /**
@@ -655,7 +685,7 @@ export default class JourneyContext {
     const list = new Map(session?.journeyContextList);
     if (list.has(id)) {
       // ESLint disabled as `id` has been verified as an "own" property
-      /* eslint-disable-next-line security/detect-object-injection */
+
       return JourneyContext.fromObject(list.get(id));
     }
 
@@ -672,9 +702,7 @@ export default class JourneyContext {
   static getContextByName(session, name) {
     if (session) {
       const list = new Map(session?.journeyContextList);
-      const context = [...list.values()].find(
-        (c) => (c.identity.name === name),
-      );
+      const context = [...list.values()].find((c) => c.identity.name === name);
       if (context) {
         return JourneyContext.fromObject(context);
       }
@@ -693,9 +721,9 @@ export default class JourneyContext {
   static getContextsByTag(session, tag) {
     if (session) {
       const list = new Map(session?.journeyContextList);
-      return [...list.values()].filter(
-        (c) => (c.identity.tags?.includes(tag)),
-      ).map((c) => (JourneyContext.fromObject(c)));
+      return [...list.values()]
+        .filter((c) => c.identity.tags?.includes(tag))
+        .map((c) => JourneyContext.fromObject(c));
     }
 
     return undefined;
@@ -708,10 +736,10 @@ export default class JourneyContext {
    * @returns {Array} Array of contexts
    */
   static getContexts(session) {
-    if (has(session, 'journeyContextList')) {
-      return session.journeyContextList.map(([, contextObj]) => (
-        JourneyContext.fromObject(contextObj)
-      ));
+    if (has(session, "journeyContextList")) {
+      return session.journeyContextList.map(([, contextObj]) =>
+        JourneyContext.fromObject(contextObj),
+      );
     }
 
     return [];
@@ -729,15 +757,15 @@ export default class JourneyContext {
    */
   static putContext(session, context, options = {}) {
     if (!isObject(session)) {
-      throw new TypeError('Session must be an object');
+      throw new TypeError("Session must be an object");
     } else if (!(context instanceof JourneyContext)) {
-      throw new TypeError('Context must be a valid JourneyContext');
+      throw new TypeError("Context must be a valid JourneyContext");
     } else if (context.identity.id === undefined) {
-      throw new TypeError('Context must have an ID before storing in session');
+      throw new TypeError("Context must have an ID before storing in session");
     }
 
     // Initialise the session if necessary
-    if (!has(session, 'journeyContextList')) {
+    if (!has(session, "journeyContextList")) {
       JourneyContext.initContextStore(session);
     }
 
@@ -745,20 +773,20 @@ export default class JourneyContext {
     const { userInfo = undefined } = options;
 
     context.applyEventListeners({
-      event: 'waypoint-change',
+      event: "waypoint-change",
       session,
       userInfo,
     });
 
     context.applyEventListeners({
-      event: 'context-change',
+      event: "context-change",
       session,
       userInfo,
     });
 
     const list = new Map(session.journeyContextList);
     list.set(context.identity.id, context.toObject());
-    /* eslint-disable-next-line no-param-reassign */
+
     session.journeyContextList = [...list.entries()];
   }
 
@@ -783,7 +811,9 @@ export default class JourneyContext {
    * @returns {void}
    */
   static removeContextById(session, id) {
-    const index = (session?.journeyContextList ?? []).findIndex(([contextId]) => contextId === id);
+    const index = (session?.journeyContextList ?? []).findIndex(
+      ([contextId]) => contextId === id,
+    );
     if (index > -1) {
       session.journeyContextList.splice(index, 1);
     }
@@ -811,8 +841,8 @@ export default class JourneyContext {
    * @returns {void}
    */
   static removeContextsByTag(session, tag) {
-    JourneyContext.getContextsByTag(session, tag).forEach(
-      (c) => JourneyContext.removeContext(session, c),
+    JourneyContext.getContextsByTag(session, tag).forEach((c) =>
+      JourneyContext.removeContext(session, c),
     );
   }
 
@@ -823,7 +853,9 @@ export default class JourneyContext {
    * @returns {void}
    */
   static removeContexts(session) {
-    JourneyContext.getContexts(session).forEach((c) => JourneyContext.removeContext(session, c));
+    JourneyContext.getContexts(session).forEach((c) =>
+      JourneyContext.removeContext(session, c),
+    );
   }
 
   /**
@@ -840,17 +872,19 @@ export default class JourneyContext {
     JourneyContext.initContextStore(req.session);
 
     let contextId;
-    if (has(req?.params, 'contextid')) {
-      log.trace('Context ID found in req.params.contextid');
+    if (has(req?.params, "contextid")) {
+      log.trace("Context ID found in req.params.contextid");
       contextId = String(req.params.contextid);
-    } else if (has(req.query, 'contextid')) {
-      log.trace('Context ID found in req.query.contextid');
+    } else if (has(req.query, "contextid")) {
+      log.trace("Context ID found in req.query.contextid");
       contextId = String(req.query.contextid);
-    } else if (has(req?.body, 'contextid')) {
-      log.trace('Context ID found in req.body.contextid');
+    } else if (has(req?.body, "contextid")) {
+      log.trace("Context ID found in req.body.contextid");
       contextId = String(req.body.contextid);
     } else {
-      log.trace('Context ID not specified or not found; will attempt to use default');
+      log.trace(
+        "Context ID not specified or not found; will attempt to use default",
+      );
       contextId = JourneyContext.DEFAULT_CONTEXT_ID;
     }
 
@@ -858,13 +892,16 @@ export default class JourneyContext {
       contextId = JourneyContext.validateContextId(contextId);
       const context = JourneyContext.getContextById(req.session, contextId);
       if (!context) {
-        throw (new Error(`Could not find a context with id, ${contextId}`));
+        throw new Error(`Could not find a context with id, ${contextId}`);
       }
       return context;
     } catch (err) {
       log.debug(err.message);
-      log.trace('Falling back to default context');
-      return JourneyContext.getContextById(req.session, JourneyContext.DEFAULT_CONTEXT_ID);
+      log.trace("Falling back to default context");
+      return JourneyContext.getContextById(
+        req.session,
+        JourneyContext.DEFAULT_CONTEXT_ID,
+      );
     }
   }
 }

@@ -1,7 +1,6 @@
-/* eslint-disable class-methods-use-this */
-import ValidatorFactory from '../ValidatorFactory.js';
-import ValidationError from '../ValidationError.js';
-import { stringifyInput } from '../utils.js';
+import ValidatorFactory from "../ValidatorFactory.js";
+import ValidationError from "../ValidationError.js";
+import { stringifyInput } from "../utils.js";
 
 /**
  * @access private
@@ -25,21 +24,21 @@ import { stringifyInput } from '../utils.js';
  * @augments ValidatorFactory
  */
 export default class WordCount extends ValidatorFactory {
-  name = 'wordCount';
+  name = "wordCount";
 
   count(input) {
     return (input.match(/\S+/g) || []).length;
   }
 
-  validate(inputValue = '', dataContext = {}) {
+  validate(inputValue = "", dataContext = {}) {
     const {
       errorMsgMax = {
-        inline: 'validation:rule.wordCount.max.inline',
-        summary: 'validation:rule.wordCount.max.summary',
+        inline: "validation:rule.wordCount.max.inline",
+        summary: "validation:rule.wordCount.max.summary",
       },
       errorMsgMin = {
-        inline: 'validation:rule.wordCount.min.inline',
-        summary: 'validation:rule.wordCount.min.summary',
+        inline: "validation:rule.wordCount.min.inline",
+        summary: "validation:rule.wordCount.min.summary",
       },
       min,
       max,
@@ -48,12 +47,18 @@ export default class WordCount extends ValidatorFactory {
     let errorMsg;
     let valid = true;
 
-    if (typeof max !== 'undefined' && (inputValue.match(/\S+/g) || []).length > max) {
+    if (
+      typeof max !== "undefined" &&
+      (inputValue.match(/\S+/g) || []).length > max
+    ) {
       valid = false;
       errorMsg = errorMsgMax;
     }
 
-    if (typeof min !== 'undefined' && (inputValue.match(/\S+/g) || []).length < min) {
+    if (
+      typeof min !== "undefined" &&
+      (inputValue.match(/\S+/g) || []).length < min
+    ) {
       valid = false;
       errorMsg = errorMsgMin;
     }

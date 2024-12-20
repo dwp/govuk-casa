@@ -1,5 +1,4 @@
-/* eslint-disable class-methods-use-this */
-import lodash from 'lodash';
+import lodash from "lodash";
 
 const { isPlainObject } = lodash; // CommonJS
 
@@ -48,14 +47,13 @@ export default class ValidatorFactory {
    */
   static make(config = {}) {
     if (!isPlainObject(config)) {
-      throw new TypeError('Configuration must be an object');
+      throw new TypeError("Configuration must be an object");
     }
 
     const validator = Reflect.construct(this, [config]);
 
-    /* eslint-disable-next-line sonarjs/prefer-object-literal */
     const instance = {};
-    instance.name = validator.name || 'unknown';
+    instance.name = validator.name || "unknown";
     instance.config = config;
     instance.validate = validator.validate.bind(instance);
     instance.sanitise = validator.sanitise.bind(instance);
@@ -72,7 +70,9 @@ export default class ValidatorFactory {
    */
   constructor(config = {}) {
     if (new.target === ValidatorFactory) {
-      throw new TypeError('Cannot instantiate the abstract class, ValidatorFactory');
+      throw new TypeError(
+        "Cannot instantiate the abstract class, ValidatorFactory",
+      );
     }
     this.config = config;
   }
@@ -89,10 +89,9 @@ export default class ValidatorFactory {
    * @throws {Error}
    */
   validate(fieldValue, context) {
-    throw new Error('validate() method has not been implemented');
+    throw new Error("validate() method has not been implemented");
   }
 
-  /* eslint-disable-next-line jsdoc/require-returns-check */
   /**
    * Sanitise the given value.
    *

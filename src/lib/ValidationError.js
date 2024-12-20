@@ -1,4 +1,4 @@
-import lodash from 'lodash';
+import lodash from "lodash";
 
 const { isPlainObject } = lodash; // CommonJS
 
@@ -41,13 +41,13 @@ export default class ValidationError {
    *
    * @param {object} args Arguments
    * @param {ErrorMessageConfig} args.errorMsg Error message config to seed ValidationError
-   * @param {ValidateContext} [args.dataContext={}] Data for error msg function
+   * @param {ValidateContext} [args.dataContext] Data for error msg function
    * @returns {ValidationError} Error instance
    * @throws {TypeError} If errorMsg is not in a valid type
    */
   static make({ errorMsg, dataContext = {} }) {
     // Convert strings to the most basic object primitive
-    if (typeof errorMsg === 'string') {
+    if (typeof errorMsg === "string") {
       return new ValidationError({
         summary: errorMsg,
         inline: errorMsg,
@@ -63,7 +63,7 @@ export default class ValidationError {
 
     // Use the user-defined function to generate an error primitive for the
     // given context
-    if (typeof errorMsg === 'function') {
+    if (typeof errorMsg === "function") {
       return new ValidationError(errorMsg.call(null, { ...dataContext }));
     }
 
@@ -77,7 +77,9 @@ export default class ValidationError {
     }
 
     // Unsupported
-    throw new TypeError('errorMsg must be a string, Error, primitive object or function that generates a primitive object');
+    throw new TypeError(
+      "errorMsg must be a string, Error, primitive object or function that generates a primitive object",
+    );
   }
 
   /**
@@ -86,10 +88,11 @@ export default class ValidationError {
    * @param {string|ErrorMessageConfigObject} errorParam Error configuration
    */
   constructor(errorParam = {}) {
-    if (!isPlainObject(errorParam) && typeof errorParam !== 'string') {
-      throw new TypeError('Constructor requires a string or object');
+    if (!isPlainObject(errorParam) && typeof errorParam !== "string") {
+      throw new TypeError("Constructor requires a string or object");
     }
-    const error = typeof errorParam === 'string' ? { summary: errorParam } : errorParam;
+    const error =
+      typeof errorParam === "string" ? { summary: errorParam } : errorParam;
 
     // Store parameters for later use in applying contexts
     const originals = {
@@ -133,7 +136,7 @@ export default class ValidationError {
     const originals = params.get(this);
 
     // Expand variables
-    if (typeof originals.variables === 'function') {
+    if (typeof originals.variables === "function") {
       this.variables = originals.variables.call(this, context);
     }
 
@@ -150,7 +153,7 @@ export default class ValidationError {
         fieldHref += focusSuffix[0];
       }
 
-      this.field = context.fieldName + (originals.fieldKeySuffix || '');
+      this.field = context.fieldName + (originals.fieldKeySuffix || "");
       this.fieldHref = fieldHref;
       this.focusSuffix = focusSuffix || [];
     }

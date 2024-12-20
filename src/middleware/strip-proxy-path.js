@@ -14,13 +14,11 @@
 //
 // See docs in `docs/guides/setup-behind-a-proxy.md`
 
-import logger from '../lib/logger.js';
+import logger from "../lib/logger.js";
 
-const log = logger('casa:middleware:strip-proxy-path');
+const log = logger("casa:middleware:strip-proxy-path");
 
-export default ({
-  mountUrl = '/',
-}) => [
+export default ({ mountUrl = "/" }) => [
   (req, res, next) => {
     // TODO:
     // We _may_ have to start tracking the various prefix in order to differentiate
@@ -28,7 +26,7 @@ export default ({
 
     // Assume everything before `mountUrl` is the proxy path prefix and remove it
     req.originalBaseUrl = req.originalBaseUrl ?? req.baseUrl;
-    req.baseUrl = mountUrl.replace(/\/$/, '');
+    req.baseUrl = mountUrl.replace(/\/$/, "");
 
     // If the app has been mounted directly on the specific `mountUrl`, then
     // there's nothing we need to do and can let this request pass-through.
@@ -43,7 +41,10 @@ export default ({
       // req.url will already have the proxy prefix and mountUrl removed.
       /* eslint-disable security/detect-non-literal-regexp */
       log.trace(`req.originalUrl before proxy stripping: ${req.originalUrl}`);
-      req.originalUrl = req.originalUrl.replace(new RegExp(`^/.+?${mountUrl}`), mountUrl);
+      req.originalUrl = req.originalUrl.replace(
+        new RegExp(`^/.+?${mountUrl}`),
+        mountUrl,
+      );
       log.trace(`req.originalUrl after proxy stripping: ${req.originalUrl}`);
       /* eslint-enable security/detect-non-literal-regexp */
 

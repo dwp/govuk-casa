@@ -12,13 +12,13 @@
  */
 export function isEmpty(val) {
   if (
-    val === null
-    || typeof val === 'undefined'
-    || (typeof val === 'string' && val === '')
+    val === null ||
+    typeof val === "undefined" ||
+    (typeof val === "string" && val === "")
   ) {
     return true;
   }
-  if (Array.isArray(val) || typeof val === 'object') {
+  if (Array.isArray(val) || typeof val === "object") {
     // ESLint disabled as `k` is an "own property" (thanks to `Object.keys()`)
     /* eslint-disable-next-line security/detect-object-injection */
     return Object.keys(val).filter((k) => !isEmpty(val[k])).length === 0;
@@ -34,7 +34,7 @@ export function isEmpty(val) {
  * @returns {boolean} Whether the value is stringable or not
  */
 export function isStringable(value) {
-  return typeof value === 'string' || typeof value === 'number';
+  return typeof value === "string" || typeof value === "number";
 }
 
 /**
@@ -48,9 +48,14 @@ export function isStringable(value) {
  * @returns {Function[]} An array of middleware that should be applied
  */
 export function resolveMiddlewareHooks(hookName, path, hooks = []) {
-  /* eslint-disable-next-line max-len */
-  const pathMatch = (h) => h.path === undefined || (h.path instanceof RegExp && h.path.test(path)) || h.path === path;
-  return hooks.filter((h) => h.hook === hookName).filter(pathMatch).map((h) => h.middleware);
+  const pathMatch = (h) =>
+    h.path === undefined ||
+    (h.path instanceof RegExp && h.path.test(path)) ||
+    h.path === path;
+  return hooks
+    .filter((h) => h.hook === hookName)
+    .filter(pathMatch)
+    .map((h) => h.middleware);
 }
 
 /**
@@ -63,7 +68,10 @@ export function resolveMiddlewareHooks(hookName, path, hooks = []) {
  */
 export function stringifyInput(input, fallback) {
   // Not using param defaults here as the fallback may be explicitly "undefined"
-  const fb = arguments.length === 2 && (isStringable(fallback) || fallback === undefined) ? fallback : '';
+  const fb =
+    arguments.length === 2 && (isStringable(fallback) || fallback === undefined)
+      ? fallback
+      : "";
   return isStringable(input) ? String(input) : fb;
 }
 
@@ -88,26 +96,26 @@ export function coerceInputToInteger(input) {
  */
 export function stripWhitespace(value, options) {
   const opts = {
-    leading: '',
-    trailing: '',
-    nested: ' ',
+    leading: "",
+    trailing: "",
+    nested: " ",
     ...options,
   };
 
-  if (typeof value !== 'string') {
-    throw new TypeError('value must be a string');
+  if (typeof value !== "string") {
+    throw new TypeError("value must be a string");
   }
 
-  if (typeof opts.leading !== 'string') {
-    throw new TypeError('leading must be a string');
+  if (typeof opts.leading !== "string") {
+    throw new TypeError("leading must be a string");
   }
 
-  if (typeof opts.trailing !== 'string') {
-    throw new TypeError('trailing must be a string');
+  if (typeof opts.trailing !== "string") {
+    throw new TypeError("trailing must be a string");
   }
 
-  if (typeof opts.nested !== 'string') {
-    throw new TypeError('nested must be a string');
+  if (typeof opts.nested !== "string") {
+    throw new TypeError("nested must be a string");
   }
 
   return value
@@ -127,8 +135,12 @@ export function stripWhitespace(value, options) {
  * @throws {Error} if proposed key is an invalid keyword
  */
 export function notProto(key) {
-  if (['__proto__', 'constructor', 'prototype'].includes(String(key).toLowerCase())) {
-    throw new Error('Attempt to use prototype key disallowed');
+  if (
+    ["__proto__", "constructor", "prototype"].includes(
+      String(key).toLowerCase(),
+    )
+  ) {
+    throw new Error("Attempt to use prototype key disallowed");
   }
   return key;
 }
@@ -143,16 +155,18 @@ export function notProto(key) {
  * @throws {SyntaxError}
  */
 export function validateHookName(hookName) {
-  if (typeof hookName !== 'string') {
-    throw new TypeError('Hook name must be a string');
+  if (typeof hookName !== "string") {
+    throw new TypeError("Hook name must be a string");
   }
 
   if (!hookName.length) {
-    throw new SyntaxError('Hook name must not be empty');
+    throw new SyntaxError("Hook name must not be empty");
   }
 
   if (!hookName.match(/^([a-z_]+\.|)[a-z_]+$/i)) {
-    throw new SyntaxError('Hook name must match either <scope>.<hookname> or <hookname> formats');
+    throw new SyntaxError(
+      "Hook name must match either <scope>.<hookname> or <hookname> formats",
+    );
   }
 }
 
@@ -165,8 +179,8 @@ export function validateHookName(hookName) {
  * @throws {TypeError}
  */
 export function validateHookPath(path) {
-  if (typeof path !== 'string' && !(path instanceof RegExp)) {
-    throw new TypeError('Hook path must be a string or RegExp');
+  if (typeof path !== "string" && !(path instanceof RegExp)) {
+    throw new TypeError("Hook path must be a string or RegExp");
   }
 }
 
@@ -180,16 +194,18 @@ export function validateHookPath(path) {
  * @throws {SyntaxError}
  */
 export function validateUrlPath(path) {
-  if (typeof path !== 'string') {
-    throw new TypeError('URL path must be a string');
+  if (typeof path !== "string") {
+    throw new TypeError("URL path must be a string");
   }
 
   if (path.match(/[^/a-z0-9_-]/)) {
-    throw new SyntaxError('URL path must contain only a-z, 0-9, -, _ and / characters');
+    throw new SyntaxError(
+      "URL path must contain only a-z, 0-9, -, _ and / characters",
+    );
   }
 
   if (path.match(/\/{2,}/)) {
-    throw new SyntaxError('URL path must not contain consecutive /');
+    throw new SyntaxError("URL path must not contain consecutive /");
   }
 
   return path;
@@ -205,16 +221,18 @@ export function validateUrlPath(path) {
  * @throws {SyntaxError}
  */
 export function validateView(view) {
-  if (typeof view !== 'string') {
-    throw new TypeError('View must be a string');
+  if (typeof view !== "string") {
+    throw new TypeError("View must be a string");
   }
 
   if (!view.length) {
-    throw new SyntaxError('View must not be empty');
+    throw new SyntaxError("View must not be empty");
   }
 
   if (!view.match(/^[a-z0-9/_-]+\.njk$/i)) {
-    throw new SyntaxError('View must contain only a-z, 0-9, -, _ and / characters, and end in .njk');
+    throw new SyntaxError(
+      "View must contain only a-z, 0-9, -, _ and / characters, and end in .njk",
+    );
   }
 }
 
@@ -228,15 +246,17 @@ export function validateView(view) {
  * @throws {SyntaxError}
  */
 export function validateWaypoint(waypoint) {
-  if (typeof waypoint !== 'string') {
-    throw new TypeError('Waypoint must be a string');
+  if (typeof waypoint !== "string") {
+    throw new TypeError("Waypoint must be a string");
   }
 
   if (!waypoint.length) {
-    throw new SyntaxError('Waypoint must not be empty');
+    throw new SyntaxError("Waypoint must not be empty");
   }
 
   if (waypoint.match(/[^/a-z0-9_-]/)) {
-    throw new SyntaxError('Waypoint must contain only a-z, 0-9, -, _ and / characters');
+    throw new SyntaxError(
+      "Waypoint must contain only a-z, 0-9, -, _ and / characters",
+    );
   }
 }

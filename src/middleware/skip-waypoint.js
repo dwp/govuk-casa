@@ -1,19 +1,17 @@
 // Mark a waypoint as skipped
 
-import lodash from 'lodash';
-import JourneyContext from '../lib/JourneyContext.js';
-import waypointUrl from '../lib/waypoint-url.js';
-import logger from '../lib/logger.js';
+import lodash from "lodash";
+import JourneyContext from "../lib/JourneyContext.js";
+import waypointUrl from "../lib/waypoint-url.js";
+import logger from "../lib/logger.js";
 
 const { has } = lodash;
 
-const log = logger('middleware:skip-waypoint');
+const log = logger("middleware:skip-waypoint");
 
-export default ({
-  waypoint,
-}) => [
+export default ({ waypoint }) => [
   (req, res, next) => {
-    if (!has(req.query, 'skipto')) {
+    if (!has(req.query, "skipto")) {
       return next();
     }
     const skipTo = String(req.query.skipto);

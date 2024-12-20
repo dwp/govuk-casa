@@ -1,5 +1,4 @@
-/* eslint-disable import/no-cycle */
-import { randomUUID } from 'node:crypto';
+import { randomUUID } from "node:crypto";
 
 /**
  * @typedef {import('../casa.js').ContextIdGenerator} ContextIdGenerator
@@ -21,51 +20,52 @@ const uuid = () => () => randomUUID();
  *
  * @returns {ContextIdGenerator} Generator function
  */
-const sequentialInteger = () => ({ reservedIds }) => {
-  const contextIds = Array.from(reservedIds).sort();
+const sequentialInteger =
+  () =>
+  ({ reservedIds }) => {
+    const contextIds = Array.from(reservedIds).sort();
 
-  if (!contextIds.length) {
-    return '1';
-  }
+    if (!contextIds.length) {
+      return "1";
+    }
 
-  // Find the first numeric ID that we can increment
-  let lastInSequence;
-  do {
-    lastInSequence = Number.parseInt(contextIds.pop(), 10);
-  } while (contextIds.length && Number.isNaN(lastInSequence));
+    // Find the first numeric ID that we can increment
+    let lastInSequence;
+    do {
+      lastInSequence = Number.parseInt(contextIds.pop(), 10);
+    } while (contextIds.length && Number.isNaN(lastInSequence));
 
-  return String(!Number.isNaN(lastInSequence) ? lastInSequence + 1 : 1);
-};
+    return String(!Number.isNaN(lastInSequence) ? lastInSequence + 1 : 1);
+  };
 
-const shortGuid = ({
-  length = 5,
-  prefix = '',
-  pool = 'abcdefhkmnprtwxy346789',
-} = {}) => ({ reservedIds }) => {
-  // Ambiguous characters excluded
-  const poolSize = pool.length;
+const shortGuid =
+  ({ length = 5, prefix = "", pool = "abcdefhkmnprtwxy346789" } = {}) =>
+  ({ reservedIds }) => {
+    // Ambiguous characters excluded
+    const poolSize = pool.length;
 
-  const maxAttempts = 10;
-  let attempts = maxAttempts;
-  let id;
+    const maxAttempts = 10;
+    let attempts = maxAttempts;
+    let id;
 
-  do {
-    id = Array(length).fill(0).map(() => pool.charAt(Math.floor(Math.random() * poolSize))).join('');
-    attempts--;
-  } while (attempts > 0 && reservedIds.includes(id));
+    do {
+      id = Array(length)
+        .fill(0)
+        .map(() => pool.charAt(Math.floor(Math.random() * poolSize)))
+        .join("");
+      attempts--;
+    } while (attempts > 0 && reservedIds.includes(id));
 
-  if (attempts === 0) {
-    throw new Error(`Failed to generate GUID after ${maxAttempts} iterations`);
-  }
+    if (attempts === 0) {
+      throw new Error(
+        `Failed to generate GUID after ${maxAttempts} iterations`,
+      );
+    }
 
-  return `${prefix}${id}`;
-}
+    return `${prefix}${id}`;
+  };
 
 /**
  * @namespace ContextIdGenerators
  */
-export {
-  uuid,
-  sequentialInteger,
-  shortGuid,
-};
+export { uuid, sequentialInteger, shortGuid };

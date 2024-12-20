@@ -1,8 +1,8 @@
-import { Graph } from '@dagrejs/graphlib';
-import JourneyContext from './JourneyContext.js';
-import logger from './logger.js';
+import { Graph } from "@dagrejs/graphlib";
+import JourneyContext from "./JourneyContext.js";
+import logger from "./logger.js";
 
-const log = logger('lib:plan');
+const log = logger("lib:plan");
 
 /**
  * @access private
@@ -39,7 +39,9 @@ const log = logger('lib:plan');
  */
 function defaultNextFollow(r, context) {
   const { validation: v = {} } = context.toObject();
-  return Object.prototype.hasOwnProperty.call(v, r.source) && v[r.source] === null;
+  return (
+    Object.prototype.hasOwnProperty.call(v, r.source) && v[r.source] === null
+  );
 }
 
 /**
@@ -51,7 +53,9 @@ function defaultNextFollow(r, context) {
  */
 function defaultPrevFollow(r, context) {
   const { validation: v = {} } = context.toObject();
-  return Object.prototype.hasOwnProperty.call(v, r.target) && v[r.target] === null;
+  return (
+    Object.prototype.hasOwnProperty.call(v, r.target) && v[r.target] === null
+  );
 }
 
 /**
@@ -64,11 +68,13 @@ function defaultPrevFollow(r, context) {
  * @throws {SyntaxError} If waypoint ID is incorrectly formatted
  */
 function validateWaypointId(val) {
-  if (typeof val !== 'string') {
-    throw new TypeError(`Expected waypoint id to be a string, got ${typeof val}`);
+  if (typeof val !== "string") {
+    throw new TypeError(
+      `Expected waypoint id to be a string, got ${typeof val}`,
+    );
   }
-  if (val.substr(0, 6) === 'url://' && !val.endsWith('/')) {
-    throw new SyntaxError('url:// waypoints must include a trailing /')
+  if (val.substr(0, 6) === "url://" && !val.endsWith("/")) {
+    throw new SyntaxError("url:// waypoints must include a trailing /");
   }
 }
 
@@ -82,10 +88,14 @@ function validateWaypointId(val) {
  * @throws {ReferenceError} If route name is neither "next" or "prev"
  */
 function validateRouteName(val) {
-  if (typeof val !== 'string') {
-    throw new TypeError(`Expected route name to be a string, got ${typeof val}`);
-  } else if (!['next', 'prev'].includes(val)) {
-    throw new ReferenceError(`Expected route name to be one of next or prev. Got ${val}`)
+  if (typeof val !== "string") {
+    throw new TypeError(
+      `Expected route name to be a string, got ${typeof val}`,
+    );
+  } else if (!["next", "prev"].includes(val)) {
+    throw new ReferenceError(
+      `Expected route name to be one of next or prev. Got ${val}`,
+    );
   }
   return val;
 }
@@ -100,7 +110,9 @@ function validateRouteName(val) {
  */
 function validateRouteCondition(val) {
   if (!(val instanceof Function)) {
-    throw new TypeError(`Expected route condition to be a function, got ${typeof val}`);
+    throw new TypeError(
+      `Expected route condition to be a function, got ${typeof val}`,
+    );
   }
 }
 
@@ -174,14 +186,18 @@ export default class Plan {
     });
 
     // Gather options
-    const options = Object.assign(Object.create(null), {
-      // When true, the validation state of the source node must be `null` (i.e.
-      // no validation errors) before any custom route conditions are evaluated.
-      validateBeforeRouteCondition: true,
+    const options = Object.assign(
+      Object.create(null),
+      {
+        // When true, the validation state of the source node must be `null` (i.e.
+        // no validation errors) before any custom route conditions are evaluated.
+        validateBeforeRouteCondition: true,
 
-      // Traversal arbitration
-      arbiter: undefined,
-    }, opts);
+        // Traversal arbitration
+        arbiter: undefined,
+      },
+      opts,
+    );
     Object.freeze(options);
 
     priv.set(this, {
@@ -261,7 +277,9 @@ export default class Plan {
    */
   getRoutes() {
     const self = priv.get(this);
-    return self.dgraph.edges().map((edge) => makeRouteObject(self.dgraph, edge));
+    return self.dgraph
+      .edges()
+      .map((edge) => makeRouteObject(self.dgraph, edge));
   }
 
   /**
@@ -286,7 +304,9 @@ export default class Plan {
    */
   getOutwardRoutes(src, tgt = null) {
     const self = priv.get(this);
-    return self.dgraph.outEdges(src, tgt).map((e) => makeRouteObject(self.dgraph, e));
+    return self.dgraph
+      .outEdges(src, tgt)
+      .map((e) => makeRouteObject(self.dgraph, e));
   }
 
   /**
@@ -298,7 +318,7 @@ export default class Plan {
    * @returns {PlanRoute[]} Route objects found.
    */
   getPrevOutwardRoutes(src, tgt = null) {
-    return this.getOutwardRoutes(src, tgt).filter((r) => r.name === 'prev');
+    return this.getOutwardRoutes(src, tgt).filter((r) => r.name === "prev");
   }
 
   /**
@@ -326,7 +346,7 @@ export default class Plan {
    * @returns {Plan} Chain
    */
   setNextRoute(src, tgt, follow) {
-    return this.setNamedRoute(src, tgt, 'next', follow);
+    return this.setNamedRoute(src, tgt, "next", follow);
   }
 
   /**
@@ -338,7 +358,7 @@ export default class Plan {
    * @returns {Plan} Chain
    */
   setPrevRoute(src, tgt, follow) {
-    return this.setNamedRoute(src, tgt, 'prev', follow);
+    return this.setNamedRoute(src, tgt, "prev", follow);
   }
 
   /**
@@ -364,21 +384,24 @@ export default class Plan {
    * @returns {Plan} Chain
    */
   setRoute(src, tgt, followNext = undefined, followPrev = undefined) {
-    this.setNamedRoute(src, tgt, 'next', followNext);
+    this.setNamedRoute(src, tgt, "next", followNext);
 
     let followPrevious = followPrev;
     if (followPrevious === undefined) {
-      followPrevious = followNext === undefined ? undefined : (r, c) => {
-        const invertedRoute = {
-          ...r,
-          source: r.target,
-          target: r.source,
-        };
-        return followNext(invertedRoute, c);
-      }
+      followPrevious =
+        followNext === undefined
+          ? undefined
+          : (r, c) => {
+              const invertedRoute = {
+                ...r,
+                source: r.target,
+                target: r.source,
+              };
+              return followNext(invertedRoute, c);
+            };
     }
 
-    this.setNamedRoute(tgt, src, 'prev', followPrevious);
+    this.setNamedRoute(tgt, src, "prev", followPrevious);
 
     return this;
   }
@@ -419,7 +442,12 @@ export default class Plan {
 
     // Warn if we're overwriting an existing edge on the same name
     if (self.dgraph.hasEdge(src, tgt, name)) {
-      log.warn('Setting a route that already exists (%s, %s, %s). Will be overridden', src, tgt, name);
+      log.warn(
+        "Setting a route that already exists (%s, %s, %s). Will be overridden",
+        src,
+        tgt,
+        name,
+      );
     }
     self.dgraph.setEdge(src, tgt, { conditionName }, name);
 
@@ -428,18 +456,18 @@ export default class Plan {
     if (follow) {
       if (!self.options.validateBeforeRouteCondition) {
         followFunc = follow;
-      } else if (name === 'next') {
+      } else if (name === "next") {
         // Retain the original function name of route condition
         followFunc = {
-          [follow.name]: (r, c) => (defaultNextFollow(r, c) && follow(r, c)),
+          [follow.name]: (r, c) => defaultNextFollow(r, c) && follow(r, c),
         }[follow.name];
       } else {
         // Retain the original function name of route condition
         followFunc = {
-          [follow.name]: (r, c) => (defaultPrevFollow(r, c) && follow(r, c)),
+          [follow.name]: (r, c) => defaultPrevFollow(r, c) && follow(r, c),
         }[follow.name];
       }
-    } else if (name === 'next') {
+    } else if (name === "next") {
       followFunc = defaultNextFollow;
     } else {
       followFunc = defaultPrevFollow;
@@ -473,7 +501,7 @@ export default class Plan {
    * @returns {PlanRoute[]} List of traversed waypoints
    */
   traverseNextRoutes(context, options = {}) {
-    return this.traverseRoutes(context, { ...options, routeName: 'next' })
+    return this.traverseRoutes(context, { ...options, routeName: "next" });
   }
 
   /**
@@ -485,7 +513,7 @@ export default class Plan {
    * @returns {PlanRoute[]} List of traversed waypoints
    */
   traversePrevRoutes(context, options = {}) {
-    return this.traverseRoutes(context, { ...options, routeName: 'prev' })
+    return this.traverseRoutes(context, { ...options, routeName: "prev" });
   }
 
   /**
@@ -505,7 +533,9 @@ export default class Plan {
    */
   traverseRoutes(context, options = {}) {
     if (!(context instanceof JourneyContext)) {
-      throw new TypeError(`Expected context to be an instance of JourneyContext, got ${typeof context}`);
+      throw new TypeError(
+        `Expected context to be an instance of JourneyContext, got ${typeof context}`,
+      );
     }
 
     const self = priv.get(this);
@@ -513,13 +543,15 @@ export default class Plan {
     /** @type {PlanTraverseOptions} */
     const {
       startWaypoint = this.getWaypoints()[0],
-      stopCondition = () => (false),
+      stopCondition = () => false,
       arbiter = self.options.arbiter,
       routeName,
     } = options;
 
     if (!self.dgraph.hasNode(startWaypoint)) {
-      throw new ReferenceError(`Plan does not contain waypoint '${startWaypoint}'`);
+      throw new ReferenceError(
+        `Plan does not contain waypoint '${startWaypoint}'`,
+      );
     }
 
     validateRouteName(routeName);
@@ -537,7 +569,11 @@ export default class Plan {
           /* eslint-disable-next-line security/detect-object-injection */
           return self.follows[routeName][`${e.v}/${e.w}`](route, context);
         } catch (ex) {
-          log.warn('Route follow function threw an exception, "%s" (%s)', ex.message, `${e.v} -> ${e.w}`);
+          log.warn(
+            'Route follow function threw an exception, "%s" (%s)',
+            ex.message,
+            `${e.v} -> ${e.w}`,
+          );
           return false;
         }
       });
@@ -545,10 +581,12 @@ export default class Plan {
       // When there's more than one candidate route to take, we need help to choose
       if (target.length > 1) {
         const satisfied = target.map((t) => `${t.v} -> ${t.w}`);
-        log.debug(`Multiple routes were satisfied for "${routeName}" from "${startWP}" (${satisfied.join(' / ')}). Deciding how to resolve ...`);
+        log.debug(
+          `Multiple routes were satisfied for "${routeName}" from "${startWP}" (${satisfied.join(" / ")}). Deciding how to resolve ...`,
+        );
 
-        if (arbiter === 'auto') {
-          log.debug('Using automatic arbitration process');
+        if (arbiter === "auto") {
+          log.debug("Using automatic arbitration process");
           const targetNames = target.map(({ w }) => w);
           const forwardTraversal = this.traverseNextRoutes(context, {
             stopCondition: ({ source }) => targetNames.includes(source),
@@ -556,7 +594,7 @@ export default class Plan {
           const resolved = forwardTraversal.pop();
           target = target.filter((t) => t.w === resolved.source);
         } else if (arbiter instanceof Function) {
-          log.debug('Using custom arbitration process');
+          log.debug("Using custom arbitration process");
           // Convert to routeObject and back to edge object so that only the
           // routeObject is used in the public API
           target = arbiter({
@@ -564,9 +602,13 @@ export default class Plan {
             journeyContext: context,
             travereOptions: options,
           });
-          target = target.map((r) => ({ v: r.source, w: r.target, name: r.name }));
+          target = target.map((r) => ({
+            v: r.source,
+            w: r.target,
+            name: r.name,
+          }));
         } else {
-          log.warn('Unable to arbitrate');
+          log.warn("Unable to arbitrate");
           target = [];
         }
       }
@@ -593,15 +635,20 @@ export default class Plan {
 
           return results;
         }
-        log.debug('Encountered loop (%s). Stopping traversal.', `${route.source} -> ${route.target}`);
+        log.debug(
+          "Encountered loop (%s). Stopping traversal.",
+          `${route.source} -> ${route.target}`,
+        );
       }
 
-      return [makeRouteObject(self.dgraph, {
-        v: startWP,
-        w: null,
-        name: routeName,
-        label: {},
-      })];
+      return [
+        makeRouteObject(self.dgraph, {
+          v: startWP,
+          w: null,
+          name: routeName,
+          label: {},
+        }),
+      ];
     };
 
     return traverse(startWaypoint);

@@ -1,10 +1,10 @@
-import { expect } from 'chai';
+import { expect } from "chai";
 
-import range from '../../../src/lib/validators/range.js';
-import ValidationError from '../../../src/lib/ValidationError.js';
+import range from "../../../src/lib/validators/range.js";
+import ValidationError from "../../../src/lib/ValidationError.js";
 
-describe('validators/range', () => {
-  it('should reject with a ValidationError', () => {
+describe("validators/range", () => {
+  it("should reject with a ValidationError", () => {
     const rule1 = range.make({
       min: 2,
       max: 5,
@@ -12,7 +12,7 @@ describe('validators/range', () => {
     expect(rule1(6)).to.satisfy(([e]) => e instanceof ValidationError);
   });
 
-  it('should resolve for values falling within the defined range', () => {
+  it("should resolve for values falling within the defined range", () => {
     const rule1 = range.make({
       min: 5,
       max: 10,
@@ -33,7 +33,7 @@ describe('validators/range', () => {
     expect(rule3(35)).to.be.empty;
   });
 
-  it('should reject for values falling outside the defined range', () => {
+  it("should reject for values falling outside the defined range", () => {
     const rule1 = range.make({
       min: 5,
     }).validate;
@@ -54,27 +54,27 @@ describe('validators/range', () => {
     expect(rule3(3)).to.not.be.empty;
   });
 
-  it('should use a specific error message if defined', () => {
+  it("should use a specific error message if defined", () => {
     const rule1 = range.make({
       min: 5,
       max: 10,
-      errorMsgMin: 'TEST MIN',
-      errorMsgMax: 'TEST MAX',
+      errorMsgMin: "TEST MIN",
+      errorMsgMax: "TEST MAX",
     }).validate;
-    expect(rule1(3)).to.satisfy(([e]) => e.inline === 'TEST MIN');
-    expect(rule1(35)).to.satisfy(([e]) => e.inline === 'TEST MAX');
+    expect(rule1(3)).to.satisfy(([e]) => e.inline === "TEST MIN");
+    expect(rule1(35)).to.satisfy(([e]) => e.inline === "TEST MAX");
   });
 
-  describe('sanitise()', () => {
+  describe("sanitise()", () => {
     [
       // type | input | expected output
-      ['string', '', undefined],
-      ['number', 123, '123'],
-      ['object', {}, undefined],
-      ['function', () => {}, undefined],
-      ['array', [], '0'],
-      ['boolean', true, '1'],
-      ['float', 1.23, '1'],
+      ["string", "", undefined],
+      ["number", 123, "123"],
+      ["object", {}, undefined],
+      ["function", () => {}, undefined],
+      ["array", [], "0"],
+      ["boolean", true, "1"],
+      ["float", 1.23, "1"],
     ].forEach(([type, input, output]) => {
       it(`should coerce ${type} to an integer`, () => {
         const sanitise = range.make().sanitise;
@@ -83,16 +83,16 @@ describe('validators/range', () => {
       });
     });
 
-    it('should let an undefined value pass through', () => {
+    it("should let an undefined value pass through", () => {
       const sanitise = range.make().sanitise;
 
       expect(sanitise(undefined)).to.be.undefined;
     });
 
-    it('should let an empty string value pass through', () => {
+    it("should let an empty string value pass through", () => {
       const sanitise = range.make().sanitise;
 
-      expect(sanitise('')).to.be.undefined;
+      expect(sanitise("")).to.be.undefined;
     });
   });
 });

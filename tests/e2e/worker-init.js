@@ -8,18 +8,18 @@
  * Pass `--zap-api-key` to specify the ZAProxy API key (default "secret")
  * Pass `--zap-proxy` to specify the ZAP host/port, (default http://localhost:8080)
  */
-/* eslint-disable global-require */
-import { dirname, resolve } from 'path';
-import { load } from 'js-yaml';
-import { readFileSync } from 'fs';
-import { Environment, FileSystemLoader } from 'nunjucks';
-import { fileURLToPath } from 'url';
 
-import zapHooks from '@dwp/casa-spiderplan-zap-plugin';
-import a11yHooks from '@dwp/casa-spiderplan-a11y-plugin';
+import { dirname, resolve } from "path";
+import { load } from "js-yaml";
+import { readFileSync } from "fs";
+import { Environment, FileSystemLoader } from "nunjucks";
+import { fileURLToPath } from "url";
 
-import application from '../../examples/fully-loaded/app.js';
-import planConstructor from '../../examples/fully-loaded/definitions/plan.js';
+import zapHooks from "@dwp/casa-spiderplan-zap-plugin";
+import a11yHooks from "@dwp/casa-spiderplan-a11y-plugin";
+
+import application from "../../examples/fully-loaded/app.js";
+import planConstructor from "../../examples/fully-loaded/definitions/plan.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -43,20 +43,25 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
  * @param {params} params See above
  * @returns {object} See above
  */
-export default async ({ sharedState, language = 'en', cliArgs = {} }) => {
+export default async ({ sharedState, language = "en", cliArgs = {} }) => {
   // Application instance
   const expressApp = application({
-    MOUNT_URL: '/',
+    MOUNT_URL: "/",
   });
 
   // Plan
   const plan = planConstructor();
 
   // CSS selectors
-  const selectors = load(readFileSync(resolve(__dirname, 'selectors.yaml')), 'utf8');
+  const selectors = load(
+    readFileSync(resolve(__dirname, "selectors.yaml")),
+    "utf8",
+  );
 
   // Nunjucks template loader for content tests
-  const tplLoader = new FileSystemLoader(resolve(__dirname, 'content', language));
+  const tplLoader = new FileSystemLoader(
+    resolve(__dirname, "content", language),
+  );
   const nunjucksEnv = new Environment(tplLoader, { autoescape: false });
 
   let hooks = [];
@@ -64,23 +69,25 @@ export default async ({ sharedState, language = 'en', cliArgs = {} }) => {
   if (cliArgs.zap) {
     hooks = [
       ...hooks,
-      ...await zapHooks({
-        apiKey: cliArgs.zapApiKey ?? 'secret',
-        proxy: cliArgs.zapProxy ?? 'http://localhost:8080/',
-        rewriteUrl: cliArgs.zapTargetHostname ? ((p) => p.replace('localhost', cliArgs.zapTargetHostname)) : undefined,
-      }),
+      ...(await zapHooks({
+        apiKey: cliArgs.zapApiKey ?? "secret",
+        proxy: cliArgs.zapProxy ?? "http://localhost:8080/",
+        rewriteUrl: cliArgs.zapTargetHostname
+          ? (p) => p.replace("localhost", cliArgs.zapTargetHostname)
+          : undefined,
+      })),
     ];
   }
 
   if (cliArgs.a11y) {
     hooks = [
       ...hooks,
-      ...await a11yHooks({
-        dir: '.a11y/',
-        ignoreVariants: (cliArgs.a11yIgnoreVariants || '').split(','),
+      ...(await a11yHooks({
+        dir: ".a11y/",
+        ignoreVariants: (cliArgs.a11yIgnoreVariants || "").split(","),
         disableVariants: !!cliArgs.a11yDisableVariants,
         sharedState,
-      }),
+      })),
     ];
   }
 
@@ -90,7 +97,8 @@ export default async ({ sharedState, language = 'en', cliArgs = {} }) => {
     selectors,
     nunjucksEnv,
     // The start page chooses a random name, so we need to cement this for our static testing
-    textFilter: (t) => (t.replace(/Welcome, (Bob|John|Sue|Clara)/, 'Welcome, SALUTATION')),
+    textFilter: (t) =>
+      t.replace(/Welcome, (Bob|John|Sue|Clara)/, "Welcome, SALUTATION"),
     hooks,
   };
 };

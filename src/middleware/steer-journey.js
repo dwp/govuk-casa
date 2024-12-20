@@ -1,10 +1,10 @@
 // This sits in front of all other middleware and prevents the user from
 // "jumping ahead" in the Plan.
 
-import waypointUrl from '../lib/waypoint-url.js';
-import logger from '../lib/logger.js';
+import waypointUrl from "../lib/waypoint-url.js";
+import logger from "../lib/logger.js";
 
-const log = logger('middleware:steer-journey');
+const log = logger("middleware:steer-journey");
 
 /**
  * @access private
@@ -20,10 +20,7 @@ const log = logger('middleware:steer-journey');
  * @param {Plan} obj.plan CASA Plan
  * @returns {void}
  */
-export default ({
-  waypoint,
-  plan,
-}) => [
+export default ({ waypoint, plan }) => [
   (req, res, next) => {
     const mountUrl = `${req.baseUrl}/`;
 
@@ -32,25 +29,38 @@ export default ({
     const traversed = plan.traverse(req.casa.journeyContext);
     if (traversed.indexOf(waypoint) === -1) {
       const redirectTo = traversed[traversed.length - 1];
-      log.trace(`Attempted to access "${waypoint}" when not in the journey; redirecting to "${redirectTo}"`);
+      log.trace(
+        `Attempted to access "${waypoint}" when not in the journey; redirecting to "${redirectTo}"`,
+      );
 
-      return res.redirect(302, waypointUrl({
-        waypoint: redirectTo,
-        mountUrl,
-        journeyContext: req.casa.journeyContext,
-        edit: req.casa.editMode,
-        editOrigin: req.casa.editOrigin,
-      }));
+      return res.redirect(
+        302,
+        waypointUrl({
+          waypoint: redirectTo,
+          mountUrl,
+          journeyContext: req.casa.journeyContext,
+          edit: req.casa.editMode,
+          editOrigin: req.casa.editOrigin,
+        }),
+      );
     }
 
     // Edit mode
     // Cannot be in edit mode if we're already on the `editorigin` URL
     if (req.casa.editMode) {
-      const { pathname: currentPathname } = new URL(req.originalUrl, 'https://placeholder.test/');
-      const { pathname: editOriginPathname } = new URL(req.casa.editOrigin, 'https://placeholder.test/');
+      const { pathname: currentPathname } = new URL(
+        req.originalUrl,
+        "https://placeholder.test/",
+      );
+      const { pathname: editOriginPathname } = new URL(
+        req.casa.editOrigin,
+        "https://placeholder.test/",
+      );
 
       if (editOriginPathname === currentPathname) {
-        log.debug(`Disabling edit mode as we are on the edit origin (${req.casa.editOrigin})`);
+        log.debug(
+          `Disabling edit mode as we are on the edit origin (${req.casa.editOrigin})`,
+        );
         req.casa.editMode = false;
         req.casa.editOrigin = undefined;
       }
@@ -64,16 +74,18 @@ export default ({
     // Calculate URL for the "back" link
     const [prevRoute] = plan.traversePrevRoutes(req.casa.journeyContext, {
       startWaypoint: waypoint,
-      stopCondition: () => (true), // stop at the first one
+      stopCondition: () => true, // stop at the first one
     });
-    res.locals.casa.journeyPreviousUrl = prevRoute.target ? waypointUrl({
-      mountUrl,
-      journeyContext: req.casa.journeyContext,
-      waypoint: prevRoute.target,
-      routeName: 'prev',
-      edit: req.casa.editMode,
-      editOrigin: req.casa.editOrigin,
-    }) : undefined;
+    res.locals.casa.journeyPreviousUrl = prevRoute.target
+      ? waypointUrl({
+          mountUrl,
+          journeyContext: req.casa.journeyContext,
+          waypoint: prevRoute.target,
+          routeName: "prev",
+          edit: req.casa.editMode,
+          editOrigin: req.casa.editOrigin,
+        })
+      : undefined;
 
     return next();
   },

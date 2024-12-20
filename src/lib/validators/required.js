@@ -1,8 +1,7 @@
-/* eslint-disable class-methods-use-this */
-import lodash from 'lodash';
-import { isEmpty, isStringable, stringifyInput } from '../utils.js';
-import ValidatorFactory from '../ValidatorFactory.js';
-import ValidationError from '../ValidationError.js';
+import lodash from "lodash";
+import { isEmpty, isStringable, stringifyInput } from "../utils.js";
+import ValidatorFactory from "../ValidatorFactory.js";
+import ValidationError from "../ValidationError.js";
 
 const { isPlainObject } = lodash; // CommonJS
 
@@ -28,29 +27,27 @@ const { isPlainObject } = lodash; // CommonJS
  * @augments ValidatorFactory
  */
 export default class Required extends ValidatorFactory {
-  name = 'required';
+  name = "required";
 
   validate(value, dataContext = {}) {
     const {
       errorMsg = {
-        inline: 'validation:rule.required.inline',
-        summary: 'validation:rule.required.summary',
+        inline: "validation:rule.required.inline",
+        summary: "validation:rule.required.summary",
       },
     } = this.config;
 
     if (!isEmpty(value)) {
-      return []
+      return [];
     }
 
-    return [
-      ValidationError.make({ errorMsg, dataContext }),
-    ];
+    return [ValidationError.make({ errorMsg, dataContext })];
   }
 
   sanitise(value) {
     const coerce = (val) => {
       const s = stringifyInput(val, undefined);
-      return s === undefined ? undefined : s.replace(/^\s+$/, '');
+      return s === undefined ? undefined : s.replace(/^\s+$/, "");
     };
 
     if (isStringable(value)) {
@@ -66,7 +63,9 @@ export default class Required extends ValidatorFactory {
     // Coerce all elements to Strings.
     // This only supports a one dimensional object, with stringable elements.
     if (isPlainObject(value)) {
-      return Object.fromEntries(Object.entries(value).map(([k, v]) => ([k, coerce(v)])));
+      return Object.fromEntries(
+        Object.entries(value).map(([k, v]) => [k, coerce(v)]),
+      );
     }
 
     return undefined;
