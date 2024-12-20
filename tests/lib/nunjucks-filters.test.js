@@ -1,5 +1,5 @@
 import sinonChai from 'sinon-chai';
-import chai from 'chai';
+import { use as chaiUse, expect } from 'chai';
 import nunjucks from 'nunjucks';
 
 import {
@@ -9,8 +9,7 @@ import {
   renderAsAttributes,
 } from '../../src/lib/nunjucks-filters.js';
 
-chai.use(sinonChai);
-const { expect } = chai;
+chaiUse(sinonChai);
 
 describe('View filter: formatDateObject', () => {
   it('should output INVALID DATE OBJECT when given an invalid object structure', () => {

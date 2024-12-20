@@ -1,13 +1,13 @@
 import { stub } from 'sinon';
 import sinonChai from 'sinon-chai';
-import chai, { expect } from 'chai';
+import { use as chaiUse, expect } from 'chai';
 import ExpressJS from 'express';
 import request from 'supertest';
 import session from 'express-session';
 
 import csrfMiddleware from '../../src/middleware/csrf.js';
 
-chai.use(sinonChai);
+chaiUse(sinonChai);
 
 describe('csrf middleware', () => {
   it('passes through to next middleware', (done) => {

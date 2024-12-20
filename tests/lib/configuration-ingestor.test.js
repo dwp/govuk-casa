@@ -1,6 +1,6 @@
 import { stub } from 'sinon';
 import sinonChai from 'sinon-chai';
-import chai, { expect } from 'chai';
+import { use as chaiUse, expect } from 'chai';
 import { CONFIG_ERROR_VISIBILITY_ONSUBMIT, CONFIG_ERROR_VISIBILITY_ALWAYS } from '../../src/lib/constants.js';
 
 import ingest, {
@@ -25,7 +25,7 @@ import ingest, {
   validateErrorVisibility,
 } from '../../src/lib/configuration-ingestor.js';
 
-chai.use(sinonChai);
+chaiUse(sinonChai);
 
 const minimalConfig = {
   i18n: {

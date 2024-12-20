@@ -1,12 +1,12 @@
 /* eslint-disable camelcase, object-curly-newline */
-import chai, { expect } from 'chai';
+import { use as chaiUse, expect } from 'chai';
 import { stub } from 'sinon';
 import sinonChai from 'sinon-chai';
 
 import Plan from '../../src/lib/Plan.js';
 import JourneyContext from '../../src/lib/JourneyContext.js';
 
-chai.use(sinonChai);
+chaiUse(sinonChai);
 
 // Helper function to generate structure of a node that appears last in the
 // returned list of traversable nodes

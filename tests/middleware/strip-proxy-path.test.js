@@ -1,12 +1,12 @@
 import { stub } from 'sinon';
 import sinonChai from 'sinon-chai';
-import chai, { expect } from 'chai';
+import { use as chaiUse, expect } from 'chai';
 import ExpressJS from 'express';
 import request from 'supertest';
 
 import stripProxyPath from '../../src/middleware/strip-proxy-path.js';
 
-chai.use(sinonChai);
+chaiUse(sinonChai);
 
 describe('strip-proxy-path middleware', () => {
   it('passes through to next middleware', (done) => {
