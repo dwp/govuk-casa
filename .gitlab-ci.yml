@@ -2,8 +2,8 @@ include:
   - project: dwp/engineering/pipeline-solutions/gitlab/functions
     ref: 5.4.0
     file:
-      - functions/node.yml
-      - functions/auto-tag-merge.yml
+      - functions/node.gitlab-ci.yml
+      - functions/auto-tag-merge.gitlab-ci.yml
 
 variables:
   NODE_IMAGE: node:22@sha256:35a5dd72bcac4bce43266408b58a02be6ff0b6098ffa6f5435aeea980a8951d7
@@ -11,6 +11,7 @@ variables:
   NODE_PUBLISH_TO_NPMJS: "true"
   AUTO_TAG_MERGE_TAG_BRANCH: "maintain/8.x"
   AUTO_TAG_MERGE_PREPARE_MR: "true"
+  FUNCTIONS_SONARQUBE_ENABLED: "false"
 
 # ------------------------------------------------------------------ custom jobs
 
