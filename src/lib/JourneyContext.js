@@ -50,7 +50,9 @@ const uuid = uuidGenerator();
 
 /**
  *
- * @param key
+ * @param {string} key Object key
+ * @returns {string} stringified key
+ * @throws {SyntaxError} for invalid keys
  */
 export function validateObjectKey(key = "") {
   const keyLower = String.prototype.toLowerCase.call(key);

@@ -30,16 +30,16 @@ const combineMerge = (target, source, options) => {
 // ref: https://github.com/jonschlinkert/is-plain-object/blob/master/is-plain-object.js
 
 /**
- *
- * @param o
+ * @param {any} o Value to test
+ * @returns {boolean} True if an object
  */
 function isObject(o) {
   return Object.prototype.toString.call(o) === "[object Object]";
 }
 
 /**
- *
- * @param o
+ * @param {any} o Value to test
+ * @returns {boolean} True if a plain object or array
  */
 function isPlainObjectOrArray(o) {
   if (Array.isArray(o)) {
@@ -61,8 +61,8 @@ function isPlainObjectOrArray(o) {
 }
 
 /**
- *
- * @param {...any} objects
+ * @param {...any} objects Objects to merge
+ * @returns {object} Merged object
  */
 function mergeObjects(...objects) {
   return deepmergeAll([Object.create(null), ...objects], {

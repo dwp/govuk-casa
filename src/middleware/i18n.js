@@ -3,8 +3,13 @@ import { LanguageDetector, handle } from "i18next-http-middleware";
 import { resolve, basename } from "path";
 import { existsSync, readFileSync, readdirSync } from "fs";
 import deepmerge from "deepmerge";
-import yaml from "js-yaml";
+import { load as jsYamlLoad } from "js-yaml";
 import logger from "../lib/logger.js";
+
+/**
+ * @typedef {import("express").RequestHandler} RequestHandler
+ * @access private
+ */
 
 const log = logger("middleware:i18n");
 
@@ -17,7 +22,7 @@ const loadJson = (file) => {
 };
 
 /* eslint-disable-next-line security/detect-non-literal-fs-filename */
-const loadYaml = (file) => yaml.load(readFileSync(file, "utf8"));
+const loadYaml = (file) => jsYamlLoad(readFileSync(file, "utf8"));
 
 const extract = (file) => {
   const ext = /.yaml$/i.test(file) ? ".yaml" : ".json";
@@ -64,10 +69,12 @@ const loadResources = (languages, directories) => {
 };
 
 /**
+ * Internationalisation middleware.
  *
- * @param root0
- * @param root0.languages
- * @param root0.directories
+ * @param {object} opts Options
+ * @param {string[]} [opts.languages] Language codes
+ * @param {string[]} [opts.directories] Source translations directories
+ * @returns {RequestHandler[]} Middleware functions
  */
 export default function i18nMiddleware({
   languages = ["en", "cy"],

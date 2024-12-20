@@ -14,6 +14,11 @@ const log = logger("routes:journey");
 
 /**
  * @access private
+ * @param {import('express').RequestHandler} RequestHandler
+ */
+
+/**
+ * @access private
  * @param {import('../casa.js').GlobalHook} GlobalHook
  */
 
@@ -83,8 +88,8 @@ const generateEditCancelUrl = (editOrigin, waypoint) => {
 /**
  * handle errorVisibility flag and function and return boolean
  *
+ * @param {RequestHandler} req casa request object
  * @param {symbol | Function} errorVisibility errorVisibility config option
- * @param {object} req casa request object
  * @returns {boolean} true if errorVisibility is "always" or function condition true
  */
 const resolveErrorVisibility = (req, errorVisibility) =>
