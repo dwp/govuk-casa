@@ -33,7 +33,7 @@
     "test:e2e": "spiderplan --worker-init ./tests/e2e/worker-init.js --language en ./tests/e2e/personas/**/*.yaml",
     "test:dast": "spiderplan --worker-init ./tests/e2e/worker-init.js --language en ./tests/e2e/personas/**/traversal.yaml --workers 1 --zap --zap-proxy 'http://localhost:8080/' --zap-target-hostname 'host.docker.internal'",
     "test:dast:report": "curl -s --header 'X-ZAP-Api-Key: secret' http://localhost:8080/OTHER/core/other/htmlreport > gl-dast-report.html",
-    "test:dast:setup": "docker run --rm --name casa-dast -d -u zap -p 8080:8080 -i ghcr.io/zaproxy/zaproxy:bare@sha256:24a4037a3e8607d9fedbd75e4a7f1336d11998e1c331aab9991ef074f5de4b22 zap.sh -daemon -host 0.0.0.0 -port 8080 -config api.addrs.addr.name=\".*\" -config api.addrs.addr.regex=true -config api.key=secret; npm run test:dast:ready-check",
+    "test:dast:setup": "docker run --rm --name casa-dast -d -u zap -p 8080:8080 -i ghcr.io/zaproxy/zaproxy:bare@sha256:24a4037a3e8607d9fedbd75e4a7f1336d11998e1c331aab9991ef074f5de4b22 zap.sh -daemon -host 0.0.0.0 -port 8080 -config api.addrs.addr.name=\".*\" -config api.addrs.addr.regex=true -config api.key=secret -notel; npm run test:dast:ready-check",
     "test:dast:ready-check": "while [ \"$(curl -Is -o /dev/null -w %{response_code} http://localhost:8080/)\" -ne \"200\" ]; do sleep 1; echo 'Waiting for ZAP to start ...'; done",
     "test:dast:teardown": "docker stop casa-dast",
     "lint": "eslint .",
@@ -76,10 +76,10 @@
     "@commitlint/config-conventional": "19.6.0",
     "@dwp/casa-spiderplan": "4.1.1",
     "@dwp/casa-spiderplan-a11y-plugin": "1.0.2",
-    "@dwp/casa-spiderplan-zap-plugin": "1.0.2",
+    "@dwp/casa-spiderplan-zap-plugin": "1.0.3",
     "@dwp/eslint-config-base": "9.0.2",
     "@types/express": "4.17.21",
-    "@types/node": "22.10.2",
+    "@types/node": "22.10.5",
     "@types/nunjucks": "3.2.6",
     "c8": "10.1.3",
     "chai": "5.1.2",
@@ -96,10 +96,10 @@
     "jsdoc-tsimport-plugin": "1.0.5",
     "mocha": "11.0.1",
     "prettier": "3.4.2",
-    "prettier-plugin-jsdoc": "1.3.0",
-    "sass": "1.83.0",
+    "prettier-plugin-jsdoc": "1.3.2",
+    "sass": "1.83.1",
     "sinon": "19.0.2",
     "supertest": "7.0.0",
-    "typescript": "5.7.2"
+    "typescript": "5.7.3"
   }
 }
