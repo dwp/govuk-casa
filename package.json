@@ -79,6 +79,7 @@
     "@dwp/casa-spiderplan-zap-plugin": "1.0.3",
     "@dwp/eslint-config-base": "9.0.2",
     "@types/express": "4.17.21",
+    "@types/luxon": "3.4.2",
     "@types/node": "22.10.5",
     "@types/nunjucks": "3.2.6",
     "c8": "10.1.3",

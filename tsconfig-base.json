@@ -17,7 +17,7 @@
     "sourceMap": true,
     "strict": true,
     "traceResolution": false,
-    "types": ["express", "node", "nunjucks"]
+    "types": ["express", "luxon", "node", "nunjucks"]
   },
   "compileOnSave": false,
   "exclude": ["dist", "node_modules"],

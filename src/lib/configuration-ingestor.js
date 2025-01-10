@@ -30,11 +30,6 @@ import {
  */
 
 /**
- * @typedef {import("../casa").PageField} PageField
- * @access private
- */
-
-/**
  * @typedef {import("../casa").PageHook} PageHook
  * @access private
  */
