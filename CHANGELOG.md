@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [9.4.2](https://github.com/dwp/govuk-casa/-/compare/9.4.1...9.4.2) (2025-01-14)
+
+### Bug Fixes
+
+* missing/duplicated types ([d35bfa1](https://github.com/dwp/govuk-casa/-/commit/d35bfa17b108f2457485511e48af5ee5c01330d1))
+
 ## [9.4.1](https://github.com/dwp/govuk-casa/-/compare/9.4.0...9.4.1) (2024-12-19)
 
 ## [9.4.0](https://github.com/dwp/govuk-casa/-/compare/9.3.5...9.4.0) (2024-12-03)
