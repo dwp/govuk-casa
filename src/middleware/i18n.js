@@ -86,7 +86,7 @@ export default function i18nMiddleware({
   // Configure i18next
   const i18nInstance = createInstance();
   i18nInstance.use(LanguageDetector).init({
-    initImmediate: false, // because we need synchronous loading
+    initAsync: false, // because we need synchronous loading
     supportedLngs: languages,
     fallbackLng: false,
     defaultNS: "common",
