@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [8.16.4](https://github.com/dwp/govuk-casa/-/compare/8.16.3...8.16.4) (2025-01-31)
+
 ## [8.16.3](https://github.com/dwp/govuk-casa/-/compare/8.16.2...8.16.3) (2024-12-20)
 
 ## [8.16.2](https://github.com/dwp/govuk-casa/-/compare/8.16.1...8.16.2) (2024-10-10)
