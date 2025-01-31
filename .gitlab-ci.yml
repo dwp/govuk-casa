@@ -1,9 +1,15 @@
 include:
   - project: dwp/engineering/pipeline-solutions/gitlab/functions
-    ref: 5.4.0
+    ref: 5.7.2
     file:
-      - functions/node.gitlab-ci.yml
-      - functions/auto-tag-merge.gitlab-ci.yml
+      - functions/node-mr.gitlab-ci.yml
+      - functions/auto-tag-merge-mr.gitlab-ci.yml
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
+      when: never
+    - when: always
 
 variables:
   NODE_IMAGE: node:22@sha256:35a5dd72bcac4bce43266408b58a02be6ff0b6098ffa6f5435aeea980a8951d7
