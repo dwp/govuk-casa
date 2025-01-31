@@ -10,12 +10,12 @@ import { validateUrlPath } from "../lib/utils.js";
 
 const { static: ExpressStatic } = ExpressJS; // CommonJS
 
-const oneDay = 86400000;
-
 /**
  * @typedef {object} StaticOptions Options to configure static router
- * @property {number} [maxAge=3600000] Cache TTL for all assets (optional,
- *   default 1 hour). Default is `3600000`
+ * @property {number} [maxAge=3600000] Cache TTL for all assets. Default is
+ *   `3600000`
+ * @property {string} [cacheControl=private] Cache control headers. Default is
+ *   `private`
  */
 
 /**
@@ -25,7 +25,10 @@ const oneDay = 86400000;
  * @returns {MutableRouter} ExpressJS Router instance
  * @access private
  */
-export default function staticRouter({ maxAge = 3600000 } = {}) {
+export default function staticRouter({
+  maxAge = 3600000,
+  cacheControl = "private",
+} = {}) {
   const router = new MutableRouter();
 
   const notFoundHandler = (req, res, next) => {
@@ -34,9 +37,8 @@ export default function staticRouter({ maxAge = 3600000 } = {}) {
   };
 
   const setHeaders = (req, res, next) => {
-    res.set("cache-control", "public");
-    res.set("pragma", "cache");
-    res.set("expires", new Date(Date.now() + oneDay).toUTCString());
+    res.set("cache-control", cacheControl);
+    res.set("expires", new Date(Date.now() + maxAge).toUTCString());
     const { pathname } = new URL(
       req?.originalUrl ?? "",
       "https://placeholder.test/",
