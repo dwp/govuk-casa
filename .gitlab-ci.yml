@@ -1,7 +1,7 @@
 include:
   - template: DAST.gitlab-ci.yml
   - project: dwp/engineering/pipeline-solutions/gitlab/functions
-    ref: 4.19.5
+    ref: pep
     file:
       - functions/node.yml
       - functions/auto-tag-merge.yml
@@ -74,3 +74,4 @@ node-publish-gitlab:
 auto-tag-merge-prepare-mr:
   variables:
     MR_BRANCH: chore/auto-package-v7
+
