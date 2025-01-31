@@ -54,7 +54,6 @@ export default ({ helmetConfigurator = (config) => config } = {}) => [
   // possible leakage of information.
   (req, res, next) => {
     res.set("cache-control", "no-cache, no-store, must-revalidate, private");
-    res.set("pragma", "no-cache");
     res.set("expires", 0);
     res.set("x-robots-tag", "noindex, nofollow");
     next();

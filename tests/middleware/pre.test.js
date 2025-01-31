@@ -34,9 +34,6 @@ describe("pre middleware", () => {
           .that.equals("no-cache, no-store, must-revalidate, private"),
       )
       .expect((res) =>
-        expect(res.headers).to.have.property("pragma").that.equals("no-cache"),
-      )
-      .expect((res) =>
         expect(res.headers).to.have.property("expires").that.equals("0"),
       )
       .expect((res) =>
