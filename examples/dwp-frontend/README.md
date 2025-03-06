@@ -32,6 +32,7 @@ npm link
 # Install and run this example
 cd examples/dwp-frontend/
 npm i
+npm i govuk-frontend --save
 npm link @dwp/govuk-casa
 npm run compile:sass
 npm run compile:js
