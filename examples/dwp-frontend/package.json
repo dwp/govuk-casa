@@ -19,7 +19,7 @@
     "express": "4.21.1"
   },
   "devDependencies": {
-    "esbuild": "0.24.0",
+    "esbuild": "0.25.0",
     "nodemon": "3.1.7",
     "sass": "1.81.0"
   }
