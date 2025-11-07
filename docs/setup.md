@@ -44,7 +44,7 @@ Nunjucks will search for templates in the order: user templates (as defined in `
 
 Configuration options for session handling
 
-- `string` **`mountUrl`** _(optional; defaults to whatever path you mount your CASA app onto)_ URL prefix to use in browser address bar URLs. Setting this will enter "proxy mode", which assumes you are using an intermediate forwarding proxy, like nginx, to rewrite paths. See [proxying guide](docs/guides/setup-behind-a-proxy.md) for more info.
+- `string` **`mountUrl`** _(optional; defaults to whatever path you mount your CASA app onto)_ URL prefix to use in browser address bar URLs. Setting this will enter "proxy mode", which assumes you are using an intermediate forwarding proxy, like nginx, to rewrite paths. See [proxying guide](guides/setup-behind-a-proxy.md) for more info.
 
 Configuration to control the path from which requests are served
 
@@ -57,7 +57,7 @@ Configuration for multi-language support
 
 Configuration option for validation error visibility
 
-- `Symbol|Function` **`errorVisibility`** Use the `errorVisibility` option to keep page validation errors visible on GET requests, i.e on page refresh. see [error-visibility guide](docs/guides/error-visibility.md) for more info.
+- `Symbol|Function` **`errorVisibility`** Use the `errorVisibility` option to keep page validation errors visible on GET requests, i.e on page refresh. see [error-visibility guide](guides/error-visibility.md) for more info.
 
 Plugins to extend application functionality. Read our [plugins documentation](plugins.md) for more details.
 
@@ -155,4 +155,4 @@ All these middleware are also mutable before `mount()` is called (at which point
 | -------- | ---------- | -------------------------------------------------------------------------------------------------------- |
 | `mount`  | `function` | Calling this will mount all the CASA routers/middleware and effectively prevent any further modification |
 
-Call the `mount()` function as the last thing you do, once you've setup all the routers/middleware as you wish. [Read more about this function](docs/mount-function.md) to see how it can be used to mount your application in various scenarios.
+Call the `mount()` function as the last thing you do, once you've setup all the routers/middleware as you wish. [Read more about this function](mount-function.md) to see how it can be used to mount your application in various scenarios.
