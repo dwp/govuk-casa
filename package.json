@@ -69,7 +69,7 @@
     "nunjucks": "3.2.4",
     "path-to-regexp": "8.2.0",
     "rfdc": "1.4.1",
-    "validator": "13.12.0"
+    "validator": "13.15.22"
   },
   "devDependencies": {
     "@ckeditor/jsdoc-plugins": "43.0.1",
