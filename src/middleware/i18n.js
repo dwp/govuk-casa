@@ -25,8 +25,9 @@ const loadJson = (file) => {
 const loadYaml = (file) => jsYamlLoad(readFileSync(file, "utf8"));
 
 const extract = (file) => {
-  const ext = /.yaml$/i.test(file) ? ".yaml" : ".json";
-  const data = ext === ".yaml" ? loadYaml(file) : loadJson(file);
+  const yamlMatch = /\.(ya?ml)$/i.exec(file);
+  const ext = yamlMatch ? yamlMatch[0] : ".json";
+  const data = yamlMatch ? loadYaml(file) : loadJson(file);
 
   return {
     ns: basename(file, ext),
@@ -53,6 +54,10 @@ const loadResources = (languages, directories) => {
       log.info("Loading %s language from %s ...", language, dir);
       /* eslint-disable-next-line security/detect-non-literal-fs-filename */
       for (const file of readdirSync(dir)) {
+        if (!/\.(json|ya?ml)$/i.test(file)) {
+          continue;
+        }
+
         const { ns, data } = extract(resolve(dir, file));
 
         if (store[language][ns] === undefined) {
